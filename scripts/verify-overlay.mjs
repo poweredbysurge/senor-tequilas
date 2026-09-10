@@ -21,8 +21,11 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REF = path.join(ROOT, 'design', 'reference');
 const SHOTS = path.join(ROOT, 'design', 'gate-a', 'overlay-check');
 
-const NARROW = [360, 390, 430, 600, 767];
-const WIDE = [768, 1024, 1440, 1920];
+const NARROW = [320, 360, 375, 390, 430, 600, 767];
+const WIDE = [768, 810, 820, 834, 899, 900, 1024, 1280, 1440, 1920];
+// 320 is below the smallest width the design was ever drawn at. It is measured and
+// reported, but it is not part of the pass/fail contract. See DESIGN-DEBT.md.
+const ACCEPTED_WIDTH = 320;
 
 async function main() {
   const { server, port } = await serve(ROOT);
@@ -35,6 +38,7 @@ async function main() {
   // ---- 1. horizontal scroll -------------------------------------------------------------
   console.log('=== 1. horizontal scroll, overlay applied ===\n');
   const overflow = [];
+  const accepted = [];
   for (const p of manifest.pages) {
     const row = { slug: p.slug, widths: {} };
     for (const w of [...NARROW, ...WIDE]) {
@@ -49,13 +53,16 @@ async function main() {
         burger: !!document.querySelector('header button[aria-label="Open menu"]'),
       }));
       row.widths[w] = r;
-      if (r.over > 0) overflow.push(`${p.slug} @${w}: +${r.over}px`);
+      if (r.over > 0 && w !== ACCEPTED_WIDTH) overflow.push(`${p.slug} @${w}: +${r.over}px`);
+      if (r.over > 0 && w === ACCEPTED_WIDTH) accepted.push(`${p.slug}: +${r.over}px`);
     }
-    const bad = Object.entries(row.widths).filter(([, r]) => r.over > 0);
-    console.log(`  ${p.slug.padEnd(45)} ${bad.length ? 'OVERFLOW ' + bad.map(([w, r]) => `${w}:+${r.over}`).join(' ') : 'clean at all 9 widths'}`);
+    const bad = Object.entries(row.widths).filter(([w, r]) => r.over > 0 && Number(w) !== ACCEPTED_WIDTH);
+    console.log(`  ${p.slug.padEnd(45)} ${bad.length ? 'OVERFLOW ' + bad.map(([w, r]) => `${w}:+${r.over}`).join(' ') : `clean at all ${NARROW.length + WIDE.length} widths`}`);
   }
   console.log(`\n  ${overflow.length === 0 ? 'PASS: no horizontal scroll anywhere.' : `FAIL: ${overflow.length} overflow(s)`}`);
   for (const o of overflow.slice(0, 12)) console.log(`    ${o}`);
+  console.log(`\n  at ${ACCEPTED_WIDTH}px, below anything the design was drawn at, ${accepted.length} page(s) overflow (accepted, logged):`);
+  for (const a of accepted) console.log(`    ${a}`);
 
   // ---- 2. the 1440 references must not move ---------------------------------------------
   console.log('\n=== 2. 1440 references re-rendered with the overlay, vs the recorded hashes ===\n');
@@ -82,7 +89,7 @@ async function main() {
   // ---- 3. is the header cramped at 768 and 1024? ----------------------------------------
   console.log('\n=== 3. header headroom ===\n');
   const headroom = [];
-  for (const w of [768, 1024]) {
+  for (const w of [900, 1024, 1280]) {
     for (const p of manifest.pages) {
       await page.setViewportSize({ width: w, height: 900 });
       await page.goto(`${base}/design/pages/${p.slug}.html`, { waitUntil: 'load' });
@@ -102,13 +109,13 @@ async function main() {
       headroom.push({ w, slug: p.slug, ...r });
     }
   }
-  for (const w of [768, 1024]) {
+  for (const w of [900, 1024, 1280]) {
     const rows = headroom.filter((h) => h.w === w).sort((a, b) => a.slack - b.slack);
     const worst = rows[0];
     console.log(`  ${w}px: tightest is ${worst.slug} with ${worst.slack}px slack (nav ${worst.navW}px, ${worst.links} links, row ${worst.used}/${worst.avail})`);
     console.log(`         next three: ${rows.slice(1, 4).map((r) => `${r.slug} ${r.slack}px`).join(', ')}`);
   }
-  for (const w of [768, 1024]) {
+  for (const w of [900, 1024, 1280]) {
     const tight = headroom.filter((h) => h.w === w).sort((a, b) => a.slack - b.slack)[0];
     await page.setViewportSize({ width: w, height: 900 });
     await page.goto(`${base}/design/pages/${tight.slug}.html`, { waitUntil: 'load' });

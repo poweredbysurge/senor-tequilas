@@ -126,9 +126,23 @@ Separately, the desktop `<nav>` is never hidden: it computes to `display: flex` 
 width from 360 to 1920, so every page scrolls sideways from 360 up to between 653 and 724
 depending on how many links that page's nav carries.
 
-**Port fix, once approved:** lift the design's own panel markup, drive it with about fifteen
-lines of vanilla JavaScript (toggle `aria-expanded`, Escape to close, close on link
-activation, move focus in and back), and hide the desktop nav under `max-width: 767px`.
+**Port fix, built:** the design's own panel markup lifted from the bundle, driven by 36 lines
+of vanilla JavaScript (`aria-expanded` and `aria-controls`, Escape to close, close on link
+activation, focus into the panel and back), plus a media query hiding the desktop nav.
+
+**The breakpoint is not 768.** Measured on all 20 pages rather than a sample:
+
+| width | what the header does |
+|---|---|
+| 768 to 779 | the four events pages still overflow by 10 to 12px |
+| 780 to 904 | no overflow, but "PRIVATE EVENTS" and "OUR STORY" wrap onto two lines on those four pages |
+| 905 and above | composed, single line, on every page |
+
+The four are `private-parties` and its two children plus `catering`, whose header carries
+"Book a Tour" where other pages carry the shorter "Order": a 592px cluster against 555px.
+
+**Upstream fix:** shorten "Book a Tour", or accept that the nav needs roughly 905px to sit on
+one line and that everything below that is hamburger territory.
 
 The eight panel links and their destinations, recorded so a future export cannot silently
 revert them:
@@ -150,7 +164,36 @@ means it works from any page instead of only from the homepage.
 **Upstream fix:** express the mobile header statically, or accept that navigation lives in
 code.
 
-## 7. "See the Bar" promises one page and sits beside copy about another
+## 7. The header was never drawn below 390, and it does not fit there
+
+The design's smallest artboard is 390. Below it the homepage header overflows: with the
+desktop nav hidden, the row's content still ends at 374.4px in a 360px viewport.
+
+**Port fix**, a `max-width: 389px` block in `design/overlay/mobile-nav.css`, scaling two
+values the design already varies and nothing else:
+
+| value | design | below 390 | why |
+|---|---|---|---|
+| header row padding | `clamp(14px, 4vw, 40px)` | `7px` | only lowers the small end of a value that is already responsive |
+| logo height | `34px` | `31.5px` | width falls from 147 to 136, proportionally |
+
+No wrapping, no stacking, no restructuring of the header row. Nothing at 390 and above is
+affected. This is what a `clamp()` on the logo would have done had the design used one.
+
+360, 375 and 390 are clean on all 20 pages after this.
+
+**320 is knowingly left overflowing**, from two separate causes:
+
+- `home`, +36px: the header row still does not fit. Pushing the logo smaller than 136px is
+  more than the brand can carry.
+- `menu`, `takeout-delivery`, `birria-tacos`, `quesabirria-tacos`, `street-tacos`,
+  `fajitas-molcajetes`, `karaoke`, +20px each: **nothing to do with the header.** Each has a
+  hero container with a hard 340px width, which cannot fit a 320px viewport at all.
+
+**Upstream fix: the next design pass should specify a small-phone header rather than leave
+the port to infer one**, and should give those hero containers a width that can go below 340.
+
+## 8. "See the Bar" promises one page and sits beside copy about another
 
 The four `See the Bar →` links on the dish pages sit inside a "Pair it" section whose copy is
 about a cantarito, a cocktail. The label says the bar.
@@ -162,7 +205,7 @@ betrayal even if the cantarito lives there.
 **Upstream fix, a copy decision not a link decision:** either the label becomes "See the
 Drinks" and points at `/margaritas`, or the pairing changes to something tequila-forward.
 
-## 8. The brief references a `/contact/` page that does not exist
+## 9. The brief references a `/contact/` page that does not exist
 
 `seo-migration-kit-and-page-spec.md` says "every page: link to `/contact/`". There is no
 contact page among the twenty and none was designed.
