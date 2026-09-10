@@ -21,7 +21,7 @@ import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
-import pixelmatch from 'pixelmatch';
+import { compare, TOLERANCE_PCT as LIB_TOLERANCE, AA_RADIUS as LIB_AA_RADIUS } from './lib/render.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'design', 'gate-a');
@@ -30,9 +30,8 @@ const BUNDLE = 'design/export/master-board.standalone.html';
 const VIEWPORT = { width: 1440, height: 900 };
 const EXPECTED_HOSTS = 29;
 const SETTLE_MS = 5000;
-const TOLERANCE_PCT = 0.5;
-const AA_RADIUS = 2;          // a differing pixel is forgiven if its match sits within 2px
-const AA_COLOR_TOL = 32;      // per-channel closeness for that match
+const TOLERANCE_PCT = LIB_TOLERANCE;
+const AA_RADIUS = LIB_AA_RADIUS;
 const KEEP_IMAGES = !process.argv.includes('--no-images');
 
 const CONTENT_TYPES = {
@@ -163,67 +162,6 @@ const stickyBoxes = (scope) =>
         return `${n.tagName.toLowerCase()} ${Math.round(r.width)}x${Math.round(r.height)}`;
       });
   });
-
-const pad = (png, w, h) => {
-  if (png.width === w && png.height === h) return png;
-  const out = new PNG({ width: w, height: h });
-  out.data.fill(0);
-  PNG.bitblt(png, out, 0, 0, Math.min(png.width, w), Math.min(png.height, h), 0, 0);
-  return out;
-};
-
-/**
- * pixelmatch flags the raw differences; we then forgive any flagged pixel whose colour
- * exists within AA_RADIUS in the other image, which is what edge anti-aliasing and a
- * sub-pixel text shift look like. A moved block, a missing image or a wrong colour has no
- * such neighbour and survives.
- */
-function compare(aPng, bPng) {
-  const w = Math.max(aPng.width, bPng.width);
-  const h = Math.max(aPng.height, bPng.height);
-  const A = pad(aPng, w, h);
-  const B = pad(bPng, w, h);
-  const mask = new PNG({ width: w, height: h });
-  const rawDiff = pixelmatch(A.data, B.data, mask.data, w, h, {
-    threshold: 0.1,
-    includeAA: false,
-    diffMask: true,
-  });
-
-  const at = (data, x, y) => {
-    const i = (y * w + x) << 2;
-    return [data[i], data[i + 1], data[i + 2]];
-  };
-  const close = (p, q) =>
-    Math.abs(p[0] - q[0]) <= AA_COLOR_TOL &&
-    Math.abs(p[1] - q[1]) <= AA_COLOR_TOL &&
-    Math.abs(p[2] - q[2]) <= AA_COLOR_TOL;
-
-  let real = 0;
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const i = (y * w + x) << 2;
-      if (mask.data[i + 3] === 0) continue;           // not flagged
-      const a = at(A.data, x, y);
-      const b = at(B.data, x, y);
-      let forgiven = false;
-      for (let dy = -AA_RADIUS; dy <= AA_RADIUS && !forgiven; dy++) {
-        for (let dx = -AA_RADIUS; dx <= AA_RADIUS && !forgiven; dx++) {
-          const nx = x + dx, ny = y + dy;
-          if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
-          if (close(a, at(B.data, nx, ny)) && close(b, at(A.data, nx, ny))) forgiven = true;
-        }
-      }
-      if (forgiven) {
-        mask.data[i] = 0; mask.data[i + 1] = 200; mask.data[i + 2] = 255; mask.data[i + 3] = 90;
-      } else {
-        real++;
-        mask.data[i] = 255; mask.data[i + 1] = 0; mask.data[i + 2] = 0; mask.data[i + 3] = 255;
-      }
-    }
-  }
-  return { w, h, rawDiff, real, pct: (real / (w * h)) * 100, mask };
-}
 
 async function main() {
   const { server, port } = await serve(ROOT);

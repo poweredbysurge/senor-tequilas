@@ -1,0 +1,442 @@
+{
+  "note": "Reference captures are generated, not committed. Regenerate with: node scripts/references.mjs",
+  "generatedAt": "2026-09-10T22:18:40.971Z",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "count": 60,
+  "totalBytes": 161858474,
+  "files": [
+    {
+      "file": "birria-tacos-1440.png",
+      "bytes": 3269809,
+      "width": 1440,
+      "height": 3183,
+      "sha256": "086d3ddd3efeacf3c908282b7656dbffe422b743341e11728ec3ef4a1adfe6ea"
+    },
+    {
+      "file": "birria-tacos-390.png",
+      "bytes": 1844137,
+      "width": 642,
+      "height": 4414,
+      "sha256": "f2a095430adaffde543057f861e8bdfe4acd83b7d36d8d5edd4efeb870ce3cfa"
+    },
+    {
+      "file": "birria-tacos-768.png",
+      "bytes": 2133418,
+      "width": 768,
+      "height": 3426,
+      "sha256": "0b4d7b17c1a4cb1d9de510d895d77fcfc9e099b1b730ef3680f6136e457f7c7e"
+    },
+    {
+      "file": "catering-1440.png",
+      "bytes": 4172591,
+      "width": 1440,
+      "height": 4878,
+      "sha256": "702316fe04d240a6525f62d669a3315bfdf2160be3e8a47bb221f95c85762b28"
+    },
+    {
+      "file": "catering-390.png",
+      "bytes": 1544867,
+      "width": 678,
+      "height": 6435,
+      "sha256": "388768b7820ec6357409c08ce0913fd6b8fcf81deef5bff9c8790aca53b9ab17"
+    },
+    {
+      "file": "catering-768.png",
+      "bytes": 2378001,
+      "width": 778,
+      "height": 5152,
+      "sha256": "41bd77406dcd4db465e4bac48b7b8e58feafb79914a4b5f9936572bc98799b24"
+    },
+    {
+      "file": "fajitas-molcajetes-1440.png",
+      "bytes": 3791072,
+      "width": 1440,
+      "height": 3599,
+      "sha256": "6a71ac0e07fa197ab952434b8664fbb10ba798532706265cf979bc8e8b37467a"
+    },
+    {
+      "file": "fajitas-molcajetes-390.png",
+      "bytes": 2398195,
+      "width": 642,
+      "height": 5542,
+      "sha256": "ddc8a8bbf50771f019a92cb08c8efdf37b380778896b2a0d469f0048bbe3e774"
+    },
+    {
+      "file": "fajitas-molcajetes-768.png",
+      "bytes": 2733083,
+      "width": 768,
+      "height": 3761,
+      "sha256": "2b57ddc7de34947bc3e46ee9df2f95a56f8157b764ead062d5bb1c667c5ea656"
+    },
+    {
+      "file": "happy-hour-1440.png",
+      "bytes": 2603069,
+      "width": 1440,
+      "height": 3225,
+      "sha256": "5cd179988019bee68f19cacfb15d435daceb3c72241ccfbc6b0d044307cc9728"
+    },
+    {
+      "file": "happy-hour-390.png",
+      "bytes": 1033349,
+      "width": 642,
+      "height": 3622,
+      "sha256": "04ef949064fb49429bdf3771e05e9b320d948651e29e6267c91309f19d7a915d"
+    },
+    {
+      "file": "happy-hour-768.png",
+      "bytes": 1346640,
+      "width": 768,
+      "height": 2833,
+      "sha256": "637b238bbd426f18d92bf9dccc09459a4e953d1d91d0724160451c345de1b8d0"
+    },
+    {
+      "file": "home-1440.png",
+      "bytes": 6314644,
+      "width": 1440,
+      "height": 6128,
+      "sha256": "4cf9323cbff6d11924566f30c34f91297217ec1dd05cab5399a5051ef566ba57"
+    },
+    {
+      "file": "home-390.png",
+      "bytes": 2487857,
+      "width": 711,
+      "height": 7356,
+      "sha256": "d628fbc5662d723cf54f7610b10d426480acf91028afe9506173c3aefe85b9d5"
+    },
+    {
+      "file": "home-768.png",
+      "bytes": 3433548,
+      "width": 768,
+      "height": 5648,
+      "sha256": "2dc4f0edba7d2204cea996a7d1727bd12f28693c2fc9a18fe1ad9bff06137ea2"
+    },
+    {
+      "file": "karaoke-1440.png",
+      "bytes": 2697418,
+      "width": 1440,
+      "height": 2368,
+      "sha256": "273f82a5e89a17aec386213deae0c23ee3fd89836574aacfe073049cefa7a852"
+    },
+    {
+      "file": "karaoke-390.png",
+      "bytes": 2090616,
+      "width": 642,
+      "height": 4466,
+      "sha256": "9d43431368ed470645f6fa4e2319402a6d1ee27f2a65bee4096549888d07837c"
+    },
+    {
+      "file": "karaoke-768.png",
+      "bytes": 1836799,
+      "width": 768,
+      "height": 2694,
+      "sha256": "a4568588f0b0957510d467c82a430f835c802e899f6951c61b9cc2376f0099d5"
+    },
+    {
+      "file": "la-dulceria-1440.png",
+      "bytes": 3432940,
+      "width": 1440,
+      "height": 3624,
+      "sha256": "5bcc4bf1aee24e14f740761e1b52737333a10b5ecbd647a20c8c638259c0ae43"
+    },
+    {
+      "file": "la-dulceria-390.png",
+      "bytes": 2070136,
+      "width": 642,
+      "height": 5726,
+      "sha256": "8378bb7fec3a5a2611569ad912ba9d571db662db59096f3270532a5b7d42bf8c"
+    },
+    {
+      "file": "la-dulceria-768.png",
+      "bytes": 2369021,
+      "width": 768,
+      "height": 4132,
+      "sha256": "fd51338253111eb87ddb94b525c0ee864d2fea40fb3844a4f8847d957cce7d42"
+    },
+    {
+      "file": "late-night-1440.png",
+      "bytes": 3046636,
+      "width": 1440,
+      "height": 2983,
+      "sha256": "7999b2df41de1a414f99fbaa847cc7ad6d6a1957b710c87e3e229c70ea66ebc9"
+    },
+    {
+      "file": "late-night-390.png",
+      "bytes": 1087297,
+      "width": 642,
+      "height": 2850,
+      "sha256": "9f4ce43e2830bb9ae9d9c99cfb5e70366607aeabe1a41f5522d875867fce20cc"
+    },
+    {
+      "file": "late-night-768.png",
+      "bytes": 2241395,
+      "width": 768,
+      "height": 3297,
+      "sha256": "7947d62c9b54dc97a0f57a9e8c506e230c12dfa0ef0499c9bae5aba710a07db1"
+    },
+    {
+      "file": "margaritas-1440.png",
+      "bytes": 2386766,
+      "width": 1440,
+      "height": 2885,
+      "sha256": "0053d823b822e21d399218f38d260d70cba2d6e1b57d469d51359e185102132a"
+    },
+    {
+      "file": "margaritas-390.png",
+      "bytes": 1101816,
+      "width": 642,
+      "height": 4439,
+      "sha256": "361128b6d377173a1230e371be22c6fc5a4ff9789224eb5cca595d7d96536098"
+    },
+    {
+      "file": "margaritas-768.png",
+      "bytes": 1313317,
+      "width": 768,
+      "height": 2812,
+      "sha256": "bdaa0da1d64f680e1594583465157d4d3d7c84e08bfe3ab55817c94274bcbc02"
+    },
+    {
+      "file": "menu-1440.png",
+      "bytes": 4316736,
+      "width": 1440,
+      "height": 11087,
+      "sha256": "77bdcb6c650ff363173784c8b7d480445cc18ae725ecad72927bb3bd00b4324a"
+    },
+    {
+      "file": "menu-390.png",
+      "bytes": 3133478,
+      "width": 642,
+      "height": 21519,
+      "sha256": "ba278d5d9bd40d4784be431ba1e251cda6abdc12b72921f6d0af4d857afd82fe"
+    },
+    {
+      "file": "menu-768.png",
+      "bytes": 3138156,
+      "width": 768,
+      "height": 13245,
+      "sha256": "08ced44fc9ecf25685dd4445ae2173c546d2636bb3d55420fb1fb7a9ca395e23"
+    },
+    {
+      "file": "mexican-restaurant-gaithersburg-md-1440.png",
+      "bytes": 2198685,
+      "width": 1440,
+      "height": 2614,
+      "sha256": "24268352fa895398aaee8de9f4d743aab2643cca1452614ad5189e189c76c28a"
+    },
+    {
+      "file": "mexican-restaurant-gaithersburg-md-390.png",
+      "bytes": 1571546,
+      "width": 642,
+      "height": 4126,
+      "sha256": "f0b5206d4feec61b6ccf1156bcbc0fad06a95b7d762bb9070ed288d95c5abd4b"
+    },
+    {
+      "file": "mexican-restaurant-gaithersburg-md-768.png",
+      "bytes": 1669420,
+      "width": 768,
+      "height": 2665,
+      "sha256": "a4428bcb6ca3bff312d2c9f47ffce486555000beed4701091ccaa4155a7f0b46"
+    },
+    {
+      "file": "our-story-1440.png",
+      "bytes": 3746285,
+      "width": 1440,
+      "height": 4702,
+      "sha256": "539e88ebe3f522b771c10f7bedf735719227fd8327c14bc64f2f588d192d9ef4"
+    },
+    {
+      "file": "our-story-390.png",
+      "bytes": 1711330,
+      "width": 642,
+      "height": 4869,
+      "sha256": "e351047ccb6d57e3f71a0663db614bced124b6da44fb418728688fea4be5c33e"
+    },
+    {
+      "file": "our-story-768.png",
+      "bytes": 2217367,
+      "width": 768,
+      "height": 4424,
+      "sha256": "8cb40e72e8547da972ec7c015ea3be648f3ff05ad08349b8cf0031d455d5ee51"
+    },
+    {
+      "file": "private-parties-1440.png",
+      "bytes": 9367722,
+      "width": 1440,
+      "height": 11346,
+      "sha256": "72e44c07412b6d8df3d12aed78e82f24a920ebe62c7541c4999be277276139ce"
+    },
+    {
+      "file": "private-parties-390.png",
+      "bytes": 4126815,
+      "width": 679,
+      "height": 13666,
+      "sha256": "f70fa9d1f0e61bb5fb750e48a1271a88ec938107d01d94ebdcde00df9e9cc122"
+    },
+    {
+      "file": "private-parties-768.png",
+      "bytes": 6567613,
+      "width": 779,
+      "height": 13925,
+      "sha256": "d03d023a9a89a28a6401683858e3633b4f785a7c36e4ec6ea157aa0436f977d3"
+    },
+    {
+      "file": "private-parties-quinceaneras-celebrations-1440.png",
+      "bytes": 4062656,
+      "width": 1440,
+      "height": 4922,
+      "sha256": "b2b7ebcb16e68678eb1e3d5e9b571ba690190ebcd36af5d417854716f2a9e745"
+    },
+    {
+      "file": "private-parties-quinceaneras-celebrations-390.png",
+      "bytes": 1595333,
+      "width": 679,
+      "height": 6979,
+      "sha256": "f6b5e28b4175bfe0ad6cb220ab60e81d1feb4bb20ad59dcfe0f762d6412ba086"
+    },
+    {
+      "file": "private-parties-quinceaneras-celebrations-768.png",
+      "bytes": 2368019,
+      "width": 779,
+      "height": 5573,
+      "sha256": "cce20ab94b382d4e97735307a8a248a916b0257d97806d0f407a974f5128dd02"
+    },
+    {
+      "file": "private-parties-weddings-receptions-1440.png",
+      "bytes": 4244475,
+      "width": 1440,
+      "height": 5010,
+      "sha256": "fdf22dcdb42b0d9d52a3c5f379e425d33e5841104ba69573348961cbd08d3699"
+    },
+    {
+      "file": "private-parties-weddings-receptions-390.png",
+      "bytes": 1619607,
+      "width": 679,
+      "height": 6849,
+      "sha256": "ed48f0349b36a47adba210172ca61d555b41df330c99776dfc22cf66f7f24bc6"
+    },
+    {
+      "file": "private-parties-weddings-receptions-768.png",
+      "bytes": 2374409,
+      "width": 779,
+      "height": 5460,
+      "sha256": "8cfbd94e2ec09d5f35ae4028c8ebfc0b67bac7f52397fa6e5cf8972893f5fa95"
+    },
+    {
+      "file": "quesabirria-tacos-1440.png",
+      "bytes": 3411951,
+      "width": 1440,
+      "height": 3241,
+      "sha256": "42ef4867618b7b04d8dc9c6fca392d6e874b20b74a0f7c2998c92f5dbd5813ad"
+    },
+    {
+      "file": "quesabirria-tacos-390.png",
+      "bytes": 1836592,
+      "width": 642,
+      "height": 4445,
+      "sha256": "72d71ca1037fd70b0dcbd3ddf4ad662125c2580302007490077434fe79e22341"
+    },
+    {
+      "file": "quesabirria-tacos-768.png",
+      "bytes": 2232814,
+      "width": 768,
+      "height": 3505,
+      "sha256": "3fc1dc08faf031a2fbc7ebc5821d6637a12c05853733ee6587559a9a16f36593"
+    },
+    {
+      "file": "street-tacos-1440.png",
+      "bytes": 3698188,
+      "width": 1440,
+      "height": 3476,
+      "sha256": "17c2416c980a6ad340c8b92ee940504bc9bf76e2eda3996986fbd51595a14cb1"
+    },
+    {
+      "file": "street-tacos-390.png",
+      "bytes": 2413151,
+      "width": 642,
+      "height": 5461,
+      "sha256": "ba10c292a655d6d624f1a6ad7fe57546a925821d8d1d26ef79d79c42407c2193"
+    },
+    {
+      "file": "street-tacos-768.png",
+      "bytes": 2743070,
+      "width": 768,
+      "height": 3748,
+      "sha256": "d17f2467fd63878d30326a253ed892ddbc64db244d7ab1e28c6349936d6bc608"
+    },
+    {
+      "file": "taco-tuesday-1440.png",
+      "bytes": 3339287,
+      "width": 1440,
+      "height": 2632,
+      "sha256": "243eaeb3f32bf4a298cf99a14562e410ce172671438430955354097eed0f899b"
+    },
+    {
+      "file": "taco-tuesday-390.png",
+      "bytes": 1112287,
+      "width": 642,
+      "height": 2912,
+      "sha256": "cdc92ce132caf4f13ae3360fdeb897e721a0f9bdf1595bb1928ca9a6385bb344"
+    },
+    {
+      "file": "taco-tuesday-768.png",
+      "bytes": 1758046,
+      "width": 768,
+      "height": 2407,
+      "sha256": "a37be85ed5d53fe5bbf8460ebab95361ac58ef676b6f2f75b2d6d9731964d5ad"
+    },
+    {
+      "file": "takeout-delivery-1440.png",
+      "bytes": 2544168,
+      "width": 1440,
+      "height": 3092,
+      "sha256": "2fa08015cfb3a406ab2f69a4d09f765955197ff9fb4fe871d6b99ff2f882e99d"
+    },
+    {
+      "file": "takeout-delivery-390.png",
+      "bytes": 2649262,
+      "width": 642,
+      "height": 6460,
+      "sha256": "9c78ad88572d588d0fe6fb1c4d31f2e28e6b6171cf58a91d27a801f47b0e2d5e"
+    },
+    {
+      "file": "takeout-delivery-768.png",
+      "bytes": 2078897,
+      "width": 768,
+      "height": 3475,
+      "sha256": "c46fdf6d39a7037f6cc3399f0886e6e7ddfb4ec1218c81f1b6e3b9c511bc9f15"
+    },
+    {
+      "file": "tequila-bar-1440.png",
+      "bytes": 2261916,
+      "width": 1440,
+      "height": 3393,
+      "sha256": "7604c21725922d6b21f34b33db79781a51ab67faff6abc1933476dde496f7fd5"
+    },
+    {
+      "file": "tequila-bar-390.png",
+      "bytes": 1033538,
+      "width": 642,
+      "height": 3858,
+      "sha256": "6d24fd8d714f27f070d99d6e192f9f0c645d1e48d591001a0fb2dbb411105d1e"
+    },
+    {
+      "file": "tequila-bar-768.png",
+      "bytes": 1557218,
+      "width": 768,
+      "height": 3348,
+      "sha256": "f29a7a9e8fa56d01b662b7d60f474199725328f456e26012d02d8074b626d089"
+    }
+  ]
+}
