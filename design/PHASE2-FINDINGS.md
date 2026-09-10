@@ -93,3 +93,71 @@ forgiveness. `scripts/gate-a.mjs` now imports the one shared implementation from
 
 **Gate A was not affected.** All 20 pages matched dimensionally there, so no padding ever
 existed. Gate A re-run after the fix returns identical numbers, karaoke still 0.631%.
+
+---
+
+# Navigation finding: no page-to-page link exists anywhere in the design
+
+Checked before implementing the mobile menu, and it changes the shape of that problem.
+
+## The header nav is placeholder on every page
+
+| pages | label | href |
+|---|---|---|
+| 19 | Menu, Takeout, Tonight, Private Events, Our Story | `#` |
+| 1 (home) | Menu, Tonight, Happy Hour, Private Events, Our Story | `#menu`, `#tonight`, `#happy`, `#events`, `#story` |
+
+Nineteen pages point their entire nav at a bare `#`, which is not even an in-page anchor.
+It goes nowhere. The homepage points at in-page anchors, which work on the homepage and
+nowhere else. The logo links to `#` on all 20 pages.
+
+**Not one internal link in any header points at a real page path, at any viewport width.**
+This is not a mobile bug. Hiding the desktop nav below 768 would have removed a navigation
+that never functioned in the first place.
+
+## Full link inventory, all 20 pages
+
+721 `<a href>` in total:
+
+| count | kind | state |
+|---|---|---|
+| 349 | bare `#` placeholder | goes nowhere |
+| 239 | external | **working** |
+| 73 | in-page anchor | 52 resolve, 21 point at an id that does not exist on that page |
+| 60 | `tel:` | **working**, all 60 are already `tel:3015694574` |
+| **0** | **real internal path** | |
+
+External links are healthy and already correct: 61 to `order.toasttab.com`, 58 to
+`tables.toasttab.com`, 56 Instagram, 39 Facebook, 24 Google Maps.
+
+## The 349 placeholders, by how hard they are to resolve
+
+| count | labels | resolvable from the path table? |
+|---|---|---|
+| 247 | Menu 57, Takeout 57, Private Events 57, Tonight 38, Our Story 38 | Yes, mechanical. This is the header nav repeated. |
+| 20 | the logo, no text | Yes, `/` |
+| 40 | Google 20, Yelp 20 | **No. Needs the client.** Neither URL appears anywhere in the design. |
+| ~42 | Full menu, See the Bar, Our Story, Happy Hour Menu, dish and day cards | Mostly yes by label, a handful ambiguous |
+
+## 21 broken in-page anchors are really cross-page links
+
+These were authored as if the site were one page, then split into twenty:
+
+- `birria-tacos -> #menu` and `#takeout`, meaning `/menu` and `/takeout-delivery`
+- `catering -> #quinceaneras`, `#weddings`, `#events-hub`
+- `private-parties-quinceaneras-celebrations -> #weddings`, `#catering`, `#events-hub`
+- and 13 more of the same shape
+
+Each has an obvious destination in the path table. They are broken only because the anchor
+they name lives on a different page now.
+
+## Relation to the plan
+
+Phase 3 step 5 already says to wire "internal navigation to the paths in the table", so
+wiring is expected work, not a surprise. What is larger than the plan assumed:
+
+1. The volume. 349 placeholders plus 21 cross-page anchors, not a handful.
+2. The Google and Yelp review links, 40 of them, have no destination anywhere in the design
+   or the brief. Those need the client.
+3. The mobile menu decision now sits on top of this rather than beside it: its eight links
+   were going to be the first real internal paths on the site.
