@@ -85,25 +85,36 @@ const BODY = [
   ['Six-Hour Birria',          '/birria-tacos', 'proposed', 'card text mentions both birria and quesabirria; leads with Birria'],
 
   // genuinely ambiguous
-  ['See the Bar →',            '/tequila-bar', 'proposed', 'sits in the "Pair it" section next to a cocktail. Could be /tequila-bar or /margaritas.'],
+  // Label and context disagree; follow the label. The visitor reads "the Bar" and
+  // /tequila-bar is the only page called that. The mismatch is logged as upstream copy debt.
+  ['See the Bar →',            '/tequila-bar', 'proposed', 'approved: follow the label, not the surrounding cantarito copy. Upstream fix is a copy change, see DESIGN-DEBT.md'],
 
   // happy hour weekly rhythm: five day cards, only two name a page that exists
   ['Mon2-for-1 margaritas',    '/margaritas', 'mechanical', 'names the margaritas offer'],
   ['ThuKaraoke with DJ Willy', '/karaoke', 'mechanical', 'names the karaoke page'],
   ['TueFree bingo',            '/taco-tuesday', 'proposed', 'no bingo page; /taco-tuesday owns the weekly calendar'],
   ['WedFree lotería',          '/taco-tuesday', 'proposed', 'no lotería page; /taco-tuesday owns the weekly calendar'],
-  ['FriLive DJ',               '/taco-tuesday', 'proposed', 'no live-DJ page; /taco-tuesday owns the weekly calendar'],
+  ['FriLive DJ',               '/late-night', 'proposed', 'approved: /late-night owns Friday and Saturday nights, its copy is the DJ and the room to 1 AM'],
 
   // homepage Tonight carousel: day posters plus the lineup link
-  ['Full lineup →',            '/taco-tuesday', 'proposed', 'carousel lineup link; /taco-tuesday owns the seven-night calendar'],
-  ['Tonight Poster',           '/taco-tuesday', 'proposed', 'day poster in the Tonight carousel'],
-  ['Poster ·',                 '/taco-tuesday', 'proposed', 'day poster in the Tonight carousel'],
+  // Each night points at the page that owns it, the same logic as the happy hour row.
+  // Sunday has no page of its own: the mariachi page was dropped from the sitemap early,
+  // recorded in design/brief/sitemap-promised-vs-designed.md.
+  ['Tonight Poster · Thursdays', '/karaoke', 'proposed', 'approved: Thursday is karaoke'],
+  ['Poster · Mondays',         '/margaritas', 'proposed', 'approved: Monday is 2-for-1 margaritas'],
+  ['Poster · Tuesdays',        '/taco-tuesday', 'proposed', 'approved: no bingo page, the weekly calendar owns it'],
+  ['Poster · Wednesdays',      '/taco-tuesday', 'proposed', 'approved: no loteria page, the weekly calendar owns it'],
+  ['Poster · Thursdays',       '/karaoke', 'proposed', 'approved: Thursday is karaoke'],
+  ['Poster · Fridays',         '/late-night', 'proposed', 'approved: /late-night owns Friday'],
+  ['Poster · Saturdays',       '/late-night', 'proposed', 'approved: /late-night owns Saturday'],
+  ['Poster · Sundays',         '/taco-tuesday', 'proposed', 'approved: mariachi page was dropped from the sitemap, the weekly calendar is the right home'],
+  ['Full lineup →',            '/taco-tuesday', 'proposed', 'approved: the carousel lineup link, /taco-tuesday owns the seven-night calendar'],
   ['Private eventsFour Private Rooms', '/private-parties', 'mechanical', 'card names the page'],
 
   // third-party delivery, no URL anywhere in the design or the brief
-  ['DoorDash',                 null, 'unresolved', 'no DoorDash storefront URL in the design or the brief'],
-  ['Uber Eats',                null, 'unresolved', 'no Uber Eats storefront URL in the design or the brief'],
-  ['Grubhub',                  null, 'unresolved', 'no Grubhub storefront URL in the design or the brief'],
+  ['DoorDash',                 null, 'unresolved', 'no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has'],
+  ['Uber Eats',                null, 'unresolved', 'three separate live storefronts exist for this restaurant, so any single choice is a coin flip. See DESIGN-DEBT.md'],
+  ['Grubhub',                  null, 'unresolved', 'no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has'],
 ];
 
 const clean = (s) => (s || '').replace(/\s+/g, ' ').trim();
@@ -191,6 +202,7 @@ async function main() {
 
   const counts = rows.reduce((a, r) => ({ ...a, [r.confidence]: (a[r.confidence] ?? 0) + 1 }), {});
   await writeFile(path.join(ROOT, 'design', 'LINK-MAP.json'), JSON.stringify({
+    reviewed: 'Reviewed and approved 2026-09-10. Every row except the three unresolved delivery links is signed off. `confidence` records how a destination was determined, not whether it was approved: mechanical means derived from the path table or the migration kit, proposed means a judgment call a human settled.',
     note: 'Every link whose destination changes. design/pages/ is never edited; this is applied in Phase 3 when markup moves into src/pages/. Rewriting an href changes no pixels, so the reference set is unaffected.',
     generatedAt: new Date().toISOString(),
     googlePlaceId: PLACE_ID,

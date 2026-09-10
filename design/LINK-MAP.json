@@ -1,6 +1,7 @@
 {
+  "reviewed": "Reviewed and approved 2026-09-10. Every row except the three unresolved delivery links is signed off. `confidence` records how a destination was determined, not whether it was approved: mechanical means derived from the path table or the migration kit, proposed means a judgment call a human settled.",
   "note": "Every link whose destination changes. design/pages/ is never edited; this is applied in Phase 3 when markup moves into src/pages/. Rewriting an href changes no pixels, so the reference set is unaffected.",
-  "generatedAt": "2026-09-10T22:57:52.184Z",
+  "generatedAt": "2026-09-10T23:08:51.570Z",
   "googlePlaceId": "ChIJfQWUP2wstokR0hf-aq2yO5Y",
   "counts": {
     "mechanical": 330,
@@ -85,7 +86,7 @@
       "from": "#menu",
       "to": "/taco-tuesday",
       "confidence": "proposed",
-      "why": "carousel lineup link; /taco-tuesday owns the seven-night calendar"
+      "why": "approved: the carousel lineup link, /taco-tuesday owns the seven-night calendar"
     },
     {
       "page": "home",
@@ -94,9 +95,9 @@
       "label": "Tonight Poster · Thursdays Thursdays · 7:30 to midnight Karaoke Karaoke in the bar area, hosted by DJ Willy. NFL on.",
       "section": "Tonight carousel",
       "from": "#menu",
-      "to": "/taco-tuesday",
+      "to": "/karaoke",
       "confidence": "proposed",
-      "why": "day poster in the Tonight carousel"
+      "why": "approved: Thursday is karaoke"
     },
     {
       "page": "home",
@@ -105,9 +106,9 @@
       "label": "Poster · Fridays Fridays · 9 PM to 1 AM Live DJ Live DJ in the bar area. 21 and over in the bar area after 9.",
       "section": "Tonight carousel",
       "from": "#menu",
-      "to": "/taco-tuesday",
+      "to": "/late-night",
       "confidence": "proposed",
-      "why": "day poster in the Tonight carousel"
+      "why": "approved: /late-night owns Friday"
     },
     {
       "page": "home",
@@ -116,9 +117,9 @@
       "label": "Poster · Saturdays Saturdays · 9 PM to 1 AM Live DJ Live DJ in the bar area. College football on. 21 and over in the bar area after 9.",
       "section": "Tonight carousel",
       "from": "#menu",
-      "to": "/taco-tuesday",
+      "to": "/late-night",
       "confidence": "proposed",
-      "why": "day poster in the Tonight carousel"
+      "why": "approved: /late-night owns Saturday"
     },
     {
       "page": "home",
@@ -129,7 +130,7 @@
       "from": "#menu",
       "to": "/taco-tuesday",
       "confidence": "proposed",
-      "why": "day poster in the Tonight carousel"
+      "why": "approved: mariachi page was dropped from the sitemap, the weekly calendar is the right home"
     },
     {
       "page": "home",
@@ -138,9 +139,9 @@
       "label": "Poster · Mondays Mondays · All night 2-for-1 Margaritas On the rocks, in lime, strawberry or mango. Any size: 14 oz, 18 oz, or the 54 oz Big Mami. Rim it with chamoy and tajín, salt, or sugar.",
       "section": "Tonight carousel",
       "from": "#menu",
-      "to": "/taco-tuesday",
+      "to": "/margaritas",
       "confidence": "proposed",
-      "why": "day poster in the Tonight carousel"
+      "why": "approved: Monday is 2-for-1 margaritas"
     },
     {
       "page": "home",
@@ -151,7 +152,7 @@
       "from": "#menu",
       "to": "/taco-tuesday",
       "confidence": "proposed",
-      "why": "day poster in the Tonight carousel"
+      "why": "approved: no bingo page, the weekly calendar owns it"
     },
     {
       "page": "home",
@@ -162,7 +163,7 @@
       "from": "#menu",
       "to": "/taco-tuesday",
       "confidence": "proposed",
-      "why": "day poster in the Tonight carousel"
+      "why": "approved: no loteria page, the weekly calendar owns it"
     },
     {
       "page": "home",
@@ -745,7 +746,7 @@
       "from": "#",
       "to": null,
       "confidence": "unresolved",
-      "why": "no DoorDash storefront URL in the design or the brief"
+      "why": "no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has"
     },
     {
       "page": "takeout-delivery",
@@ -756,7 +757,7 @@
       "from": "#",
       "to": null,
       "confidence": "unresolved",
-      "why": "no Uber Eats storefront URL in the design or the brief"
+      "why": "three separate live storefronts exist for this restaurant, so any single choice is a coin flip. See DESIGN-DEBT.md"
     },
     {
       "page": "takeout-delivery",
@@ -767,7 +768,7 @@
       "from": "#",
       "to": null,
       "confidence": "unresolved",
-      "why": "no Grubhub storefront URL in the design or the brief"
+      "why": "no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has"
     },
     {
       "page": "takeout-delivery",
@@ -976,7 +977,7 @@
       "from": "#",
       "to": "/tequila-bar",
       "confidence": "proposed",
-      "why": "sits in the \"Pair it\" section next to a cocktail. Could be /tequila-bar or /margaritas."
+      "why": "approved: follow the label, not the surrounding cantarito copy. Upstream fix is a copy change, see DESIGN-DEBT.md"
     },
     {
       "page": "birria-tacos",
@@ -1229,7 +1230,7 @@
       "from": "#",
       "to": "/tequila-bar",
       "confidence": "proposed",
-      "why": "sits in the \"Pair it\" section next to a cocktail. Could be /tequila-bar or /margaritas."
+      "why": "approved: follow the label, not the surrounding cantarito copy. Upstream fix is a copy change, see DESIGN-DEBT.md"
     },
     {
       "page": "quesabirria-tacos",
@@ -1482,7 +1483,7 @@
       "from": "#",
       "to": "/tequila-bar",
       "confidence": "proposed",
-      "why": "sits in the \"Pair it\" section next to a cocktail. Could be /tequila-bar or /margaritas."
+      "why": "approved: follow the label, not the surrounding cantarito copy. Upstream fix is a copy change, see DESIGN-DEBT.md"
     },
     {
       "page": "street-tacos",
@@ -1735,7 +1736,7 @@
       "from": "#",
       "to": "/tequila-bar",
       "confidence": "proposed",
-      "why": "sits in the \"Pair it\" section next to a cocktail. Could be /tequila-bar or /margaritas."
+      "why": "approved: follow the label, not the surrounding cantarito copy. Upstream fix is a copy change, see DESIGN-DEBT.md"
     },
     {
       "page": "fajitas-molcajetes",
@@ -3416,9 +3417,9 @@
       "label": "FriLive DJ9 PM to 1 AM, 21+ in the bar",
       "section": "Weekly rhythm",
       "from": "#",
-      "to": "/taco-tuesday",
+      "to": "/late-night",
       "confidence": "proposed",
-      "why": "no live-DJ page; /taco-tuesday owns the weekly calendar"
+      "why": "approved: /late-night owns Friday and Saturday nights, its copy is the DJ and the room to 1 AM"
     },
     {
       "page": "happy-hour",

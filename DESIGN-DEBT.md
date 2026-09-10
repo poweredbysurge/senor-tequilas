@@ -7,7 +7,7 @@ Every deliberate deviation lives in a small explicit overlay beside it:
 
 | overlay piece | what it carries | status |
 |---|---|---|
-| `design/LINK-MAP.json` | every link whose destination changes | built, awaiting review |
+| `design/LINK-MAP.json` | every link whose destination changes | **reviewed and approved 2026-09-10** |
 | a `max-width: 767px` CSS block | the mobile nav rule | not written yet |
 | a mobile menu component | the panel and its toggle | not written yet |
 
@@ -17,7 +17,32 @@ and the remaining WordPress image sweep all still run through Claude Design.
 
 ---
 
-## 1. The header nav points at nothing, on all twenty pages
+## 1. Forty-eight links depend on `/taco-tuesday`, and that page is not confirmed
+
+**Read this before anyone answers the Taco Tuesday question casually.**
+
+Under `design/LINK-MAP.json`, 48 links point at `/taco-tuesday`:
+
+| count | where |
+|---|---|
+| 20 | header nav "Tonight", one per page |
+| 20 | footer nav "Tonight", one per page |
+| 4 | homepage Tonight carousel: Tuesday, Wednesday, Sunday, and Full lineup |
+| 2 | `/happy-hour` weekly rhythm: Tuesday and Wednesday |
+| 2 | "Taco Tuesday" cards on `/quesabirria-tacos` and `/mexican-restaurant-gaithersburg-md` |
+
+That page's existence is still an open client question. Roberto never answered Q3, and one of
+the three options put to him was to drop the page entirely and replace it with something
+else. **If he picks that option, 48 links break at once, including the entire site's Tonight
+navigation on all twenty pages.**
+
+Nothing is blocked today. But the Taco Tuesday decision is no longer about one page's
+content, and that needs to be visible before it is answered.
+
+If the page is dropped, whatever replaces it should inherit the `/taco-tuesday` path, or this
+map needs 48 rows re-pointed in the same pass.
+
+## 2. The header nav points at nothing, on all twenty pages
 
 **The single most important thing for the next Claude Design pass to know.**
 
@@ -42,7 +67,7 @@ linking rules in `design/brief/seo-migration-kit-and-page-spec.md`, not from gue
 **Upstream fix:** give nav items real destinations in the design, or accept that navigation
 lives in code and expect this map to be re-applied after every export.
 
-## 2. "Tonight" has no page
+## 3. "Tonight" has no page
 
 The nav item labelled "Tonight" appears on all 20 pages, 40 links counting the footer, and
 there is no `/tonight` page among the twenty. It is mapped to `/taco-tuesday`, which owns the
@@ -51,13 +76,30 @@ is the weekly specials page, so the label and the destination do not quite agree
 
 **Open with the client.** Either rename the item, or add the page.
 
-## 3. Third-party delivery links have no destinations
+## 4. Third-party delivery: three duplicate Uber Eats storefronts
 
 `/takeout-delivery` has DoorDash, Uber Eats and Grubhub controls, all `#`. No storefront URL
-for any of them appears in the design or anywhere in the brief. Left `unresolved` in the map
-rather than guessed.
+for any of them appears in the design or anywhere in the brief.
 
-## 4. Google and Yelp were not in the design
+Looking for them turned up an operations problem, not just a missing link. **Uber Eats has
+three separate live listings for this one restaurant:**
+
+```
+ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA
+ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA
+ubereats.com/store/senor-tequilas-germantown/tarNDBP5WHSdvl9d6DAg6Q
+```
+
+Picking one would have been a coin flip with two-in-three odds of pointing customers at a
+stale listing. Duplicate storefronts also split orders and reviews across listings, which is
+worth cleaning up regardless of the website.
+
+**DoorDash and Grubhub have not been checked for the same problem.**
+
+All three controls stay in the markup with `unresolved` rows in the map. They are left inert
+rather than removed: the design drew them deliberately and removing them is a design change.
+
+## 5. Google and Yelp were not in the design
 
 Both footer controls were `#`. Resolved outside the design:
 
@@ -70,7 +112,7 @@ Note for anyone editing these later: `facebook.com/senortequilasgermantown` turn
 search and is the **old, inactive** page. The design's `facebook.com/senortequilasDMV` is
 current and correct. Do not "fix" it.
 
-## 5. Mobile navigation depends on a runtime that cannot be exported
+## 6. Mobile navigation depends on a runtime that cannot be exported
 
 *Recorded now; the port fix is not built yet.*
 
@@ -108,8 +150,26 @@ means it works from any page instead of only from the homepage.
 **Upstream fix:** express the mobile header statically, or accept that navigation lives in
 code.
 
-## 6. The brief references a `/contact/` page that does not exist
+## 7. "See the Bar" promises one page and sits beside copy about another
+
+The four `See the Bar →` links on the dish pages sit inside a "Pair it" section whose copy is
+about a cantarito, a cocktail. The label says the bar.
+
+Resolved by following the label: `/tequila-bar` is the only page on the site literally called
+the bar, and sending someone to `/margaritas` when the link promised the bar is a small
+betrayal even if the cantarito lives there.
+
+**Upstream fix, a copy decision not a link decision:** either the label becomes "See the
+Drinks" and points at `/margaritas`, or the pairing changes to something tequila-forward.
+
+## 8. The brief references a `/contact/` page that does not exist
 
 `seo-migration-kit-and-page-spec.md` says "every page: link to `/contact/`". There is no
-contact page among the twenty and none was designed. Not actioned. Flagging it because the
-internal linking rules assume it.
+contact page among the twenty and none was designed.
+
+For a local SEO build this is a real gap rather than a broken link: a contact page is where
+NAP, hours, map, directions and parking live in a form Google reads easily, and it is a page
+people actively look for.
+
+**Not built.** Out of scope for a port and a design decision. To be raised as a
+twenty-first page in the next design pass.
