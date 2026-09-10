@@ -42,12 +42,29 @@ const CONTENT_TYPES = {
   '.woff2': 'font/woff2',
 };
 
-/** Static file server. Pages are served over http so blob and asset URLs behave normally. */
+/**
+ * Static file server. Pages are served over http so blob and asset URLs behave normally.
+ *
+ * `/images/...` is resolved against the overlay first and then the extracted pages, because
+ * that is the production path: Phase 3 serves every image from /images/. Without this the
+ * mobile panel's cards would 404 during verification even though they are correct.
+ */
 export function serve(dir) {
+  const IMAGE_ROOTS = [
+    path.join(dir, 'design', 'overlay', 'images'),
+    path.join(dir, 'design', 'pages', 'images'),
+  ];
   return new Promise((resolve) => {
     const server = createServer(async (req, res) => {
       const rel = decodeURIComponent(new URL(req.url, 'http://x').pathname).replace(/^\/+/, '');
-      const file = path.join(dir, rel);
+      let file = path.join(dir, rel);
+      if (rel.startsWith('images/')) {
+        const name = rel.slice('images/'.length);
+        for (const root of IMAGE_ROOTS) {
+          const candidate = path.join(root, name);
+          try { await readFile(candidate); file = candidate; break; } catch { /* try the next root */ }
+        }
+      }
       if (!file.startsWith(dir)) { res.statusCode = 403; return res.end(); }
       try {
         const buf = await readFile(file);
@@ -97,10 +114,15 @@ export async function resetScroll(page) {
   });
 }
 
-/** Load a URL at a viewport and photograph the whole document. */
-export async function capture(page, url, viewport) {
+/**
+ * Load a URL at a viewport and photograph the whole document.
+ * `prepare` runs after load and before settle, which is where the port overlay is applied
+ * so that verification renders exactly what the built site will render.
+ */
+export async function capture(page, url, viewport, prepare) {
   await page.setViewportSize(viewport);
   await page.goto(url, { waitUntil: 'load', timeout: 120000 });
+  if (prepare) await prepare(page);
   await settle(page);
   await resetScroll(page);
   await page.waitForTimeout(150);
