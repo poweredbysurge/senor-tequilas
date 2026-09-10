@@ -1,0 +1,233 @@
+{
+  "generatedAt": "2026-09-10T21:05:48.877Z",
+  "bundle": "design/export/master-board.standalone.html",
+  "counts": {
+    "artboards": 29,
+    "desktop": 20,
+    "mobile": 8,
+    "unclassified": 0,
+    "images": 51
+  },
+  "pages": [
+    {
+      "slug": "home",
+      "path": "/",
+      "h1": "From Mexico, With Love",
+      "sourceWidth": 1440,
+      "sourceHeight": 6144,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Homepage Concept - Modern Dark v2",
+      "c1p": false,
+      "mobileReference": "_mobile-reference/home.html"
+    },
+    {
+      "slug": "menu",
+      "path": "/menu",
+      "h1": "The Menu",
+      "sourceWidth": 1440,
+      "sourceHeight": 11108,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": "_mobile-reference/menu.html"
+    },
+    {
+      "slug": "our-story",
+      "path": "/our-story",
+      "h1": "We're Not a Chain. We're a Family.",
+      "sourceWidth": 1440,
+      "sourceHeight": 4831,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "takeout-delivery",
+      "path": "/takeout-delivery",
+      "h1": "Don't Do the Dishes",
+      "sourceWidth": 1440,
+      "sourceHeight": 3125,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": "_mobile-reference/takeout-delivery.html"
+    },
+    {
+      "slug": "birria-tacos",
+      "path": "/birria-tacos",
+      "h1": "Birria Tacos",
+      "sourceWidth": 1440,
+      "sourceHeight": 3277,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "quesabirria-tacos",
+      "path": "/quesabirria-tacos",
+      "h1": "Quesabirria Tacos",
+      "sourceWidth": 1440,
+      "sourceHeight": 3277,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": "_mobile-reference/quesabirria-tacos.html"
+    },
+    {
+      "slug": "street-tacos",
+      "path": "/street-tacos",
+      "h1": "Street Tacos",
+      "sourceWidth": 1440,
+      "sourceHeight": 3570,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "fajitas-molcajetes",
+      "path": "/fajitas-molcajetes",
+      "h1": "Fajitas & Molcajetes",
+      "sourceWidth": 1440,
+      "sourceHeight": 3615,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "la-dulceria",
+      "path": "/la-dulceria",
+      "h1": "La Dulcería",
+      "sourceWidth": 1440,
+      "sourceHeight": 3757,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "private-parties-quinceaneras-celebrations",
+      "path": "/private-parties/quinceaneras-celebrations",
+      "h1": "Quinceañeras, Without the Ballroom Price",
+      "sourceWidth": 1440,
+      "sourceHeight": 5059,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "private-parties-weddings-receptions",
+      "path": "/private-parties/weddings-receptions",
+      "h1": "Weddings, Showers, Receptions",
+      "sourceWidth": 1440,
+      "sourceHeight": 5147,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "catering",
+      "path": "/catering",
+      "h1": "Taco Catering",
+      "sourceWidth": 1440,
+      "sourceHeight": 5015,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": "_mobile-reference/catering.html"
+    },
+    {
+      "slug": "private-parties",
+      "path": "/private-parties",
+      "h1": "Private Rooms for 12 to 400",
+      "sourceWidth": 1440,
+      "sourceHeight": 11544,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": "_mobile-reference/private-parties.html"
+    },
+    {
+      "slug": "margaritas",
+      "path": "/margaritas",
+      "h1": "The Margaritas People Text Their Friends About",
+      "sourceWidth": 1440,
+      "sourceHeight": 2937,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "tequila-bar",
+      "path": "/tequila-bar",
+      "h1": "It's in the Name for a Reason",
+      "sourceWidth": 1440,
+      "sourceHeight": 3533,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "happy-hour",
+      "path": "/happy-hour",
+      "h1": "Happy Hour in Germantown",
+      "sourceWidth": 1440,
+      "sourceHeight": 3225,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": "_mobile-reference/happy-hour.html"
+    },
+    {
+      "slug": "late-night",
+      "path": "/late-night",
+      "h1": "Still Open. Still Cooking.",
+      "sourceWidth": 1440,
+      "sourceHeight": 3125,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": "_mobile-reference/late-night.html"
+    },
+    {
+      "slug": "karaoke",
+      "path": "/karaoke",
+      "h1": "Karaoke Every Thursday",
+      "sourceWidth": 1440,
+      "sourceHeight": 2453,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "taco-tuesday",
+      "path": "/taco-tuesday",
+      "h1": "Taco Tuesday",
+      "sourceWidth": 1440,
+      "sourceHeight": 2772,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    },
+    {
+      "slug": "mexican-restaurant-gaithersburg-md",
+      "path": "/mexican-restaurant-gaithersburg-md",
+      "h1": "Mexican Food Near Gaithersburg",
+      "sourceWidth": 1440,
+      "sourceHeight": 2614,
+      "surface": "rgb(18, 18, 16)",
+      "scName": "Concept 1 Pages",
+      "c1p": true,
+      "mobileReference": null
+    }
+  ]
+}

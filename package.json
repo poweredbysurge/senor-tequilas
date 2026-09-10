@@ -1,0 +1,24 @@
+{
+  "name": "senor-tequilas",
+  "version": "1.0.0",
+  "description": "Señor Tequila's, Claude Design port",
+  "scripts": {
+    "extract": "node scripts/extract.mjs",
+    "gate-a": "node scripts/gate-a.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poweredbysurge/senor-tequilas.git"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/poweredbysurge/senor-tequilas/issues"
+  },
+  "homepage": "https://github.com/poweredbysurge/senor-tequilas#readme",
+  "private": true,
+  "devDependencies": {
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0"
+  }
+}

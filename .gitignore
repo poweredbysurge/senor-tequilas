@@ -5,3 +5,7 @@ dist/
 .env
 .env.*
 *.log
+
+# Gate A screenshots regenerate from the bundle in minutes. Only the exception record is tracked.
+design/gate-a/*
+!design/gate-a/EXCEPTIONS.md
