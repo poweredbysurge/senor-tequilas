@@ -338,7 +338,10 @@ body[data-route="/private-parties/quinceaneras-celebrations"] [data-dc-tpl="420"
    1180px container and side padding, the same 12px radius as the gallery cards.
 
    The three stay side by side at every width. Stacking them would make a column roughly
-   1900px tall on a phone, and the brief was three next to one another. */
+   1900px tall on a phone, and the brief was three next to one another.
+
+   They carry sound and play on a click, so they show native controls and never start on
+   their own. There is no reduced-motion case to answer: nothing moves unasked. */
 .st-videostrip {
   background: rgb(18, 18, 16);
   padding: clamp(40px, 7vw, 88px) 0 0;
@@ -364,10 +367,6 @@ body[data-route="/private-parties/quinceaneras-celebrations"] [data-dc-tpl="420"
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-/* Someone who has asked for less motion gets a still frame and a play button instead. */
-@media (prefers-reduced-motion: reduce) {
-  .st-videostrip__item video { object-fit: contain; }
 }
 
 /* ---- 16. the catering intro video ------------------------------------------------------

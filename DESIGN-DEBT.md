@@ -590,12 +590,16 @@ Until then the card keeps the design's own treatment. No substitute image was fe
 
 Three clips sit above the intro block on `/private-parties/quinceaneras-celebrations` and
 `/private-parties/weddings-receptions`, and one in the intro on `/catering`. The design never
-drew these; they were requested directly on 11 September. Two decisions were made without
-asking and are cheap to reverse:
+drew these; they were requested directly on 11 September.
 
-- **Each clip is capped at 15 seconds.** The camera originals run 10 to 67 seconds. At full
-  length the testimony clip alone encoded to 9.8 MB and the dance floor to 29 MB, which is
-  not a page anyone would wait for. They loop, so the cut is not obvious.
+They carry sound and play on a click, never on their own, as instructed on 11 September.
+`preload="none"` means the browser fetches nothing until the visitor presses play, so the
+clips cost one poster image each until someone wants them. Starting one pauses any other
+that is playing, because three soundtracks at once is noise. Nothing moves unasked, so there
+is no reduced-motion behaviour to define.
+
+Two layout decisions were made without asking and are cheap to reverse:
+
 - **The strips stay three across at every width** rather than stacking on a phone. Stacked,
   three 9:16 clips make a column roughly 1900px tall.
 - The catering clip displays at 4/5 rather than its native 9:16, because a full height

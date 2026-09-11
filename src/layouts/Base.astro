@@ -637,14 +637,13 @@ const jsonLd = {
         ];
 
         /* ---- 15. the private event video strips -----------------------------------------------
-           Three vertical clips sit directly above the intro block on the two event pages. The
-           source footage is 4K HEVC shot on a phone, transcoded to 720x1280 H.264 with the audio
-           stripped, because these play muted and silent tracks are dead weight.
+           Three clips sit directly above the intro block on the two event pages. The source
+           footage is 4K phone video, transcoded to H.264 with its audio kept.
 
-           Nothing preloads. Each clip is given its src and told to play only once it is actually
-           near the viewport, so three videos above the fold do not cost three downloads on a page
-           a visitor may never scroll. Someone who has asked for reduced motion gets the poster
-           frame and a normal set of controls instead of anything moving on its own. */
+           These play on a click, with sound, and never on their own. That is also what makes them
+           cheap: preload="none" means the browser fetches nothing until the visitor presses play,
+           so three clips above the fold cost one poster image each. Because nothing moves without
+           being asked, there is no reduced-motion special case to make. */
         var VIDEO_STRIPS = {
           '/private-parties/quinceaneras-celebrations': [
             { file: 'quince-setup',       label: 'Staff setting up the private room before an event' },
@@ -658,6 +657,27 @@ const jsonLd = {
           ]
         };
 
+        function buildVideo(clip) {
+          var v = document.createElement('video');
+          v.setAttribute('src', '/videos/' + clip.file + '.mp4');
+          v.setAttribute('poster', '/videos/' + clip.file + '.jpg');
+          v.setAttribute('aria-label', clip.label);
+          v.setAttribute('preload', 'none');
+          v.setAttribute('playsinline', '');
+          v.setAttribute('controls', '');
+          return v;
+        }
+
+        /* One at a time. Three clips with sound playing over each other is noise, so starting one
+           pauses whichever was already running. */
+        function soloPlayback(videos) {
+          videos.forEach(function (v) {
+            v.addEventListener('play', function () {
+              videos.forEach(function (other) { if (other !== v && !other.paused) other.pause(); });
+            });
+          });
+        }
+
         function videoStrip() {
           var clips = VIDEO_STRIPS[document.body.getAttribute('data-route')];
           if (!clips) return;
@@ -666,59 +686,28 @@ const jsonLd = {
           var intro = document.querySelector('section[data-screen-label="Event intro"]');
           if (!intro || !intro.parentNode) return;
 
-          var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
           var strip = document.createElement('section');
           strip.className = 'st-videostrip';
           var inner = document.createElement('div');
           inner.className = 'st-videostrip__inner';
           strip.appendChild(inner);
 
-          var videos = [];
-          clips.forEach(function (clip) {
+          var videos = clips.map(function (clip) {
             var fig = document.createElement('figure');
             fig.className = 'st-videostrip__item';
-            var v = document.createElement('video');
-            v.setAttribute('poster', '/videos/' + clip.file + '.jpg');
-            v.setAttribute('aria-label', clip.label);
-            v.setAttribute('preload', 'none');
-            v.setAttribute('playsinline', '');
-            v.muted = true;
-            if (calm) {
-              v.setAttribute('controls', '');
-              v.setAttribute('src', '/videos/' + clip.file + '.mp4');
-            } else {
-              v.setAttribute('loop', '');
-              v.dataset.src = '/videos/' + clip.file + '.mp4';
-              videos.push(v);
-            }
+            var v = buildVideo(clip);
             fig.appendChild(v);
             inner.appendChild(fig);
+            return v;
           });
 
           intro.parentNode.insertBefore(strip, intro);
-
-          if (!videos.length) return;
-          var load = function (v) {
-            if (v.getAttribute('src')) return;
-            v.setAttribute('src', v.dataset.src);
-            var p = v.play();
-            if (p && p.catch) p.catch(function () { v.setAttribute('controls', ''); });
-          };
-          if (!('IntersectionObserver' in window)) { videos.forEach(load); return; }
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting) { load(e.target); io.unobserve(e.target); }
-            });
-          }, { rootMargin: '200px' });
-          videos.forEach(function (v) { io.observe(v); });
+          soloPlayback(videos);
         }
-
 
         /* ---- 16. the catering intro video -----------------------------------------------------
            Moves the intro heading down onto the body copy and gives the freed left column a video.
-           Same loading discipline as the strips above: nothing fetched until it is nearly on
-           screen, nothing moving for anyone who asked for reduced motion. */
+           Same behaviour as the strips: sound on, plays when asked, nothing fetched before that. */
         var INTRO_VIDEOS = {
           '/catering': { file: 'catering-buffet', label: 'A catering buffet being laid out to serve' }
         };
@@ -738,35 +727,10 @@ const jsonLd = {
           // the heading belongs with the copy it introduces
           copy.insertBefore(heading, copy.firstChild);
 
-          var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           var fig = document.createElement('figure');
           fig.className = 'st-introvideo';
-          var v = document.createElement('video');
-          v.setAttribute('poster', '/videos/' + clip.file + '.jpg');
-          v.setAttribute('aria-label', clip.label);
-          v.setAttribute('preload', 'none');
-          v.setAttribute('playsinline', '');
-          v.muted = true;
-          fig.appendChild(v);
+          fig.appendChild(buildVideo(clip));
           grid.insertBefore(fig, grid.firstChild);
-
-          if (calm) {
-            v.setAttribute('controls', '');
-            v.setAttribute('src', '/videos/' + clip.file + '.mp4');
-            return;
-          }
-          v.setAttribute('loop', '');
-          var load = function () {
-            if (v.getAttribute('src')) return;
-            v.setAttribute('src', '/videos/' + clip.file + '.mp4');
-            var p = v.play();
-            if (p && p.catch) p.catch(function () { v.setAttribute('controls', ''); });
-          };
-          if (!('IntersectionObserver' in window)) return load();
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) { if (e.isIntersecting) { load(); io.disconnect(); } });
-          }, { rootMargin: '200px' });
-          io.observe(v);
         }
 
         function swapImages() {
