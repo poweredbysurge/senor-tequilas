@@ -5,7 +5,7 @@
    would otherwise beat the user agent's [hidden] rule, so this has to be explicit. */
 #mobile-menu[hidden] { display: none !important; }
 
-@media (max-width: 899px) {
+@media (max-width: 959px) {
   /* The design never hides the desktop nav: it computes to display:flex at every width from
      360 to 1920, so both navigations render at once and every page scrolls sideways from 360
      up to between 653 and 724 depending on how many links that page's nav carries.
@@ -13,15 +13,19 @@
      There is exactly one <nav> per page and it is always inside the header, verified across
      all 20 pages, so this selector cannot reach anything else.
 
-     The breakpoint is 900, not 768. 768 only removes the scrollbar: measured across all 20
-     pages the events cluster does not stop overflowing until 780, so a rule at 767 would ship
-     the barely-fitting header on every portrait tablet, the one that wraps "PRIVATE EVENTS"
-     onto two lines and clips the hamburger. Portrait widths cluster at 768, 810, 820 and 834,
-     all of which would land in that squeezed band. At 900 there is roughly 100px of slack and
-     room for the nav to change without re-breaking.
+     The breakpoint is 960, and the number is measured on all 20 pages rather than sampled.
+     768 only removes the scrollbar: the four events pages keep overflowing until 780, and
+     keep wrapping "PRIVATE EVENTS" and "OUR STORY" onto two lines until 905. Anything below
+     905 ships a header that is non-overflowing but not composed, on every portrait tablet,
+     and portrait widths cluster at 768, 810, 820 and 834.
 
-     Not 1023: hiding the nav on iPad landscape is a bigger behavioural change than this bug
-     warrants, and 1024 is a desktop-like context where a full nav is expected.
+     960 is the smallest round number that is genuinely composed, with 55px past the wrap
+     point. Not 1023: hiding the nav at desktop-like widths is disproportionate to the bug,
+     and both numbers keep the nav on iPad landscape and give portrait tablets the hamburger,
+     so 1023 would only surrender the 960-to-1023 band for nothing.
+
+     If the margin is ever eaten, the failure mode is wrapping rather than overflow, which is
+     ugly rather than broken. See DESIGN-DEBT.md entry 6 for what drives the 905.
 
      The hamburger's visibility is deliberately untouched at every width. It is visible at
      1440 in the design, Gate A passed with it there, and that is a design decision to revisit

@@ -2,8 +2,10 @@
 /**
  * Phase 2: generate the reference set, then cross-check the designed mobile layouts.
  *
- * Part 1 renders each extracted page at 390x844, 768x1024 and 1440x900 and saves a
- * full-page screenshot to design/reference/<slug>-<width>.png. Fonts are awaited before
+ * Part 1 renders each extracted page at 390x844, 768x1024 and 1440x900 with the port overlay
+ * applied, and saves a full-page screenshot to design/reference/<slug>-<width>.png. The
+ * overlay is what the built site will carry, so the reference has to include it or Phase 4
+ * would compare the built site against a page that never existed. Fonts are awaited before
  * every capture so Archivo Black and Special Elite are present, not fallbacks.
  *
  * Part 2 compares the 8 pages that have a mobile preview: the responsive page rendered at
@@ -23,6 +25,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
 import { serve, settle, resetScroll, capture, compare, VIEWPORTS, LAUNCH_ARGS } from './lib/render.mjs';
+import { applyOverlay } from './lib/overlay.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES = path.join(ROOT, 'design', 'pages');
@@ -97,7 +100,7 @@ async function main() {
     for (const p of manifest.pages) {
       const sizes = [];
       for (const vp of VIEWPORTS) {
-        const { buffer, metrics } = await capture(page, `${base}/design/pages/${p.slug}.html`, vp);
+        const { buffer, metrics } = await capture(page, `${base}/design/pages/${p.slug}.html`, vp, applyOverlay);
         const file = path.join(OUT, `${p.slug}-${vp.width}.png`);
         await writeFile(file, buffer);
         totalBytes += buffer.length;
@@ -119,7 +122,7 @@ async function main() {
 
   const rows = [];
   for (const p of withMobile) {
-    const responsive = await capture(page, `${base}/design/pages/${p.slug}.html`, MOBILE);
+    const responsive = await capture(page, `${base}/design/pages/${p.slug}.html`, MOBILE, applyOverlay);
     const designed = await capture(page, `${base}/design/pages/${p.mobileReference}`, MOBILE);
     const A = PNG.sync.read(designed.buffer);
     const B = PNG.sync.read(responsive.buffer);

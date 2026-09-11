@@ -141,8 +141,20 @@ activation, focus into the panel and back), plus a media query hiding the deskto
 The four are `private-parties` and its two children plus `catering`, whose header carries
 "Book a Tour" where other pages carry the shorter "Order": a 592px cluster against 555px.
 
-**Upstream fix:** shorten "Book a Tour", or accept that the nav needs roughly 905px to sit on
-one line and that everything below that is hamburger territory.
+**The breakpoint is 960**, the smallest round number that is genuinely composed, 55px past
+the wrap point.
+
+**The root cause of 905 rather than ~780 is a single CTA label.** Sixteen pages carry "Order"
+in the header; `private-parties`, its two children and `catering` carry **"Book a Tour"**
+instead. That is a 592px header cluster against 555px, and those 37px are the entire
+difference between a nav that composes at 780 and one that needs 905.
+
+**So a future copy change moves this breakpoint.** If "Book a Tour" is ever shortened
+upstream, re-run `node scripts/verify-overlay.mjs`, re-measure the wrap threshold, and the
+breakpoint can come down. Anyone shortening that label should know they are buying back the
+768-to-960 band for the desktop nav. Equally, anyone *lengthening* a header CTA on any page
+should re-measure, because the current 55px cushion is sized against "Book a Tour" and
+nothing wider.
 
 The eight panel links and their destinations, recorded so a future export cannot silently
 revert them:
@@ -182,18 +194,51 @@ affected. This is what a `clamp()` on the logo would have done had the design us
 
 360, 375 and 390 are clean on all 20 pages after this.
 
-**320 is knowingly left overflowing**, from two separate causes:
-
-- `home`, +36px: the header row still does not fit. Pushing the logo smaller than 136px is
-  more than the brand can carry.
-- `menu`, `takeout-delivery`, `birria-tacos`, `quesabirria-tacos`, `street-tacos`,
-  `fajitas-molcajetes`, `karaoke`, +20px each: **nothing to do with the header.** Each has a
-  hero container with a hard 340px width, which cannot fit a 320px viewport at all.
+**320 is knowingly left overflowing on the homepage**, by 36px. The header row still does not
+fit, and pushing the logo below 136px is more than the brand can carry. This is the header's
+own limit and is separate from entry 8.
 
 **Upstream fix: the next design pass should specify a small-phone header rather than leave
-the port to infer one**, and should give those hero containers a width that can go below 340.
+the port to infer one.**
 
-## 8. "See the Bar" promises one page and sits beside copy about another
+## 8. Seven pages have a hero container hard-coded to 340px
+
+A different bug from entry 7, found while measuring it, and it needs a design fix rather than
+a smaller logo.
+
+`menu`, `takeout-delivery`, `birria-tacos`, `quesabirria-tacos`, `street-tacos`,
+`fajitas-molcajetes` and `karaoke` each have a hero container **340px wide**, which cannot fit
+a 320px viewport at any header size. Each overflows by exactly 20px at 320.
+
+The header fix in entry 7 does nothing for these and never could: the logo is not involved.
+They are clean at 360 and above only because 340 fits there.
+
+**Upstream fix:** make those hero containers fluid, a percentage or a `min()`, rather than a
+fixed 340px. Until then 320 is not reachable on these seven pages.
+
+## 9. /private-parties is 13,666px tall at 390 with no in-page navigation
+
+Checked because the responsive page is roughly double the height of the drawn mobile
+artboard. The menu page turned out fine and this one did not.
+
+**`/menu` is properly built.** Its 12 category chips sit in a horizontally scrollable row
+inside a `position: sticky` container at `top: 62px, z-index: 50`, so the row pins directly
+under the header as you scroll. All 12 targets exist, and each carries
+`scroll-margin-top: 124px` so a jump lands below the header and the chip row rather than
+behind them. At 21,519px tall that page is long, but it is navigable, and the height is not a
+problem.
+
+**`/private-parties` has no equivalent.** Its "Party types" block is three stacked cards,
+1,191px tall, not a chip row, and **nothing on the page is sticky**. Its three links were the
+cross-page anchors `#quinceaneras`, `#weddings` and `#catering`, whose targets do not exist on
+the page at all; `LINK-MAP.json` re-points them at the real child pages, which is better than
+the anchors were, but it leaves a 13,666px page with no way to move around inside it.
+
+**Upstream fix:** give `/private-parties` the same sticky chip row `/menu` has, over its room
+and party-type sections. Not built here: adding a navigation component the design never drew
+is a design decision, not a port decision.
+
+## 10. "See the Bar" promises one page and sits beside copy about another
 
 The four `See the Bar →` links on the dish pages sit inside a "Pair it" section whose copy is
 about a cantarito, a cocktail. The label says the bar.
@@ -205,7 +250,7 @@ betrayal even if the cantarito lives there.
 **Upstream fix, a copy decision not a link decision:** either the label becomes "See the
 Drinks" and points at `/margaritas`, or the pairing changes to something tequila-forward.
 
-## 9. The brief references a `/contact/` page that does not exist
+## 11. The brief references a `/contact/` page that does not exist
 
 `seo-migration-kit-and-page-spec.md` says "every page: link to `/contact/`". There is no
 contact page among the twenty and none was designed.
