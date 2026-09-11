@@ -58,25 +58,24 @@ body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
    frozen. Manual dragging still works, it simply no longer clicks into place. */
 [data-autoscroll] { scroll-snap-type: none !important; }
 
-/* ---- 7. the Google reviews carousel ------------------------------------------------------
-   The rail shipped with a raw horizontal scrollbar sitting under the cards, and it stopped
-   at the 1180px container so the next review was sheared off in mid-air. It now hides the
-   scrollbar (the events rail already did), runs off the right edge like a rail should, and
-   is driven by real arrows instead. */
-body[data-route="/"] [data-dc-tpl="150"] {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  /* Escape the container's centring and right gutter so the rail reaches the viewport edge.
-     50% resolves against the container, 50vw against the viewport, so the difference is
-     exactly the distance from the container's right edge to the screen's. */
-  margin-right: calc(50% - 50vw) !important;
-  padding-right: clamp(18px, 4.5vw, 48px) !important;
-  scroll-behavior: smooth;
+/* ---- 7. the mobile menu panel --------------------------------------------------------
+   The cards carry a gold eyebrow ("EAT", "SINCE 2015") over a photograph, and the design's
+   inset shadow was not deep enough to hold it: on the brighter shots the eyebrow all but
+   disappeared. Deepen the scrim under the text. The photograph is untouched above it. */
+#mobile-menu a.scp3 {
+  box-shadow: rgba(10, 9, 8, 0.97) 0px -110px 76px -28px inset !important;
 }
-body[data-route="/"] [data-dc-tpl="150"]::-webkit-scrollbar { display: none; }
+/* Belt and braces for the brightest cards: a bottom-up gradient behind the two labels. */
+#mobile-menu a.scp3::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 62%;
+  background: linear-gradient(to top, rgba(10, 9, 8, 0.92), rgba(10, 9, 8, 0));
+  pointer-events: none;
+}
+#mobile-menu a.scp3 > span { position: relative; z-index: 1; }
 
-/* The arrow row keeps the container gutter — only the rail bleeds (same rule as section 3). */
-body[data-route="/"] [data-reviews-prev],
-body[data-route="/"] [data-reviews-next] { cursor: pointer; }
-body[data-route="/"] [data-reviews-prev][disabled],
-body[data-route="/"] [data-reviews-next][disabled] { opacity: .35; cursor: default; }
+/* The two CTAs at the bottom of the panel were capped at 520px, so on anything wider than a
+   phone they sat as a narrow column against a full-width sheet. Let them fill it. */
+#mobile-menu [data-dc-tpl="38"] { max-width: none !important; }

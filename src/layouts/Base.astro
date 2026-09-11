@@ -184,32 +184,32 @@ const jsonLd = {
         }
 
         /* ---- 1b. the Google reviews carousel ------------------------------------------------
-           Same treatment as the Tonight rail: the scrollbar is hidden in tweaks.css, so the
-           arrows are the only way to move it. One card per click, disabled at each end. */
-        function reviewsCarousel() {
-          var rail = document.querySelector('[data-dc-tpl="150"]');
-          if (!rail) return;
-          var prev = document.querySelector('[data-reviews-prev]');
-          var next = document.querySelector('[data-reviews-next]');
-          if (!prev || !next) return;
+                   Same treatment as the Tonight rail: the scrollbar is hidden in tweaks.css, so the
+                   arrows are the only way to move it. One card per click, disabled at each end. */
+                function reviewsCarousel() {
+                  var rail = document.querySelector('[data-dc-tpl="150"]');
+                  if (!rail) return;
+                  var prev = document.querySelector('[data-reviews-prev]');
+                  var next = document.querySelector('[data-reviews-next]');
+                  if (!prev || !next) return;
 
-          function step() {
-            var first = rail.firstElementChild;
-            if (!first) return 340;
-            var gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 12;
-            return first.getBoundingClientRect().width + gap;
-          }
-          function sync() {
-            var max = rail.scrollWidth - rail.clientWidth - 1;
-            prev.disabled = rail.scrollLeft <= 0;
-            next.disabled = rail.scrollLeft >= max;
-          }
-          prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
-          next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
-          rail.addEventListener('scroll', sync, { passive: true });
-          window.addEventListener('resize', sync);
-          sync();
-        }
+                  function step() {
+                    var first = rail.firstElementChild;
+                    if (!first) return 340;
+                    var gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 12;
+                    return first.getBoundingClientRect().width + gap;
+                  }
+                  function sync() {
+                    var max = rail.scrollWidth - rail.clientWidth - 1;
+                    prev.disabled = rail.scrollLeft <= 0;
+                    next.disabled = rail.scrollLeft >= max;
+                  }
+                  prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+                  next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+                  rail.addEventListener('scroll', sync, { passive: true });
+                  window.addEventListener('resize', sync);
+                  sync();
+                }
 
         /* ---- 2. the signature dish filters --------------------------------------------------
            Chips are buttons with no behaviour in the design. Each card is categorised from its
@@ -296,11 +296,45 @@ const jsonLd = {
           });
         }
 
+        /* ---- 4. navigation order -------------------------------------------------------------
+           "Our Story" moves ahead of "Menu" in the header nav, on every page. Done here rather
+           than in the seven header variants so one rule covers them all and a future export
+           cannot quietly undo it. */
+        function navOrder() {
+          var nav = document.querySelector('header nav');
+          if (!nav) return;
+          var links = [].slice.call(nav.querySelectorAll('a'));
+          var story = links.filter(function (a) { return /our story/i.test(a.textContent || ''); })[0];
+          var menu = links.filter(function (a) { return /^\s*menu\s*$/i.test(a.textContent || ''); })[0];
+          if (story && menu && story !== menu && menu.parentNode === story.parentNode) {
+            menu.parentNode.insertBefore(story, menu);
+          }
+        }
+
+        /* ---- 5. the private events hub had seven inquiry forms ---------------------------------
+           The design put a copy of the whole enquiry form inside every one of the seven FAQ
+           answers. Seven forms on one page is wrong for the visitor and wrong for anything
+           parsing the page. Keep the last one, which already sits at the foot of the section,
+           and drop the six above it. The FAQ answers themselves are left intact. */
+        function singleInquiryForm() {
+          var forms = [].slice.call(document.querySelectorAll('form'));
+          if (forms.length < 2) return;
+          var keep = forms[forms.length - 1];
+          forms.slice(0, -1).forEach(function (form) {
+            // Take the heading that introduces each duplicate with it, when there is one.
+            var block = form.parentElement;
+            var hasOwnHeading = block && block !== keep.parentElement && /start here/i.test(block.textContent || '');
+            (hasOwnHeading ? block : form).remove();
+          });
+        }
+
         function start() {
           try { if (isHome) tonightCarousel(); } catch (e) {}
           try { if (isHome) reviewsCarousel(); } catch (e) {}
           try { if (isHome) dishFilters(); } catch (e) {}
           try { autoScrollRails(); } catch (e) {}
+          try { navOrder(); } catch (e) {}
+          try { singleInquiryForm(); } catch (e) {}
         }
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
         else start();

@@ -1,9 +1,3 @@
----
-import Base from '../layouts/Base.astro';
-import Header5 from '../components/Header5.astro';
-import Footer2 from '../components/Footer2.astro';
----
-<Base title="Tacos in Germantown, MD | Every Day Is Taco Tuesday | Señor Tequila's" description="Handmade corn and flour tortillas pressed every morning, al pastor off the trompo, and salsas made the same day. Plus free bingo Tuesdays, 8 to 10." canonical="https://senortequilas.com/taco-tuesday" ogImage="/images/eca8597506381a36.jpg" route="/taco-tuesday">
 <!--
   /taco-tuesday, rebuilt. See DESIGN-DEBT.md entry 21.
 
@@ -15,7 +9,7 @@ import Footer2 from '../components/Footer2.astro';
   rest of the site. Content and structure only.
 -->
 <div class="sc-host" data-sc-name="Taco Tuesday" style="color: rgb(234, 226, 214); font-family: Barlow, system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
-  <Header5 />
+  <!--COMPONENT:Header-->
 
   <section data-screen-label="Taco hero" style="background: rgb(18, 18, 16); border-bottom: 1px solid rgba(185, 156, 102, 0.2);">
     <div style="max-width: 1180px; margin: 0px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: center; gap: clamp(24px, 4vw, 56px);">
@@ -191,7 +185,5 @@ import Footer2 from '../components/Footer2.astro';
     </div>
   </section>
 
-  <Footer2 />
+  <!--COMPONENT:Footer-->
 </div>
-
-</Base>

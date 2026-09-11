@@ -450,3 +450,51 @@ short "what we get asked" block covering parking, big groups, takeout and cateri
 
 **Still a design decision for the next pass:** whether `/contact` joins the header and footer
 navigation. It is in the sitemap and reachable by URL, but nothing links to it yet.
+
+## 21. /taco-tuesday rebuilt, and four smaller changes
+
+`/taco-tuesday` was rebuilt from `design/overlay/taco-tuesday.html`. The artboard version
+sold bingo in the hero, promised a weekly calendar under a heading that delivered three taco
+dishes, and answered "Why Our Tacos" with four logistics bullets. The rebuild competes on the
+tacos rather than on a discount the restaurant does not run: "taco tuesday near me" is 17,000
+searches at KD 46, while "tacos near me" is 556,000 at KD 0.
+
+New structure: hero, Why You Don't Need a Tuesday, The Tacos (the three existing cards plus
+three that link to `/birria-tacos`, `/quesabirria-tacos` and `/street-tacos`), Every Night of
+the Week, a proof strip, and a planning block. Visual language unchanged.
+
+Also in this pass, all in `design/overlay/site-tweaks.*`:
+
+- **Our Story moves ahead of Menu** in the header nav, on every page.
+- **The private events hub had seven inquiry forms**, one inside each FAQ answer. Six removed,
+  the FAQ answers kept.
+- **The mobile menu cards** had a scrim too shallow to hold the gold eyebrow over a bright
+  photograph. Deepened, plus a gradient behind the labels.
+- **The two CTAs in the mobile menu** were capped at 520px and now fill the sheet.
+
+## 22. The visual baseline cannot currently validate nine pages
+
+**This is the most important open item.**
+
+Commit `ade51c0`, made from a different editor, edited `src/pages/*.astro` and
+`src/layouts/Base.astro` directly. `src/` is generated from `design/pages/` plus
+`design/overlay/` by `scripts/build-site.mjs`, so those edits are invisible to the reference
+pipeline, which renders `design/pages/` plus the overlay.
+
+The result: the built site and the reference set genuinely differ on the nine pages that
+commit touched, by 2 to 15 percent. The checks are not wrong, the two sides are describing
+different pages.
+
+Affected: `/`, `/menu`, `/our-story`, `/happy-hour`, `/karaoke`, `/catering`,
+`/private-parties/quinceaneras-celebrations`, `/private-parties/weddings-receptions`, and
+`/taco-tuesday` (the last for a separate, intended reason: it is now authored, so its
+design-derived reference no longer applies).
+
+**To fix:** migrate what `ade51c0` did into `design/overlay/site-tweaks.*`. That is the
+placeholder removal, the event card labels, the Instagram CTA and the gift card artwork. The
+reviews carousel from that commit has already been migrated. Once the rest follows, the
+baseline validates all 21 pages again.
+
+**Protections added meanwhile:** `scripts/build-site.mjs` refuses to run when `src/` exists
+unless passed `--force`, so nobody regenerates over those edits by accident, and
+`--authored-only` rewrites just the authored pages and the overlay assets.

@@ -42,7 +42,83 @@ const absoluteImages = (s) => s.replace(/(["'(])images\//g, '$1/images/');
 
 const routeFor = (urlPath) => (urlPath === '/' ? 'index' : urlPath.replace(/^\//, ''));
 
+/**
+ * Pages the port authors itself, from design/overlay/, rather than lifting from the design.
+ * `/contact` because the design never drew one; `/taco-tuesday` because it was rebuilt.
+ */
+const AUTHORED = [
+  { route: '/contact', file: 'contact.html', why: 'the design never drew one' },
+  { route: '/taco-tuesday', file: 'taco-tuesday.html', why: 'rebuilt, see DESIGN-DEBT.md entry 21' },
+];
+
+async function writeAuthoredPages(seo, variants) {
+  const pick = (family) => [...variants.get(family).values()].sort((a, b) => b.pages.length - a.pages.length)[0].name;
+  const headerName = pick('Header');
+  const footerName = pick('Footer');
+  for (const page of AUTHORED) {
+    const markup = absoluteImages(await readFile(path.join(ROOT, 'design', 'overlay', page.file), 'utf8'));
+    const meta = seo.pages[page.route];
+    if (!meta) throw new Error(`no SEO entry for ${page.route}`);
+    const body = markup
+      .replace('<!--COMPONENT:Header-->', `<${headerName} />`)
+      .replace('<!--COMPONENT:Footer-->', `<${footerName} />`);
+    const route = page.route.replace(/^\//, '');
+    await writeFile(path.join(SRC, 'pages', `${route}.astro`),
+      `---\nimport Base from '../layouts/Base.astro';\nimport ${headerName} from '../components/${headerName}.astro';\nimport ${footerName} from '../components/${footerName}.astro';\n---\n<Base title=${JSON.stringify(meta.title)} description=${JSON.stringify(meta.description)} canonical=${JSON.stringify(meta.canonical)} ogImage=${JSON.stringify(meta.ogImage)} route=${JSON.stringify(page.route)}>\n${body}\n</Base>\n`);
+    console.log(`  ${page.route.padEnd(46)} src/pages/${route}.astro   ${headerName}, ${footerName}  (authored: ${page.why})`);
+  }
+}
+
+/**
+ * Rewrite only the authored pages, leaving the rest of src/ alone. This is the safe way to
+ * ship a change to /contact or /taco-tuesday without regenerating, and destroying, anything
+ * else under src/.
+ */
+async function authoredOnly() {
+  const seo = JSON.parse(await readFile(path.join(ROOT, 'design', 'SEO.json'), 'utf8'));
+
+  // The overlay's stylesheet and script live inside src/ once generated, so an edit to
+  // design/overlay/ reaches nothing until they are refreshed. Without this the authored
+  // pages update and every CSS or behaviour change silently does not.
+  await writeFile(path.join(SRC, 'styles', 'tweaks.css'),
+    await readFile(path.join(ROOT, 'design', 'overlay', 'site-tweaks.css'), 'utf8'));
+  await writeFile(path.join(SRC, 'styles', 'overlay.css'),
+    await readFile(path.join(ROOT, 'design', 'overlay', 'mobile-nav.css'), 'utf8'));
+
+  const basePath = path.join(SRC, 'layouts', 'Base.astro');
+  let base = await readFile(basePath, 'utf8');
+  for (const [file, sentinel] of [
+    ['site-tweaks.js', 'port: homepage behaviour the design drew but never wired'],
+    ['mobile-menu.js', 'port: mobile menu toggle'],
+  ]) {
+    const body = await readFile(path.join(ROOT, 'design', 'overlay', file), 'utf8');
+    const indented = body.split('\n').map((l) => (l ? '      ' + l : l)).join('\n');
+    // Replace only the one <script is:inline> block that carries this file's sentinel, so
+    // anything else hand added to Base.astro survives.
+    // Match each block on its own, by finding the sentinel first and then walking out to
+    // the surrounding tags. A single regex from "<script is:inline>" would swallow the
+    // earlier block too, because the first opening tag is nowhere near its own sentinel.
+    const at = base.indexOf(sentinel);
+    if (at === -1) throw new Error(`could not find the ${file} script block in Base.astro`);
+    const open = base.lastIndexOf('<script is:inline>', at);
+    const close = base.indexOf('</script>', at);
+    if (open === -1 || close === -1) throw new Error(`malformed script block for ${file}`);
+    base = base.slice(0, open) + `<script is:inline>\n${indented}\n    ` + base.slice(close);
+  }
+  await writeFile(basePath, base);
+  console.log('Refreshed src/styles/tweaks.css, overlay.css and both inline scripts in Base.astro.');
+
+  const components = await readdir(path.join(SRC, 'components'));
+  const fake = new Map([
+    ['Header', new Map([['h', { name: components.filter((f) => /^Header\d+\.astro$/.test(f)).sort()[4]?.replace('.astro', '') ?? 'Header5', pages: ['x'] }]])],
+    ['Footer', new Map([['f', { name: 'Footer2', pages: ['x'] }]])],
+  ]);
+  console.log('Rewriting only the authored pages; the rest of src/ is untouched.');
+  await writeAuthoredPages(seo, fake);
+}
+
 async function main() {
+  if (process.argv.includes('--authored-only')) return authoredOnly();
   const manifest = JSON.parse(await readFile(path.join(ROOT, 'design', 'pages', 'manifest.json'), 'utf8'));
   const linkMap = JSON.parse(await readFile(path.join(ROOT, 'design', 'LINK-MAP.json'), 'utf8'));
   const altText = JSON.parse(await readFile(path.join(ROOT, 'design', 'ALT-TEXT.json'), 'utf8'));
@@ -321,19 +397,7 @@ export default defineConfig({
 });
 `);
 
-  // ---- /contact, authored for the port because the design never drew it ------------------
-  {
-    const contact = absoluteImages(await readFile(path.join(ROOT, 'design', 'overlay', 'contact.html'), 'utf8'));
-    const headerName = [...variants.get('Header').values()].sort((a, b) => b.pages.length - a.pages.length)[0].name;
-    const footerName = [...variants.get('Footer').values()].sort((a, b) => b.pages.length - a.pages.length)[0].name;
-    const meta = seo.pages['/contact'];
-    const body = contact
-      .replace('<!--COMPONENT:Header-->', `<${headerName} />`)
-      .replace('<!--COMPONENT:Footer-->', `<${footerName} />`);
-    await writeFile(path.join(SRC, 'pages', 'contact.astro'),
-      `---\nimport Base from '../layouts/Base.astro';\nimport ${headerName} from '../components/${headerName}.astro';\nimport ${footerName} from '../components/${footerName}.astro';\n---\n<Base title=${JSON.stringify(meta.title)} description=${JSON.stringify(meta.description)} canonical=${JSON.stringify(meta.canonical)} ogImage=${JSON.stringify(meta.ogImage)} route="/contact">\n${body}\n</Base>\n`);
-    console.log(`  /contact${' '.repeat(38)} src/pages/contact.astro   ${headerName}, ${footerName}  (authored, not from the design)`);
-  }
+  await writeAuthoredPages(seo, variants);
 
   // ---- sitemap and robots -------------------------------------------------------------
   const today = new Date().toISOString().slice(0, 10);

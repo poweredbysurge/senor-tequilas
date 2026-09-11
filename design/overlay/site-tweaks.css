@@ -57,3 +57,25 @@ body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
    browser pulls every sub-pixel step back to the nearest snap point and the rail sits
    frozen. Manual dragging still works, it simply no longer clicks into place. */
 [data-autoscroll] { scroll-snap-type: none !important; }
+
+/* ---- 7. the mobile menu panel --------------------------------------------------------
+   The cards carry a gold eyebrow ("EAT", "SINCE 2015") over a photograph, and the design's
+   inset shadow was not deep enough to hold it: on the brighter shots the eyebrow all but
+   disappeared. Deepen the scrim under the text. The photograph is untouched above it. */
+#mobile-menu a.scp3 {
+  box-shadow: rgba(10, 9, 8, 0.97) 0px -110px 76px -28px inset !important;
+}
+/* Belt and braces for the brightest cards: a bottom-up gradient behind the two labels. */
+#mobile-menu a.scp3::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 62%;
+  background: linear-gradient(to top, rgba(10, 9, 8, 0.92), rgba(10, 9, 8, 0));
+  pointer-events: none;
+}
+#mobile-menu a.scp3 > span { position: relative; z-index: 1; }
+
+/* The two CTAs at the bottom of the panel were capped at 520px, so on anything wider than a
+   phone they sat as a narrow column against a full-width sheet. Let them fill it. */
+#mobile-menu [data-dc-tpl="38"] { max-width: none !important; }
