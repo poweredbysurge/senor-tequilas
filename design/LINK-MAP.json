@@ -1,7 +1,7 @@
 {
   "reviewed": "Reviewed and approved 2026-09-10. Every row except the three unresolved delivery links is signed off. `confidence` records how a destination was determined, not whether it was approved: mechanical means derived from the path table or the migration kit, proposed means a judgment call a human settled.",
   "note": "Every link whose destination changes. design/pages/ is never edited; this is applied in Phase 3 when markup moves into src/pages/. Rewriting an href changes no pixels, so the reference set is unaffected.",
-  "generatedAt": "2026-09-10T23:08:51.570Z",
+  "generatedAt": "2026-09-11T00:22:44.269Z",
   "googlePlaceId": "ChIJfQWUP2wstokR0hf-aq2yO5Y",
   "counts": {
     "mechanical": 330,
@@ -14,6 +14,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -25,6 +26,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -36,6 +38,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 2,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -47,6 +50,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 3,
       "region": "header-nav",
       "label": "Happy Hour",
       "section": "Header",
@@ -58,6 +62,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -69,6 +74,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -80,6 +86,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 12,
       "region": "body",
       "label": "Full lineup →",
       "section": "Tonight carousel",
@@ -91,6 +98,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 13,
       "region": "body",
       "label": "Tonight Poster · Thursdays Thursdays · 7:30 to midnight Karaoke Karaoke in the bar area, hosted by DJ Willy. NFL on.",
       "section": "Tonight carousel",
@@ -102,6 +110,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 14,
       "region": "body",
       "label": "Poster · Fridays Fridays · 9 PM to 1 AM Live DJ Live DJ in the bar area. 21 and over in the bar area after 9.",
       "section": "Tonight carousel",
@@ -113,6 +122,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 15,
       "region": "body",
       "label": "Poster · Saturdays Saturdays · 9 PM to 1 AM Live DJ Live DJ in the bar area. College football on. 21 and over in the bar area after 9.",
       "section": "Tonight carousel",
@@ -124,6 +134,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 16,
       "region": "body",
       "label": "Poster · Sundays Sundays · 6:30 to 9:30 Live Mariachi Live mariachi over dinner. NFL on.",
       "section": "Tonight carousel",
@@ -135,6 +146,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 17,
       "region": "body",
       "label": "Poster · Mondays Mondays · All night 2-for-1 Margaritas On the rocks, in lime, strawberry or mango. Any size: 14 oz, 18 oz, or the 54 oz Big Mami. Rim it with chamoy and tajín, salt, or sugar.",
       "section": "Tonight carousel",
@@ -146,6 +158,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 18,
       "region": "body",
       "label": "Poster · Tuesdays Tuesdays · 8 to 10 Free Bingo Free bingo, 8 to 10, with prizes.",
       "section": "Tonight carousel",
@@ -157,6 +170,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 19,
       "region": "body",
       "label": "Poster · Wednesdays Wednesdays · 8 to 10 Free Lotería Free lotería, 8 to 10, with prizes.",
       "section": "Tonight carousel",
@@ -168,6 +182,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 20,
       "region": "body",
       "label": "Happy hour · Monday through FridayHappy hour runs Monday to Friday, 3 to 6, in the bar area.Times pending Sept 29 · See the happy hour menu →",
       "section": "Happy hour + cards",
@@ -179,6 +194,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 21,
       "region": "body",
       "label": "Private eventsFour Private Rooms. Parties From 12 to 400.DJ booth, lights and a real kitchen included. Book a tour →",
       "section": "Happy hour + cards",
@@ -190,6 +206,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 22,
       "region": "body",
       "label": "See the Full Menu",
       "section": "Hitters: Toast top sellers",
@@ -201,6 +218,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 24,
       "region": "body",
       "label": "Write a review",
       "section": "Google reviews",
@@ -212,6 +230,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 25,
       "region": "body",
       "label": "Our Story →",
       "section": "Culinary story",
@@ -223,6 +242,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 49,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -234,6 +254,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 50,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -245,6 +266,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 51,
       "region": "footer",
       "label": "Happy Hour",
       "section": "Footer",
@@ -256,6 +278,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 52,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -267,6 +290,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 53,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -278,6 +302,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 56,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -289,6 +314,7 @@
     {
       "page": "home",
       "pagePath": "/",
+      "index": 57,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -300,6 +326,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -311,6 +338,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -322,6 +350,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -333,6 +362,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -344,6 +374,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -355,6 +386,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -366,6 +398,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 23,
       "region": "body",
       "label": "Happy Hour Menu →",
       "section": "Happy hour strip",
@@ -377,6 +410,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 24,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -388,6 +422,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 25,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -399,6 +434,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 26,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -410,6 +446,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 32,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -421,6 +458,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 33,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -432,6 +470,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 34,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -443,6 +482,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 35,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -454,6 +494,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 36,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -465,6 +506,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 39,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -476,6 +518,7 @@
     {
       "page": "menu",
       "pagePath": "/menu",
+      "index": 40,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -487,6 +530,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -498,6 +542,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -509,6 +554,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -520,6 +566,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -531,6 +578,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -542,6 +590,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -553,6 +602,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 8,
       "region": "body",
       "label": "See the Menu",
       "section": "La cocina / chef",
@@ -564,6 +614,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 10,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -575,6 +626,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 11,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -586,6 +638,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 12,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -597,6 +650,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 18,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -608,6 +662,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 19,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -619,6 +674,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 20,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -630,6 +686,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 21,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -641,6 +698,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 22,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -652,6 +710,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 25,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -663,6 +722,7 @@
     {
       "page": "our-story",
       "pagePath": "/our-story",
+      "index": 26,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -674,6 +734,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -685,6 +746,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -696,6 +758,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -707,6 +770,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -718,6 +782,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -729,6 +794,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -740,6 +806,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 19,
       "region": "body",
       "label": "DoorDash",
       "section": "Pickup details",
@@ -751,6 +818,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 20,
       "region": "body",
       "label": "Uber Eats",
       "section": "Pickup details",
@@ -762,6 +830,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 21,
       "region": "body",
       "label": "Grubhub",
       "section": "Pickup details",
@@ -773,6 +842,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 22,
       "region": "body",
       "label": "Catering Menu →",
       "section": "Pickup details",
@@ -784,6 +854,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 23,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -795,6 +866,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 24,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -806,6 +878,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 25,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -817,6 +890,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 31,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -828,6 +902,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 32,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -839,6 +914,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 33,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -850,6 +926,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 34,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -861,6 +938,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 35,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -872,6 +950,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 38,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -883,6 +962,7 @@
     {
       "page": "takeout-delivery",
       "pagePath": "/takeout-delivery",
+      "index": 39,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -894,6 +974,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -905,6 +986,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -916,6 +998,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -927,6 +1010,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -938,6 +1022,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -949,6 +1034,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -960,6 +1046,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 10,
       "region": "body",
       "label": "Full menu →",
       "section": "Ways to order it",
@@ -971,6 +1058,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 11,
       "region": "body",
       "label": "See the Bar →",
       "section": "Pair it",
@@ -982,6 +1070,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 12,
       "region": "body",
       "label": "See the full menu",
       "section": "Dish cross-links",
@@ -993,6 +1082,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 13,
       "region": "body",
       "label": "Takeout and delivery",
       "section": "Dish cross-links",
@@ -1004,6 +1094,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 15,
       "region": "body",
       "label": "Dipped and griddledQuesabirria Tacos",
       "section": "Also try",
@@ -1015,6 +1106,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 16,
       "region": "body",
       "label": "Handmade tortillasStreet Tacos",
       "section": "Also try",
@@ -1026,6 +1118,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 17,
       "region": "body",
       "label": "Made in houseLa Dulcería",
       "section": "Also try",
@@ -1037,6 +1130,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 18,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1048,6 +1142,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 19,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1059,6 +1154,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 20,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1070,6 +1166,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 26,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1081,6 +1178,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 27,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1092,6 +1190,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 28,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -1103,6 +1202,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 29,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1114,6 +1214,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 30,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -1125,6 +1226,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 33,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -1136,6 +1238,7 @@
     {
       "page": "birria-tacos",
       "pagePath": "/birria-tacos",
+      "index": 34,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -1147,6 +1250,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -1158,6 +1262,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -1169,6 +1274,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -1180,6 +1286,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -1191,6 +1298,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -1202,6 +1310,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -1213,6 +1322,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 10,
       "region": "body",
       "label": "Full menu →",
       "section": "Ways to order it",
@@ -1224,6 +1334,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 11,
       "region": "body",
       "label": "See the Bar →",
       "section": "Pair it",
@@ -1235,6 +1346,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 12,
       "region": "body",
       "label": "See the full menu",
       "section": "Dish cross-links",
@@ -1246,6 +1358,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 13,
       "region": "body",
       "label": "Takeout and delivery",
       "section": "Dish cross-links",
@@ -1257,6 +1370,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 15,
       "region": "body",
       "label": "The bowlBirria de Res",
       "section": "Also try",
@@ -1268,6 +1382,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 16,
       "region": "body",
       "label": "Handmade tortillasStreet Tacos",
       "section": "Also try",
@@ -1279,6 +1394,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 17,
       "region": "body",
       "label": "Every TuesdayTaco Tuesday",
       "section": "Also try",
@@ -1290,6 +1406,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 18,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1301,6 +1418,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 19,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1312,6 +1430,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 20,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1323,6 +1442,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 26,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1334,6 +1454,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 27,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1345,6 +1466,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 28,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -1356,6 +1478,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 29,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1367,6 +1490,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 30,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -1378,6 +1502,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 33,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -1389,6 +1514,7 @@
     {
       "page": "quesabirria-tacos",
       "pagePath": "/quesabirria-tacos",
+      "index": 34,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -1400,6 +1526,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -1411,6 +1538,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -1422,6 +1550,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -1433,6 +1562,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -1444,6 +1574,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -1455,6 +1586,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -1466,6 +1598,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 10,
       "region": "body",
       "label": "Full menu →",
       "section": "Ways to order it",
@@ -1477,6 +1610,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 11,
       "region": "body",
       "label": "See the Bar →",
       "section": "Pair it",
@@ -1488,6 +1622,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 12,
       "region": "body",
       "label": "See the full menu",
       "section": "Dish cross-links",
@@ -1499,6 +1634,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 13,
       "region": "body",
       "label": "Takeout and delivery",
       "section": "Dish cross-links",
@@ -1510,6 +1646,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 15,
       "region": "body",
       "label": "Six-hour braiseBirria",
       "section": "Also try",
@@ -1521,6 +1658,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 16,
       "region": "body",
       "label": "Still sizzlingFajitas & Molcajetes",
       "section": "Also try",
@@ -1532,6 +1670,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 17,
       "region": "body",
       "label": "Made in houseLa Dulcería",
       "section": "Also try",
@@ -1543,6 +1682,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 18,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1554,6 +1694,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 19,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1565,6 +1706,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 20,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1576,6 +1718,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 26,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1587,6 +1730,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 27,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1598,6 +1742,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 28,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -1609,6 +1754,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 29,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1620,6 +1766,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 30,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -1631,6 +1778,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 33,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -1642,6 +1790,7 @@
     {
       "page": "street-tacos",
       "pagePath": "/street-tacos",
+      "index": 34,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -1653,6 +1802,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -1664,6 +1814,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -1675,6 +1826,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -1686,6 +1838,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -1697,6 +1850,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -1708,6 +1862,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -1719,6 +1874,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 10,
       "region": "body",
       "label": "Full menu →",
       "section": "Ways to order it",
@@ -1730,6 +1886,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 11,
       "region": "body",
       "label": "See the Bar →",
       "section": "Pair it",
@@ -1741,6 +1898,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 12,
       "region": "body",
       "label": "See the full menu",
       "section": "Dish cross-links",
@@ -1752,6 +1910,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 13,
       "region": "body",
       "label": "Takeout and delivery",
       "section": "Dish cross-links",
@@ -1763,6 +1922,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 15,
       "region": "body",
       "label": "Six-hour braiseBirria",
       "section": "Also try",
@@ -1774,6 +1934,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 16,
       "region": "body",
       "label": "Handmade tortillasStreet Tacos",
       "section": "Also try",
@@ -1785,6 +1946,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 17,
       "region": "body",
       "label": "Made in houseLa Dulcería",
       "section": "Also try",
@@ -1796,6 +1958,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 18,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1807,6 +1970,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 19,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1818,6 +1982,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 20,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1829,6 +1994,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 26,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -1840,6 +2006,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 27,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -1851,6 +2018,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 28,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -1862,6 +2030,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 29,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -1873,6 +2042,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 30,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -1884,6 +2054,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 33,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -1895,6 +2066,7 @@
     {
       "page": "fajitas-molcajetes",
       "pagePath": "/fajitas-molcajetes",
+      "index": 34,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -1906,6 +2078,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -1917,6 +2090,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -1928,6 +2102,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -1939,6 +2114,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -1950,6 +2126,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -1961,6 +2138,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -1972,6 +2150,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 11,
       "region": "body",
       "label": "Plan a Private Event",
       "section": "For parties",
@@ -1983,6 +2162,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 12,
       "region": "body",
       "label": "See private events",
       "section": "For parties",
@@ -1994,6 +2174,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 13,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2005,6 +2186,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 14,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2016,6 +2198,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 15,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2027,6 +2210,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 21,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2038,6 +2222,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 22,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2049,6 +2234,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 23,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -2060,6 +2246,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 24,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2071,6 +2258,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 25,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -2082,6 +2270,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 28,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -2093,6 +2282,7 @@
     {
       "page": "la-dulceria",
       "pagePath": "/la-dulceria",
+      "index": 29,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -2104,6 +2294,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -2115,6 +2306,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -2126,6 +2318,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -2137,6 +2330,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -2148,6 +2342,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -2159,6 +2354,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -2170,6 +2366,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 13,
       "region": "body",
       "label": "Weddings and showers",
       "section": "Related event pages",
@@ -2181,6 +2378,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 14,
       "region": "body",
       "label": "Taco catering",
       "section": "Related event pages",
@@ -2192,6 +2390,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 15,
       "region": "body",
       "label": "Private events hub",
       "section": "Related event pages",
@@ -2203,6 +2402,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 17,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2214,6 +2414,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 18,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2225,6 +2426,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 19,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2236,6 +2438,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 25,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2247,6 +2450,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 26,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2258,6 +2462,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 27,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -2269,6 +2474,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 28,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2280,6 +2486,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 29,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -2291,6 +2498,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 32,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -2302,6 +2510,7 @@
     {
       "page": "private-parties-quinceaneras-celebrations",
       "pagePath": "/private-parties/quinceaneras-celebrations",
+      "index": 33,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -2313,6 +2522,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -2324,6 +2534,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -2335,6 +2546,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -2346,6 +2558,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -2357,6 +2570,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -2368,6 +2582,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -2379,6 +2594,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 13,
       "region": "body",
       "label": "Quinceañeras and celebrations",
       "section": "Related event pages",
@@ -2390,6 +2606,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 14,
       "region": "body",
       "label": "Taco catering",
       "section": "Related event pages",
@@ -2401,6 +2618,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 15,
       "region": "body",
       "label": "Private events hub",
       "section": "Related event pages",
@@ -2412,6 +2630,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 17,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2423,6 +2642,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 18,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2434,6 +2654,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 19,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2445,6 +2666,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 25,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2456,6 +2678,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 26,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2467,6 +2690,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 27,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -2478,6 +2702,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 28,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2489,6 +2714,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 29,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -2500,6 +2726,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 32,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -2511,6 +2738,7 @@
     {
       "page": "private-parties-weddings-receptions",
       "pagePath": "/private-parties/weddings-receptions",
+      "index": 33,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -2522,6 +2750,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -2533,6 +2762,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -2544,6 +2774,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -2555,6 +2786,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -2566,6 +2798,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -2577,6 +2810,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -2588,6 +2822,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 13,
       "region": "body",
       "label": "Quinceañeras and celebrations",
       "section": "Related event pages",
@@ -2599,6 +2834,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 14,
       "region": "body",
       "label": "Weddings and showers",
       "section": "Related event pages",
@@ -2610,6 +2846,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 15,
       "region": "body",
       "label": "Private events hub",
       "section": "Related event pages",
@@ -2621,6 +2858,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 17,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2632,6 +2870,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 18,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2643,6 +2882,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 19,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2654,6 +2894,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 25,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2665,6 +2906,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 26,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2676,6 +2918,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 27,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -2687,6 +2930,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 28,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2698,6 +2942,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 29,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -2709,6 +2954,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 32,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -2720,6 +2966,7 @@
     {
       "page": "catering",
       "pagePath": "/catering",
+      "index": 33,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -2731,6 +2978,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -2742,6 +2990,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -2753,6 +3002,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -2764,6 +3014,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -2775,6 +3026,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -2786,6 +3038,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -2797,6 +3050,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 10,
       "region": "body",
       "label": "Quinceañeras · Sweet 16 Quinceañeras and Celebrations A private room, a coordinator, and a kitchen that already knows how to feed 100. See quinceañeras →",
       "section": "Party types",
@@ -2808,6 +3062,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 11,
       "region": "body",
       "label": "Weddings · Showers · Rehearsals Weddings, Receptions and Showers Rehearsal dinners, showers, engagement parties, receptions. See weddings and showers →",
       "section": "Party types",
@@ -2819,6 +3074,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 12,
       "region": "body",
       "label": "Catering · Drop-off · Full service Taco Catering Same kitchen, same handmade tortillas, delivered to wherever the party is. See catering →",
       "section": "Party types",
@@ -2830,6 +3086,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 21,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2841,6 +3098,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 22,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2852,6 +3110,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 23,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2863,6 +3122,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 29,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -2874,6 +3134,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 30,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -2885,6 +3146,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 31,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -2896,6 +3158,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 32,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -2907,6 +3170,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 33,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -2918,6 +3182,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 36,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -2929,6 +3194,7 @@
     {
       "page": "private-parties",
       "pagePath": "/private-parties",
+      "index": 37,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -2940,6 +3206,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -2951,6 +3218,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -2962,6 +3230,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -2973,6 +3242,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -2984,6 +3254,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -2995,6 +3266,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -3006,6 +3278,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 10,
       "region": "body",
       "label": "Happy Hour Details →",
       "section": "Margarita happy hour strip",
@@ -3017,6 +3290,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 11,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3028,6 +3302,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 12,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3039,6 +3314,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 13,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3050,6 +3326,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 19,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3061,6 +3338,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 20,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3072,6 +3350,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 21,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -3083,6 +3362,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 22,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3094,6 +3374,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 23,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -3105,6 +3386,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 26,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -3116,6 +3398,7 @@
     {
       "page": "margaritas",
       "pagePath": "/margaritas",
+      "index": 27,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -3127,6 +3410,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -3138,6 +3422,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -3149,6 +3434,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -3160,6 +3446,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -3171,6 +3458,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -3182,6 +3470,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -3193,6 +3482,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 10,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3204,6 +3494,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 11,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3215,6 +3506,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 12,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3226,6 +3518,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 18,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3237,6 +3530,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 19,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3248,6 +3542,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 20,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -3259,6 +3554,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 21,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3270,6 +3566,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 22,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -3281,6 +3578,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 25,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -3292,6 +3590,7 @@
     {
       "page": "tequila-bar",
       "pagePath": "/tequila-bar",
+      "index": 26,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -3303,6 +3602,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -3314,6 +3614,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -3325,6 +3626,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -3336,6 +3638,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -3347,6 +3650,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -3358,6 +3662,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -3369,6 +3674,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 10,
       "region": "body",
       "label": "Mon2-for-1 margaritasRocks, lime, strawberry or mango",
       "section": "Weekly rhythm",
@@ -3380,6 +3686,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 11,
       "region": "body",
       "label": "TueFree bingo8 to 10, with prizes",
       "section": "Weekly rhythm",
@@ -3391,6 +3698,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 12,
       "region": "body",
       "label": "WedFree lotería8 to 10, with prizes",
       "section": "Weekly rhythm",
@@ -3402,6 +3710,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 13,
       "region": "body",
       "label": "ThuKaraoke with DJ Willy7:30 to midnight",
       "section": "Weekly rhythm",
@@ -3413,6 +3722,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 14,
       "region": "body",
       "label": "FriLive DJ9 PM to 1 AM, 21+ in the bar",
       "section": "Weekly rhythm",
@@ -3424,6 +3734,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 15,
       "region": "body",
       "label": "Mexican food near Gaithersburg",
       "section": "Nearby",
@@ -3435,6 +3746,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 17,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3446,6 +3758,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 18,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3457,6 +3770,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 19,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3468,6 +3782,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 25,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3479,6 +3794,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 26,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3490,6 +3806,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 27,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -3501,6 +3818,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 28,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3512,6 +3830,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 29,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -3523,6 +3842,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 32,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -3534,6 +3854,7 @@
     {
       "page": "happy-hour",
       "pagePath": "/happy-hour",
+      "index": 33,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -3545,6 +3866,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -3556,6 +3878,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -3567,6 +3890,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -3578,6 +3902,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -3589,6 +3914,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -3600,6 +3926,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -3611,6 +3938,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 9,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3622,6 +3950,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 10,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3633,6 +3962,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 11,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3644,6 +3974,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 17,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3655,6 +3986,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 18,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3666,6 +3998,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 19,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -3677,6 +4010,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 20,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3688,6 +4022,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 21,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -3699,6 +4034,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 24,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -3710,6 +4046,7 @@
     {
       "page": "late-night",
       "pagePath": "/late-night",
+      "index": 25,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -3721,6 +4058,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -3732,6 +4070,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -3743,6 +4082,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -3754,6 +4094,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -3765,6 +4106,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -3776,6 +4118,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -3787,6 +4130,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 11,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3798,6 +4142,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 12,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3809,6 +4154,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 13,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3820,6 +4166,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 19,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3831,6 +4178,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 20,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3842,6 +4190,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 21,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -3853,6 +4202,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 22,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3864,6 +4214,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 23,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -3875,6 +4226,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 26,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -3886,6 +4238,7 @@
     {
       "page": "karaoke",
       "pagePath": "/karaoke",
+      "index": 27,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -3897,6 +4250,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -3908,6 +4262,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -3919,6 +4274,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -3930,6 +4286,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -3941,6 +4298,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -3952,6 +4310,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -3963,6 +4322,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 11,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -3974,6 +4334,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 12,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -3985,6 +4346,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 13,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -3996,6 +4358,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 19,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -4007,6 +4370,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 20,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -4018,6 +4382,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 21,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -4029,6 +4394,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 22,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -4040,6 +4406,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 23,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -4051,6 +4418,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 26,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -4062,6 +4430,7 @@
     {
       "page": "taco-tuesday",
       "pagePath": "/taco-tuesday",
+      "index": 27,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",
@@ -4073,6 +4442,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 0,
       "region": "header",
       "label": "(logo, no text)",
       "section": "Header",
@@ -4084,6 +4454,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 1,
       "region": "header-nav",
       "label": "Menu",
       "section": "Header",
@@ -4095,6 +4466,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 2,
       "region": "header-nav",
       "label": "Takeout",
       "section": "Header",
@@ -4106,6 +4478,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 3,
       "region": "header-nav",
       "label": "Tonight",
       "section": "Header",
@@ -4117,6 +4490,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 4,
       "region": "header-nav",
       "label": "Private Events",
       "section": "Header",
@@ -4128,6 +4502,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 5,
       "region": "header-nav",
       "label": "Our Story",
       "section": "Header",
@@ -4139,6 +4514,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 10,
       "region": "body",
       "label": "Six-Hour BirriaQuesabirria tacos and the bowl. The reason most people make the drive.",
       "section": "Why the drive",
@@ -4150,6 +4526,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 11,
       "region": "body",
       "label": "The New BarA real tequila and mezcal list, margaritas on house pulps.",
       "section": "Why the drive",
@@ -4161,6 +4538,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 12,
       "region": "body",
       "label": "Taco TuesdayStreet tacos on tortillas pressed that morning, plus free bingo at 8.",
       "section": "Why the drive",
@@ -4172,6 +4550,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 13,
       "region": "body",
       "label": "Private EventsQuinces, showers, office parties. Four private rooms, ten minutes away.",
       "section": "Why the drive",
@@ -4183,6 +4562,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 17,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -4194,6 +4574,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 18,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -4205,6 +4586,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 19,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -4216,6 +4598,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 25,
       "region": "footer",
       "label": "Menu",
       "section": "Footer",
@@ -4227,6 +4610,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 26,
       "region": "footer",
       "label": "Takeout",
       "section": "Footer",
@@ -4238,6 +4622,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 27,
       "region": "footer",
       "label": "Tonight",
       "section": "Footer",
@@ -4249,6 +4634,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 28,
       "region": "footer",
       "label": "Private Events",
       "section": "Footer",
@@ -4260,6 +4646,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 29,
       "region": "footer",
       "label": "Our Story",
       "section": "Footer",
@@ -4271,6 +4658,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 32,
       "region": "footer",
       "label": "Google",
       "section": "Footer",
@@ -4282,6 +4670,7 @@
     {
       "page": "mexican-restaurant-gaithersburg-md",
       "pagePath": "/mexican-restaurant-gaithersburg-md",
+      "index": 33,
       "region": "footer",
       "label": "Yelp",
       "section": "Footer",

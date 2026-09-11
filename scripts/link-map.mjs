@@ -133,9 +133,10 @@ async function main() {
     await page.goto(`http://127.0.0.1:${port}/design/pages/${p.slug}.html`, { waitUntil: 'load', timeout: 120000 });
     const found = await page.evaluate(() => {
       const c = (s) => (s || '').replace(/\s+/g, ' ').trim();
-      return [...document.querySelectorAll('a[href]')].map((a) => {
+      return [...document.querySelectorAll('a[href]')].map((a, index) => {
         const sec = a.closest('section,header,footer');
         return {
+          index,                       // position among every a[href] in document order
           href: a.getAttribute('href'),
           label: c(a.textContent),
           section: sec ? (sec.getAttribute('data-screen-label') || sec.tagName.toLowerCase()) : '',
@@ -193,7 +194,7 @@ async function main() {
       continue;
     }
     rows.push({
-      page: l.slug, pagePath: l.path, region,
+      page: l.slug, pagePath: l.path, index: l.index, region,
       label: label || '(logo, no text)',
       section: l.section || '',
       from: href, to, confidence, why,

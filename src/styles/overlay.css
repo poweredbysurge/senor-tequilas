@@ -1,0 +1,53 @@
+/* port: mobile nav rule and menu panel. See DESIGN-DEBT.md entries 2 and 6.
+   This file is the entire CSS overlay. Nothing in design/pages/ is edited. */
+
+/* The panel is inert until opened. The design's inline `display: flex` on the panel root
+   would otherwise beat the user agent's [hidden] rule, so this has to be explicit. */
+#mobile-menu[hidden] { display: none !important; }
+
+@media (max-width: 959px) {
+  /* The design never hides the desktop nav: it computes to display:flex at every width from
+     360 to 1920, so both navigations render at once and every page scrolls sideways from 360
+     up to between 653 and 724 depending on how many links that page's nav carries.
+
+     There is exactly one <nav> per page and it is always inside the header, verified across
+     all 20 pages, so this selector cannot reach anything else.
+
+     The breakpoint is 960, and the number is measured on all 20 pages rather than sampled.
+     768 only removes the scrollbar: the four events pages keep overflowing until 780, and
+     keep wrapping "PRIVATE EVENTS" and "OUR STORY" onto two lines until 905. Anything below
+     905 ships a header that is non-overflowing but not composed, on every portrait tablet,
+     and portrait widths cluster at 768, 810, 820 and 834.
+
+     960 is the smallest round number that is genuinely composed, with 55px past the wrap
+     point. Not 1023: hiding the nav at desktop-like widths is disproportionate to the bug,
+     and both numbers keep the nav on iPad landscape and give portrait tablets the hamburger,
+     so 1023 would only surrender the 960-to-1023 band for nothing.
+
+     If the margin is ever eaten, the failure mode is wrapping rather than overflow, which is
+     ugly rather than broken. See DESIGN-DEBT.md entry 6 for what drives the 905.
+
+     The hamburger's visibility is deliberately untouched at every width. It is visible at
+     1440 in the design, Gate A passed with it there, and that is a design decision to revisit
+     rather than a bug to fix mid-port.
+
+     Nothing above 767px is affected by this file. */
+  header nav { display: none !important; }
+}
+
+@media (max-width: 389px) {
+  /* The design was never drawn below 390, and below it the homepage header overflows: the
+     row's content ends at 374.4px in a 360px viewport. The two values below are a
+     proportional scale of what the design already varies, which is what a clamp() on the
+     logo would have done had the design used one. No wrapping, no stacking, no restructuring
+     of the header row, and nothing at 390 and above is touched.
+
+     The row padding is already responsive, clamp(14px, 4vw, 40px), so this only lowers its
+     small end. Reducing padding alone recovers 7.4px because the overflow runs past the
+     right padding rather than through it, so the logo takes the remaining 10px.
+
+     320 still overflows and is knowingly left: pushing the logo below this is more than the
+     brand can carry. See DESIGN-DEBT.md. */
+  header > div { padding-left: 7px !important; padding-right: 7px !important; }
+  header > div > a:first-child img { height: 31.5px !important; }
+}

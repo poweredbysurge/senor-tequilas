@@ -238,7 +238,31 @@ the anchors were, but it leaves a 13,666px page with no way to move around insid
 and party-type sections. Not built here: adding a navigation component the design never drew
 is a design decision, not a port decision.
 
-## 10. "See the Bar" promises one page and sits beside copy about another
+## 10. The current-page nav highlight is hand-applied, so 12 pages have none
+
+The header exists in seven variants across the twenty pages. Six of the seven differences are
+real and intentional, and the port keeps all seven rather than picking one:
+
+| variant | pages | what is different |
+|---|---|---|
+| Header1 | home | nav carries "Happy Hour" where every other page carries "Takeout" |
+| Header2 | menu | "Menu" highlighted green, `rgb(56, 176, 73)` |
+| Header3 | our-story | "Our Story" highlighted |
+| Header4 | takeout-delivery | "Takeout" highlighted |
+| Header5 | 12 pages | **nothing highlighted** |
+| Header6 | private-parties and its two children | CTA is "Book a Tour" |
+| Header7 | catering | CTA is "Get a Quote" |
+
+The highlight is a hard-coded inline colour on one `<a>`, applied by hand on the three pages
+whose nav item matches. The twelve pages under Header5 show no active state at all, including
+`/happy-hour`, `/margaritas`, `/karaoke` and `/taco-tuesday`, several of which do correspond
+to a nav item.
+
+**Upstream fix:** make the active state systematic rather than hand-applied, so every page
+that matches a nav item highlights it. In the port this would collapse seven header variants
+into two, the home nav and everything else, with the active item chosen per route.
+
+## 11. "See the Bar" promises one page and sits beside copy about another
 
 The four `See the Bar →` links on the dish pages sit inside a "Pair it" section whose copy is
 about a cantarito, a cocktail. The label says the bar.
@@ -250,7 +274,7 @@ betrayal even if the cantarito lives there.
 **Upstream fix, a copy decision not a link decision:** either the label becomes "See the
 Drinks" and points at `/margaritas`, or the pairing changes to something tequila-forward.
 
-## 11. The brief references a `/contact/` page that does not exist
+## 12. The brief references a `/contact/` page that does not exist
 
 `seo-migration-kit-and-page-spec.md` says "every page: link to `/contact/`". There is no
 contact page among the twenty and none was designed.
