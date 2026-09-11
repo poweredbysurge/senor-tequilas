@@ -1,12 +1,11 @@
 {
   "reviewed": "Reviewed and approved 2026-09-10. Every row except the three unresolved delivery links is signed off. `confidence` records how a destination was determined, not whether it was approved: mechanical means derived from the path table or the migration kit, proposed means a judgment call a human settled.",
   "note": "Every link whose destination changes. design/pages/ is never edited; this is applied in Phase 3 when markup moves into src/pages/. Rewriting an href changes no pixels, so the reference set is unaffected.",
-  "generatedAt": "2026-09-11T00:22:44.269Z",
+  "generatedAt": "2026-09-11T22:30:38.787Z",
   "googlePlaceId": "ChIJfQWUP2wstokR0hf-aq2yO5Y",
   "counts": {
-    "mechanical": 330,
+    "mechanical": 333,
     "proposed": 56,
-    "unresolved": 3,
     "changed": 389,
     "leftAsIs": 33
   },
@@ -811,9 +810,9 @@
       "label": "DoorDash",
       "section": "Pickup details",
       "from": "#",
-      "to": null,
-      "confidence": "unresolved",
-      "why": "no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has"
+      "to": "https://www.doordash.com/store/tequilas-germantown-1382099/87487565/",
+      "confidence": "mechanical",
+      "why": "client-supplied storefront"
     },
     {
       "page": "takeout-delivery",
@@ -823,9 +822,9 @@
       "label": "Uber Eats",
       "section": "Pickup details",
       "from": "#",
-      "to": null,
-      "confidence": "unresolved",
-      "why": "three separate live storefronts exist for this restaurant, so any single choice is a coin flip. See DESIGN-DEBT.md"
+      "to": "https://www.ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA",
+      "confidence": "mechanical",
+      "why": "client-supplied storefront, which also settles which of the three duplicate listings is the live one"
     },
     {
       "page": "takeout-delivery",
@@ -835,9 +834,9 @@
       "label": "Grubhub",
       "section": "Pickup details",
       "from": "#",
-      "to": null,
-      "confidence": "unresolved",
-      "why": "no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has"
+      "to": "https://www.grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303",
+      "confidence": "mechanical",
+      "why": "client-supplied storefront"
     },
     {
       "page": "takeout-delivery",

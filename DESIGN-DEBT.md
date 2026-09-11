@@ -94,7 +94,22 @@ Picking one would have been a coin flip with two-in-three odds of pointing custo
 stale listing. Duplicate storefronts also split orders and reviews across listings, which is
 worth cleaning up regardless of the website.
 
-**DoorDash and Grubhub have not been checked for the same problem.**
+**RESOLVED 11 September.** The client supplied all three storefronts, which settles which
+Uber Eats listing is the live one:
+
+- DoorDash: `doordash.com/store/tequilas-germantown-1382099/87487565/`
+- Uber Eats: `ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA`, the
+  first of the three duplicates listed above
+- Grubhub: `grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303`
+
+They arrived carrying `srsltid` parameters, which are Google search-attribution tokens. Those
+expire, they leak where the link was found, and they do not belong in a permanent site link,
+so they were stripped.
+
+**The duplicate-listing problem itself is still open.** Two stale Uber Eats storefronts remain
+live and will keep splitting orders and reviews away from the real one. That is an operations
+job for the client, not a website fix. DoorDash and Grubhub have not been checked for the
+same problem.
 
 All three controls stay in the markup with `unresolved` rows in the map. They are left inert
 rather than removed: the design drew them deliberately and removing them is a design change.

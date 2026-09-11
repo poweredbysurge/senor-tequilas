@@ -685,12 +685,37 @@ const jsonLd = {
           });
         }
 
+
+        /* ---- 12. the delivery storefronts -----------------------------------------------------
+           The design drew DoorDash, Uber Eats and Grubhub as dead "#" links because no URLs
+           existed. The client supplied them on 11 September. They are also in
+           design/LINK-MAP.json, which is the record; this applies them to the built page without
+           a full regeneration of src/. It only fires on a link still pointing at "#", so once the
+           map is applied natively this becomes a no-op. */
+        var DELIVERY = {
+          'doordash': 'https://www.doordash.com/store/tequilas-germantown-1382099/87487565/',
+          'uber eats': 'https://www.ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA',
+          'ubereats': 'https://www.ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA',
+          'grubhub': 'https://www.grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303'
+        };
+        function deliveryLinks() {
+          [].slice.call(document.querySelectorAll('a[href="#"]')).forEach(function (a) {
+            var key = (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+            var url = DELIVERY[key];
+            if (!url) return;
+            a.setAttribute('href', url);
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener');
+          });
+        }
+
         function start() {
           try { if (isHome) tonightCarousel(); } catch (e) {}
           try { if (isHome) reviewsCarousel(); } catch (e) {}
           try { if (isHome) signatureDishes(); } catch (e) {}
           try { swapImages(); } catch (e) {}
           try { textSwaps(); } catch (e) {}
+          try { deliveryLinks(); } catch (e) {}
           try { navLabel(); } catch (e) {}
           try { eventsFaq(); } catch (e) {}
           try { eventPackages(); } catch (e) {}

@@ -111,10 +111,12 @@ const BODY = [
   ['Full lineup →',            '/taco-tuesday', 'proposed', 'approved: the carousel lineup link, /taco-tuesday owns the seven-night calendar'],
   ['Private eventsFour Private Rooms', '/private-parties', 'mechanical', 'card names the page'],
 
-  // third-party delivery, no URL anywhere in the design or the brief
-  ['DoorDash',                 null, 'unresolved', 'no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has'],
-  ['Uber Eats',                null, 'unresolved', 'three separate live storefronts exist for this restaurant, so any single choice is a coin flip. See DESIGN-DEBT.md'],
-  ['Grubhub',                  null, 'unresolved', 'no storefront URL in the design or the brief; not yet checked for the duplicate-listing problem Uber Eats has'],
+  // Third-party delivery, supplied by the client on 11 September. The srsltid parameters
+  // they arrived with are Google search-attribution tokens: they expire, they leak where the
+  // link was found, and they do not belong in a permanent site link. Stripped.
+  ['DoorDash',                 'https://www.doordash.com/store/tequilas-germantown-1382099/87487565/', 'mechanical', 'client-supplied storefront'],
+  ['Uber Eats',                'https://www.ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA', 'mechanical', 'client-supplied storefront, which also settles which of the three duplicate listings is the live one'],
+  ['Grubhub',                  'https://www.grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303', 'mechanical', 'client-supplied storefront'],
 ];
 
 const clean = (s) => (s || '').replace(/\s+/g, ' ').trim();
