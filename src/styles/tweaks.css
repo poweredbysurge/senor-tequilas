@@ -1,0 +1,59 @@
+/* port: requested design changes, September 11. See DESIGN-DEBT.md entry 19.
+   These are deliberate departures from the artboard, not fidelity fixes. */
+
+/* ---- 1. underlines -------------------------------------------------------------------
+   The design underlines every link and button, which reads as noise on cards, chips and
+   the footer. Removed site-wide. Real inline prose links keep an underline on hover so
+   they are still discoverable. */
+a, button, a *, button * { text-decoration: none !important; }
+footer a:hover, footer a:focus-visible { text-decoration: underline !important; }
+
+/* ---- 2. homepage hero ------------------------------------------------------------------
+   The "Loop · new bar, sparklers, al pastor" chip and the floating Order/Call pill are
+   removed from the hero at the client's request. */
+body[data-route="/"] [data-dc-tpl="63"],
+body[data-route="/"] [data-dc-tpl="68"] { display: none !important; }
+
+/* ---- 3. the Tonight carousel bleeds to the right edge ----------------------------------
+   The rail was capped at max-width 1180px, so it stopped 130px short of the viewport and
+   the next card was clipped mid-air. It now starts on the same gutter as the headline and
+   runs off the right edge, which is what a scrolling rail should look like. */
+body[data-route="/"] [data-dc-tpl="91"] {
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+/* Only the rail bleeds. The headline and the arrow row keep the container's gutter, and must
+   not get an extra margin on top of it or the row overflows at narrow widths. */
+
+/* The arrows are real controls now, so show them as such. */
+body[data-route="/"] [data-dc-tpl="84"],
+body[data-route="/"] [data-dc-tpl="87"] { cursor: pointer; }
+body[data-route="/"] [data-dc-tpl="84"][disabled],
+body[data-route="/"] [data-dc-tpl="87"][disabled] { opacity: .35; cursor: default; }
+
+/* ---- 4. signature dish filters ---------------------------------------------------------
+   The chips are buttons the design never wired up. A card hidden by a filter is removed
+   from flow so the grid closes up. */
+body[data-route="/"] [data-dc-tpl="126"][data-filtered="out"] { display: none !important; }
+body[data-route="/"] [data-empty-filter] {
+  grid-column: 1 / -1;
+  padding: 28px 18px;
+  text-align: center;
+  font-family: Barlow, sans-serif;
+  font-size: 14px;
+  color: rgba(234, 226, 214, .6);
+}
+
+/* ---- 5. the Find Us map ------------------------------------------------------------------
+   The placeholder box becomes a real embedded map. */
+body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
+[data-real-map] { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+
+/* ---- 6. the self-scrolling social rail -------------------------------------------------
+   "A room that never sits still" is marked data-autoscroll in the design and its runtime
+   did the scrolling; the static export had nothing to move it. The script in
+   site-tweaks.js scrolls it continuously, and scroll snapping has to come off or the
+   browser pulls every sub-pixel step back to the nearest snap point and the rail sits
+   frozen. Manual dragging still works, it simply no longer clicks into place. */
+[data-autoscroll] { scroll-snap-type: none !important; }

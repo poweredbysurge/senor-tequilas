@@ -62,6 +62,7 @@ async function main() {
   const css = await readFile(path.join(ROOT, 'design', 'pages', 'site.css'), 'utf8');
   await writeFile(path.join(SRC, 'styles', 'site.css'), absoluteImages(css));
   await writeFile(path.join(SRC, 'styles', 'overlay.css'), await readFile(path.join(ROOT, 'design', 'overlay', 'mobile-nav.css'), 'utf8'));
+  await writeFile(path.join(SRC, 'styles', 'tweaks.css'), await readFile(path.join(ROOT, 'design', 'overlay', 'site-tweaks.css'), 'utf8'));
 
   const imgs = await readdir(path.join(ROOT, 'design', 'pages', 'images'));
   for (const f of imgs) {
@@ -76,7 +77,7 @@ async function main() {
 
   const variants = new Map();     // "Header" -> Map(hash -> {name, html, pages[]})
   const pageParts = [];
-  let rewritten = 0, unresolvedLeft = 0, formsMarked = 0, altFilled = 0;
+  let rewritten = 0, unresolvedLeft = 0, formsMarked = 0, altFilled = 0, mapsPlaced = 0;
 
   for (const p of manifest.pages) {
     await page.goto(`http://127.0.0.1:${port}/design/pages/${p.slug}.html`, { waitUntil: 'load', timeout: 120000 });
@@ -92,6 +93,25 @@ async function main() {
         a.setAttribute('href', r.to);
         n++;
       }
+      // The Find Us block drew a labelled placeholder over a bar photo. It becomes a real
+      // embedded map. The keyless Google Maps embed needs no API key and no script.
+      const MAP = 'https://maps.google.com/maps?q=20021%20Century%20Blvd,%20Germantown,%20MD%2020874&z=15&output=embed';
+      let mapsPlaced = 0;
+      const mapSlots = [...document.querySelectorAll('[data-dc-tpl="223"], [data-map-slot]')];
+      for (const slot of mapSlots) {
+        if (!/map:/i.test(slot.textContent || '') && !slot.hasAttribute('data-map-slot')) continue;
+        for (const child of [...slot.children]) child.remove();
+        const frame = document.createElement('iframe');
+        frame.setAttribute('data-real-map', '');
+        frame.setAttribute('src', MAP);
+        frame.setAttribute('title', 'Map to Senor Tequila\'s, 20021 Century Blvd, Germantown, MD 20874');
+        frame.setAttribute('loading', 'lazy');
+        frame.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        frame.setAttribute('allowfullscreen', '');
+        slot.appendChild(frame);
+        mapsPlaced++;
+      }
+
       // The design ships nine photographs with alt="". Filled from design/ALT-TEXT.json,
       // keyed on the image filename so a shared image reads the same everywhere.
       let altFilled = 0;
@@ -123,7 +143,7 @@ async function main() {
         blocks.push({ name: s.name, html: el.outerHTML });
         el.replaceWith(document.createComment(`COMPONENT:${s.name}`));
       }
-      return { n, unresolved, formsMarked, altFilled, blocks, host: host.outerHTML };
+      return { n, unresolved, formsMarked, altFilled, mapsPlaced, blocks, host: host.outerHTML };
     }, { rows, shared: SHARED, alt: altText.byImage });
 
     if (applied.error) throw new Error(`${p.slug}: ${applied.error}`);
@@ -131,6 +151,7 @@ async function main() {
     unresolvedLeft += applied.unresolved;
     formsMarked += applied.formsMarked;
     altFilled += applied.altFilled;
+    mapsPlaced += applied.mapsPlaced;
 
     const used = [];
     for (const b of applied.blocks) {
@@ -168,9 +189,11 @@ async function main() {
   await writeFile(path.join(SRC, 'data', 'business.json'), JSON.stringify(seo.business, null, 2));
 
   const toggle = await readFile(path.join(ROOT, 'design', 'overlay', 'mobile-menu.js'), 'utf8');
+  const tweaks = await readFile(path.join(ROOT, 'design', 'overlay', 'site-tweaks.js'), 'utf8');
   await writeFile(path.join(SRC, 'layouts', 'Base.astro'), `---
 import '../styles/site.css';
 import '../styles/overlay.css';
+import '../styles/tweaks.css';
 import MobileMenu from '../components/MobileMenu.astro';
 import business from '../data/business.json';
 
@@ -240,6 +263,9 @@ const jsonLd = {
     <script is:inline>
 ${toggle.split('\n').map((l) => (l ? '      ' + l : l)).join('\n')}
     </script>
+    <script is:inline>
+${tweaks.split('\n').map((l) => (l ? '      ' + l : l)).join('\n')}
+    </script>
   </body>
 </html>
 `);
@@ -284,9 +310,24 @@ export default defineConfig({
 });
 `);
 
+  // ---- /contact, authored for the port because the design never drew it ------------------
+  {
+    const contact = absoluteImages(await readFile(path.join(ROOT, 'design', 'overlay', 'contact.html'), 'utf8'));
+    const headerName = [...variants.get('Header').values()].sort((a, b) => b.pages.length - a.pages.length)[0].name;
+    const footerName = [...variants.get('Footer').values()].sort((a, b) => b.pages.length - a.pages.length)[0].name;
+    const meta = seo.pages['/contact'];
+    const body = contact
+      .replace('<!--COMPONENT:Header-->', `<${headerName} />`)
+      .replace('<!--COMPONENT:Footer-->', `<${footerName} />`);
+    await writeFile(path.join(SRC, 'pages', 'contact.astro'),
+      `---\nimport Base from '../layouts/Base.astro';\nimport ${headerName} from '../components/${headerName}.astro';\nimport ${footerName} from '../components/${footerName}.astro';\n---\n<Base title=${JSON.stringify(meta.title)} description=${JSON.stringify(meta.description)} canonical=${JSON.stringify(meta.canonical)} ogImage=${JSON.stringify(meta.ogImage)} route="/contact">\n${body}\n</Base>\n`);
+    console.log(`  /contact${' '.repeat(38)} src/pages/contact.astro   ${headerName}, ${footerName}  (authored, not from the design)`);
+  }
+
   // ---- sitemap and robots -------------------------------------------------------------
   const today = new Date().toISOString().slice(0, 10);
-  const urls = manifest.pages.map((p) => `  <url>\n    <loc>${seo.pages[p.path].canonical}</loc>\n    <lastmod>${today}</lastmod>\n  </url>`).join('\n');
+  const sitemapPaths = [...manifest.pages.map((p) => p.path), '/contact'];
+  const urls = sitemapPaths.map((pth) => `  <url>\n    <loc>${seo.pages[pth].canonical}</loc>\n    <lastmod>${today}</lastmod>\n  </url>`).join('\n');
   await writeFile(path.join(PUBLIC, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
   await writeFile(path.join(PUBLIC, 'robots.txt'),
@@ -311,11 +352,12 @@ export default defineConfig({
     redirects: REDIRECTS.map(([source, destination]) => ({ source, destination, permanent: true })),
   }, null, 2) + '\n');
 
-  console.log(`\nsitemap.xml with ${manifest.pages.length} URLs, robots.txt, and deploy/redirects.json with ${REDIRECTS.length} 301s written.`);
+  console.log(`\nsitemap.xml with ${sitemapPaths.length} URLs, robots.txt, and deploy/redirects.json with ${REDIRECTS.length} 301s written.`);
 
   console.log(`\n${rewritten} hrefs rewritten from the link map, ${unresolvedLeft} left inert (the delivery links).`);
   console.log(`${formsMarked} inquiry form(s) marked with <!-- TOAST FORM EMBED -->.`);
   console.log(`${altFilled} empty alt attribute(s) filled from ALT-TEXT.json.`);
+  console.log(`${mapsPlaced} map placeholder(s) replaced with a real embedded map.`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

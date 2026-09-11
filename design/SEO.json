@@ -208,6 +208,13 @@
       "canonical": "https://senortequilas.com/mexican-restaurant-gaithersburg-md",
       "ogImage": "/images/24e322da4fd1060e.jpg",
       "extraTypes": []
+    },
+    "/contact": {
+      "title": "Contact & Directions | Señor Tequilas, Germantown MD",
+      "description": "20021 Century Blvd, Germantown, MD 20874. Hours, directions, free parking and 301-569-4574. Next to Topgolf, ten minutes up 270.",
+      "canonical": "https://senortequilas.com/contact",
+      "ogImage": "/images/8cd7641ffaf36916.jpg",
+      "extraTypes": []
     }
   }
 }

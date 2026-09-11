@@ -408,3 +408,45 @@ people actively look for.
 
 **Not built.** Out of scope for a port and a design decision. To be raised as a
 twenty-first page in the next design pass.
+
+## 19. Requested changes to the homepage, September 11
+
+Client-requested departures from the artboard, not fidelity fixes. They live in
+`design/overlay/site-tweaks.css` and `site-tweaks.js`; `design/pages/` is still untouched.
+The reference set was regenerated so the checks now verify this intent.
+
+| change | what was there | what it is now |
+|---|---|---|
+| hero chip | "Loop · new bar, sparklers, al pastor" | removed |
+| hero pill | a floating Order / Call pair over the photo | removed |
+| Tonight carousel | capped at 1180px, stopping 130px short with a card clipped mid-air | bleeds off the right edge |
+| Tonight badge | hard-coded to Thursday | follows the real day, and the week rotates so tonight leads |
+| carousel arrows | drawn but inert | scroll one card, and disable at each end |
+| underlines | every link and button underlined, site-wide | removed, with a hover underline kept in the footer |
+| dish filter chips | drawn but inert | filter the top-seller grid, with an empty state |
+| social rail | static | scrolls itself, pausing on hover, focus and reduced-motion |
+| Find Us | a labelled placeholder over a bar photo | a real embedded Google map |
+
+**Two things to know about these.**
+
+All six top-seller cards are tacos, so the Fajitas, Margaritas and Desserts chips have nothing
+to show and fall back to "No X in the top sellers this week." That is a content gap, not a
+code gap: the grid needs a non-taco card before those chips earn their place.
+
+The self-scrolling rail makes the homepage non-deterministic to photograph. Both the
+reference generator and the verifier now run with `reducedMotion: 'reduce'`, which
+`site-tweaks.js` honours, so the checks measure a still page and reduced-motion visitors get
+the same still page.
+
+## 20. /contact now exists, authored rather than designed
+
+Entry 18 recorded that the migration kit assumes a `/contact/` page and the design never drew
+one. It has been built, from `design/overlay/contact.html`, using only the design's own
+primitives: the gold eyebrow, Archivo Black headline, Barlow body, the same grounds, cards,
+hairlines and button pair. No new colours, type or radii.
+
+It carries the NAP, the full hours, a real embedded map, directions and reserve buttons, and a
+short "what we get asked" block covering parking, big groups, takeout and catering.
+
+**Still a design decision for the next pass:** whether `/contact` joins the header and footer
+navigation. It is in the sitemap and reachable by URL, but nothing links to it yet.

@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+---
+<Base title="Contact & Directions | Señor Tequilas, Germantown MD" description="20021 Century Blvd, Germantown, MD 20874. Hours, directions, free parking and 301-569-4574. Next to Topgolf, ten minutes up 270." canonical="https://senortequilas.com/contact" ogImage="/images/8cd7641ffaf36916.jpg" route="/contact">
+<!--
+  /contact, authored for the port. See DESIGN-DEBT.md entry 18.
+
+  The design never drew this page, but the migration kit assumes it ("every page: link to
+  /contact/") and a local SEO build needs one place where NAP, hours, directions and parking
+  live in a form Google reads easily.
+
+  Built from the design's own primitives only: the same gold eyebrow, Archivo Black headline,
+  Barlow body, rgb(18,18,16) ground, rgb(28,27,24) cards, rgb(42,40,32) hairlines and the
+  green and outline button pair. No new colours, no new type, no new radii.
+-->
+<div class="sc-host" data-sc-name="Contact" style="color: rgb(234, 226, 214); font-family: Barlow, system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
+  <Header5 />
+
+  <section data-screen-label="Contact hero" style="background: rgb(18, 18, 16); border-bottom: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(44px, 7vw, 88px) 0px;">
+    <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);">
+      <div style="display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);">
+        <span style="width: 26px; height: 1px; background: rgba(214, 188, 133, 0.7);"></span>Germantown, MD · Century Blvd
+      </div>
+      <h1 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(32px, 6.4vw, 58px); line-height: 1.02; margin: 10px 0px 0px; text-transform: uppercase; text-wrap: balance;">Come See Us</h1>
+      <p style="font-size: 16px; line-height: 1.7; color: rgba(234, 226, 214, 0.85); margin: 16px 0px 0px; max-width: 54ch; text-wrap: pretty;">Next to Topgolf, ten minutes up 270 from Gaithersburg, with free parking in the lot. Call us for anything the site does not answer, and for parties of 12 or more ask about the rooms.</p>
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px;">
+        <a href="https://order.toasttab.com/online/senortequilastogo" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 15px; padding: 15px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box;">Order Online</a>
+        <a href="https://tables.toasttab.com/restaurants/d94fa749-fbd5-4a66-90b6-d7755b8c3af3/findTime" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(185, 156, 102, 0.75); color: rgb(234, 226, 214); font-weight: 700; font-size: 15px; padding: 15px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; background: rgba(18, 18, 16, 0.4);">Reserve a Table</a>
+        <a href="tel:3015694574" style="display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(185, 156, 102, 0.75); color: rgb(234, 226, 214); font-weight: 700; font-size: 15px; padding: 15px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; background: rgba(18, 18, 16, 0.4);">301-569-4574</a>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Find us and hours" style="background: rgb(20, 18, 16); padding: clamp(36px, 6vw, 72px) 0px;">
+    <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px); display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; align-items: stretch;">
+
+      <div style="position: relative; border-radius: 18px; border: 1px solid rgb(42, 40, 32); min-height: 340px; overflow: hidden; background: rgb(28, 27, 24);"><iframe data-real-map src="https://maps.google.com/maps?q=20021%20Century%20Blvd,%20Germantown,%20MD%2020874&amp;z=15&amp;output=embed" title="Map to Senor Tequila's, 20021 Century Blvd, Germantown, MD 20874" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen=""></iframe></div>
+
+      <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 18px; padding: 26px;">
+        <h2 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(22px, 3vw, 30px); line-height: 1.05; margin: 0px; text-transform: uppercase;">Find Us</h2>
+        <p style="font-size: 15px; line-height: 1.7; color: rgba(234, 226, 214, 0.85); margin: 12px 0px 0px;">20021 Century Blvd<br>Germantown, MD 20874</p>
+        <p style="font-size: 15px; line-height: 1.7; margin: 6px 0px 18px;"><a href="tel:3015694574" style="color: rgb(214, 188, 133); font-weight: 700;">301-569-4574</a></p>
+
+        <div style="border-top: 1px solid rgb(42, 40, 32); padding-top: 16px; display: grid; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px;"><span style="color: rgba(234, 226, 214, 0.7);">Mon to Wed</span><span style="color: rgb(234, 226, 214);">3 PM to 10</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px;"><span style="color: rgba(234, 226, 214, 0.7);">Thu</span><span style="color: rgb(234, 226, 214);">3 PM to midnight</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px;"><span style="color: rgba(234, 226, 214, 0.7);">Fri</span><span style="color: rgb(56, 176, 73);">3 PM to 1 AM</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px;"><span style="color: rgba(234, 226, 214, 0.7);">Sat</span><span style="color: rgb(56, 176, 73);">11 AM to 1 AM</span></div>
+          <div style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px;"><span style="color: rgba(234, 226, 214, 0.7);">Sun</span><span style="color: rgb(234, 226, 214);">11 AM to 10 PM</span></div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px;">
+          <a href="https://maps.google.com/maps?q=20021+Century+Blvd,+Germantown,+MD+20874" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(185, 156, 102, 0.6); color: rgb(234, 226, 214); font-weight: 700; font-size: 14px; padding: 13px 20px; border-radius: 12px; min-height: 48px; box-sizing: border-box;">Directions</a>
+          <a href="https://tables.toasttab.com/restaurants/d94fa749-fbd5-4a66-90b6-d7755b8c3af3/findTime" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 14px; padding: 13px 20px; border-radius: 12px; min-height: 48px; box-sizing: border-box;">Reserve</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="What we get asked" style="background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(36px, 6vw, 72px) 0px;">
+    <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);">
+      <div style="display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);">
+        <span style="width: 26px; height: 1px; background: rgba(214, 188, 133, 0.7);"></span>Before you call
+      </div>
+      <h2 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(24px, 4.4vw, 38px); line-height: 1.05; margin: 10px 0px 22px; text-transform: uppercase;">What We Get Asked</h2>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px;">
+        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 20px;">
+          <div style="font-family: 'Archivo Black', sans-serif; font-size: 15px; text-transform: uppercase; color: rgb(246, 239, 228); line-height: 1.2;">Parking</div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Free, in the lot, and there is more of it behind the building on a busy night.</p>
+        </div>
+        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 20px;">
+          <div style="font-family: 'Archivo Black', sans-serif; font-size: 15px; text-transform: uppercase; color: rgb(246, 239, 228); line-height: 1.2;">Big groups</div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Twelve and up, ask about the rooms. Four rooms and two patios, up to 400 for a buyout. <a href="/private-parties" style="color: rgb(214, 188, 133); font-weight: 700;">Private events</a>.</p>
+        </div>
+        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 20px;">
+          <div style="font-family: 'Archivo Black', sans-serif; font-size: 15px; text-transform: uppercase; color: rgb(246, 239, 228); line-height: 1.2;">Takeout</div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Order on Toast and the consommé travels sealed. <a href="/takeout-delivery" style="color: rgb(214, 188, 133); font-weight: 700;">Takeout and delivery</a>.</p>
+        </div>
+        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 20px;">
+          <div style="font-family: 'Archivo Black', sans-serif; font-size: 15px; text-transform: uppercase; color: rgb(246, 239, 228); line-height: 1.2;">Catering</div>
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">We travel to you, drop-off or full service. <a href="/catering" style="color: rgb(214, 188, 133); font-weight: 700;">Taco catering</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer2 />
+</div>
+
+</Base>

@@ -1,6 +1,6 @@
 {
   "note": "Reference captures are generated, not committed. Regenerate with: node scripts/references.mjs",
-  "generatedAt": "2026-09-11T00:20:06.686Z",
+  "generatedAt": "2026-09-11T19:15:06.974Z",
   "viewports": [
     {
       "width": 390,
@@ -16,7 +16,7 @@
     }
   ],
   "count": 60,
-  "totalBytes": 159986605,
+  "totalBytes": 159320874,
   "files": [
     {
       "file": "birria-tacos-1440.png",
@@ -104,24 +104,24 @@
     },
     {
       "file": "home-1440.png",
-      "bytes": 6314644,
+      "bytes": 5987050,
       "width": 1440,
       "height": 6128,
-      "sha256": "4cf9323cbff6d11924566f30c34f91297217ec1dd05cab5399a5051ef566ba57"
+      "sha256": "ef397c12dcb69d793b4df622a4b02b71d2d32e05adab6ec712df413a0869c295"
     },
     {
       "file": "home-390.png",
-      "bytes": 2368923,
+      "bytes": 2229412,
       "width": 390,
-      "height": 7356,
-      "sha256": "6c643b9918e1f70eaf26df53cfb2bc80f4fe0997c54b6f38516eb35da93a54e9"
+      "height": 7339,
+      "sha256": "150cc62389ca553aa2696149c6a5495651f2a4927bc59a55966ea84cfc9b3333"
     },
     {
       "file": "home-768.png",
-      "bytes": 3428779,
+      "bytes": 3230153,
       "width": 768,
       "height": 5648,
-      "sha256": "2588035e18f6122a67978e02ad48086f5b0ba488d835fb835f1de381c4840fcc"
+      "sha256": "2b797fe08a6ea838ca1aaeb06482add9b96aeebe081705ff3719dbc4cb0f49dc"
     },
     {
       "file": "karaoke-1440.png",

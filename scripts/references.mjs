@@ -78,7 +78,11 @@ async function main() {
   const { server, port } = await serve(ROOT);
   const base = `http://127.0.0.1:${port}`;
   const browser = await chromium.launch({ headless: true, args: LAUNCH_ARGS });
-  const page = await browser.newPage({ viewport: VIEWPORTS[2], deviceScaleFactor: 1 });
+  // reducedMotion is what makes the homepage comparable: the social rail scrolls itself, so
+  // without it the reference and the build are photographed at different offsets and a
+  // moving rail reads as a failure. site-tweaks.js honours the same preference, so this
+  // measures exactly what a reduced-motion visitor sees.
+  const page = await browser.newPage({ viewport: VIEWPORTS[2], deviceScaleFactor: 1, reducedMotion: 'reduce' });
 
   if (MANIFEST_ONLY) {
     await writeManifest();
