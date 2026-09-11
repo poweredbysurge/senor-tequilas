@@ -79,3 +79,107 @@ body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
 /* The two CTAs at the bottom of the panel were capped at 520px, so on anything wider than a
    phone they sat as a narrow column against a full-width sheet. Let them fill it. */
 #mobile-menu [data-dc-tpl="38"] { max-width: none !important; }
+
+/* ---- 8. Signature Dishes: the expand interaction --------------------------------------
+   The design drew a "tap to expand" label and no expansion. The card is now the control and
+   the label is gone; a chevron in the corner is the affordance. */
+[data-dish-card] { display: flex; flex-direction: column; }
+[data-dish-card] > button { width: 100%; }
+
+[data-chevron] {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(13, 13, 11, 0.72);
+  color: rgb(214, 188, 133);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-dish-card][data-open="true"] [data-chevron] { transform: rotate(180deg); }
+
+/* 0fr to 1fr, so the transition ends exactly where the content ends rather than at a
+   max-height guess that is always either too short or too slow. */
+[data-dish-detail] {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-dish-card][data-open="true"] [data-dish-detail],
+[data-dish-detail][data-open="true"] { grid-template-rows: 1fr; }
+[data-dish-detail] > div { overflow: hidden; }
+[data-dish-detail] p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(234, 226, 214, 0.85);
+  margin: 10px 2px 0;
+}
+[data-dish-detail] a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 8px 2px 4px;
+  color: rgb(214, 188, 133);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-dish-detail], [data-chevron] { transition: none; }
+}
+
+/* ---- 9. the private events hub -------------------------------------------------------
+   The design nested a whole copy of the enquiry form section inside every FAQ answer, and
+   left the answers permanently visible so the accordion appeared to open onto nothing.
+   The answers now live in the panel, and one form section sits below the block. */
+[data-faq-panel] {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 260ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-faq-panel][data-open="true"] { grid-template-rows: 1fr; }
+[data-faq-panel] > div { overflow: hidden; }
+[data-faq-toggle] [data-faq-sign] { transition: transform 260ms ease; }
+[data-faq-toggle][aria-expanded="true"] [data-faq-sign] { transform: rotate(45deg); }
+@media (prefers-reduced-motion: reduce) {
+  [data-faq-panel], [data-faq-sign] { transition: none; }
+}
+
+/* The "tap to expand" chip ships in the HTML, so hide it in CSS as well as removing it in
+   script. Otherwise it flashes on screen for as long as it takes the script to run. */
+body[data-route="/"] [data-dc-tpl="129"] { display: none !important; }
+
+/* The panels carry an inline `display: grid` copied from the grid the design drew, and an
+   inline display always beats the user agent's [hidden] rule. Without this every category
+   renders at once and the tabs appear to do nothing. */
+[role="tabpanel"][hidden] { display: none !important; }
+
+/* ---- 10. photography swaps -------------------------------------------------------------
+   Matched on the inline background URL, so each swap reaches every place the design used
+   that file without needing to know the markup around it. */
+
+/* The founding-story placeholder card, with "[Pending]" baked into the JPG, becomes the real
+   photograph of the Rivas brothers. It appears on the homepage and in the /our-story
+   timeline, and both want the same picture. */
+[style*="5e8f15f4ebe2842c.jpg"] {
+  background-image: url(/images/site/brothers.jpg) !important;
+  background-size: cover !important;
+  background-position: center 30% !important;
+}
+
+/* The private events card on the homepage was flat red. The room behind the red does the
+   selling; the gradient keeps the headline and the eyebrow legible over it. */
+body[data-route="/"] a[data-dc-tpl="111"] {
+  background-image:
+    linear-gradient(rgba(191, 30, 46, 0.78), rgba(140, 18, 32, 0.94)),
+    url(/images/site/dining-room-night.jpg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* The /our-story molcajete swap is an <img src>, not a background, so CSS cannot reach
+   it. See swapImages() in site-tweaks.js. */

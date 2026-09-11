@@ -101,57 +101,6 @@
             sync();
           }
 
-  /* ---- 2. the signature dish filters --------------------------------------------------
-     Chips are buttons with no behaviour in the design. Each card is categorised from its
-     own title, so the mapping survives a copy change. */
-  function dishFilters() {
-    var chips = [].slice.call(document.querySelectorAll('button[data-dc-tpl="123"]'));
-    var cards = [].slice.call(document.querySelectorAll('button[data-dc-tpl="126"]'));
-    if (!chips.length || !cards.length) return;
-
-    var RULES = [
-      ['Tacos', /taco|birria|pastor|perrones|asada|quesabirria/i],
-      ['Fajitas & Molcajetes', /fajita|molcajete/i],
-      ['Margaritas', /margarita|cantarito|paloma|michelada|tequila|mezcal/i],
-      ['Desserts', /churro|flan|tres leches|dulcer|volc|cheesecake|ice cream/i]
-    ];
-    cards.forEach(function (card) {
-      var text = card.textContent || '';
-      var hits = RULES.filter(function (r) { return r[1].test(text); }).map(function (r) { return r[0]; });
-      card.setAttribute('data-category', hits.join('|'));
-    });
-
-    var grid = cards[0].parentElement;
-    var empty = document.createElement('p');
-    empty.setAttribute('data-empty-filter', '');
-    empty.hidden = true;
-    grid.appendChild(empty);
-
-    function paint(chip, on) {
-      chip.style.background = on ? 'rgb(56, 176, 73)' : 'transparent';
-      chip.style.color = on ? 'rgb(12, 18, 13)' : 'rgba(234, 226, 214, 0.85)';
-      chip.setAttribute('aria-pressed', String(on));
-    }
-
-    function apply(name) {
-      var shown = 0;
-      cards.forEach(function (card) {
-        var on = (card.getAttribute('data-category') || '').split('|').indexOf(name) !== -1;
-        card.setAttribute('data-filtered', on ? 'in' : 'out');
-        if (on) shown++;
-      });
-      empty.hidden = shown > 0;
-      if (!shown) empty.textContent = 'No ' + name.toLowerCase() + ' in the top sellers this week. See the full menu.';
-      chips.forEach(function (c) { paint(c, (c.textContent || '').trim() === name); });
-    }
-
-    chips.forEach(function (chip) {
-      chip.setAttribute('type', 'button');
-      chip.addEventListener('click', function () { apply((chip.textContent || '').trim()); });
-    });
-    apply((chips[0].textContent || '').trim());
-  }
-
   /* ---- 3. the social rail scrolls itself ------------------------------------------------
      The design marks this rail data-autoscroll and its script does the scrolling. The port
      has no such script, so the rail sat still. Pauses on hover, on focus, and for anyone
@@ -218,10 +167,375 @@
     });
   }
 
+
+  /* ---- 6. Signature Dishes: real tabs, real panels, real expansion ---------------------
+     The design drew four category chips, a grid of six taco cards, and a "tap to expand"
+     label on every card. None of it did anything. This builds the tab set, fills the three
+     empty categories, and makes the card itself the control.
+
+     The twelve dishes below come from the client's onboarding form, the approved copy and
+     their own photo library. They are NOT confirmed against a current printed menu; see
+     DESIGN-DEBT.md entry 23. No prices anywhere. */
+  var DISHES = {
+    'Fajitas & Molcajetes': [
+      { name: 'Molcajete', short: 'Volcanic stone, still cooking when it lands',
+        full: 'Flank steak, chicken, chorizo and nopales in a volcanic stone bowl heated over an open flame. It arrives still cooking and stays hot for the better part of an hour.',
+        img: '/images/dishes/molcajete.jpg', alt: 'Molcajete, a volcanic stone bowl of meat and nopales under salsa', href: '/fajitas-molcajetes' },
+      { name: 'Steak Fajitas', short: 'Skirt steak on cast iron',
+        full: 'Skirt steak on cast iron with peppers and onions, rice, beans, and tortillas pressed that morning.',
+        img: '/images/dishes/steak-fajitas.jpg', alt: 'Steak fajitas in a cast iron skillet with peppers, onions and sides', href: '/fajitas-molcajetes' },
+      { name: 'Chicken Fajitas', short: 'Still sizzling at the table',
+        full: 'Grilled chicken with peppers and onions, still sizzling when it reaches the table.',
+        img: '/images/dishes/chicken-fajitas.jpg', alt: 'Chicken fajitas in a skillet with peppers, onions and sides', href: '/fajitas-molcajetes' },
+      { name: 'Mixed Fajitas', short: 'Shrimp and steak together',
+        full: 'Shrimp and steak together, for the people who cannot decide.',
+        img: '/images/dishes/mixed-fajitas.jpg', alt: 'Mixed fajitas skillet with shrimp and steak', href: '/fajitas-molcajetes' }
+    ],
+    'Margaritas': [
+      { name: 'The Big Mami', short: 'Fifty-four ounces, one glass',
+        full: 'Fifty-four ounces in one glass. Meant to be shared, photographed, and regretted slightly. Two for one on Mondays.',
+        img: '/images/dishes/big-mami.jpg', alt: 'A spread of hand crafted margaritas on the bar', href: '/margaritas' },
+      { name: 'Tamarindo', short: 'Pulp cooked in our kitchen',
+        full: 'Made with tamarind pulp we cook in our own kitchen, not a syrup. Sweet, sour, a little sticky.',
+        img: '/images/dishes/tamarindo.jpg', alt: 'A tamarindo margarita with a chile-salt rim', href: '/margaritas' },
+      { name: 'Mangoña', short: 'Frozen mango, chamoy and tajin',
+        full: 'Frozen mango with chamoy and tajin around the rim. One of the first things regulars order.',
+        img: '/images/dishes/mangona.jpg', alt: 'Frozen mango drinks rimmed with chamoy and tajin', href: '/margaritas' },
+      { name: 'The Tornado', short: 'Two frozen margaritas, layered',
+        full: 'Two frozen margaritas layered in one glass.',
+        img: '/images/dishes/tornado.jpg', alt: 'A layered frozen margarita in a tall glass', href: '/margaritas' },
+      { name: 'Cantarito', short: 'In a painted clay cup',
+        full: 'Tequila, citrus and grapefruit soda in a painted clay cup. The cup is half the point.',
+        img: '/images/dishes/cantarito.jpg', alt: 'Cantaritos in painted clay cups with citrus garnish', href: '/margaritas' }
+    ],
+    'Desserts': [
+      { name: 'Churros', short: 'Fried to order, still hot',
+        full: 'Fried to order, still hot, rolled in cinnamon sugar, with chocolate for dipping.',
+        img: '/images/dishes/churros.jpg', alt: 'Churros dusted in cinnamon sugar with a chocolate drip', href: '/la-dulceria' },
+      { name: 'Flan', short: 'Real caramel, made here',
+        full: 'Real caramel, made here, not poured from a bottle.',
+        img: '/images/dishes/flan.jpg', alt: 'Flan with caramel sauce and cream', href: '/la-dulceria' },
+      { name: 'Tres Leches', short: 'Soaked properly',
+        full: 'Soaked properly, the way it is supposed to be, not a dry sponge with milk poured over it.',
+        img: '/images/dishes/tres-leches.jpg', alt: 'A slice of tres leches cake topped with strawberries', href: '/la-dulceria' },
+      { name: 'Volcán de Chocolate', short: 'Runs when you cut it',
+        full: 'Warm chocolate cake that runs when you cut it.',
+        img: '/images/dishes/volcan.jpg', alt: 'Warm chocolate cake with a molten centre', href: '/la-dulceria' }
+    ]
+  };
+
+  var CHEVRON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  var uid = 0;
+
+  function signatureDishes() {
+    var chips = [].slice.call(document.querySelectorAll('button[data-dc-tpl="123"]'));
+    var tacoGrid = document.querySelector('[data-dc-tpl="124"]');
+    if (!chips.length || !tacoGrid) return;
+
+    var tabList = chips[0].parentElement;
+    tabList.setAttribute('role', 'tablist');
+    tabList.setAttribute('aria-label', 'Dish categories');
+
+    /* Build a panel per category. Tacos reuses the grid the design already drew. */
+    var panels = [];
+    chips.forEach(function (chip, i) {
+      var name = (chip.textContent || '').trim();
+      var panel;
+      if (i === 0) {
+        panel = tacoGrid;
+      } else {
+        panel = document.createElement('div');
+        panel.setAttribute('style', tacoGrid.getAttribute('style'));
+        (DISHES[name] || []).forEach(function (d) { panel.appendChild(buildCard(d)); });
+        tacoGrid.parentNode.insertBefore(panel, tacoGrid.nextSibling);
+      }
+      panel.id = panel.id || 'dish-panel-' + (++uid);
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', chip.id || (chip.id = 'dish-tab-' + uid));
+      panel.hidden = i !== 0;
+
+      chip.setAttribute('role', 'tab');
+      chip.setAttribute('type', 'button');
+      chip.setAttribute('aria-controls', panel.id);
+      chip.setAttribute('aria-selected', String(i === 0));
+      chip.tabIndex = i === 0 ? 0 : -1;
+      panels.push(panel);
+    });
+
+    function select(i) {
+      chips.forEach(function (chip, j) {
+        var on = i === j;
+        chip.setAttribute('aria-selected', String(on));
+        chip.tabIndex = on ? 0 : -1;
+        chip.style.background = on ? 'rgb(56, 176, 73)' : 'transparent';
+        chip.style.color = on ? 'rgb(12, 18, 13)' : 'rgba(234, 226, 214, 0.85)';
+        panels[j].hidden = !on;
+      });
+    }
+    chips.forEach(function (chip, i) {
+      chip.addEventListener('click', function () { select(i); });
+      chip.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : e.key === 'Home' ? -i : e.key === 'End' ? chips.length - 1 - i : 0;
+        if (!d) return;
+        e.preventDefault();
+        var n = (i + d + chips.length) % chips.length;
+        select(n);
+        chips[n].focus();
+      });
+    });
+    select(0);
+
+    /* Every card, drawn and generated alike, becomes a real disclosure. */
+    panels.forEach(function (panel) {
+      [].slice.call(panel.querySelectorAll('button')).forEach(makeExpandable);
+    });
+  }
+
+  function buildCard(d) {
+    var card = document.createElement('button');
+    card.setAttribute('style', 'text-align: left; cursor: pointer; padding: 0px; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); font-family: Barlow, sans-serif; grid-column: auto;');
+    card.setAttribute('data-dish', d.name);
+    card.setAttribute('data-full', d.full);
+    card.setAttribute('data-href', d.href);
+    card.innerHTML =
+      '<div style="position: relative; aspect-ratio: 1 / 1; background: url(' + d.img + ') center center / cover rgb(35, 33, 28); border-bottom: 1px solid rgb(42, 40, 32);" role="img" aria-label="' + d.alt.replace(/"/g, '&quot;') + '"></div>' +
+      '<div style="padding: 12px 14px 14px;">' +
+        '<div style="display: flex; justify-content: space-between; gap: 8px; align-items: baseline;">' +
+          '<span style="font-weight: 700; font-size: 14px;">' + d.name + '</span>' +
+        '</div>' +
+        '<div style="font-size: 12px; line-height: 1.45; color: rgba(234, 226, 214, 0.85); margin-top: 4px;">' + d.short + '</div>' +
+      '</div>';
+    return card;
+  }
+
+  /* The card is the button. The panel is its sibling inside a wrapper that becomes the grid
+     item, so the row height grows with whatever is open. */
+  function makeExpandable(card) {
+    if (card.getAttribute('data-expandable') === 'done') return;
+    card.setAttribute('data-expandable', 'done');
+    card.setAttribute('type', 'button');
+
+    var wrap = document.createElement('div');
+    wrap.setAttribute('data-dish-card', '');
+    card.parentNode.insertBefore(wrap, card);
+    wrap.appendChild(card);
+
+    // "tap to expand" is a label explaining a feature. The chevron is the feature.
+    [].slice.call(card.querySelectorAll('span')).forEach(function (s) {
+      if (/tap to expand/i.test(s.textContent || '')) s.remove();
+    });
+
+    var media = card.firstElementChild;
+    var chev = document.createElement('span');
+    chev.setAttribute('data-chevron', '');
+    chev.innerHTML = CHEVRON;
+    if (media) media.appendChild(chev);
+
+    var full = card.getAttribute('data-full');
+    var href = card.getAttribute('data-href');
+    if (!full) {
+      // A card the design drew: its description is already in the body.
+      var body = card.lastElementChild;
+      var desc = body && body.lastElementChild;
+      full = desc ? (desc.textContent || '').trim() : '';
+      href = hrefForDish(card);
+    }
+
+    var panel = document.createElement('div');
+    panel.id = 'dish-detail-' + (++uid);
+    panel.setAttribute('data-dish-detail', '');
+    panel.innerHTML = '<div><p>' + full + '</p>' +
+      (href ? '<a href="' + href + '">See the page</a>' : '') + '</div>';
+    wrap.appendChild(panel);
+
+    card.setAttribute('aria-expanded', 'false');
+    card.setAttribute('aria-controls', panel.id);
+
+    function toggle(open) {
+      card.setAttribute('aria-expanded', String(open));
+      wrap.setAttribute('data-open', open ? 'true' : 'false');
+    }
+    card.addEventListener('click', function () { toggle(card.getAttribute('aria-expanded') !== 'true'); });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && card.getAttribute('aria-expanded') === 'true') { toggle(false); }
+    });
+    toggle(false);
+  }
+
+  var DISH_PAGES = [
+    [/quesabirria/i, '/quesabirria-tacos'], [/birria/i, '/birria-tacos'],
+    [/pastor|perrones|mamalones|carnitas|asada|street/i, '/street-tacos'],
+    [/fajita|molcajete/i, '/fajitas-molcajetes'],
+    [/margarita|cantarito|tornado|mangon/i, '/margaritas'],
+    [/churro|flan|tres leches|volc/i, '/la-dulceria']
+  ];
+  function hrefForDish(card) {
+    var t = card.textContent || '';
+    for (var i = 0; i < DISH_PAGES.length; i++) if (DISH_PAGES[i][0].test(t)) return DISH_PAGES[i][1];
+    return '/menu';
+  }
+
+
+  /* ---- 7. nav label: Tonight becomes Tacos ---------------------------------------------
+     Same destination. "Tonight" targets nothing anybody searches and lands on a page about
+     tacos; "Tacos" is the term that page is being built to rank for, across forty internal
+     links. Header and footer, every page. */
+  function navLabel() {
+    [].slice.call(document.querySelectorAll('a[href="/taco-tuesday"]')).forEach(function (a) {
+      if (a.closest('#mobile-menu')) return;              // the panel has its own eyebrow pattern
+      var leaf = a.querySelector('.sc-interp') || a;
+      if (/^\s*tonight\s*$/i.test(leaf.textContent || '')) leaf.textContent = 'Tacos';
+    });
+  }
+
+  /* ---- 8. the private events FAQ --------------------------------------------------------
+     Each accordion item held: the question button, the answer, and a nested copy of the
+     whole enquiry form section. The answer sat outside the collapsible region, so opening a
+     question revealed an empty form shell. This moves the answer into a real panel, lifts
+     one form section out to sit below the block, and drops the rest. */
+  function eventsFaq() {
+    // Scope this tightly. The dish cards on the homepage also carry aria-expanded, and an
+    // unscoped selector reaches in and rebuilds them, which silently breaks that page.
+    var items = [].slice.call(document.querySelectorAll('button[aria-expanded]')).filter(function (b) {
+      if (b.closest('[data-dish-card]')) return false;          // the homepage dish cards
+      if (b.closest('header') || b.closest('#mobile-menu')) return false;  // the menu opener
+      if (b.getAttribute('aria-controls') === 'mobile-menu') return false;
+      if (!(b.textContent || '').trim()) return false;          // a question has words
+      var item = b.parentElement;
+      if (!item) return false;
+      return [].slice.call(item.children).some(function (el) { return el !== b; });
+    });
+    if (!items.length) return;
+
+    var rescued = null;
+    items.forEach(function (btn, i) {
+      var item = btn.parentElement;
+      if (!item) return;
+
+      var nested = item.querySelector('section');
+      if (nested) {
+        if (!rescued) rescued = nested;                    // keep the first, drop the rest
+        nested.remove();
+      }
+
+      // Everything after the button inside the item is the answer.
+      var answer = [].slice.call(item.children).filter(function (el) { return el !== btn; });
+      if (!answer.length) return;
+
+      var panel = document.createElement('div');
+      panel.id = 'faq-panel-' + (++uid);
+      panel.setAttribute('data-faq-panel', '');
+      var inner = document.createElement('div');
+      answer.forEach(function (el) { inner.appendChild(el); });
+      panel.appendChild(inner);
+      item.appendChild(panel);
+
+      btn.setAttribute('data-faq-toggle', '');
+      btn.setAttribute('type', 'button');
+      btn.setAttribute('aria-controls', panel.id);
+      var sign = btn.querySelector('span:last-child');
+      if (sign) { sign.setAttribute('data-faq-sign', ''); sign.textContent = '+'; }
+
+      function set(open) {
+        btn.setAttribute('aria-expanded', String(open));
+        panel.setAttribute('data-open', open ? 'true' : 'false');
+      }
+      btn.addEventListener('click', function () { set(btn.getAttribute('aria-expanded') !== 'true'); });
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') set(false);
+      });
+      set(i === 0);
+    });
+
+    // One enquiry form, as its own section below the questions. This must never fail
+    // silently: losing it removes the only way to book a tour from the page.
+    if (rescued) {
+      var anchor = null;
+      for (var i = 0; i < items.length && !anchor; i++) anchor = items[i].closest('section');
+      if (anchor && anchor.parentNode) {
+        anchor.parentNode.insertBefore(rescued, anchor.nextSibling);
+      } else {
+        var host = document.querySelector('body > div.sc-host') || document.body;
+        var footer = host.querySelector('footer[data-screen-label="Footer"]');
+        if (footer) host.insertBefore(rescued, footer); else host.appendChild(rescued);
+      }
+    }
+  }
+
+  /* ---- 9. the events packages were three copies of one package --------------------------
+     All three cards carried the same price and the same three lines, so the row read as a
+     choice that does not exist. Collapse to the one package it actually is. */
+  function eventPackages() {
+    var cards = [].slice.call(document.querySelectorAll('[data-dc-tpl]')).filter(function (el) {
+      return /Ask about this package/i.test(el.textContent || '') && el.querySelector('a, button');
+    });
+    // the innermost elements that are one card each
+    cards = cards.filter(function (el) {
+      return !cards.some(function (other) { return other !== el && el.contains(other); });
+    });
+    if (cards.length < 2) return;
+    // Normalise away the things that distinguish the cards without distinguishing the offer:
+    // the "Package N" eyebrow and the "Most booked" badge.
+    var texts = cards.map(function (c) {
+      return (c.textContent || '').replace(/package\s*\d+/ig, '').replace(/most\s*booked/ig, '').replace(/\s+/g, ' ').trim();
+    });
+    if (!texts.every(function (t) { return t === texts[0]; })) return;   // genuinely different, leave alone
+
+    // Keep the card the design emphasised, so the green call to action survives.
+    var keepIndex = 0;
+    cards.forEach(function (c, i) { if (/most\s*booked/i.test(c.textContent || '')) keepIndex = i; });
+    var keep = cards[keepIndex];
+    cards.forEach(function (c, i) { if (i !== keepIndex) c.remove(); });
+    keep.setAttribute('data-single-package', '');
+    // The "Package 1" eyebrow and the "Most booked" badge both describe a choice that no
+    // longer exists. The badge can sit on the card or just outside it, so sweep the row.
+    var scope = keep.parentElement || keep;
+    [].slice.call(scope.querySelectorAll('*')).forEach(function (el) {
+      if (el.children.length) return;
+      var t = (el.textContent || '').trim();
+      if (/^package\s*\d+$/i.test(t) || /^most\s*booked$/i.test(t)) {
+        var strip = el.parentElement && el.parentElement.children.length === 1 ? el.parentElement : el;
+        strip.remove();
+      }
+    });
+  }
+
+
+  /* ---- 10. photography swaps that CSS cannot make ---------------------------------------
+     A background-image can be overridden in the stylesheet; an <img src> cannot. These are
+     the img swaps, keyed by filename so they follow the picture wherever it is used. */
+  var IMAGE_SWAPS = [
+    {
+      route: '/our-story',
+      match: /5ac1271d5937960b\.jpg/,
+      src: '/images/site/need-image.svg',
+      alt: 'Photograph pending: this image still needs replacing',
+      why: 'one molcajete used for the hero and both "Rivas Brothers" cards'
+    }
+  ];
+  function swapImages() {
+    var route = document.body.getAttribute('data-route');
+    IMAGE_SWAPS.forEach(function (rule) {
+      if (rule.route && rule.route !== route) return;
+      [].slice.call(document.images).forEach(function (img) {
+        if (!rule.match.test(img.getAttribute('src') || '')) return;
+        img.setAttribute('src', rule.src);
+        img.setAttribute('alt', rule.alt);
+        // contain, not cover: the placeholder is a message and must not be cropped
+        img.style.objectFit = 'contain';
+        img.style.background = '#0d0d0b';
+      });
+    });
+  }
+
   function start() {
     try { if (isHome) tonightCarousel(); } catch (e) {}
     try { if (isHome) reviewsCarousel(); } catch (e) {}
-    try { if (isHome) dishFilters(); } catch (e) {}
+    try { if (isHome) signatureDishes(); } catch (e) {}
+    try { swapImages(); } catch (e) {}
+    try { navLabel(); } catch (e) {}
+    try { eventsFaq(); } catch (e) {}
+    try { eventPackages(); } catch (e) {}
     try { autoScrollRails(); } catch (e) {}
     try { navOrder(); } catch (e) {}
     try { singleInquiryForm(); } catch (e) {}

@@ -1,6 +1,6 @@
 {
   "note": "Reference captures are generated, not committed. Regenerate with: node scripts/references.mjs",
-  "generatedAt": "2026-09-11T21:35:40.971Z",
+  "generatedAt": "2026-09-11T22:11:50.507Z",
   "viewports": [
     {
       "width": 390,
@@ -16,7 +16,7 @@
     }
   ],
   "count": 60,
-  "totalBytes": 154264363,
+  "totalBytes": 152011989,
   "files": [
     {
       "file": "birria-tacos-1440.png",
@@ -104,24 +104,24 @@
     },
     {
       "file": "home-1440.png",
-      "bytes": 5986965,
+      "bytes": 5988526,
       "width": 1440,
       "height": 6128,
-      "sha256": "8c02c50710a169215d81c783d32494bafb8d61f7eb010aa61a6fe3e3ead9ffd0"
+      "sha256": "21a8d1b3fb5b45269cce6d1f4deb67f9b95e7a7d5395bccddf71e01e1ba9d9a7"
     },
     {
       "file": "home-390.png",
-      "bytes": 2229412,
+      "bytes": 2230841,
       "width": 390,
       "height": 7339,
-      "sha256": "150cc62389ca553aa2696149c6a5495651f2a4927bc59a55966ea84cfc9b3333"
+      "sha256": "f98c70a14fa69c1c704f70a914a4a3a0c4d84155eed377e19e5b679b5b5ee821"
     },
     {
       "file": "home-768.png",
-      "bytes": 3230153,
+      "bytes": 3232818,
       "width": 768,
       "height": 5648,
-      "sha256": "2b797fe08a6ea838ca1aaeb06482add9b96aeebe081705ff3719dbc4cb0f49dc"
+      "sha256": "32cce62f4d873de50a6fbfd6a2df1e9868fa8c1008230ee8dabbe8f8b68a881c"
     },
     {
       "file": "karaoke-1440.png",
@@ -272,45 +272,45 @@
     },
     {
       "file": "private-parties-1440.png",
-      "bytes": 6976854,
+      "bytes": 5614452,
       "width": 1440,
-      "height": 7252,
-      "sha256": "f0af3ad84bd76d0e1344fc62e8f68cfab9afa9839c7e1695b10970f5f2bf1876"
+      "height": 5496,
+      "sha256": "46f8a4dcdd3fe5dc8fd36bff665248dfa5dcefd229be0a966870376f49992f56"
     },
     {
       "file": "private-parties-390.png",
-      "bytes": 3178460,
+      "bytes": 2940887,
       "width": 390,
-      "height": 8676,
-      "sha256": "05699c063288739cd55bbbbdea34c55434662a767185ede1ee4e44f1f19e09f9"
+      "height": 7692,
+      "sha256": "31d85be425febc6fab0c583d0ef36e7d306103ae5f00a630a5ff5a025ad441e1"
     },
     {
       "file": "private-parties-768.png",
-      "bytes": 4618959,
+      "bytes": 4043936,
       "width": 768,
-      "height": 8550,
-      "sha256": "126c505a7e44f7e95828d873614c3930b18331a18313f49f131452af27da28a7"
+      "height": 6987,
+      "sha256": "a66149fa7d2c53d4f9742dbd4708f18ded3dc547d7ef7e49398c1d48f9e119a7"
     },
     {
       "file": "private-parties-quinceaneras-celebrations-1440.png",
-      "bytes": 4063171,
+      "bytes": 4053466,
       "width": 1440,
-      "height": 4922,
-      "sha256": "dfc867c9985cb6cc093cb31e517d295be07683d04c737e8bc68a96cfe4ada528"
+      "height": 4887,
+      "sha256": "2164ebc08aceb2ff8a4ada40c9d419db115c63731955060c138a4e1941ba4957"
     },
     {
       "file": "private-parties-quinceaneras-celebrations-390.png",
-      "bytes": 1506867,
+      "bytes": 1464100,
       "width": 390,
-      "height": 6979,
-      "sha256": "4c0dfe44153a5ba7dfa666e69cbbcb09858004cd754b4f03965e9e66418a9bd0"
+      "height": 6335,
+      "sha256": "87471ab5b5daa81ff59bfba043102951a46bfdb15706cbadf5ffc0b1a54400df"
     },
     {
       "file": "private-parties-quinceaneras-celebrations-768.png",
-      "bytes": 2356986,
+      "bytes": 2326427,
       "width": 768,
-      "height": 5573,
-      "sha256": "896f7adb4fc2b2b491025dcc44a1740cd1e3bca51b269aa9abf965787774f07b"
+      "height": 5223,
+      "sha256": "79b7778482fe4dac4d5a77c881cbfd4247922280037fd8b6e65ca4aa170476ae"
     },
     {
       "file": "private-parties-weddings-receptions-1440.png",

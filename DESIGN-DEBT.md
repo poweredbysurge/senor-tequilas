@@ -498,3 +498,30 @@ baseline validates all 21 pages again.
 **Protections added meanwhile:** `scripts/build-site.mjs` refuses to run when `src/` exists
 unless passed `--force`, so nobody regenerates over those edits by accident, and
 `--authored-only` rewrites just the authored pages and the overlay assets.
+
+## 23. The twelve new dish cards are not confirmed against a menu
+
+The Signature Dishes block now has four working categories. Tacos keeps the six cards the
+design drew. **Fajitas & Molcajetes (4), Margaritas (5) and Desserts (4) were written for this
+build** from the client's onboarding form, the approved copy and their own photo library.
+
+They are well-evidenced but **not checked against a current printed menu**. Dish names,
+descriptions and the claim that a given item exists all need Roberto's confirmation before
+launch. No prices appear anywhere, and that decision stands.
+
+Source of truth: the `DISHES` object in `design/overlay/site-tweaks.js`. Photography is from
+`design/library/`, copied to `public/images/dishes/`.
+
+## 24. "Top sellers from Toast" is a claim we cannot support
+
+The Signature Dishes eyebrow on the homepage reads **"THE HITTERS · TOP SELLERS FROM TOAST"**.
+
+**We never received Toast sales data.** It was on the pending list and never arrived. The six
+taco cards may be a reasonable guess and the twelve added in entry 23 are definitely a guess,
+so the claim is not true for any of the eighteen.
+
+**Only `/` carries this phrasing.** No other page makes the claim.
+
+Not changed here, because it is a copy decision. Either Roberto sends the real Toast numbers
+and the claim becomes true, or the eyebrow becomes something honest, for example "what people
+actually order".
