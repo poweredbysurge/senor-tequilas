@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "Señor Tequila's, Claude Design port",
   "scripts": {
+    "build": "astro build",
+    "preview": "astro preview",
     "extract": "node scripts/extract.mjs",
-    "gate-a": "node scripts/gate-a.mjs"
+    "gate-a": "node scripts/gate-a.mjs",
+    "assemble": "node scripts/build-site.mjs",
+    "references": "node scripts/references.mjs",
+    "verify": "node scripts/visual-check.mjs",
+    "check-build": "node scripts/check-build.mjs"
   },
   "repository": {
     "type": "git",

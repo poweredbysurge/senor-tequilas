@@ -53,6 +53,17 @@ async function main() {
     byPage.get(l.page).set(l.index, l);
   }
 
+  // This wipes src/ and regenerates it from design/pages/ plus the overlay. Anything hand
+  // edited under src/ is destroyed. If you have edits there, move them into design/overlay/
+  // first, or run with --force to say you meant it.
+  if (!process.argv.includes('--force')) {
+    const { existsSync } = await import('node:fs');
+    if (existsSync(SRC)) {
+      console.error('src/ already exists. Regenerating destroys any hand edits in it.');
+      console.error('Move edits into design/overlay/ first, then re-run with --force.');
+      process.exit(1);
+    }
+  }
   await rm(SRC, { recursive: true, force: true });
   await rm(path.join(PUBLIC, 'images'), { recursive: true, force: true });
   for (const d of ['pages', 'components', 'layouts', 'styles']) await mkdir(path.join(SRC, d), { recursive: true });
