@@ -257,3 +257,10 @@ body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
   max-width: 1180px;
   margin-right: 48px;
 }
+
+/* ---- 13. footer social links ------------------------------------------------------------
+   The icon sits before the word, both in the link's own colour, so hover and focus keep
+   working as one control. */
+footer a[data-social] { display: inline-flex; align-items: center; gap: 8px; }
+footer a[data-social] svg { flex: 0 0 auto; opacity: 0.9; }
+footer a[data-social]:hover svg, footer a[data-social]:focus-visible svg { opacity: 1; }

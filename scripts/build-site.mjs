@@ -166,6 +166,7 @@ async function main() {
   const pageParts = [];
   let rewritten = 0, unresolvedLeft = 0, formsMarked = 0, altFilled = 0, mapsPlaced = 0;
 
+  let dominantFooter = null;   // filled on the second page, once a majority is visible
   for (const p of manifest.pages) {
     await page.goto(`http://127.0.0.1:${port}/design/pages/${p.slug}.html`, { waitUntil: 'load', timeout: 120000 });
 
@@ -242,6 +243,14 @@ async function main() {
 
     const used = [];
     for (const b of applied.blocks) {
+      // One footer on every page. The design gave the homepage its own shorter variant,
+      // which left the site with two different footers; the client wants the full one
+      // everywhere. Headers legitimately differ per page and are left alone.
+      if (b.name === 'Footer' && dominantFooter && absoluteImages(b.html) !== dominantFooter.html) {
+        variants.get('Footer').get(dominantFooter.hash).pages.push(p.slug);
+        used.push(dominantFooter.variant);
+        continue;
+      }
       const html = absoluteImages(b.html);
       const hash = createHash('sha256').update(html).digest('hex').slice(0, 8);
       if (!variants.has(b.name)) variants.set(b.name, new Map());
