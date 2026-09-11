@@ -262,7 +262,72 @@ to a nav item.
 that matches a nav item highlights it. In the port this would collapse seven header variants
 into two, the home nav and everything else, with the active item chosen per route.
 
-## 11. "See the Bar" promises one page and sits beside copy about another
+## 11. The footer's Order CTA disappears on mobile, on 19 of 20 pages
+
+Found in the Phase 4 content pass. On the nineteen pages using the shared footer, the block
+holding **Order Online** and **Reserve a Table** is set to `display: none` below the mobile
+breakpoint. At 390 those two buttons are not merely small, they are gone. Only the homepage,
+which uses its own footer, keeps them.
+
+This is the design's own rule, not something the port introduced: the built site matches the
+reference at 0.000% on all nineteen pages.
+
+On a site whose traffic is roughly 95 percent mobile, that removes the ordering path from the
+bottom of nearly every page.
+
+**Not fixed.** Un-hiding a block the design deliberately hides is a design decision, and it
+would change pixels on nineteen pages against a reference that has the behaviour baked in.
+
+## 12. Four events pages have no ordering control above the fold at 390
+
+Phase 4 requires the Order Online control to be visible without scrolling at 390x844. Sixteen
+pages pass. These four fail:
+
+`/private-parties`, `/private-parties/quinceaneras-celebrations`,
+`/private-parties/weddings-receptions`, `/catering`
+
+Their headers carry "Book a Tour" or "Get a Quote" where the other sixteen carry "Order", so
+there is no Toast ordering link in the header at all. The two ordering links each page does
+have are in the footer, which is entry 11, and in the mobile menu panel, which is closed.
+
+Whether an events page should push ordering over enquiring is a real question, not obviously
+a bug. Flagging it because the check is explicit and these four do not meet it.
+
+## 13. Global blocks the brief called for were deployed on one or two pages
+
+The port is faithful to what was designed. What was designed carries fewer site-wide blocks
+than the brief describes:
+
+| block | brief expects | actually on |
+|---|---|---|
+| proof strip, stars and review count | site-wide credibility | **2 of 20**: `/` and `/mexican-restaurant-gaithersburg-md`, both 4.6 with 5,600 Google reviews |
+| events booking CTA | all four events and catering pages | **3 of 4**: `/private-parties` has none |
+| announcement bar | site-wide | 1 page |
+| Tonight strip | site-wide | 1 page |
+| visit block | site-wide | 1 page |
+
+`/private-parties` is the notable one. It is the events **hub**, its header CTA says "Book a
+Tour", and that link jumps to the "Party types" section rather than to any booking form. The
+three pages below it in the hierarchy all have a real inquiry form; the hub does not.
+
+**Not fixed.** Adding a block to a page the design did not put it on is a design decision.
+Recorded so the next design pass can decide which of these should be global.
+
+## 14. Nine images ship with an empty alt attribute
+
+| page | images |
+|---|---|
+| `/` | 2 |
+| `/our-story` | 2 |
+| `/birria-tacos`, `/quesabirria-tacos`, `/street-tacos`, `/fajitas-molcajetes` | the shared `Margaritas.jpg` on each |
+| `/la-dulceria`, `/tequila-bar`, `/taco-tuesday` | 1 each |
+
+`alt=""` is correct for a decorative image, but these are photographs of food and the room
+carrying real content. Writing alt text is copywriting, so the port does not invent it.
+
+**Upstream fix:** alt text for each, from whoever writes the copy.
+
+## 15. "See the Bar" promises one page and sits beside copy about another
 
 The four `See the Bar →` links on the dish pages sit inside a "Pair it" section whose copy is
 about a cantarito, a cocktail. The label says the bar.
@@ -274,7 +339,7 @@ betrayal even if the cantarito lives there.
 **Upstream fix, a copy decision not a link decision:** either the label becomes "See the
 Drinks" and points at `/margaritas`, or the pairing changes to something tequila-forward.
 
-## 12. The brief references a `/contact/` page that does not exist
+## 16. The brief references a `/contact/` page that does not exist
 
 `seo-migration-kit-and-page-spec.md` says "every page: link to `/contact/`". There is no
 contact page among the twenty and none was designed.
