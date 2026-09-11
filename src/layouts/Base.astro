@@ -4,7 +4,7 @@ import '../styles/overlay.css';
 import MobileMenu from '../components/MobileMenu.astro';
 import business from '../data/business.json';
 
-const { title, description, canonical, ogImage, extraTypes = [] } = Astro.props;
+const { title, description, canonical, ogImage, extraTypes = [], route } = Astro.props;
 const site = "https://senortequilas.com";
 const absolute = (u) => (u.startsWith('http') ? u : site + u);
 
@@ -64,7 +64,7 @@ const jsonLd = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
-  <body>
+  <body data-route={route}>
     <slot />
     <MobileMenu />
     <script is:inline>

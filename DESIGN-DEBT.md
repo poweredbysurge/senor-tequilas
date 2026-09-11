@@ -262,7 +262,7 @@ to a nav item.
 that matches a nav item highlights it. In the port this would collapse seven header variants
 into two, the home nav and everything else, with the active item chosen per route.
 
-## 11. The homepage header does not stay on screen, so it has no persistent order button
+## 11. The homepage header did not stay on screen (FIXED IN THE PORT, still worth fixing at source)
 
 **What is wrong:** on `/` the header stops being sticky after 110 pixels of scrolling. On the
 other nineteen pages it stays pinned to the top of the screen for the whole page.
@@ -282,6 +282,15 @@ markup nesting change, not a style change.
 
 **How to confirm:** open `/` on a phone, scroll past the hero, and check that the green Order
 pill is still at the top of the screen. Compare with `/menu`, where it is.
+
+**Fixed in the port** by `display: contents` on that wrapper, in `design/overlay/mobile-nav.css`,
+which removes the wrapper's own box without moving any child, so the header's containing block
+becomes the full-height artboard. The wrapper's background colour is restated on the artboard
+behind it because a contents box cannot paint one. Verified two ways: the Order pill now pins
+at y=9 through 6,000px of scroll, exactly as it does on the other fifteen pages, and the visual
+comparison stayed at 20/20, with the homepage improving from 0.023% to 0.000%.
+
+**Still fix it at source**, because the next export brings the 110px wrapper back.
 
 ## 12. Four pages have no way to order from the top of the screen
 

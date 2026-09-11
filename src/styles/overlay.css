@@ -51,3 +51,21 @@
   header > div { padding-left: 7px !important; padding-right: 7px !important; }
   header > div > a:first-child img { height: 31.5px !important; }
 }
+
+/* port: homepage sticky header. See DESIGN-DEBT.md entry 11.
+
+   On every page except the homepage the header's wrapper spans the whole document, so the
+   sticky header stays pinned for the full scroll. On the homepage that wrapper is 110px tall
+   and holds only the announcement bar and the header, so the header unsticks almost
+   immediately and the page loses its persistent Order button.
+
+   `display: contents` removes the wrapper's own box from the layout without moving any of its
+   children, so the header's containing block becomes the full-height artboard and sticky has
+   something to stick within. No markup is restructured.
+
+   The wrapper carries background rgb(18,18,16), which a contents box cannot paint, so the
+   same colour is restated on the artboard behind it. Inherited colour and font pass through
+   `display: contents` untouched. If the visual check moves by a single pixel this rule is to
+   be deleted and entry 11 returned to documented debt. */
+body[data-route="/"] > div.sc-host { background: rgb(18, 18, 16); }
+body[data-route="/"] > div.sc-host > div[data-dc-tpl="6"] { display: contents; }

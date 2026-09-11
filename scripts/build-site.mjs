@@ -174,7 +174,7 @@ import '../styles/overlay.css';
 import MobileMenu from '../components/MobileMenu.astro';
 import business from '../data/business.json';
 
-const { title, description, canonical, ogImage, extraTypes = [] } = Astro.props;
+const { title, description, canonical, ogImage, extraTypes = [], route } = Astro.props;
 const site = ${JSON.stringify(seo.site)};
 const absolute = (u) => (u.startsWith('http') ? u : site + u);
 
@@ -234,7 +234,7 @@ const jsonLd = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
-  <body>
+  <body data-route={route}>
     <slot />
     <MobileMenu />
     <script is:inline>
@@ -267,6 +267,7 @@ ${toggle.split('\n').map((l) => (l ? '      ' + l : l)).join('\n')}
       `description=${JSON.stringify(meta.description)}`,
       `canonical=${JSON.stringify(meta.canonical)}`,
       `ogImage=${JSON.stringify(meta.ogImage)}`,
+      `route=${JSON.stringify(p.path)}`,
       meta.extraTypes.length ? `extraTypes={${JSON.stringify(meta.extraTypes)}}` : null,
     ].filter(Boolean).join(' ');
     await writeFile(file, `---\n${imports}\n---\n<Base ${props}>\n${body}\n</Base>\n`);
