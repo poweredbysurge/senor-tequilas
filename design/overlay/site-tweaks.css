@@ -314,3 +314,10 @@ body[data-route="/private-parties"] a[href="/private-parties/weddings-receptions
   background-size: cover !important;
   background-position: center !important;
 }
+
+/* The catering card on the events hub. Same scoping as the two above. */
+body[data-route="/private-parties"] a[href="/catering"] {
+  background-image: url(/images/site/catering-room.jpg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
