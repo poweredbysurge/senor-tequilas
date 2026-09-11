@@ -264,3 +264,53 @@ body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
 footer a[data-social] { display: inline-flex; align-items: center; gap: 8px; }
 footer a[data-social] svg { flex: 0 0 auto; opacity: 0.9; }
 footer a[data-social]:hover svg, footer a[data-social]:focus-visible svg { opacity: 1; }
+
+/* ---- 14. the lucha collage texture ------------------------------------------------------
+   The design uses a dark poster collage behind several sections and then leaves a lot of
+   others flat black. Applied to the card sections that were flat, behind the same
+   gradient the design already pairs it with, so the type keeps its contrast and the cards
+   still read as cards. Sections that already carry artwork are untouched. */
+section[data-screen-label="Social feed"],
+section[data-screen-label="Three pillars"],
+section[data-screen-label="Also try"],
+section[data-screen-label="Party types"],
+section[data-screen-label="How booking works"],
+section[data-screen-label="Packages"],
+section[data-screen-label="The pulps"],
+section[data-screen-label="How it works"],
+section[data-screen-label="Café + digestivos"],
+section[data-screen-label="Why you don't need a Tuesday"],
+section[data-screen-label="The tacos"],
+section[data-screen-label="Every night of the week"] {
+  background-image:
+    linear-gradient(rgba(14, 14, 13, 0.74), rgba(10, 10, 9, 0.89)),
+    url(/images/site/texture-black.jpg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* The menu panel was a flat wash. The collage sits behind it at low contrast, under the
+   same near-opaque scrim, so the cards keep their edges. */
+#mobile-menu {
+  background-image:
+    linear-gradient(rgba(13, 13, 11, 0.955), rgba(13, 13, 11, 0.975)),
+    url(/images/site/texture-black.jpg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* The quinceaneras card on the events hub showed the back bar, which is not a quinceanera.
+   Scoped to that one card; the same photograph stays wherever else the design used it. */
+body[data-route="/private-parties"] a[href="/private-parties/quinceaneras-celebrations"] {
+  background-image: url(/images/site/quince-airplane.jpg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+/* The weddings card showed a table of drinks. Same scoping as the quinceaneras card above. */
+body[data-route="/private-parties"] a[href="/private-parties/weddings-receptions"] {
+  background-image: url(/images/site/weddings-cake.jpg) !important;
+  background-size: cover !important;
+  background-position: center !important;
+}

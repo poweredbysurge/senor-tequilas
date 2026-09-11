@@ -556,3 +556,22 @@ The Our Story card picks up the real photograph of the brothers through the imag
 entry 17, not through the panel markup.
 
 **Upstream:** make these in the design and the reapply step can be deleted.
+
+## 26. The lucha collage texture, and two more card photographs
+
+The design pairs a dark lucha libre poster collage with several sections and leaves many
+other card sections flat black. The client supplied a cleaner black version, so it is now
+applied to twelve card sections that were flat, behind the same gradient the design already
+pairs it with, and behind the mobile menu panel. Sections that already carry artwork are
+untouched.
+
+The source PNG was 2.2MB, which is the wrong format for a photographic texture. Converted to
+JPEG at 1600px: 314KB.
+
+Two more card photographs on `/private-parties`, both scoped to that page so the same files
+stay where the design used them elsewhere:
+
+| card | was | now |
+|---|---|---|
+| Quinceañeras and celebrations | the back bar | `airplane delivery with heart in the background` |
+| Weddings, receptions and showers | a table of drinks | `birthday cake with smiles` |
