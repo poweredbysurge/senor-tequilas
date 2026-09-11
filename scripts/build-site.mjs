@@ -85,6 +85,12 @@ async function authoredOnly() {
   await writeFile(path.join(SRC, 'styles', 'overlay.css'),
     await readFile(path.join(ROOT, 'design', 'overlay', 'mobile-nav.css'), 'utf8'));
 
+  // The panel is a component, so an edit to design/overlay/mobile-menu.html reaches nothing
+  // until it is rewritten here too.
+  const panelMarkup = absoluteImages(await readFile(path.join(ROOT, 'design', 'overlay', 'mobile-menu.html'), 'utf8'));
+  await writeFile(path.join(SRC, 'components', 'MobileMenu.astro'),
+    `---\n// The design's own mobile menu panel. See DESIGN-DEBT.md entries 6 and 25.\n---\n${panelMarkup}\n`);
+
   const basePath = path.join(SRC, 'layouts', 'Base.astro');
   let base = await readFile(basePath, 'utf8');
   for (const [file, sentinel] of [

@@ -114,6 +114,11 @@ async function main() {
   if (!open.includes('data-dc-tpl="27"')) throw new Error(`unexpected panel root: ${open.slice(0, 120)}`);
   html = html.replace(open, open.replace('<div ', '<div id="mobile-menu" hidden '));
 
+  // Deliberate changes to the panel, reapplied here so a re-extraction does not undo them.
+  // See DESIGN-DEBT.md entry 25.
+  html = html.replace('>Thursday<', '>Every day<').replace('>Tonight<', '>Tacos<');
+  html = html.replace(/url\((\/images\/)?[^)]*\)(?=[^)]*Gift Cards)/, 'url(/images/sen-giftcard.jpg)');
+
   const remaining = [...html.matchAll(/href="([^"]*)"/g)].map((m) => m[1]);
   const stillAnchored = remaining.filter((h) => h.startsWith('#'));
 

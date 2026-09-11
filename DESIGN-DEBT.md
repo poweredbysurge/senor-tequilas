@@ -540,3 +540,19 @@ so the claim is not true for any of the eighteen.
 Not changed here, because it is a copy decision. Either Roberto sends the real Toast numbers
 and the claim becomes true, or the eyebrow becomes something honest, for example "what people
 actually order".
+
+## 25. Deliberate changes to the mobile menu panel
+
+The panel is lifted from the bundle by `scripts/extract-panel.mjs`, so anything changed by
+hand would be undone by the next extraction. These changes are reapplied by that script:
+
+| change | why |
+|---|---|
+| "Thursday / Tonight" becomes "Every day / Tacos" | matches the nav label change and the page it lands on, which is now built around tacos rather than one night |
+| that card moves to the end of the six | it is the least urgent of the six, and Menu should lead |
+| Gift Cards uses `sen-giftcard.jpg` | it was showing a photograph of churros |
+
+The Our Story card picks up the real photograph of the brothers through the image swap in
+entry 17, not through the panel markup.
+
+**Upstream:** make these in the design and the reapply step can be deleted.
