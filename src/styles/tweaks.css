@@ -310,14 +310,85 @@ body[data-route="/private-parties"] a[href="/private-parties/quinceaneras-celebr
 
 /* The weddings card showed a table of drinks. Same scoping as the quinceaneras card above. */
 body[data-route="/private-parties"] a[href="/private-parties/weddings-receptions"] {
-  background-image: url(/images/site/weddings-cake.jpg) !important;
+  background-image: url(/images/site/celebration-cake.jpg) !important;
   background-size: cover !important;
   background-position: center !important;
 }
 
-/* The catering card on the events hub. Same scoping as the two above. */
+/* The catering card on the events hub is waiting on a photograph. The file supplied on
+   11 September arrived empty, 0 bytes, so the rule is parked rather than left pointing at a
+   missing image. Drop in the real file at /images/site/catering-room.jpg and uncomment.
 body[data-route="/private-parties"] a[href="/catering"] {
   background-image: url(/images/site/catering-room.jpg) !important;
   background-size: cover !important;
   background-position: center !important;
+} */
+
+/* The quinceaneras hero now carries a real quinceanera photograph, swapped in by
+   swapImages() because it is an <img src>, not a background. The placeholder tag that
+   sat over it is no longer true, so it goes. */
+body[data-route="/private-parties/quinceaneras-celebrations"] [data-dc-tpl="420"] {
+  display: none !important;
+}
+
+/* ---- 15. the quinceaneras video strip --------------------------------------------------
+   Three vertical clips of a real private party, sitting between the hero and the intro.
+   Geometry is lifted from the page's own sections rather than invented: the same
+   rgb(18, 18, 16) ground and vertical rhythm as the intro block below it, the same
+   1180px container and side padding, the same 12px radius as the gallery cards.
+
+   The three stay side by side at every width. Stacking them would make a column roughly
+   1900px tall on a phone, and the brief was three next to one another. */
+.st-videostrip {
+  background: rgb(18, 18, 16);
+  padding: clamp(40px, 7vw, 88px) 0 0;
+}
+.st-videostrip__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 4.6vw, 48px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(8px, 1.4vw, 18px);
+}
+.st-videostrip__item {
+  position: relative;
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(10, 9, 8, 0.7);
+  aspect-ratio: 9 / 16;
+}
+.st-videostrip__item video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Someone who has asked for less motion gets a still frame and a play button instead. */
+@media (prefers-reduced-motion: reduce) {
+  .st-videostrip__item video { object-fit: contain; }
+}
+
+/* ---- 16. the catering intro video ------------------------------------------------------
+   The intro block on /catering is a two column grid: the heading sat in the left column and
+   the body copy in the right. The heading moves up against the copy it introduces and the
+   left column becomes a video. The section's own grid does the placing, so there is no new
+   layout here, only a new occupant of a column that already existed.
+
+   The clip is vertical, and a full 9:16 next to four lines of text would tower over them,
+   so it is shown at 4/5 and cropped to fill. */
+.st-introvideo {
+  position: relative;
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(10, 9, 8, 0.7);
+  aspect-ratio: 4 / 5;
+}
+.st-introvideo video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

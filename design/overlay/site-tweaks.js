@@ -514,19 +514,168 @@
       src: '/images/site/need-image.svg',
       alt: 'Photograph pending: this image still needs replacing',
       why: 'one molcajete used for the hero and both "Rivas Brothers" cards'
+    },
+    {
+      route: '/private-parties/quinceaneras-celebrations',
+      within: 'section[data-screen-label="Event hero"]',
+      match: /Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024\.jpg/,
+      src: '/images/site/celebration-cake.jpg',
+      alt: 'A guest in a sombrero at a long table, a sparkler burning on the cake in front of her while friends and staff cheer',
+      fit: 'cover',
+      why: 'the hero showed the lit back bar. The same remote photo appears twice more further down this page and on five other pages, so this rule is held to the hero section only'
     }
   ];
+
+  /* ---- 15. the private event video strips -----------------------------------------------
+     Three vertical clips sit directly above the intro block on the two event pages. The
+     source footage is 4K HEVC shot on a phone, transcoded to 720x1280 H.264 with the audio
+     stripped, because these play muted and silent tracks are dead weight.
+
+     Nothing preloads. Each clip is given its src and told to play only once it is actually
+     near the viewport, so three videos above the fold do not cost three downloads on a page
+     a visitor may never scroll. Someone who has asked for reduced motion gets the poster
+     frame and a normal set of controls instead of anything moving on its own. */
+  var VIDEO_STRIPS = {
+    '/private-parties/quinceaneras-celebrations': [
+      { file: 'quince-setup',       label: 'Staff setting up the private room before an event' },
+      { file: 'quince-buffet',      label: 'A buffet line laid out for a private party' },
+      { file: 'party-dancefloor',   label: 'Guests dancing on the private room dance floor' }
+    ],
+    '/private-parties/weddings-receptions': [
+      { file: 'party-dancefloor',   label: 'Guests dancing on the private room dance floor' },
+      { file: 'party-testimony',    label: 'A guest talking about their event in the private room' },
+      { file: 'party-dancefloor-2', label: 'Guests on the dance floor later in the night' }
+    ]
+  };
+
+  function videoStrip() {
+    var clips = VIDEO_STRIPS[document.body.getAttribute('data-route')];
+    if (!clips) return;
+    if (document.querySelector('.st-videostrip')) return;
+
+    var intro = document.querySelector('section[data-screen-label="Event intro"]');
+    if (!intro || !intro.parentNode) return;
+
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var strip = document.createElement('section');
+    strip.className = 'st-videostrip';
+    var inner = document.createElement('div');
+    inner.className = 'st-videostrip__inner';
+    strip.appendChild(inner);
+
+    var videos = [];
+    clips.forEach(function (clip) {
+      var fig = document.createElement('figure');
+      fig.className = 'st-videostrip__item';
+      var v = document.createElement('video');
+      v.setAttribute('poster', '/videos/' + clip.file + '.jpg');
+      v.setAttribute('aria-label', clip.label);
+      v.setAttribute('preload', 'none');
+      v.setAttribute('playsinline', '');
+      v.muted = true;
+      if (calm) {
+        v.setAttribute('controls', '');
+        v.setAttribute('src', '/videos/' + clip.file + '.mp4');
+      } else {
+        v.setAttribute('loop', '');
+        v.dataset.src = '/videos/' + clip.file + '.mp4';
+        videos.push(v);
+      }
+      fig.appendChild(v);
+      inner.appendChild(fig);
+    });
+
+    intro.parentNode.insertBefore(strip, intro);
+
+    if (!videos.length) return;
+    var load = function (v) {
+      if (v.getAttribute('src')) return;
+      v.setAttribute('src', v.dataset.src);
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { v.setAttribute('controls', ''); });
+    };
+    if (!('IntersectionObserver' in window)) { videos.forEach(load); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { load(e.target); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '200px' });
+    videos.forEach(function (v) { io.observe(v); });
+  }
+
+
+  /* ---- 16. the catering intro video -----------------------------------------------------
+     Moves the intro heading down onto the body copy and gives the freed left column a video.
+     Same loading discipline as the strips above: nothing fetched until it is nearly on
+     screen, nothing moving for anyone who asked for reduced motion. */
+  var INTRO_VIDEOS = {
+    '/catering': { file: 'catering-buffet', label: 'A catering buffet being laid out to serve' }
+  };
+
+  function introVideo() {
+    var clip = INTRO_VIDEOS[document.body.getAttribute('data-route')];
+    if (!clip) return;
+    if (document.querySelector('.st-introvideo')) return;
+
+    var section = document.querySelector('section[data-screen-label="Event intro"]');
+    if (!section) return;
+    var grid = section.querySelector('[data-dc-tpl="437"]');
+    var heading = section.querySelector('h2');
+    var copy = section.querySelector('[data-dc-tpl="439"]');
+    if (!grid || !heading || !copy) return;
+
+    // the heading belongs with the copy it introduces
+    copy.insertBefore(heading, copy.firstChild);
+
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fig = document.createElement('figure');
+    fig.className = 'st-introvideo';
+    var v = document.createElement('video');
+    v.setAttribute('poster', '/videos/' + clip.file + '.jpg');
+    v.setAttribute('aria-label', clip.label);
+    v.setAttribute('preload', 'none');
+    v.setAttribute('playsinline', '');
+    v.muted = true;
+    fig.appendChild(v);
+    grid.insertBefore(fig, grid.firstChild);
+
+    if (calm) {
+      v.setAttribute('controls', '');
+      v.setAttribute('src', '/videos/' + clip.file + '.mp4');
+      return;
+    }
+    v.setAttribute('loop', '');
+    var load = function () {
+      if (v.getAttribute('src')) return;
+      v.setAttribute('src', '/videos/' + clip.file + '.mp4');
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { v.setAttribute('controls', ''); });
+    };
+    if (!('IntersectionObserver' in window)) return load();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { load(); io.disconnect(); } });
+    }, { rootMargin: '200px' });
+    io.observe(v);
+  }
+
   function swapImages() {
     var route = document.body.getAttribute('data-route');
     IMAGE_SWAPS.forEach(function (rule) {
       if (rule.route && rule.route !== route) return;
-      [].slice.call(document.images).forEach(function (img) {
-        if (!rule.match.test(img.getAttribute('src') || '')) return;
-        img.setAttribute('src', rule.src);
-        img.setAttribute('alt', rule.alt);
-        // contain, not cover: the placeholder is a message and must not be cropped
-        img.style.objectFit = 'contain';
-        img.style.background = '#0d0d0b';
+      // a rule may be held to one part of the page, for when the same source image is
+      // reused elsewhere and only one instance is meant to change
+      var scope = rule.within ? document.querySelectorAll(rule.within) : [document];
+      [].slice.call(scope).forEach(function (root) {
+        [].slice.call(root.querySelectorAll('img')).forEach(function (img) {
+          if (!rule.match.test(img.getAttribute('src') || '')) return;
+          img.setAttribute('src', rule.src);
+          img.setAttribute('alt', rule.alt);
+          // a placeholder is a message and must not be cropped, so it defaults to contain.
+          // a real photograph filling a hero wants cover.
+          img.style.objectFit = rule.fit || 'contain';
+          if (!rule.fit) img.style.background = '#0d0d0b';
+        });
       });
     });
   }
@@ -617,6 +766,8 @@
     try { eventsFaq(); } catch (e) {}
     try { eventPackages(); } catch (e) {}
     try { autoScrollRails(); } catch (e) {}
+    try { videoStrip(); } catch (e) {}
+    try { introVideo(); } catch (e) {}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();

@@ -575,3 +575,34 @@ stay where the design used them elsewhere:
 |---|---|---|
 | Quinceañeras and celebrations | the back bar | `airplane delivery with heart in the background` |
 | Weddings, receptions and showers | a table of drinks | `birthday cake with smiles` |
+
+## 27. The catering card on the events hub has no photograph
+
+The file supplied for it on 11 September, `Screenshot 2026-09-11 at 3.50.48 PM.png`, arrived
+at 0 bytes. The CSS rule that would point the card at `/images/site/catering-room.jpg` is
+written and parked as a comment in `design/overlay/site-tweaks.css`, section 14, so nothing
+references a missing file. Resend the image, run it through the same optimisation as the
+others, and uncomment the rule.
+
+Until then the card keeps the design's own treatment. No substitute image was fetched.
+
+## 28. The event page video strips are client footage, not design
+
+Three clips sit above the intro block on `/private-parties/quinceaneras-celebrations` and
+`/private-parties/weddings-receptions`, and one in the intro on `/catering`. The design never
+drew these; they were requested directly on 11 September. Two decisions were made without
+asking and are cheap to reverse:
+
+- **Each clip is capped at 15 seconds.** The camera originals run 10 to 67 seconds. At full
+  length the testimony clip alone encoded to 9.8 MB and the dance floor to 29 MB, which is
+  not a page anyone would wait for. They loop, so the cut is not obvious.
+- **The strips stay three across at every width** rather than stacking on a phone. Stacked,
+  three 9:16 clips make a column roughly 1900px tall.
+- The catering clip displays at 4/5 rather than its native 9:16, because a full height
+  vertical beside four lines of copy would tower over them.
+
+The two dance floor clips are encoded at 540x960 rather than 720x1280: strobe lighting
+defeats motion estimation and they were four times the size of the others at equal quality.
+
+Camera originals live in `design/source-video/`, which is gitignored. They must never sit in
+`public/`, which is copied into the build verbatim.
