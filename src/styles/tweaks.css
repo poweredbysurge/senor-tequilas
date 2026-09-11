@@ -57,3 +57,26 @@ body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
    browser pulls every sub-pixel step back to the nearest snap point and the rail sits
    frozen. Manual dragging still works, it simply no longer clicks into place. */
 [data-autoscroll] { scroll-snap-type: none !important; }
+
+/* ---- 7. the Google reviews carousel ------------------------------------------------------
+   The rail shipped with a raw horizontal scrollbar sitting under the cards, and it stopped
+   at the 1180px container so the next review was sheared off in mid-air. It now hides the
+   scrollbar (the events rail already did), runs off the right edge like a rail should, and
+   is driven by real arrows instead. */
+body[data-route="/"] [data-dc-tpl="150"] {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  /* Escape the container's centring and right gutter so the rail reaches the viewport edge.
+     50% resolves against the container, 50vw against the viewport, so the difference is
+     exactly the distance from the container's right edge to the screen's. */
+  margin-right: calc(50% - 50vw) !important;
+  padding-right: clamp(18px, 4.5vw, 48px) !important;
+  scroll-behavior: smooth;
+}
+body[data-route="/"] [data-dc-tpl="150"]::-webkit-scrollbar { display: none; }
+
+/* The arrow row keeps the container gutter — only the rail bleeds (same rule as section 3). */
+body[data-route="/"] [data-reviews-prev],
+body[data-route="/"] [data-reviews-next] { cursor: pointer; }
+body[data-route="/"] [data-reviews-prev][disabled],
+body[data-route="/"] [data-reviews-next][disabled] { opacity: .35; cursor: default; }

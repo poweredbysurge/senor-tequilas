@@ -183,6 +183,34 @@ const jsonLd = {
           sync();
         }
 
+        /* ---- 1b. the Google reviews carousel ------------------------------------------------
+           Same treatment as the Tonight rail: the scrollbar is hidden in tweaks.css, so the
+           arrows are the only way to move it. One card per click, disabled at each end. */
+        function reviewsCarousel() {
+          var rail = document.querySelector('[data-dc-tpl="150"]');
+          if (!rail) return;
+          var prev = document.querySelector('[data-reviews-prev]');
+          var next = document.querySelector('[data-reviews-next]');
+          if (!prev || !next) return;
+
+          function step() {
+            var first = rail.firstElementChild;
+            if (!first) return 340;
+            var gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 12;
+            return first.getBoundingClientRect().width + gap;
+          }
+          function sync() {
+            var max = rail.scrollWidth - rail.clientWidth - 1;
+            prev.disabled = rail.scrollLeft <= 0;
+            next.disabled = rail.scrollLeft >= max;
+          }
+          prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+          next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+          rail.addEventListener('scroll', sync, { passive: true });
+          window.addEventListener('resize', sync);
+          sync();
+        }
+
         /* ---- 2. the signature dish filters --------------------------------------------------
            Chips are buttons with no behaviour in the design. Each card is categorised from its
            own title, so the mapping survives a copy change. */
@@ -270,6 +298,7 @@ const jsonLd = {
 
         function start() {
           try { if (isHome) tonightCarousel(); } catch (e) {}
+          try { if (isHome) reviewsCarousel(); } catch (e) {}
           try { if (isHome) dishFilters(); } catch (e) {}
           try { autoScrollRails(); } catch (e) {}
         }
