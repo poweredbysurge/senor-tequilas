@@ -1,0 +1,43 @@
+{
+  "note": "Alt text for the nine images the design ships with alt=\"\". Part of the overlay: design/pages/ is never edited, this is applied by scripts/build-site.mjs. Each entry describes what the photograph actually shows, in the vocabulary the page already uses.",
+  "rules": [
+    "Describe the photograph, not the slot it sits in",
+    "One clause, not a sentence",
+    "No 'image of', no keyword stuffing",
+    "A shared image gets the same alt everywhere it appears"
+  ],
+  "byImage": {
+    "d8219db4b8a2f6cf.jpg": {
+      "alt": "A full dining room at night, the new bar lit behind it",
+      "shows": "Guests at every table under woven pendant lamps, the bar's neon heart mirror glowing at the back, pink and green garland along the ceiling",
+      "usedOn": ["/"]
+    },
+    "df43e9ee488c58d3.jpg": {
+      "alt": "A board of margaritas and cocktails with chile-salt rims and fruit garnish",
+      "shows": "Seven drinks on a wood slab, turquoise, mango, berry and citrus, several with chile-salt rims and skewered fruit",
+      "usedOn": ["/"]
+    },
+    "5ac1271d5937960b.jpg": {
+      "alt": "A molcajete of flank steak, chicken and chorizo under salsa verde",
+      "shows": "A lava-rock molcajete piled with grilled nopales, chorizo, melted cheese and cilantro, a Mexican flag pick on top",
+      "usedOn": ["/our-story", "/our-story", "/taco-tuesday"]
+    },
+    "Margaritas.jpg": {
+      "alt": "Two margaritas on the bar, one turquoise, one mango with a chile-salt rim",
+      "shows": "Two oversized coupes, a turquoise margarita with a salted rim and a layered mango one with a chile-salt rim, tamarind straws and lime",
+      "usedOn": ["/birria-tacos", "/quesabirria-tacos", "/street-tacos", "/fajitas-molcajetes"]
+    },
+    "0158f8e0dc2e230a.jpg": {
+      "alt": "A plate of street tacos with salsa verde and lime",
+      "shows": "Five street tacos on corn tortillas with onion and cilantro, a bowl of salsa verde and lime wedges, a Mexican flag pick",
+      "usedOn": ["/la-dulceria"],
+      "flag": "The photograph is street tacos, but it sits in La Dulceria's 'For parties' block whose copy is churro towers, mini flans and tres leches. The alt describes the photograph, which is the honest thing to do, and the mismatch is logged as design debt."
+    },
+    "3468c5be0b3897f2.jpg": {
+      "alt": "Poster for International Karaoke Night, Thursdays 7:30 PM to midnight with DJ Willy",
+      "shows": "A promotional flyer with text baked into the image: a singer with a microphone in the bar, the venue name, the night and the times",
+      "usedOn": ["/tequila-bar"],
+      "flag": "This is the karaoke poster, but it sits in the Tequila Bar's 'Bar photo + hours' block whose copy is about the bar seating 108. Alt text for a poster has to carry the words in the image, which makes the mismatch plain to a screen reader. Logged as design debt."
+    }
+  }
+}

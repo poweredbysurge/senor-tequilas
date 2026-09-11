@@ -1,0 +1,120 @@
+{
+  "note": "The 301 map from design/brief/seo-migration-kit-and-page-spec.md, Part 1 sections B, C and D. NOT wired into vercel.json and NOT deployed. Paste the redirects array into vercel.json when the migration is cleared to go live.",
+  "doNotDeployYet": true,
+  "keepReturning404": [
+    "/collections/products/*",
+    "/shop/*",
+    "/toyu/*",
+    "/contents/*",
+    "/jukyuban",
+    "/pw",
+    "/reserve/tool",
+    "/information/privacy_policy.html"
+  ],
+  "keepTheirUrl": [
+    "/",
+    "/our-story/",
+    "/catering/",
+    "/private-parties/",
+    "/contact/",
+    "/gift-cards/",
+    "/cinco-de-mayo/"
+  ],
+  "redirects": [
+    {
+      "source": "/drinks",
+      "destination": "/margaritas",
+      "permanent": true
+    },
+    {
+      "source": "/entree",
+      "destination": "/menu",
+      "permanent": true
+    },
+    {
+      "source": "/lunch",
+      "destination": "/menu",
+      "permanent": true
+    },
+    {
+      "source": "/full-menu",
+      "destination": "/menu",
+      "permanent": true
+    },
+    {
+      "source": "/birthdays",
+      "destination": "/private-parties/quinceaneras-celebrations",
+      "permanent": true
+    },
+    {
+      "source": "/chef",
+      "destination": "/our-story",
+      "permanent": true
+    },
+    {
+      "source": "/nye",
+      "destination": "/private-parties",
+      "permanent": true
+    },
+    {
+      "source": "/free-tacos",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/happy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dinner-test",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/piano-evening",
+      "destination": "/private-parties",
+      "permanent": true
+    },
+    {
+      "source": "/tappas-night",
+      "destination": "/private-parties",
+      "permanent": true
+    },
+    {
+      "source": "/cooking-lessons-with-our-chef",
+      "destination": "/our-story",
+      "permanent": true
+    },
+    {
+      "source": "/dedicated-attentive-staff",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dedicated-attentive-staff-2",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dedicated-attentive-staff-3",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/new-outdoor-area-2",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/new-outdoor-area-3",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}

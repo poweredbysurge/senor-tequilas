@@ -262,72 +262,107 @@ to a nav item.
 that matches a nav item highlights it. In the port this would collapse seven header variants
 into two, the home nav and everything else, with the active item chosen per route.
 
-## 11. The footer's Order CTA disappears on mobile, on 19 of 20 pages
+## 11. The homepage header does not stay on screen, so it has no persistent order button
 
-Found in the Phase 4 content pass. On the nineteen pages using the shared footer, the block
-holding **Order Online** and **Reserve a Table** is set to `display: none` below the mobile
-breakpoint. At 390 those two buttons are not merely small, they are gone. Only the homepage,
-which uses its own footer, keeps them.
+**What is wrong:** on `/` the header stops being sticky after 110 pixels of scrolling. On the
+other nineteen pages it stays pinned to the top of the screen for the whole page.
 
-This is the design's own rule, not something the port introduced: the built site matches the
-reference at 0.000% on all nineteen pages.
+**Why:** a `position: sticky` element can only stay pinned inside its own parent box. On
+nineteen pages the header's parent wrapper spans the whole document. On the homepage that
+wrapper is **110px tall**, so the header sticks for 110px and then scrolls away with the rest
+of the page.
 
-On a site whose traffic is roughly 95 percent mobile, that removes the ordering path from the
-bottom of nearly every page.
+**Why it matters:** the homepage header is the only place the homepage shows an Order button
+above the fold on a phone. Once it scrolls away there is no ordering control on screen until
+the visitor reaches the footer. Roughly 95 percent of this restaurant's traffic is mobile.
 
-**Not fixed.** Un-hiding a block the design deliberately hides is a design decision, and it
-would change pixels on nineteen pages against a reference that has the behaviour baked in.
+**How to fix it upstream:** put the homepage header in the same wrapper structure the other
+nineteen pages use, so the sticky header has the full document to stick within. This is a
+markup nesting change, not a style change.
 
-## 12. Four events pages have no ordering control above the fold at 390
+**How to confirm:** open `/` on a phone, scroll past the hero, and check that the green Order
+pill is still at the top of the screen. Compare with `/menu`, where it is.
 
-Phase 4 requires the Order Online control to be visible without scrolling at 390x844. Sixteen
-pages pass. These four fail:
+## 12. Four pages have no way to order from the top of the screen
 
-`/private-parties`, `/private-parties/quinceaneras-celebrations`,
-`/private-parties/weddings-receptions`, `/catering`
+**What is wrong:** `/private-parties`, `/private-parties/quinceaneras-celebrations`,
+`/private-parties/weddings-receptions` and `/catering` have no Order button in the header.
+Their header carries "Book a Tour" or "Get a Quote" where the other sixteen pages carry
+"Order".
 
-Their headers carry "Book a Tour" or "Get a Quote" where the other sixteen carry "Order", so
-there is no Toast ordering link in the header at all. The two ordering links each page does
-have are in the footer, which is entry 11, and in the mobile menu panel, which is closed.
+Combined with entry 13, on a phone these four pages have no ordering control at the top of
+the screen **and** none at the bottom. The only one left is inside the closed hamburger menu.
 
-Whether an events page should push ordering over enquiring is a real question, not obviously
-a bug. Flagging it because the check is explicit and these four do not meet it.
+**Whether this is wrong is a judgement call**, not obviously a bug: these pages sell rooms and
+catering quotes rather than takeout, and pushing "Order" on a wedding enquiry may be the wrong
+ask. It is recorded because the launch checklist requires an ordering control visible without
+scrolling on every page, and these four do not have one.
 
-## 13. Global blocks the brief called for were deployed on one or two pages
+**Decide one of:** accept it and change the checklist for these four pages; or add a small
+ordering link elsewhere in their headers; or rely on the footer, which needs entry 13 fixed
+first.
 
-The port is faithful to what was designed. What was designed carries fewer site-wide blocks
-than the brief describes:
+## 13. The footer's Order and Reserve buttons vanish on phones, on 19 of 20 pages
+
+**What is wrong:** the block holding **Order Online** and **Reserve a Table** at the bottom of
+the page is set to `display: none` below the mobile breakpoint. On a phone those two buttons
+are not small, they are absent. Only `/` keeps them, because it uses a different footer.
+
+**On sixteen pages this is probably correct and deliberate.** Those pages have a sticky header
+whose Order pill follows the visitor down the page, so the footer copy would be a duplicate of
+a button already on screen. Hiding it is a reasonable choice.
+
+**On four pages it is not**, because they have no header Order button either. See entry 12.
+And on the homepage the header is not actually sticky, see entry 11, though the homepage does
+keep its footer buttons.
+
+**Decide:** leave the rule as it is and fix entries 11 and 12 instead, which is the smaller
+change and the one we would recommend; or show the footer buttons on the four pages that lack
+a header equivalent.
+
+## 14. Blocks that should be site-wide were built on one or two pages
+
+The built site is faithful to what was designed. What was designed carries fewer repeated
+blocks than the content brief describes.
 
 | block | brief expects | actually on |
 |---|---|---|
-| proof strip, stars and review count | site-wide credibility | **2 of 20**: `/` and `/mexican-restaurant-gaithersburg-md`, both 4.6 with 5,600 Google reviews |
-| events booking CTA | all four events and catering pages | **3 of 4**: `/private-parties` has none |
+| proof strip, star rating and review count | site-wide credibility | **2 of 20**: `/` and `/mexican-restaurant-gaithersburg-md`, both showing 4.6 and 5,600 Google reviews |
+| events booking form | all four events and catering pages | **3 of 4**: `/private-parties` has none |
 | announcement bar | site-wide | 1 page |
 | Tonight strip | site-wide | 1 page |
 | visit block | site-wide | 1 page |
 
-`/private-parties` is the notable one. It is the events **hub**, its header CTA says "Book a
-Tour", and that link jumps to the "Party types" section rather than to any booking form. The
-three pages below it in the hierarchy all have a real inquiry form; the hub does not.
+**The notable one is `/private-parties`.** It is the events hub, its header button says "Book
+a Tour", and that button scrolls to a list of party types rather than to any booking form. The
+three pages beneath it in the hierarchy each have a real enquiry form. The hub does not.
 
-**Not fixed.** Adding a block to a page the design did not put it on is a design decision.
-Recorded so the next design pass can decide which of these should be global.
+**To fix upstream:** decide which of these five blocks should appear on every page, and design
+them into the shared header or footer rather than into individual pages. At minimum, give
+`/private-parties` the same enquiry form its three child pages have.
 
-## 14. Nine images ship with an empty alt attribute
+## 15. Two photographs are in slots whose copy describes something else
 
-| page | images |
-|---|---|
-| `/` | 2 |
-| `/our-story` | 2 |
-| `/birria-tacos`, `/quesabirria-tacos`, `/street-tacos`, `/fajitas-molcajetes` | the shared `Margaritas.jpg` on each |
-| `/la-dulceria`, `/tequila-bar`, `/taco-tuesday` | 1 each |
+Found while writing alt text, which is when the mismatch becomes obvious, because alt text has
+to describe the photograph rather than the slot.
 
-`alt=""` is correct for a decorative image, but these are photographs of food and the room
-carrying real content. Writing alt text is copywriting, so the port does not invent it.
+| page | section | the photograph actually shows |
+|---|---|---|
+| `/tequila-bar` | "Bar photo + hours", copy about the bar seating 108 | the **International Karaoke Night poster**, with "Thursdays 7:30 PM to 12 AM, DJ Willy" printed in the image |
+| `/la-dulceria` | "For parties", copy about churro towers, mini flans and tres leches | a **plate of street tacos** with salsa verde and lime |
 
-**Upstream fix:** alt text for each, from whoever writes the copy.
+Both now carry alt text describing what they really are, which is honest but makes the
+mismatch audible to anyone using a screen reader: the tequila bar page announces a karaoke
+poster, and the dessert page announces tacos.
 
-## 15. "See the Bar" promises one page and sits beside copy about another
+**To fix upstream:** swap in a photograph of the bar for `/tequila-bar`, and one of the
+desserts for `/la-dulceria`. Then update `design/ALT-TEXT.json` to match.
+
+Related: `/our-story` uses the **same molcajete photograph twice**, once captioned "The room"
+and once "The kitchen", and `/taco-tuesday` uses it a third time. It is a good photograph but
+it is doing three different jobs.
+
+## 16. "See the Bar" promises one page and sits beside copy about another
 
 The four `See the Bar →` links on the dish pages sit inside a "Pair it" section whose copy is
 about a cantarito, a cocktail. The label says the bar.
@@ -339,7 +374,21 @@ betrayal even if the cantarito lives there.
 **Upstream fix, a copy decision not a link decision:** either the label becomes "See the
 Drinks" and points at `/margaritas`, or the pairing changes to something tequila-forward.
 
-## 16. The brief references a `/contact/` page that does not exist
+## 17. Eleven photographs shipped with no alt text
+
+**Fixed in the port, but it should be fixed at source too.** Eleven `<img>` elements across
+nine pages carried `alt=""`. An empty alt is correct for a decorative image, but these are
+photographs of food, drinks and the dining room carrying real content, so a screen reader
+announced nothing where the page shows its best argument.
+
+The port supplies alt text from `design/ALT-TEXT.json`, describing what each photograph
+actually shows in the vocabulary the page already uses. A shared photograph gets the same alt
+everywhere it appears.
+
+**To fix upstream:** author alt text in the design alongside each image, so a future export
+does not arrive empty again and `ALT-TEXT.json` can shrink toward nothing.
+
+## 18. The brief references a `/contact/` page that does not exist
 
 `seo-migration-kit-and-page-spec.md` says "every page: link to `/contact/`". There is no
 contact page among the twenty and none was designed.

@@ -45,6 +45,8 @@ const routeFor = (urlPath) => (urlPath === '/' ? 'index' : urlPath.replace(/^\//
 async function main() {
   const manifest = JSON.parse(await readFile(path.join(ROOT, 'design', 'pages', 'manifest.json'), 'utf8'));
   const linkMap = JSON.parse(await readFile(path.join(ROOT, 'design', 'LINK-MAP.json'), 'utf8'));
+  const altText = JSON.parse(await readFile(path.join(ROOT, 'design', 'ALT-TEXT.json'), 'utf8'));
+  const seo = JSON.parse(await readFile(path.join(ROOT, 'design', 'SEO.json'), 'utf8'));
   const byPage = new Map();
   for (const l of linkMap.links) {
     if (!byPage.has(l.page)) byPage.set(l.page, new Map());
@@ -74,13 +76,13 @@ async function main() {
 
   const variants = new Map();     // "Header" -> Map(hash -> {name, html, pages[]})
   const pageParts = [];
-  let rewritten = 0, unresolvedLeft = 0, formsMarked = 0;
+  let rewritten = 0, unresolvedLeft = 0, formsMarked = 0, altFilled = 0;
 
   for (const p of manifest.pages) {
     await page.goto(`http://127.0.0.1:${port}/design/pages/${p.slug}.html`, { waitUntil: 'load', timeout: 120000 });
 
     const rows = [...byPage.get(p.slug).values()].map((l) => ({ index: l.index, to: l.to, from: l.from }));
-    const applied = await page.evaluate(({ rows, shared }) => {
+    const applied = await page.evaluate(({ rows, shared, alt }) => {
       const anchors = [...document.querySelectorAll('a[href]')];
       let n = 0, unresolved = 0;
       for (const r of rows) {
@@ -90,6 +92,18 @@ async function main() {
         a.setAttribute('href', r.to);
         n++;
       }
+      // The design ships nine photographs with alt="". Filled from design/ALT-TEXT.json,
+      // keyed on the image filename so a shared image reads the same everywhere.
+      let altFilled = 0;
+      for (const img of document.images) {
+        if ((img.getAttribute('alt') ?? '').trim()) continue;
+        const file = (img.getAttribute('src') ?? '').split('/').pop();
+        const entry = alt[file];
+        if (!entry) continue;
+        img.setAttribute('alt', entry.alt);
+        altFilled++;
+      }
+
       // The design drew a working-looking inquiry form. It stays exactly as drawn; the
       // comment marks where the real Toast embed replaces it.
       let formsMarked = 0;
@@ -109,13 +123,14 @@ async function main() {
         blocks.push({ name: s.name, html: el.outerHTML });
         el.replaceWith(document.createComment(`COMPONENT:${s.name}`));
       }
-      return { n, unresolved, formsMarked, blocks, host: host.outerHTML };
-    }, { rows, shared: SHARED });
+      return { n, unresolved, formsMarked, altFilled, blocks, host: host.outerHTML };
+    }, { rows, shared: SHARED, alt: altText.byImage });
 
     if (applied.error) throw new Error(`${p.slug}: ${applied.error}`);
     rewritten += applied.n;
     unresolvedLeft += applied.unresolved;
     formsMarked += applied.formsMarked;
+    altFilled += applied.altFilled;
 
     const used = [];
     for (const b of applied.blocks) {
@@ -149,13 +164,52 @@ async function main() {
   await writeFile(path.join(SRC, 'components', 'MobileMenu.astro'),
     `---\n// The design's own mobile menu panel. See DESIGN-DEBT.md entry 6.\n---\n${panel}\n`);
 
+  await mkdir(path.join(SRC, 'data'), { recursive: true });
+  await writeFile(path.join(SRC, 'data', 'business.json'), JSON.stringify(seo.business, null, 2));
+
   const toggle = await readFile(path.join(ROOT, 'design', 'overlay', 'mobile-menu.js'), 'utf8');
   await writeFile(path.join(SRC, 'layouts', 'Base.astro'), `---
 import '../styles/site.css';
 import '../styles/overlay.css';
 import MobileMenu from '../components/MobileMenu.astro';
+import business from '../data/business.json';
 
-const { title, path } = Astro.props;
+const { title, description, canonical, ogImage, extraTypes = [] } = Astro.props;
+const site = ${JSON.stringify(seo.site)};
+const absolute = (u) => (u.startsWith('http') ? u : site + u);
+
+// Restaurant and LocalBusiness on every page, with EventVenue and Caterer added where the
+// page sells the room or the catering rather than the table.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['Restaurant', 'LocalBusiness', ...extraTypes],
+  name: business.name,
+  url: canonical,
+  telephone: business.telephone,
+  servesCuisine: business.servesCuisine,
+  priceRange: business.priceRange,
+  image: absolute(ogImage),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.streetAddress,
+    addressLocality: business.addressLocality,
+    addressRegion: business.addressRegion,
+    postalCode: business.postalCode,
+    addressCountry: business.addressCountry,
+  },
+  openingHoursSpecification: business.hours.map((h) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: h.days.map((d) => 'https://schema.org/' + d),
+    opens: h.opens,
+    closes: h.closes,
+  })),
+  sameAs: business.sameAs,
+  acceptsReservations: business.reserveUrl,
+  potentialAction: {
+    '@type': 'OrderAction',
+    target: { '@type': 'EntryPoint', urlTemplate: business.orderUrl, inLanguage: 'en-US' },
+  },
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -163,8 +217,22 @@ const { title, path } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={absolute(ogImage)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absolute(ogImage)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <slot />
@@ -192,7 +260,16 @@ ${toggle.split('\n').map((l) => (l ? '      ' + l : l)).join('\n')}
     let body = p.host;
     for (const u of p.used) body = body.replace(`<!--COMPONENT:${u.name.replace(/\d+$/, '')}-->`, `<${u.name} />`);
 
-    await writeFile(file, `---\n${imports}\n---\n<Base title=${JSON.stringify(p.h1)}>\n${body}\n</Base>\n`);
+    const meta = seo.pages[p.path];
+    if (!meta) throw new Error(`no SEO entry for ${p.path}`);
+    const props = [
+      `title=${JSON.stringify(meta.title)}`,
+      `description=${JSON.stringify(meta.description)}`,
+      `canonical=${JSON.stringify(meta.canonical)}`,
+      `ogImage=${JSON.stringify(meta.ogImage)}`,
+      meta.extraTypes.length ? `extraTypes={${JSON.stringify(meta.extraTypes)}}` : null,
+    ].filter(Boolean).join(' ');
+    await writeFile(file, `---\n${imports}\n---\n<Base ${props}>\n${body}\n</Base>\n`);
     console.log(`  ${p.path.padEnd(46)} src/pages/${route}.astro   ${names.join(', ')}`);
   }
 
@@ -206,8 +283,38 @@ export default defineConfig({
 });
 `);
 
+  // ---- sitemap and robots -------------------------------------------------------------
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = manifest.pages.map((p) => `  <url>\n    <loc>${seo.pages[p.path].canonical}</loc>\n    <lastmod>${today}</lastmod>\n  </url>`).join('\n');
+  await writeFile(path.join(PUBLIC, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+  await writeFile(path.join(PUBLIC, 'robots.txt'),
+    `User-agent: *\nAllow: /\n\n# WordPress cruft that must stay out of the index\nDisallow: /author/\nDisallow: /feed/\nDisallow: /comments/feed/\n\nSitemap: ${seo.site}/sitemap.xml\n`);
+
+  // ---- the 301 map, as a host config file, deliberately not wired into vercel.json --------
+  const REDIRECTS = [
+    ['/drinks', '/margaritas'], ['/entree', '/menu'], ['/lunch', '/menu'], ['/full-menu', '/menu'],
+    ['/birthdays', '/private-parties/quinceaneras-celebrations'], ['/chef', '/our-story'],
+    ['/nye', '/private-parties'], ['/free-tacos', '/'], ['/happy', '/'], ['/dinner-test', '/'],
+    ['/piano-evening', '/private-parties'], ['/tappas-night', '/private-parties'],
+    ['/cooking-lessons-with-our-chef', '/our-story'],
+    ['/dedicated-attentive-staff', '/'], ['/dedicated-attentive-staff-2', '/'], ['/dedicated-attentive-staff-3', '/'],
+    ['/new-outdoor-area-2', '/'], ['/new-outdoor-area-3', '/'], ['/hello-world', '/'],
+  ];
+  await mkdir(path.join(ROOT, 'deploy'), { recursive: true });
+  await writeFile(path.join(ROOT, 'deploy', 'redirects.json'), JSON.stringify({
+    note: 'The 301 map from design/brief/seo-migration-kit-and-page-spec.md, Part 1 sections B, C and D. NOT wired into vercel.json and NOT deployed. Paste the redirects array into vercel.json when the migration is cleared to go live.',
+    doNotDeployYet: true,
+    keepReturning404: ['/collections/products/*', '/shop/*', '/toyu/*', '/contents/*', '/jukyuban', '/pw', '/reserve/tool', '/information/privacy_policy.html'],
+    keepTheirUrl: ['/', '/our-story/', '/catering/', '/private-parties/', '/contact/', '/gift-cards/', '/cinco-de-mayo/'],
+    redirects: REDIRECTS.map(([source, destination]) => ({ source, destination, permanent: true })),
+  }, null, 2) + '\n');
+
+  console.log(`\nsitemap.xml with ${manifest.pages.length} URLs, robots.txt, and deploy/redirects.json with ${REDIRECTS.length} 301s written.`);
+
   console.log(`\n${rewritten} hrefs rewritten from the link map, ${unresolvedLeft} left inert (the delivery links).`);
   console.log(`${formsMarked} inquiry form(s) marked with <!-- TOAST FORM EMBED -->.`);
+  console.log(`${altFilled} empty alt attribute(s) filled from ALT-TEXT.json.`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

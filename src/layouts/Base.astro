@@ -2,8 +2,44 @@
 import '../styles/site.css';
 import '../styles/overlay.css';
 import MobileMenu from '../components/MobileMenu.astro';
+import business from '../data/business.json';
 
-const { title, path } = Astro.props;
+const { title, description, canonical, ogImage, extraTypes = [] } = Astro.props;
+const site = "https://senortequilas.com";
+const absolute = (u) => (u.startsWith('http') ? u : site + u);
+
+// Restaurant and LocalBusiness on every page, with EventVenue and Caterer added where the
+// page sells the room or the catering rather than the table.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['Restaurant', 'LocalBusiness', ...extraTypes],
+  name: business.name,
+  url: canonical,
+  telephone: business.telephone,
+  servesCuisine: business.servesCuisine,
+  priceRange: business.priceRange,
+  image: absolute(ogImage),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.streetAddress,
+    addressLocality: business.addressLocality,
+    addressRegion: business.addressRegion,
+    postalCode: business.postalCode,
+    addressCountry: business.addressCountry,
+  },
+  openingHoursSpecification: business.hours.map((h) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: h.days.map((d) => 'https://schema.org/' + d),
+    opens: h.opens,
+    closes: h.closes,
+  })),
+  sameAs: business.sameAs,
+  acceptsReservations: business.reserveUrl,
+  potentialAction: {
+    '@type': 'OrderAction',
+    target: { '@type': 'EntryPoint', urlTemplate: business.orderUrl, inLanguage: 'en-US' },
+  },
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -11,8 +47,22 @@ const { title, path } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={absolute(ogImage)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absolute(ogImage)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <slot />
