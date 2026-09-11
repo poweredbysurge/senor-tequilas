@@ -418,58 +418,74 @@ const jsonLd = {
           return card;
         }
 
-        /* The card is the button. The panel is its sibling inside a wrapper that becomes the grid
-           item, so the row height grows with whatever is open. */
+        /* The card opens a dialog with the photograph at a size worth looking at, rather than
+           pushing a paragraph into the grid. <dialog> gives Escape, the backdrop and focus
+           handling for free, and returns focus to the card on close. */
+        function dishModal() {
+          var dlg = document.getElementById('dish-modal');
+          if (dlg) return dlg;
+          dlg = document.createElement('dialog');
+          dlg.id = 'dish-modal';
+          dlg.innerHTML =
+            '<button type="button" data-dish-close aria-label="Close">' +
+              '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+            '</button>' +
+            '<img data-dish-img alt="">' +
+            '<div data-dish-body><h3 data-dish-name></h3><p data-dish-text></p><a data-dish-link>See the page</a></div>';
+          document.body.appendChild(dlg);
+          dlg.addEventListener('click', function (e) {
+            if (e.target === dlg || e.target.closest('[data-dish-close]')) dlg.close();
+          });
+          return dlg;
+        }
+
         function makeExpandable(card) {
           if (card.getAttribute('data-expandable') === 'done') return;
           card.setAttribute('data-expandable', 'done');
+          card.setAttribute('data-dish-card', '');
           card.setAttribute('type', 'button');
 
-          var wrap = document.createElement('div');
-          wrap.setAttribute('data-dish-card', '');
-          card.parentNode.insertBefore(wrap, card);
-          wrap.appendChild(card);
-
-          // "tap to expand" is a label explaining a feature. The chevron is the feature.
+          // "tap to expand" is a label explaining a feature. The icon is the feature.
           [].slice.call(card.querySelectorAll('span')).forEach(function (s) {
             if (/tap to expand/i.test(s.textContent || '')) s.remove();
           });
 
           var media = card.firstElementChild;
-          var chev = document.createElement('span');
-          chev.setAttribute('data-chevron', '');
-          chev.innerHTML = CHEVRON;
-          if (media) media.appendChild(chev);
+          var badge = document.createElement('span');
+          badge.setAttribute('data-chevron', '');
+          badge.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+          if (media) media.appendChild(badge);
 
           var full = card.getAttribute('data-full');
           var href = card.getAttribute('data-href');
+          var name = '';
+          var body = card.lastElementChild;
+          var nameEl = body && body.querySelector('span');
+          if (nameEl) name = (nameEl.textContent || '').trim();
           if (!full) {
-            // A card the design drew: its description is already in the body.
-            var body = card.lastElementChild;
             var desc = body && body.lastElementChild;
             full = desc ? (desc.textContent || '').trim() : '';
             href = hrefForDish(card);
           }
 
-          var panel = document.createElement('div');
-          panel.id = 'dish-detail-' + (++uid);
-          panel.setAttribute('data-dish-detail', '');
-          panel.innerHTML = '<div><p>' + full + '</p>' +
-            (href ? '<a href="' + href + '">See the page</a>' : '') + '</div>';
-          wrap.appendChild(panel);
+          // The photograph is a background on the media block; pull the URL back out of it.
+          var bg = media ? getComputedStyle(media).backgroundImage : '';
+          var m = bg && bg.match(/url\(["']?([^"')]+)/);
+          var src = m ? m[1] : '';
+          var alt = (media && media.getAttribute('aria-label')) || name;
 
-          card.setAttribute('aria-expanded', 'false');
-          card.setAttribute('aria-controls', panel.id);
-
-          function toggle(open) {
-            card.setAttribute('aria-expanded', String(open));
-            wrap.setAttribute('data-open', open ? 'true' : 'false');
-          }
-          card.addEventListener('click', function () { toggle(card.getAttribute('aria-expanded') !== 'true'); });
-          card.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && card.getAttribute('aria-expanded') === 'true') { toggle(false); }
+          card.setAttribute('aria-haspopup', 'dialog');
+          card.addEventListener('click', function () {
+            var dlg = dishModal();
+            var img = dlg.querySelector('[data-dish-img]');
+            img.setAttribute('src', src);
+            img.setAttribute('alt', alt);
+            dlg.querySelector('[data-dish-name]').textContent = name;
+            dlg.querySelector('[data-dish-text]').textContent = full;
+            var link = dlg.querySelector('[data-dish-link]');
+            if (href) { link.setAttribute('href', href); link.hidden = false; } else { link.hidden = true; }
+            if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
           });
-          toggle(false);
         }
 
         var DISH_PAGES = [
@@ -616,6 +632,12 @@ const jsonLd = {
            the img swaps, keyed by filename so they follow the picture wherever it is used. */
         var IMAGE_SWAPS = [
           {
+            match: /5e8f15f4ebe2842c\.jpg/,
+            src: '/images/Brothers-e1650353623141.jpg',
+            alt: 'The Rivas brothers, who opened Senor Tequila\'s in 2015',
+            why: 'the "[Pending] founding story" placeholder card, used for the chef slot and the 2015 timeline'
+          },
+          {
             route: '/our-story',
             match: /5ac1271d5937960b\.jpg/,
             src: '/images/site/need-image.svg',
@@ -638,11 +660,37 @@ const jsonLd = {
           });
         }
 
+
+        /* ---- 11. copy corrections -------------------------------------------------------------
+           Scoped text changes the design got wrong or left ambiguous. Matched on the element and
+           on the text it currently holds, so a future export that has already been corrected
+           upstream is left alone rather than double-edited. */
+        var TEXT_SWAPS = [
+          {
+            route: '/happy-hour',
+            selector: '[data-dc-tpl="749"]',
+            from: /^\s*3\s*to\s*6\s*$/i,
+            to: '3 PM to 6 PM',
+            why: 'the hero badge read "3 to 6", which does not say morning or evening'
+          }
+        ];
+        function textSwaps() {
+          var route = document.body.getAttribute('data-route');
+          TEXT_SWAPS.forEach(function (rule) {
+            if (rule.route && rule.route !== route) return;
+            [].slice.call(document.querySelectorAll(rule.selector)).forEach(function (el) {
+              var leaf = el.querySelector('.sc-interp') || el;
+              if (rule.from.test(leaf.textContent || '')) leaf.textContent = rule.to;
+            });
+          });
+        }
+
         function start() {
           try { if (isHome) tonightCarousel(); } catch (e) {}
           try { if (isHome) reviewsCarousel(); } catch (e) {}
           try { if (isHome) signatureDishes(); } catch (e) {}
           try { swapImages(); } catch (e) {}
+          try { textSwaps(); } catch (e) {}
           try { navLabel(); } catch (e) {}
           try { eventsFaq(); } catch (e) {}
           try { eventPackages(); } catch (e) {}

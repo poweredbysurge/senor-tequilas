@@ -80,11 +80,13 @@ body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
    phone they sat as a narrow column against a full-width sheet. Let them fill it. */
 #mobile-menu [data-dc-tpl="38"] { max-width: none !important; }
 
-/* ---- 8. Signature Dishes: the expand interaction --------------------------------------
-   The design drew a "tap to expand" label and no expansion. The card is now the control and
-   the label is gone; a chevron in the corner is the affordance. */
-[data-dish-card] { display: flex; flex-direction: column; }
-[data-dish-card] > button { width: 100%; }
+/* ---- 8. Signature Dishes: the photograph, at a size worth looking at ------------------
+   The design drew a "tap to expand" label and no expansion. The card now opens a dialog
+   with the picture large, rather than pushing a paragraph into the grid and shoving every
+   card below it down the page. */
+/* The marker sits on the card button itself; there is no wrapper any more, because the
+   detail lives in a dialog rather than in the grid. */
+[data-dish-card] { position: relative; }
 
 [data-chevron] {
   position: absolute;
@@ -98,39 +100,74 @@ body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: transform 200ms ease, background 200ms ease;
 }
-[data-dish-card][data-open="true"] [data-chevron] { transform: rotate(180deg); }
+[data-dish-card]:hover [data-chevron],
+[data-dish-card]:focus-visible [data-chevron] {
+  transform: scale(1.08);
+  background: rgba(13, 13, 11, 0.9);
+}
 
-/* 0fr to 1fr, so the transition ends exactly where the content ends rather than at a
-   max-height guess that is always either too short or too slow. */
-[data-dish-detail] {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 280ms cubic-bezier(0.22, 0.61, 0.36, 1);
+#dish-modal {
+  width: min(92vw, 720px);
+  max-height: 88vh;
+  padding: 0;
+  border: 1px solid rgb(42, 40, 32);
+  border-radius: 18px;
+  background: rgb(20, 18, 16);
+  color: rgb(234, 226, 214);
+  font-family: Barlow, system-ui, -apple-system, sans-serif;
+  overflow: hidden;
 }
-[data-dish-card][data-open="true"] [data-dish-detail],
-[data-dish-detail][data-open="true"] { grid-template-rows: 1fr; }
-[data-dish-detail] > div { overflow: hidden; }
-[data-dish-detail] p {
-  font-size: 13px;
-  line-height: 1.55;
+#dish-modal::backdrop { background: rgba(8, 8, 7, 0.82); backdrop-filter: blur(3px); }
+#dish-modal [data-dish-img] {
+  display: block;
+  width: 100%;
+  max-height: 56vh;
+  object-fit: cover;
+  background: rgb(28, 27, 24);
+}
+#dish-modal [data-dish-body] { padding: 20px 22px 24px; }
+#dish-modal h3 {
+  font-family: "Archivo Black", sans-serif;
+  font-size: clamp(20px, 3.4vw, 28px);
+  text-transform: uppercase;
+  line-height: 1.05;
+  margin: 0;
+  color: rgb(246, 239, 228);
+}
+#dish-modal p {
+  font-size: 15px;
+  line-height: 1.6;
   color: rgba(234, 226, 214, 0.85);
-  margin: 10px 2px 0;
+  margin: 10px 0 0;
 }
-[data-dish-detail] a {
+#dish-modal a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  margin: 8px 2px 4px;
+  margin-top: 14px;
   color: rgb(214, 188, 133);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
+}
+#dish-modal [data-dish-close] {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(185, 156, 102, 0.5);
+  background: rgba(13, 13, 11, 0.8);
+  color: rgb(234, 226, 214);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  [data-dish-detail], [data-chevron] { transition: none; }
-}
+@media (prefers-reduced-motion: reduce) { [data-chevron] { transition: none; } }
 
 /* ---- 9. the private events hub -------------------------------------------------------
    The design nested a whole copy of the enquiry form section inside every FAQ answer, and
@@ -174,12 +211,49 @@ body[data-route="/"] [data-dc-tpl="129"] { display: none !important; }
 /* The private events card on the homepage was flat red. The room behind the red does the
    selling; the gradient keeps the headline and the eyebrow legible over it. */
 body[data-route="/"] a[data-dc-tpl="111"] {
+  /* No red wash. The room is the point, so the only overlay is the neutral bottom-up scrim
+     the design already uses on its other photo cards, enough to hold the headline and the
+     eyebrow and nothing more. */
   background-image:
-    linear-gradient(rgba(191, 30, 46, 0.78), rgba(140, 18, 32, 0.94)),
+    linear-gradient(to top, rgba(10, 9, 8, 0.92) 0%, rgba(10, 9, 8, 0.55) 42%, rgba(10, 9, 8, 0.12) 100%),
     url(/images/site/dining-room-night.jpg) !important;
   background-size: cover !important;
   background-position: center !important;
+  background-color: rgb(28, 27, 24) !important;
 }
 
 /* The /our-story molcajete swap is an <img src>, not a background, so CSS cannot reach
    it. See swapImages() in site-tweaks.js. */
+
+/* ---- 12. the Google reviews rail --------------------------------------------------------
+   It showed the browser's native scrollbar, which is the one piece of chrome on this page
+   the design does not control, and it stopped at the 1180px container so the next card was
+   sliced in half. Same treatment as the Tonight rail: scrollbar hidden, rail bleeds off the
+   right edge, arrows do the moving. */
+body[data-route="/"] [data-dc-tpl="150"] {
+  max-width: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+body[data-route="/"] [data-dc-tpl="150"]::-webkit-scrollbar { display: none !important; }
+
+/* Any other rail the design left a native scrollbar on. */
+[data-rail], [data-autoscroll] { scrollbar-width: none !important; }
+[data-rail]::-webkit-scrollbar, [data-autoscroll]::-webkit-scrollbar { display: none !important; }
+
+/* The reviews rail sits inside the 1180px container, so clearing max-width on the rail alone
+   still left it stopping short of the edge. Release the container's right side too, for this
+   one block. */
+body[data-route="/"] [data-dc-tpl="140"] {
+  max-width: none !important;
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+/* The headline, the rating line and the arrows stay on the container's gutter; only the rail
+   runs past it. */
+body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
+  max-width: 1180px;
+  margin-right: 48px;
+}
