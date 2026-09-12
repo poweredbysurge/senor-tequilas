@@ -7,6 +7,12 @@ Four changes. Three on the homepage's Signature Dishes block, one in the header 
 ---
 ---
 
+## Before you change anything
+
+Inspect what exists first, and tell me what you found before you start writing: the Signature Dishes component and its CSS and JS, the current taco-card markup, every occurrence of the `Tonight` nav label, `DESIGN-DEBT.md`, and how the visual reference and manifest workflow currently runs.
+
+Reuse what is already there: existing classes, tokens, breakpoints, easing curves, icon conventions and vanilla-JS patterns. Do not redesign the section beyond the changes specified below, and do not introduce a new pattern where an existing one already does the job.
+
 ## 1. The category tabs do nothing. Wire them up.
 
 The Signature Dishes block has four category controls: Tacos, Fajitas & Molcajetes, Margaritas, Desserts. Only Tacos has cards behind it. Clicking the other three does nothing at all, which is how a visitor learns the page is broken.
@@ -77,12 +83,26 @@ Do not add a nav item. Swapping keeps the count at five, and "TACOS" is narrower
 
 ## 5. One honesty problem to flag, not fix
 
-The Signature Dishes eyebrow reads "top sellers from Toast". We never received Toast sales data; it was on the pending list and never arrived. The six taco cards may be a reasonable guess, and the twelve you are adding are definitely a guess, so the claim is not true for any of them.
+The Signature Dishes eyebrow reads "top sellers from Toast". We never received Toast sales data; it was on the pending list and never arrived. The six taco cards may be a reasonable guess, and the thirteen you are adding are definitely a guess, so the claim is not true for any of them.
 
 Do not change it yourself. Add it to `DESIGN-DEBT.md`: either Roberto sends the real Toast numbers, or the eyebrow becomes something honest like "what people actually order". Tell me which pages carry that phrasing.
 
-## Then
+## Then, and the re-baseline is gated
 
 Build, confirm zero console errors, and check the expand and the tabs with a keyboard as well as a mouse at 390, 768 and 1440.
 
-Then re-baseline `design/reference/` and update the manifest, noting that this baseline includes the dish panels, the expand interaction and the nav label change. Re-run the visual check against the new set so we know the site is stable, and report anything that moved on a page other than the homepage, since nothing should have.
+**Before you re-baseline anything, run the visual check against the current references and look at what moved.** The homepage and the header strip on all 21 pages should differ. Nothing else should. If any page shows a difference that is not the header, stop and report it rather than re-baselining over it.
+
+This matters more than it sounds. A re-baseline turns "this snapshot changed" into "this snapshot is correct", and it does that silently for every page at once. An unrelated regression that slipped in during this work would be permanently blessed by the same command that legitimately accepts the dish panels. So the sequence is: check first, explain every difference, then re-baseline, then update the manifest noting that this baseline includes the dish panels, the expand interaction and the nav label change.
+
+## Final report
+
+1. Every file changed.
+2. All **19** dish cards confirmed present, the 6 existing taco cards and the 13 new ones, each named with the source image it uses.
+3. Every page where the `Tonight` nav label became `Tacos`, header and footer.
+4. Every page still carrying the "top sellers from Toast" phrasing.
+5. Keyboard testing results at 390, 768 and 1440, for both the tabs and the expand.
+6. Console errors, or confirmation there are none.
+7. Visual regression results, with every non-homepage, non-header difference identified explicitly.
+
+Do not silently accept an unrelated snapshot change.
