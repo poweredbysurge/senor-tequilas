@@ -677,6 +677,41 @@
     grid.insertBefore(fig, grid.firstChild);
   }
 
+  /* ---- 18. the homepage hero video ------------------------------------------------------
+     The right half of the split hero was a still. It now carries a 4:5 clip, locked to that
+     ratio so the footage fills the panel exactly with nothing cropped away, and the left
+     half stretches to match it as a grid row.
+
+     Muted, looping, no controls, and it starts on its own: this is hero furniture, not
+     something anyone chose to watch. The muted property is set as well as the attribute
+     because Safari reads the property when deciding whether autoplay is allowed. */
+  function heroVideo() {
+    if (document.body.getAttribute('data-route') !== '/') return;
+    var panel = document.querySelector('[data-dc-tpl="60"]');
+    if (!panel || panel.querySelector('video')) return;
+    var img = panel.querySelector('[data-dc-tpl="62"]');
+    if (!img) return;
+
+    var v = document.createElement('video');
+    v.className = 'st-herovideo';
+    v.setAttribute('src', '/videos/home-hero.mp4');
+    v.setAttribute('poster', '/videos/home-hero.jpg');
+    v.setAttribute('aria-label', 'The dining room and bar at Senor Tequila\'s during service');
+    v.setAttribute('playsinline', '');
+    v.setAttribute('autoplay', '');
+    v.setAttribute('loop', '');
+    v.setAttribute('muted', '');
+    v.setAttribute('preload', 'auto');
+    v.muted = true;
+    v.defaultMuted = true;
+
+    img.parentNode.replaceChild(v, img);
+
+    // If a browser still refuses the autoplay, the poster stays rather than a dead black box.
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+
   function swapImages() {
     var route = document.body.getAttribute('data-route');
     IMAGE_SWAPS.forEach(function (rule) {
@@ -786,6 +821,7 @@
     try { autoScrollRails(); } catch (e) {}
     try { videoStrip(); } catch (e) {}
     try { introVideo(); } catch (e) {}
+    try { heroVideo(); } catch (e) {}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();

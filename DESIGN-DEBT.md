@@ -625,3 +625,22 @@ action, and if any of the substance differs they are left exactly as drawn.
 
 If these three are genuinely meant to be different packages, the fix is upstream: give them
 different prices or inclusions and the cards come back on their own.
+
+## 30. The homepage hero video is heavy and unoptimised
+
+The right half of the split hero carries a 30 second 4:5 clip, `public/videos/home-hero.mp4`,
+at 1080x1350 and about 10.8 MB. It autoplays muted on every homepage load, so that is 10.8 MB
+before a visitor has done anything. This was accepted knowingly on 11 September: "It's heavy.
+We'll fix later."
+
+Ways to fix it later, cheapest first: shorten the loop, which is the single biggest win, since
+most of the 30 seconds is never seen; drop to 864x1080, which is still sharp in a 720px panel;
+raise the CRF past 28; or serve the poster alone on a slow connection and only fetch the video
+on a fast one.
+
+Locking the panel to 4:5 also grew the hero from 623px to 900px tall at 1440, which pushes
+everything below it further down the fold. That was the requested behaviour, right side locked
+to the clip's ratio and the left half stretching to match, but it is worth a look on a laptop
+screen before launch.
+
+The camera original is in `design/source-video/`, gitignored.
