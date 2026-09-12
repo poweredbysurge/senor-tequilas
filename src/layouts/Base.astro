@@ -572,39 +572,93 @@ const jsonLd = {
         /* ---- 9. the events packages were three copies of one package --------------------------
            All three cards carried the same price and the same three lines, so the row read as a
            choice that does not exist. Collapse to the one package it actually is. */
-        function eventPackages() {
-          var cards = [].slice.call(document.querySelectorAll('[data-dc-tpl]')).filter(function (el) {
-            return /Ask about this package/i.test(el.textContent || '') && el.querySelector('a, button');
+        /* The event pages draw three package cards that describe one offer. On the weddings page
+           they differ only by an eyebrow naming the occasion, Showers, Rehearsal dinner,
+           Receptions, and by one card asking for a quote rather than about the package. The price,
+           the unit and all three bullets are identical, so the row reads as a choice that is not
+           actually being offered. Where the offer is genuinely one thing, show one card.
+
+           The offer is compared without the eyebrow, the "Most booked" badge and the call to
+           action, since those name or style a choice rather than describe what is included. If any
+           of the substance differs, the cards are left exactly as the design drew them. */
+        function packageCards() {
+          var section = [].slice.call(document.querySelectorAll('section')).filter(function (s) {
+            return s.getAttribute('data-screen-label') === 'Packages';
+          })[0];
+          if (!section) return [];
+          var cards = [].slice.call(section.querySelectorAll('[data-dc-tpl]')).filter(function (el) {
+            return el.querySelectorAll('a, button').length === 1 && /per guest|a person/i.test(el.textContent || '');
           });
-          // the innermost elements that are one card each
-          cards = cards.filter(function (el) {
+          // keep only the innermost, which is one card each
+          return cards.filter(function (el) {
             return !cards.some(function (other) { return other !== el && el.contains(other); });
           });
-          if (cards.length < 2) return;
-          // Normalise away the things that distinguish the cards without distinguishing the offer:
-          // the "Package N" eyebrow and the "Most booked" badge.
-          var texts = cards.map(function (c) {
-            return (c.textContent || '').replace(/package\s*\d+/ig, '').replace(/most\s*booked/ig, '').replace(/\s+/g, ' ').trim();
+        }
+
+        var PKG_BADGE = /^most\s*booked$/i;
+
+        // Every leaf that carries substance: not the badge, not the call to action label.
+        function packageLeaves(card) {
+          return [].slice.call(card.querySelectorAll('*')).filter(function (el) {
+            if (el.children.length) return false;
+            var t = (el.textContent || '').trim();
+            if (!t || PKG_BADGE.test(t)) return false;
+            return !el.closest('a, button');
           });
-          if (!texts.every(function (t) { return t === texts[0]; })) return;   // genuinely different, leave alone
+        }
+
+        // The eyebrow sits immediately before the price, so everything from the price onward is
+        // the offer itself.
+        function packageOffer(card) {
+          var leaves = packageLeaves(card);
+          var priceAt = -1;
+          leaves.forEach(function (el, i) {
+            if (priceAt < 0 && /\$|\ba person\b/i.test(el.textContent || '')) priceAt = i;
+          });
+          if (priceAt > 0) leaves = leaves.slice(priceAt);
+          return leaves.map(function (el) {
+            return (el.textContent || '').replace(/\s+/g, ' ').trim();
+          }).join(' | ');
+        }
+
+        function eventPackages() {
+          var cards = packageCards();
+          if (cards.length < 2) return;
+
+          var offers = cards.map(packageOffer);
+          if (!offers.every(function (o) { return o === offers[0]; })) return;  // genuinely different
 
           // Keep the card the design emphasised, so the green call to action survives.
           var keepIndex = 0;
-          cards.forEach(function (c, i) { if (/most\s*booked/i.test(c.textContent || '')) keepIndex = i; });
+          cards.forEach(function (c, i) { if (PKG_BADGE.test(((c.textContent || '').match(/most\s*booked/i) || [''])[0])) keepIndex = i; });
           var keep = cards[keepIndex];
           cards.forEach(function (c, i) { if (i !== keepIndex) c.remove(); });
           keep.setAttribute('data-single-package', '');
-          // The "Package 1" eyebrow and the "Most booked" badge both describe a choice that no
-          // longer exists. The badge can sit on the card or just outside it, so sweep the row.
+
+          // The badge and the eyebrow both name a choice that no longer exists. The badge can sit
+          // on the card or just outside it, so sweep the row for it.
           var scope = keep.parentElement || keep;
           [].slice.call(scope.querySelectorAll('*')).forEach(function (el) {
             if (el.children.length) return;
             var t = (el.textContent || '').trim();
-            if (/^package\s*\d+$/i.test(t) || /^most\s*booked$/i.test(t)) {
+            if (/^package\s*\d+$/i.test(t) || PKG_BADGE.test(t)) {
               var strip = el.parentElement && el.parentElement.children.length === 1 ? el.parentElement : el;
               strip.remove();
             }
           });
+
+          // Then the eyebrow: the leaf before the price on the card that survived.
+          var leaves = packageLeaves(keep);
+          var priceAt = -1;
+          leaves.forEach(function (el, i) {
+            if (priceAt < 0 && /\$|\ba person\b/i.test(el.textContent || '')) priceAt = i;
+          });
+          if (priceAt > 0) {
+            var eyebrow = leaves[priceAt - 1];
+            var strip = eyebrow.parentElement && eyebrow.parentElement.children.length === 1
+              ? eyebrow.parentElement : eyebrow;
+            strip.remove();
+          }
         }
 
 

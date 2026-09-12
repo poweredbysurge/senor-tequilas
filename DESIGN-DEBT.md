@@ -610,3 +610,18 @@ defeats motion estimation and they were four times the size of the others at equ
 
 Camera originals live in `design/source-video/`, which is gitignored. They must never sit in
 `public/`, which is copied into the build verbatim.
+
+
+## 29. The weddings page drew three package cards for one package
+
+`/private-parties/weddings-receptions` showed Showers, Rehearsal dinner and Receptions side by
+side. All three carried the same price, the same unit and the same three bullets. Only the
+eyebrow and one button label differed, so the row offered a choice that was not being made.
+
+It now collapses to the single card the design emphasised, matching
+`/private-parties/quinceaneras-celebrations`. The collapse is conditional: the cards are
+compared on the offer alone, ignoring the eyebrow, the "Most booked" badge and the call to
+action, and if any of the substance differs they are left exactly as drawn.
+
+If these three are genuinely meant to be different packages, the fix is upstream: give them
+different prices or inclusions and the cards come back on their own.
