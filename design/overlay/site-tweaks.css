@@ -486,7 +486,11 @@ body[data-route="/"] .st-herovideo {
   /* Copy blocks the design gave a max-width, 44ch and the like, would otherwise sit centred
      in their text but hard against the left edge of the column. */
   body[data-route] section p,
-  body[data-route] section blockquote {
+  body[data-route] section blockquote,
+  body[data-route] section h1,
+  body[data-route] section h2,
+  body[data-route] section h3,
+  body[data-route] section h4 {
     margin-left: auto !important;
     margin-right: auto !important;
   }
@@ -591,4 +595,19 @@ body[data-route] [data-cta] {
    360 and 320. They keep the capitals and give up the tracking. */
 body[data-route] header [data-cta] {
   letter-spacing: normal !important;
+}
+
+/* ---- 22. the menu cards stay left ------------------------------------------------------
+   The mobile pass centres section copy, but a menu card is a list entry, not a statement:
+   a dish name and its description read better ranged left against the photograph beside
+   them, and centring turned every description into a ragged diamond. Requested 11 September.
+   The section headings above them stay centred like everywhere else. */
+@media (max-width: 767px) {
+  body[data-route="/menu"] [data-dc-tpl="87"],
+  body[data-route="/menu"] [data-dc-tpl="87"] * {
+    text-align: left !important;
+  }
+  body[data-route="/menu"] [data-dc-tpl="91"] {
+    justify-content: flex-start !important;
+  }
 }
