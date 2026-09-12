@@ -266,19 +266,24 @@ footer a[data-social] svg { flex: 0 0 auto; opacity: 0.9; }
 footer a[data-social]:hover svg, footer a[data-social]:focus-visible svg { opacity: 1; }
 
 /* ---- 14. the lucha collage texture ------------------------------------------------------
-   The design uses a dark poster collage behind several sections and then leaves a lot of
-   others flat black. Applied to the card sections that were flat, behind the same
-   gradient the design already pairs it with, so the type keeps its contrast and the cards
-   still read as cards. Sections that already carry artwork are untouched. */
+   The design already puts its own dark collage behind 24 sections. This adds a second
+   collage to card sections the design left flat black. Counting both, an earlier pass had
+   43 of the site's 87 dark sections carrying a texture, about half, which read as repetition
+   rather than as accent. Cut on 11 September to 10 instances, so roughly 40 percent of dark
+   sections are textured and the rest stay flat.
+
+   What survived is the sections where the texture does work: the card-heavy ones, where it
+   separates the cards from the ground behind them. Dropped back to flat black were Also try,
+   Packages, Party types and Cafe + digestivos, the four with the fewest cards and, in the
+   case of Also try and Packages, the ones repeating across three and four pages each.
+
+   It sits behind the same gradient the design pairs with its own collage, so type keeps its
+   contrast. Sections that already carry artwork are untouched. */
 section[data-screen-label="Social feed"],
 section[data-screen-label="Three pillars"],
-section[data-screen-label="Also try"],
-section[data-screen-label="Party types"],
 section[data-screen-label="How booking works"],
-section[data-screen-label="Packages"],
 section[data-screen-label="The pulps"],
 section[data-screen-label="How it works"],
-section[data-screen-label="Café + digestivos"],
 section[data-screen-label="Why you don't need a Tuesday"],
 section[data-screen-label="The tacos"],
 section[data-screen-label="Every night of the week"] {
@@ -454,4 +459,56 @@ body[data-route="/"] .st-herovideo {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* ---- 19. mobile: centred text and full width buttons -----------------------------------
+   Below 768, one of the design's own breakpoints, page copy centres and every call to action
+   spans the column. Requested on 11 September for all pages.
+
+   Scoped to section content on purpose. The header, the footer and the mobile menu keep
+   their own alignment: centring a nav or stretching the header's Order pill across the
+   screen would break layouts that already work at this width. */
+@media (max-width: 767px) {
+  body[data-route] section,
+  body[data-route] section h1,
+  body[data-route] section h2,
+  body[data-route] section h3,
+  body[data-route] section h4,
+  body[data-route] section p,
+  body[data-route] section li,
+  body[data-route] section dd,
+  body[data-route] section dt,
+  body[data-route] section figcaption,
+  body[data-route] section blockquote {
+    text-align: center !important;
+  }
+
+  /* Copy blocks the design gave a max-width, 44ch and the like, would otherwise sit centred
+     in their text but hard against the left edge of the column. */
+  body[data-route] section p,
+  body[data-route] section blockquote {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* A call to action spans the column. data-mcta is set in script, see site-tweaks.js
+     section 19, because the design gives these no class and CSS cannot match on the
+     computed style that distinguishes a button from a card. */
+  body[data-route] [data-mcta] {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Two buttons the design sat side by side were each being cut to 170px on a 390 screen.
+     The row stacks so both get the full width. */
+  /* body[data-route] rather than the bare attribute: the design carries its own mobile rule,
+     [data-c1p-root] [data-m-3] { grid-template-columns: repeat(3, 1fr) !important }, which
+     kept the three delivery buttons in a row at 97px each. An !important alone does not beat
+     it, only a selector that outranks two classes. */
+  body[data-route] [data-mcta-row] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    align-items: stretch !important;
+  }
 }

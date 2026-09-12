@@ -694,22 +694,75 @@
 
     var v = document.createElement('video');
     v.className = 'st-herovideo';
-    v.setAttribute('src', '/videos/home-hero.mp4');
-    v.setAttribute('poster', '/videos/home-hero.jpg');
-    v.setAttribute('aria-label', 'The dining room and bar at Senor Tequila\'s during service');
-    v.setAttribute('playsinline', '');
-    v.setAttribute('autoplay', '');
-    v.setAttribute('loop', '');
-    v.setAttribute('muted', '');
-    v.setAttribute('preload', 'auto');
+    // Order matters on iOS. Safari decides whether a video may autoplay inline at the moment
+    // loading starts, so muted and playsinline have to be true before the source is set. With
+    // src assigned first the clip was still unmuted when that decision was made, autoplay was
+    // refused, and the hero sat on its poster on every iPhone.
     v.muted = true;
     v.defaultMuted = true;
+    v.setAttribute('muted', '');
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+    v.setAttribute('autoplay', '');
+    v.setAttribute('loop', '');
+    v.setAttribute('preload', 'auto');
+    v.setAttribute('poster', '/videos/home-hero.jpg');
+    v.setAttribute('aria-label', 'The dining room and bar at Senor Tequila\'s during service');
+    v.setAttribute('src', '/videos/home-hero.mp4');
 
     img.parentNode.replaceChild(v, img);
 
     // If a browser still refuses the autoplay, the poster stays rather than a dead black box.
     var p = v.play();
     if (p && p.catch) p.catch(function () {});
+  }
+
+  /* ---- 19. mobile: centred text and full width buttons ----------------------------------
+     Below 768 the text centres and every call to action spans the column, including pairs
+     that the design put side by side, which were being cut to 170px each on a 390 screen.
+
+     Deciding what counts as a button has to be done in script, because CSS cannot match on
+     computed style and the design gives these no class of their own. A call to action here
+     is a link or button that carries a short label, has a rounded surface, and is no taller
+     than a control. That last test is what keeps the cards out: the night cards on the home
+     page are also rounded anchors, but they are 460px tall, not 52.
+
+     Explicitly left alone: the carousel arrows and any other icon-only control, since a
+     circular arrow stretched across the screen is not a button anyone wants; the dish
+     category tabs, which are a tablist and must stay in a row; and anything in the header,
+     the footer or the mobile menu, which have their own layouts. */
+  function mobileCtas() {
+    var MAX_CONTROL_HEIGHT = 72;   // taller than this and it is a card, not a button
+    var MAX_LABEL = 40;
+
+    [].slice.call(document.querySelectorAll('section a, section button')).forEach(function (el) {
+      if (el.closest('header, footer, nav, #mobile-menu')) return;
+      if (el.getAttribute('role') === 'tab') return;
+      if (el.hasAttribute('data-social')) return;
+
+      var label = (el.textContent || '').trim();
+      if (!label || label.length > MAX_LABEL) return;          // icon-only, or a whole card
+
+      var cs = window.getComputedStyle(el);
+      var radius = parseFloat(cs.borderRadius) || 0;
+      var surfaced = (cs.backgroundColor && cs.backgroundColor !== 'rgba(0, 0, 0, 0)') ||
+                     parseFloat(cs.borderTopWidth) > 0;
+      if (radius < 6 || !surfaced) return;
+
+      var box = el.getBoundingClientRect();
+      if (box.height > MAX_CONTROL_HEIGHT || box.height < 24) return;
+
+      el.setAttribute('data-mcta', '');
+      // the row holding it, so a side by side pair can be told to stack
+      var row = el.parentElement;
+      if (row && row.children.length > 1) {
+        var kids = [].slice.call(row.children);
+        var allControls = kids.every(function (k) {
+          return k.tagName === 'A' || k.tagName === 'BUTTON';
+        });
+        if (allControls) row.setAttribute('data-mcta-row', '');
+      }
+    });
   }
 
   function swapImages() {
@@ -822,6 +875,7 @@
     try { videoStrip(); } catch (e) {}
     try { introVideo(); } catch (e) {}
     try { heroVideo(); } catch (e) {}
+    try { mobileCtas(); } catch (e) {}
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();

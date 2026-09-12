@@ -303,6 +303,12 @@ const { title, description, canonical, ogImage, extraTypes = [], route } = Astro
 const site = ${JSON.stringify(seo.site)};
 const absolute = (u) => (u.startsWith('http') ? u : site + u);
 
+// One branded share card for every link on the site, supplied 11 September. Each page keeps
+// its own ogImage for the JSON-LD image, where a photograph of the thing itself is the right
+// answer, but every og:image and twitter:image is the card, so a link to any page previews
+// the same way. To go back to per page hero images, use absolute(ogImage) below instead.
+const shareCard = '/images/site/open-graph.jpg';
+
 // Restaurant and LocalBusiness on every page, with EventVenue and Caterer added where the
 // page sells the room or the catering rather than the table.
 const jsonLd = {
@@ -350,11 +356,13 @@ const jsonLd = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={absolute(ogImage)} />
+    <meta property="og:image" content={absolute(shareCard)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={absolute(ogImage)} />
+    <meta name="twitter:image" content={absolute(shareCard)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

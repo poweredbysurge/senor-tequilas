@@ -24,3 +24,7 @@ design/gate-a/overlay-check/
 # 640 MB in total. The web copies in public/videos are what ship. Anything left in
 # public/ is copied verbatim into the build, so the sources are parked outside it.
 design/source-video/
+
+# Full-size artwork the client drops in for optimisation. The web copies live in
+# public/images/site; anything left in public/ is copied into the build verbatim.
+design/source-art/

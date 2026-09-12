@@ -644,3 +644,23 @@ to the clip's ratio and the left half stretching to match, but it is worth a loo
 screen before launch.
 
 The camera original is in `design/source-video/`, gitignored.
+
+
+## 31. The collage texture was doing too much, and the open graph card is site-wide
+
+Two things settled on 11 September.
+
+**Texture.** The design already puts its own collage behind 24 sections. An earlier pass added
+a second collage to 19 more, so 43 of the site's 87 dark sections carried a texture, about
+half, which read as repetition rather than accent. Cut to 10 instances: 40 percent of sections
+now carry any background image, down from 47. What survived is the card-heavy sections, where
+the texture separates cards from the ground. Dropped back to flat black: Also try, Packages,
+Party types and Cafe + digestivos, the four with the fewest cards, and the first two repeating
+across four and three pages each.
+
+**Open graph.** Every page now shares one branded card, `/images/site/open-graph.jpg` at
+1200x630, rather than its own hero photograph. A link to any page previews the same way. Each
+page keeps its own `ogImage` prop, still used for the JSON-LD `image`, where a photograph of
+the thing itself is the right answer. To go back to per page previews, use `absolute(ogImage)`
+in `Base.astro` and in the generator template in `scripts/build-site.mjs`, which carry the
+same block and must stay in step.
