@@ -391,3 +391,45 @@ body[data-route="/private-parties/quinceaneras-celebrations"] [data-dc-tpl="420"
   height: 100%;
   object-fit: cover;
 }
+
+/* ---- 17. the packages block as two equal columns ---------------------------------------
+   Once the three duplicate cards collapse to one, see section 16 and DESIGN-DEBT entry 29,
+   the block reads as a wide headline stacked on a single wide card. Splitting it in half
+   puts the copy beside the offer it introduces and stops one card stretching the full
+   1180px.
+
+   Both event pages get this, since they draw the same block and now show the same card.
+   The container keeps its own max-width and side padding; only the flow inside it changes.
+   Below 768, one of the design's own breakpoints, it returns to a single column. */
+body[data-route="/private-parties/weddings-receptions"] section[data-screen-label="Packages"] [data-dc-tpl="454"],
+body[data-route="/private-parties/quinceaneras-celebrations"] section[data-screen-label="Packages"] [data-dc-tpl="454"] {
+  display: grid;
+  /* minmax(0, 1fr), not 1fr: a plain 1fr has an automatic minimum, and the long headline
+     refuses to shrink past its longest word, which pushed the two columns to 354 and 312
+     at 768 instead of halving cleanly. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: clamp(24px, 4vw, 56px) !important;
+  align-items: center !important;
+}
+/* The heading and its paragraph sat on one baseline-aligned row. In half the width they
+   are always stacked, so say so rather than relying on the wrap. */
+body[data-route="/private-parties/weddings-receptions"] section[data-screen-label="Packages"] [data-dc-tpl="455"],
+body[data-route="/private-parties/quinceaneras-celebrations"] section[data-screen-label="Packages"] [data-dc-tpl="455"] {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+/* The card row's top margin separated it from the copy above. They are side by side now. */
+body[data-route="/private-parties/weddings-receptions"] section[data-screen-label="Packages"] [data-dc-tpl="461"],
+body[data-route="/private-parties/quinceaneras-celebrations"] section[data-screen-label="Packages"] [data-dc-tpl="461"] {
+  margin-top: 0 !important;
+}
+@media (max-width: 767px) {
+  body[data-route="/private-parties/weddings-receptions"] section[data-screen-label="Packages"] [data-dc-tpl="454"],
+  body[data-route="/private-parties/quinceaneras-celebrations"] section[data-screen-label="Packages"] [data-dc-tpl="454"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  body[data-route="/private-parties/weddings-receptions"] section[data-screen-label="Packages"] [data-dc-tpl="461"],
+  body[data-route="/private-parties/quinceaneras-celebrations"] section[data-screen-label="Packages"] [data-dc-tpl="461"] {
+    margin-top: 24px !important;
+  }
+}
