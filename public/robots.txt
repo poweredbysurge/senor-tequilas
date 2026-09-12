@@ -6,4 +6,4 @@ Disallow: /author/
 Disallow: /feed/
 Disallow: /comments/feed/
 
-Sitemap: https://senortequilas.com/sitemap.xml
+Sitemap: https://senor-tequilas.vercel.app/sitemap.xml

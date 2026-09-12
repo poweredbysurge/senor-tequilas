@@ -300,8 +300,19 @@ import MobileMenu from '../components/MobileMenu.astro';
 import business from '../data/business.json';
 
 const { title, description, canonical, ogImage, extraTypes = [], route } = Astro.props;
-const site = ${JSON.stringify(seo.site)};
-const absolute = (u) => (u.startsWith('http') ? u : site + u);
+// The site does not own its domain yet. senortequilas.com still serves the old WordPress
+// site, so every absolute URL here pointed at a host that does not have these pages: shared
+// links previewed a 404 image, and the canonical sent scrapers to the old site entirely.
+// Everything is rebased onto the host actually serving this build.
+//
+// AT LAUNCH: set LIVE to LAUNCH. That one line turns this back into canonical and preview
+// URLs on the real domain, and nothing else needs touching.
+const LAUNCH = "https://senortequilas.com";
+const LIVE = "https://senor-tequilas.vercel.app";
+const rebase = (u) => (u && u.startsWith(LAUNCH) ? LIVE + u.slice(LAUNCH.length) : u);
+const site = LIVE;
+const absolute = (u) => (u.startsWith('http') ? rebase(u) : site + u);
+const pageUrl = rebase(canonical);
 
 // One branded share card for every link on the site, supplied 11 September. Each page keeps
 // its own ogImage for the JSON-LD image, where a photograph of the thing itself is the right
@@ -315,7 +326,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': ['Restaurant', 'LocalBusiness', ...extraTypes],
   name: business.name,
-  url: canonical,
+  url: pageUrl,
   telephone: business.telephone,
   servesCuisine: business.servesCuisine,
   priceRange: business.priceRange,
@@ -349,13 +360,13 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={pageUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={business.name} />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    <meta property="og:url" content={pageUrl} />
     <meta property="og:image" content={absolute(shareCard)} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

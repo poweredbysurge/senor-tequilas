@@ -664,3 +664,24 @@ page keeps its own `ogImage` prop, still used for the JSON-LD `image`, where a p
 the thing itself is the right answer. To go back to per page previews, use `absolute(ogImage)`
 in `Base.astro` and in the generator template in `scripts/build-site.mjs`, which carry the
 same block and must stay in step.
+
+
+## 32. Absolute URLs point at the preview host, not the real domain
+
+Shared links previewed with no image. Every absolute URL on the site, canonical, `og:url`,
+`og:image`, `twitter:image`, the JSON-LD `url` and the sitemap, was built against
+`https://senortequilas.com`. That domain is still serving the old WordPress site, so the share
+card returned 404 and the canonical pointed scrapers at the old site rather than this one.
+
+All of it is now rebased onto `https://senor-tequilas.vercel.app`, the host actually serving
+the build.
+
+**At launch, this must be reverted.** In `src/layouts/Base.astro` and in the generator template
+in `scripts/build-site.mjs`, which carry the same block and must stay in step, set `LIVE` to
+`LAUNCH`. That single line puts canonical and preview URLs back on the real domain. Then rerun
+the generator so `public/sitemap.xml` and `public/robots.txt` are rewritten too; both were
+rebased by hand this time.
+
+Unrelated and still open: 91 references to `senortequilas.com/wp-content/...` remain in the
+page markup. Those are the design's own remote images, the Phase 4 sweep item, and they still
+resolve because the old site is up. They will break the day the domain cuts over.
