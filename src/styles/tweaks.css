@@ -512,3 +512,83 @@ body[data-route="/"] .st-herovideo {
     align-items: stretch !important;
   }
 }
+
+/* ---- 20. more mobile alignment ---------------------------------------------------------
+   All of this is below 768 only. Desktop is untouched. */
+@media (max-width: 767px) {
+
+  /* The eyebrow rows. A flex row ignores text-align, so centring the copy left every
+     hairline-and-label pair hard against the left edge, site wide. data-eyebrow is set in
+     script by shape, see site-tweaks.js section 20. */
+  body[data-route] [data-eyebrow] {
+    justify-content: center !important;
+  }
+
+  /* -- the nightly carousel ---------------------------------------------------------------
+     The headline and the controls shared a row, which left the headline about 157px wide and
+     breaking after every second word. The headline now takes the whole row and the arrows and
+     Full lineup sit under the cards.
+
+     The controls are moved in the DOM rather than reordered in CSS, see site-tweaks.js
+     section 21. Dissolving the header row with display: contents so the three could be
+     ordered in one grid made the scrolling rail size to its full 1854px of cards and threw
+     the page 1500px sideways, with min-width zeroed and the track pinned at minmax(0, 1fr).
+     Moving one node is simpler than arguing with that. */
+  section[data-screen-label="Tonight carousel"] [data-dc-tpl="78"] {
+    flex: 1 1 100% !important;
+  }
+  section[data-screen-label="Tonight carousel"] [data-under-rail] {
+    justify-content: center !important;
+    padding: 0 clamp(18px, 4.5vw, 48px) !important;
+    margin-top: 18px !important;
+  }
+
+  /* -- the reviews block ------------------------------------------------------------------
+     The rating line and the arrows both sat left and right of centre. The card rail is left
+     out on purpose: centring a row that scrolls would push its first card out of reach. */
+  section[data-screen-label="Google reviews"] [data-dc-tpl="142"],
+  section[data-screen-label="Google reviews"] [data-dc-tpl="140"] > div:has(> button) {
+    justify-content: center !important;
+  }
+
+  /* -- the brothers photograph ------------------------------------------------------------
+     The frame is 4:5 and the photograph is square, so it was letterboxed with black above and
+     below. Matching the frame to the picture shows all of it with no bars. Scoped by the
+     image it holds, so every other card keeps the design's 4:5. */
+  [data-dc-tpl="169"]:has(img[src*="Brothers-e1650353623141"]) {
+    aspect-ratio: 1 / 1 !important;
+  }
+
+  /* -- the global footer ------------------------------------------------------------------
+     justify-content and align-items only bite on flex and grid children, and justify-items
+     only on grid, so one rule covers every row here without touching the block ones. */
+  footer,
+  footer * {
+    text-align: center !important;
+  }
+  footer div {
+    justify-content: center !important;
+    align-items: center !important;
+    justify-items: center !important;
+  }
+}
+
+/* ---- 21. buttons set in capitals --------------------------------------------------------
+   Every call to action on the site, at every width, requested 11 September. data-cta is set
+   in script, see site-tweaks.js section 19, on links and buttons that carry a short label on
+   a rounded surface and are no taller than a control, which is what separates a button from
+   a card. Tabs, icon-only controls and the social icons are excluded there.
+
+   The small tracking is not decoration: capitals set tight read as a block, and this face has
+   a tall x-height, so the letters need the air to stay legible at button size. */
+body[data-route] [data-cta] {
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* The header pills are the tightest row on the site, and the extra tracking that makes
+   capitals legible at button size was enough to push the bar 5px past a 390 screen, more at
+   360 and 320. They keep the capitals and give up the tracking. */
+body[data-route] header [data-cta] {
+  letter-spacing: normal !important;
+}

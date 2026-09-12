@@ -864,8 +864,7 @@ const jsonLd = {
           var MAX_CONTROL_HEIGHT = 72;   // taller than this and it is a card, not a button
           var MAX_LABEL = 40;
 
-          [].slice.call(document.querySelectorAll('section a, section button')).forEach(function (el) {
-            if (el.closest('header, footer, nav, #mobile-menu')) return;
+          [].slice.call(document.querySelectorAll('a, button')).forEach(function (el) {
             if (el.getAttribute('role') === 'tab') return;
             if (el.hasAttribute('data-social')) return;
 
@@ -881,6 +880,15 @@ const jsonLd = {
             var box = el.getBoundingClientRect();
             if (box.height > MAX_CONTROL_HEIGHT || box.height < 24) return;
 
+            // data-cta is every button anywhere, and only sets the type in capitals.
+            el.setAttribute('data-cta', '');
+
+            // data-mcta is the narrower set that also goes full width on a phone. The header, the
+            // footer and the menu are left out of that: stretching the header's Order pill across
+            // the screen would wreck a bar that already works at this width.
+            if (el.closest('header, footer, nav, #mobile-menu')) return;
+            if (!el.closest('section')) return;
+
             el.setAttribute('data-mcta', '');
             // the row holding it, so a side by side pair can be told to stack
             var row = el.parentElement;
@@ -892,6 +900,80 @@ const jsonLd = {
               if (allControls) row.setAttribute('data-mcta-row', '');
             }
           });
+        }
+
+        /* ---- 20. eyebrow rules, and the chef placeholder --------------------------------------
+           Every eyebrow on the site is a flex row holding a 26x1 hairline next to a short label.
+           text-align does nothing to a flex row, so when the mobile pass centred the copy these
+           stayed hard left across the whole site. They are found by shape rather than by class,
+           which they do not have: a flex row containing a child only a pixel or two tall.
+
+           The chef placeholder caption is also removed here. The photograph it was waiting for was
+           supplied, so the label is no longer true, on any screen. */
+        function eyebrowRules() {
+          [].slice.call(document.querySelectorAll('section div, section span, footer div')).forEach(function (el) {
+            if (el.hasAttribute('data-eyebrow')) return;
+            var cs = window.getComputedStyle(el);
+            if (cs.display.indexOf('flex') === -1) return;
+            var hairline = [].slice.call(el.children).some(function (k) {
+              var b = k.getBoundingClientRect();
+              return b.height > 0 && b.height <= 4 && b.width >= 8 && b.width <= 90;
+            });
+            if (hairline) el.setAttribute('data-eyebrow', '');
+          });
+        }
+
+        function dropChefPlaceholder() {
+          var RE = /placeholder:\s*swap for the new chef/i;
+          [].slice.call(document.querySelectorAll('span, div, p')).forEach(function (el) {
+            // Leaf elements only. The card itself holds nothing but an image and this caption, so
+            // its textContent is the caption too, and matching on ancestors deleted the whole card,
+            // photograph included, rather than the label sitting on it.
+            if (el.children.length) return;
+            var text = (el.textContent || '').trim();
+            if (!RE.test(text)) return;
+            // Climb only through wrappers that contain nothing else, to catch the styled span
+            // around the text node without ever reaching the card.
+            var outer = el;
+            while (outer.parentElement &&
+                   outer.parentElement.children.length === 1 &&
+                   outer.parentElement.childElementCount === 1 &&
+                   (outer.parentElement.textContent || '').trim() === text) {
+              outer = outer.parentElement;
+            }
+            outer.remove();
+          });
+        }
+
+        /* ---- 21. the nightly carousel controls on a phone --------------------------------------
+           Below 768 the arrows and Full lineup belong under the cards, not beside the headline,
+           which they were squeezing to about 157px. The node is moved rather than reordered: see
+           the note in site-tweaks.css section 20 for why the CSS route was abandoned.
+
+           It listens for the breakpoint rather than reading the width once, so a rotation or a
+           resized window puts the controls back where they belong. */
+        function carouselControls() {
+          var sec = document.querySelector('section[data-screen-label="Tonight carousel"]');
+          if (!sec) return;
+          var header = sec.querySelector('[data-dc-tpl="77"]');
+          var controls = sec.querySelector('[data-dc-tpl="83"]');
+          if (!header || !controls) return;
+
+          var mq = window.matchMedia('(max-width: 767px)');
+          function place() {
+            if (mq.matches) {
+              if (controls.parentElement !== sec) {
+                sec.appendChild(controls);              // after the rail, which is the last child
+                controls.setAttribute('data-under-rail', '');
+              }
+            } else if (controls.parentElement !== header) {
+              header.appendChild(controls);
+              controls.removeAttribute('data-under-rail');
+            }
+          }
+          place();
+          if (mq.addEventListener) mq.addEventListener('change', place);
+          else if (mq.addListener) mq.addListener(place);
         }
 
         function swapImages() {
@@ -1005,6 +1087,9 @@ const jsonLd = {
           try { introVideo(); } catch (e) {}
           try { heroVideo(); } catch (e) {}
           try { mobileCtas(); } catch (e) {}
+          try { eyebrowRules(); } catch (e) {}
+          try { dropChefPlaceholder(); } catch (e) {}
+          try { carouselControls(); } catch (e) {}
         }
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
         else start();

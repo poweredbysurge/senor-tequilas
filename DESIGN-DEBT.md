@@ -685,3 +685,30 @@ rebased by hand this time.
 Unrelated and still open: 91 references to `senortequilas.com/wp-content/...` remain in the
 page markup. Those are the design's own remote images, the Phase 4 sweep item, and they still
 resolve because the old site is up. They will break the day the domain cuts over.
+
+
+## 33. Mobile alignment pass, and a pre-existing overflow below 390
+
+Requested 11 September, all below 768 unless noted.
+
+Section copy centres, calls to action span the column, eyebrow rows centre site wide, the
+nightly carousel puts its headline on its own row with the arrows and Full lineup under the
+cards, the reviews block centres, the global footer centres, and the brothers photograph gets
+a square frame so it is no longer letterboxed. Buttons are set in capitals at every width, not
+just on mobile.
+
+Two notes for whoever touches this next.
+
+The carousel controls are moved in the DOM, not reordered in CSS. Dissolving the header row
+with `display: contents` so the three parts could be ordered in one container made the
+scrolling rail take its full 1854px of cards and threw the page about 1500px sideways. That
+happened with `min-width: 0` on the rail and the track pinned at `minmax(0, 1fr)`, in both a
+flex column and a grid. Moving one node avoids the whole argument.
+
+The header pills keep the capitals but not the extra tracking, which alone was enough to push
+the bar past a 390 screen.
+
+**Pre-existing and not fixed here:** the header overflows below 390, by 9px at 360 and 49px at
+320. Measured with the capitals rule disabled and the numbers are identical, so this predates
+this work. Entry 12's sub-390 handling does not cover it. The homepage, `/taco-tuesday` and
+`/contact` are worst; several other pages overflow 20px at 320.
