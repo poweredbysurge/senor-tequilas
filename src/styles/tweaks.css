@@ -611,3 +611,36 @@ body[data-route] header [data-cta] {
     justify-content: flex-start !important;
   }
 }
+
+/* ---- 23. the nightly flyers -------------------------------------------------------------
+   The client's own flyers replace the stock-looking art on the homepage nightly carousel,
+   supplied 13 September. Keyed on data-day, which tonightCarousel() stamps on each card, so
+   the right flyer stays with the right night even after the carousel rotates today to the
+   front. Scoped to the homepage: several of the images being replaced are used elsewhere on
+   the site in their own right.
+
+   Friday and Saturday keep the design's art. No flyer was supplied for either, and the rule
+   is that a missing image is never invented.
+
+   The flyers are 4:5 and the card's art slot is 0.82, so cover crops about two percent off
+   the long edge. That is within the flyers' own margin and no type is lost. */
+body[data-route="/"] [data-day="Mondays"] [data-dc-tpl="94"] {
+  background-image: url(/images/site/day-monday.jpg) !important;
+}
+body[data-route="/"] [data-day="Tuesdays"] [data-dc-tpl="94"] {
+  background-image: url(/images/site/day-tuesday.jpg) !important;
+}
+body[data-route="/"] [data-day="Wednesdays"] [data-dc-tpl="94"] {
+  background-image: url(/images/site/day-wednesday.jpg) !important;
+}
+body[data-route="/"] [data-day="Thursdays"] [data-dc-tpl="94"] {
+  background-image: url(/images/site/day-thursday.jpg) !important;
+}
+body[data-route="/"] [data-day="Sundays"] [data-dc-tpl="94"] {
+  background-image: url(/images/site/day-sunday.jpg) !important;
+}
+body[data-route="/"] [data-day] [data-dc-tpl="94"] {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
