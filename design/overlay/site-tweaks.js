@@ -856,6 +856,31 @@
     else if (mq.addListener) mq.addListener(place);
   }
 
+  /* ---- 24. Our Story leads the navigation ------------------------------------------------
+     Requested 13 September: Our Story comes before Menu. Applied wherever the two sit in the
+     same list, which is the header nav, the mobile menu panel and the footer's Explore
+     column. The footer's other link list has no Our Story and is left alone.
+
+     A move, not a rewrite: no item is added or removed and no label changes, so the header
+     keeps the five items it was measured at and the width at the 905px threshold is
+     unchanged. It is idempotent, so running twice does nothing the second time. */
+  function navOrder() {
+    var pairs = [];
+    [].slice.call(document.querySelectorAll('a[href="/our-story"]')).forEach(function (story) {
+      var parent = story.parentElement;
+      if (!parent) return;
+      var menu = parent.querySelector(':scope > a[href="/menu"]');
+      if (!menu) return;
+      pairs.push([story, menu, parent]);
+    });
+    pairs.forEach(function (pair) {
+      var story = pair[0], menu = pair[1], parent = pair[2];
+      // already ahead of Menu, nothing to do
+      if (story.compareDocumentPosition(menu) & Node.DOCUMENT_POSITION_FOLLOWING) return;
+      parent.insertBefore(story, menu);
+    });
+  }
+
   function swapImages() {
     var route = document.body.getAttribute('data-route');
     IMAGE_SWAPS.forEach(function (rule) {
@@ -960,6 +985,7 @@
     try { deliveryLinks(); } catch (e) {}
     try { socialIcons(); } catch (e) {}
     try { navLabel(); } catch (e) {}
+    try { navOrder(); } catch (e) {}
     try { eventsFaq(); } catch (e) {}
     try { eventPackages(); } catch (e) {}
     try { autoScrollRails(); } catch (e) {}
