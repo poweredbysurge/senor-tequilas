@@ -619,8 +619,7 @@ body[data-route] header [data-cta] {
    front. Scoped to the homepage: several of the images being replaced are used elsewhere on
    the site in their own right.
 
-   Friday and Saturday keep the design's art. No flyer was supplied for either, and the rule
-   is that a missing image is never invented.
+   All seven nights now carry a flyer: Friday and Saturday arrived 14 September.
 
    The flyers are 4:5 and the card's art slot is 0.82, so cover crops about two percent off
    the long edge. That is within the flyers' own margin and no type is lost. */
@@ -638,6 +637,12 @@ body[data-route="/"] [data-day="Thursdays"] [data-dc-tpl="94"] {
 }
 body[data-route="/"] [data-day="Sundays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-sunday.jpg) !important;
+}
+body[data-route="/"] [data-day="Fridays"] [data-dc-tpl="94"] {
+  background-image: url(/images/site/day-friday.jpg) !important;
+}
+body[data-route="/"] [data-day="Saturdays"] [data-dc-tpl="94"] {
+  background-image: url(/images/site/day-saturday.jpg) !important;
 }
 body[data-route="/"] [data-day] [data-dc-tpl="94"] {
   background-size: cover !important;

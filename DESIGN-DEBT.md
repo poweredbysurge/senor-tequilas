@@ -714,18 +714,10 @@ this work. Entry 12's sub-390 handling does not cover it. The homepage, `/taco-t
 `/contact` are worst; several other pages overflow 20px at 320.
 
 
-## 34. Friday and Saturday have no flyer
+## 34. Friday and Saturday have no flyer  [RESOLVED 14 September]
 
-The client supplied flyers for Monday, Tuesday, Wednesday, Thursday and Sunday on
-13 September, plus one for happy hour, and they are now on the homepage nightly carousel.
-Friday and Saturday keep the design's original art, because no flyer was supplied for either
-and a missing image is never invented.
-
-Both nights are Live DJ. When flyers arrive, drop them in `public/images/site` as
-`day-friday.jpg` and `day-saturday.jpg` and add two rules alongside the others in
-`site-tweaks.css` section 23. The rules key on `data-day`, which `tonightCarousel()` stamps on
-each card, so the art stays with the right night after the carousel rotates today to the
-front.
+Both flyers arrived and are in place. All seven nights on the homepage carousel now carry the
+client's own artwork.
 
 The happy hour flyer is on the homepage happy hour card only. It is not on `/happy-hour`,
 whose hero is a photograph rather than a flyer slot. Say so and it is a one line change.
