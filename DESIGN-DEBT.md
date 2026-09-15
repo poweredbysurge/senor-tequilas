@@ -924,3 +924,36 @@ being retired, those are the remaining three.
 2x it is soft. The original PNG is still sitting unreferenced in `public/images/` under its
 screenshot name, which contains a narrow no-break space; it can be deleted once the client
 confirms they do not want it elsewhere. Entry 27 is closed by this.
+
+## 41. The nightly carousel moves onto /taco-tuesday, 15 September
+
+`/taco-tuesday` carried its own "Every Night of the Week" block, a plain text list of the
+same seven nights the homepage carousel shows as the client's flyers. The client asked for
+the homepage component in its place, so the section was lifted verbatim, flyers and all.
+
+What that took, none of it a rewrite:
+
+- `tonightCarousel()` was called behind `if (isHome)`. It already returns early when the rail
+  is absent, so the gate came off rather than the function being duplicated. Day-aware
+  rotation, the badge, the eyebrow and the arrows all work unchanged on the second page.
+- Every rule the carousel depends on, entries 3, 23, 24 and 29, was keyed to
+  `body[data-route="/"]`. Sixteen selectors now read
+  `:is(body[data-route="/"], body[data-route="/taco-tuesday"])`. They cannot be made global:
+  `/menu` uses `data-dc-tpl="91"` for something else entirely.
+- `/taco-tuesday` was rebuilt by hand under entry 21 and carries no `data-dc-tpl` of its own,
+  so the copied numbering collides with nothing.
+
+**One deliberate edit to the copy.** The homepage block has a "Full lineup" link pointing at
+`/taco-tuesday`. On `/taco-tuesday` that is a link to the page you are already on, so it was
+removed. The headline and the eyebrow came across as they are, which means `/taco-tuesday`
+now says "There's a Reason to Come Every Night" where it used to say "Every Night of the
+Week". If the old headline is wanted over the new component, that is a one-line change.
+
+**Also on 15 September.** "Planning a visit" on the same page centres, in position and in
+text. The catering card on `/private-parties` took the chicken fajitas photograph, replacing
+the screenshot supplied earlier the same day. The live music add-on card took the saxophone
+photograph, leaving the DJ booth and karaoke cards as the last two placeholders in that grid.
+
+**Three photographs arrived as originals dropped into `public/`,** at 15.9MB, 14.1MB and
+1.8MB. `public/` ships verbatim, so 30MB would have gone to the browser. Each is web-sized
+into `public/images/site/` and the originals are parked in `design/library/originals/`.

@@ -1126,7 +1126,9 @@ const jsonLd = {
         }
 
         function start() {
-          try { if (isHome) tonightCarousel(); } catch (e) {}
+          // Not gated on the homepage any more: the same carousel is on /taco-tuesday as of
+          // 15 September, and the function already returns early when the rail is absent.
+          try { tonightCarousel(); } catch (e) {}
           try { if (isHome) reviewsCarousel(); } catch (e) {}
           try { if (isHome) signatureDishes(); } catch (e) {}
           try { swapImages(); } catch (e) {}
