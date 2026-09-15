@@ -69,6 +69,14 @@ Verified facts, do not re-derive:
 5. SEO, only after Phase 4 is green.
 6. Stop. Do not deploy.
 
+**What "do not deploy" means, clarified 14 September.** It scopes to the custom domain
+cutover, not to the Vercel project URL. `senor-tequilas.vercel.app` is the client review URL
+and may be promoted to production freely so the client can see the work; it is public, with
+deployment protection off, so no Vercel login is needed. `senortequilas.com` still serves the
+old WordPress site and stays untouched until the client says otherwise. The DNS cutover is
+the thing this rule stops. See also the `LAUNCH`/`LIVE` constants at the top of
+`src/layouts/Base.astro`, which keep canonical and share URLs on the review host until then.
+
 ## Links
 
 - Order Online: `https://order.toasttab.com/online/senortequilastogo`
