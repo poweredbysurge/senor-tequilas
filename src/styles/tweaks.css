@@ -825,3 +825,19 @@ body[data-route="/happy-hour"] section[data-screen-label="Deals"] [data-dc-tpl="
   flex: 1 1 auto;
   align-content: start;
 }
+
+/* ---- 33. the happy hour fine print reads --------------------------------------------------
+   Requested 15 September. The four conditions at the foot of /happy-hour were 13px at 70%
+   opacity on rgb(20, 18, 16), which is the same ground as the Nearby block directly above
+   them, so the row neither read nor separated.
+
+   17px at 90% takes it past the page's own body copy, which is 15 to 16px, and the card
+   ground the rest of the site uses for raised blocks, rgb(28, 27, 24), sets it apart from its
+   neighbour without introducing a colour the palette does not already have. */
+body[data-route="/happy-hour"] section[data-screen-label="Fine print"] {
+  background: rgb(28, 27, 24) !important;
+}
+body[data-route="/happy-hour"] section[data-screen-label="Fine print"] > div {
+  font-size: 17px !important;
+  color: rgba(234, 226, 214, 0.9) !important;
+}
