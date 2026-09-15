@@ -755,3 +755,16 @@ body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
 @media (min-width: 960px) {
   header button[aria-label="Open menu"] { display: none !important; }
 }
+
+/* ---- 28. the tortillas note is centred ---------------------------------------------------
+   Requested 15 September, /menu only. The note under the menu hero was a left aligned row:
+   the green "About the tortillas" label, then the sentence beside it, both hard against the
+   container's gutter with the rest of the 1180px line empty to their right.
+
+   The row now centres in the container and the sentence centres inside its own 70ch box, so
+   a wrapped second line sits under the first rather than ranging left. Nothing else changes:
+   same order, same gap, same widths, and below 768 entry 19 was already centring it. */
+body[data-route="/menu"] section[data-screen-label="About the tortillas"] > div {
+  justify-content: center;
+  text-align: center;
+}
