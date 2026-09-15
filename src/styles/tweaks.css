@@ -947,15 +947,27 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
    under the element's own children, so the text still sits on top of it. Neither adds a box
    to the page or moves anything. */
 @media (max-width: 767px) {
-  body[data-route] section[data-screen-label*="hero" i] img,
-  body[data-route] section[data-screen-label*="hero" i] video,
-  body[data-route] section[data-screen-label*="Hero" i] img,
-  body[data-route] section[data-screen-label*="Hero" i] video {
+  /* Two routes are out, at the client's request, 15 September. Both are split heroes: the
+     copy sits on its own panel with the design's own scrim already on it and the pictures are
+     separate panels beside it, so there is no copy over a photograph to rescue and darkening
+     only dulls the picture. /happy-hour is a third case, handled below. */
+  body[data-route]:not([data-route="/"]):not([data-route="/takeout-delivery"]) section[data-screen-label*="hero" i] img,
+  body[data-route]:not([data-route="/"]):not([data-route="/takeout-delivery"]) section[data-screen-label*="hero" i] video,
+  body[data-route]:not([data-route="/"]):not([data-route="/takeout-delivery"]) section[data-screen-label*="Hero" i] img,
+  body[data-route]:not([data-route="/"]):not([data-route="/takeout-delivery"]) section[data-screen-label*="Hero" i] video {
     filter: brightness(0.42);
   }
-  body[data-route] section[data-screen-label*="hero" i] {
+  body[data-route]:not([data-route="/"]):not([data-route="/takeout-delivery"]) section[data-screen-label*="hero" i] {
     box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.45);
   }
+  /* /happy-hour keeps the scrim on its hero, because the copy does sit on the section's own
+     background there, but the two photographs under the Directions button are beside the copy
+     rather than behind it and were asked to stay bright. */
+  body[data-route="/happy-hour"] section[data-screen-label="Happy hour hero"] img {
+    /* marked, because the general rule above carries two :not() arguments and outweighs this */
+    filter: none !important;
+  }
+
   /* /taco-tuesday paints its hero photograph on an inner div rather than an <img>. The other
      inner backgrounds inside heroes are the lucha collage texture, which is already dark. */
   body[data-route="/taco-tuesday"] section[data-screen-label="Taco hero"] [style*="eca8597506381a36"] {
@@ -1027,4 +1039,106 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
    is still knowingly left, as recorded in entry 33 of this file's older numbering. */
 @media (max-width: 389px) {
   header a[class^="scp"] { padding-left: 10px !important; padding-right: 10px !important; }
+}
+
+/* ---- 42. /happy-hour drops its duplicate week on a phone -----------------------------------
+   Requested 15 September. "Tonight, then the rest of the week" lists the same seven nights the
+   flyer carousel below it does, in words instead of the client's artwork. Two passes at the
+   same week is a long scroll on a phone, so the worded one comes off there. It is kept above
+   768, where the two sit far enough apart to read as a summary and a gallery rather than a
+   repeat. */
+@media (max-width: 767px) {
+  body[data-route="/happy-hour"] section[data-screen-label="Tonight rail"] { display: none !important; }
+}
+
+/* ---- 43. /takeout-delivery: three fixes on a phone -----------------------------------------
+   Requested 15 September.
+
+   The DoorDash, Uber Eats and Grubhub pills were running 34px past their row. Entry 19's
+   script stretches short rounded links to the full width of the column, but these three sit in
+   a narrower box inside it, so the width it set was wider than the row holding them. A
+   percentage instead of a measured pixel width keeps them in, and they stack because the row
+   already wraps. */
+@media (max-width: 767px) {
+  body[data-route="/takeout-delivery"] [data-dc-tpl="271"] > a {
+    width: 100% !important;
+    max-width: 100% !important;
+    /* the design leaves these content-box, so 100% plus 16px of padding each side and a
+       border still ran 34px past the row */
+    box-sizing: border-box !important;
+    justify-content: center !important;
+  }
+
+  /* The dish titles under "What Holds Up on the Drive Home" already had centred text, but each
+     sits alone in a space-between row, so it shrink-wrapped against the left of its card.
+     Centre the row and the title centres in the card. */
+  body[data-route="/takeout-delivery"] section[data-screen-label="Travels well"] [data-dc-tpl="234"] {
+    justify-content: center !important;
+  }
+}
+
+/* ---- 44. /happy-hour: the two deals cards read correctly on a phone -------------------------
+   Requested 15 September. "Drinks / The Bar" and "Food / The Bites" head their cards and
+   centre now: they sat in a space-between row, so the block holding them shrink-wrapped
+   against the left edge exactly as the takeout titles did.
+
+   The list below them goes the other way. Entry 19 centres section copy on a phone, which is
+   right for a statement and wrong for a priced list: "Handcrafted Margaritas: jalapeño,
+   tamarindo, pomegranate" wraps to two lines, and centred it reads as a ragged diamond with
+   the tick floating away from it. The ticks, the items and the prices all range left again. */
+@media (max-width: 767px) {
+  body[data-route="/happy-hour"] section[data-screen-label="Deals"] [data-dc-tpl="778"] {
+    justify-content: center !important;
+  }
+  body[data-route="/happy-hour"] section[data-screen-label="Deals"] [data-dc-tpl="779"] {
+    text-align: center !important;
+  }
+  body[data-route="/happy-hour"] section[data-screen-label="Deals"] [data-dc-tpl="784"],
+  body[data-route="/happy-hour"] section[data-screen-label="Deals"] [data-dc-tpl="784"] * {
+    text-align: left !important;
+  }
+}
+
+/* ---- 45. the header row fits a phone -------------------------------------------------------
+   Entry 35 put Reserve back on every header at phone widths. On the four pages whose green
+   pill reads "Book a Tour" rather than "Order", Header6 and Header7, that tipped the row over:
+   logo 147 + Reserve 84 + Book a Tour 110 + the button 44, plus gaps and padding, ran to 427px
+   in a 390px screen and the whole document scrolled sideways.
+
+   The green pill comes off the header on a phone, not Reserve. It is the one of the two that
+   is already permanently on screen: entry 40 pins Order and Reserve to the bottom of every
+   page, so the header pill was the duplicate. "Book a Tour" is not lost with it, it appears
+   twice more in the body of each of those pages.
+
+   That leaves logo, Reserve and the menu button: 322px at 390 and 320px at 360. */
+@media (max-width: 767px) {
+  header a.scp2 { display: none !important; }
+}
+
+/* ---- 46. the menu panel's two buttons stay on screen ---------------------------------------
+   Requested 15 September. The panel scrolled as one piece, so Order Online and Reserve a Table
+   sat under nine cards and you had to reach the bottom to find them. The panel stops scrolling
+   and the card grid scrolls inside it instead, which leaves the button block where it already
+   sat in the markup, at the foot of a flex column, now pinned there.
+
+   The shadow above it does the same job the page bar's does: it says the cards behind it keep
+   going. min-height: 0 is the part that is easy to miss, without it a flex child refuses to
+   shrink below its content and the grid pushes the buttons off the bottom again. */
+@media (max-width: 767px) {
+  #mobile-menu { overflow: hidden !important; }
+  #mobile-menu [data-dc-tpl="33"] {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 0;
+    scrollbar-width: none;
+  }
+  #mobile-menu [data-dc-tpl="33"]::-webkit-scrollbar { display: none; }
+  #mobile-menu [data-dc-tpl="38"] {
+    flex: 0 0 auto;
+    margin-top: 0 !important;
+    padding-top: 14px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(13, 13, 11, 0.97);
+    box-shadow: 0 -18px 34px rgba(13, 13, 11, 0.95), 0 -4px 10px rgba(0, 0, 0, 0.6);
+  }
 }

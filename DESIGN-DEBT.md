@@ -1096,3 +1096,41 @@ by 68px and the buttons by 51px, so the breakpoint from entry 40 holds.
 
 **Still open: 320px.** The header overflows by 29px there, down from 49px before the pills
 were trimmed below 390. It overflowed before this pass too, and remains knowingly left.
+
+## 46. Mobile corrections, 15 September
+
+The second pass over the phone layout, all client-requested. tweaks.css entries 42 to 46.
+
+| where | change |
+|---|---|
+| homepage | the nightly carousel loses its "Full lineup" link |
+| homepage, `/takeout-delivery` | heroes keep their brightness, no scrim |
+| `/happy-hour` | the two hero photographs keep theirs; the section scrim stays |
+| `/happy-hour` | "Tonight, then the rest of the week" is gone |
+| `/happy-hour` | the deals cards centre their headings and range their price lists left |
+| `/takeout-delivery` | the three delivery pills stop overflowing their row |
+| `/takeout-delivery` | the dish titles centre in their cards |
+| `/catering` | the "Placeholder: taco bar setup at an office" chip is gone |
+| every page | the header row fits a phone again |
+| every page | the menu panel pins its two buttons to the bottom |
+
+**The header fix removes the green pill, not Reserve.** Entry 35 put Reserve back on every
+header at phone widths, and on the four pages whose pill reads "Book a Tour" rather than
+"Order", Header6 and Header7, the row ran to 427px in a 390px screen and the document scrolled
+sideways. The green pill is the one already permanently on screen, since entry 40 pins Order
+and Reserve to the bottom of every page, so it was the duplicate of the two. "Book a Tour" is
+not lost with it: it appears twice more in the body of each of those pages. The row is 322px
+at 390 and 320px at 360 now, and no page scrolls sideways at either width.
+
+**"Tonight, then the rest of the week" was already mobile-only.** It carries the design's own
+`data-m-only`, so it never rendered above 768 in the first place. That is why it read as *the*
+events component on a phone: the flyer carousel added on 15 September sits below it, and the
+worded list was the first of the two a phone reached. Hidden below 768 now, so it renders
+nowhere, which is what was asked.
+
+**Three fixes were one-line rules that lost to something.** Worth recording, because each
+looked correct and did nothing: the `filter: none` on the happy hour hero lost to a general
+rule carrying two `:not()` arguments and needed marking; the delivery pills were set to
+`width: 100%` and still overflowed because the design leaves them `content-box`, so 32px of
+padding and 2px of border sat outside the 100%; and `min-height: 0` is what lets the menu
+panel's card grid shrink instead of pushing the buttons off the bottom.
