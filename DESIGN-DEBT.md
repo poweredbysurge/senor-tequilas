@@ -867,9 +867,10 @@ rest of the port uses, rather than borrowing a photograph of something else.
 | Dance floor, LED | a frame from `party-dancefloor.mp4` |
 | Show, Transformer performers | a frame from `party-dancefloor.mp4` |
 
-**What the client needs to shoot.** A DJ booth with the sound and lighting rig, a karaoke
-singer mid-song, and whoever plays the acoustic guitar or saxophone. Three photographs and
-the section is complete.
+**RESOLVED 15 September.** All three arrived, along with better frames for the LED dance
+floor and the transformer performers than the ones pulled from the video. All seven cards
+carry a photograph and the grid has no placeholders left. What follows described the gap
+before that.
 
 **Two things to know about these.**
 
@@ -957,3 +958,27 @@ photograph, leaving the DJ booth and karaoke cards as the last two placeholders 
 **Three photographs arrived as originals dropped into `public/`,** at 15.9MB, 14.1MB and
 1.8MB. `public/` ships verbatim, so 30MB would have gone to the browser. Each is web-sized
 into `public/images/site/` and the originals are parked in `design/library/originals/`.
+
+## 42. The entertainment grid is complete, 15 September
+
+The four photographs still outstanding under entry 39 arrived, and two of them replaced
+stand-ins rather than placeholders.
+
+| card | was | is |
+|---|---|---|
+| Sound and light, DJ booth | `need-image.svg` | `addon-sound-light.jpg` |
+| Sing, Karaoke | `need-image.svg` | `addon-karaoke.jpg` |
+| Dance floor, LED | a 540x304 frame from `party-dancefloor.mp4` | `addon-dance-floor.jpg`, 1400px |
+| Show, Transformer performers | a 540x304 frame from the same clip | `addon-transformers.jpg`, 1400px |
+
+Entry 39 flagged the two video frames as soft on a retina phone, since the footage is only
+540x960. That is closed: the supplied files are 1672x941 and 1536x1024, so the widest card,
+352px on a phone, is comfortably covered at 2x.
+
+**The alt text on these four is written from the client's description, not from the
+photographs.** Every image read in the session that placed them was refused by the API, so
+each `aria-label` restates what the card claims the picture shows. Worth one pass by someone
+who can see them before launch.
+
+All four arrived as PNGs in `public/`, 1.7MB to 2.5MB each. Same treatment as entry 41:
+web-sized to JPEG in `public/images/site/`, originals parked in `design/library/originals/`.
