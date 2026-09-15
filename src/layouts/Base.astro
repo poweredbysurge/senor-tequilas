@@ -293,13 +293,13 @@ const jsonLd = {
               img: '/images/dishes/molcajete.jpg', alt: 'Molcajete, a volcanic stone bowl of meat and nopales under salsa', href: '/fajitas-molcajetes' },
             { name: 'Steak Fajitas', short: 'Skirt steak on cast iron',
               full: 'Skirt steak on cast iron with peppers and onions, rice, beans, and tortillas pressed that morning.',
-              img: '/images/dishes/steak-fajitas.jpg', alt: 'Steak fajitas in a cast iron skillet with peppers, onions and sides', href: '/fajitas-molcajetes' },
+              img: '/images/dishes/steak-fajitas-card.jpg', alt: 'Steak fajitas in a cast iron skillet with peppers, onions and sides', href: '/fajitas-molcajetes' },
             { name: 'Chicken Fajitas', short: 'Still sizzling at the table',
               full: 'Grilled chicken with peppers and onions, still sizzling when it reaches the table.',
-              img: '/images/dishes/chicken-fajitas.jpg', alt: 'Chicken fajitas in a skillet with peppers, onions and sides', href: '/fajitas-molcajetes' },
+              img: '/images/dishes/fajita-de-pollo.jpg', alt: 'Chicken fajitas in a skillet with peppers, onions and sides', href: '/fajitas-molcajetes' },
             { name: 'Mixed Fajitas', short: 'Shrimp and steak together',
               full: 'Shrimp and steak together, for the people who cannot decide.',
-              img: '/images/dishes/mixed-fajitas.jpg', alt: 'Mixed fajitas skillet with shrimp and steak', href: '/fajitas-molcajetes' }
+              img: '/images/dishes/fajita-mazatlan.jpg', alt: 'Mixed fajitas skillet with shrimp and steak', href: '/fajitas-molcajetes' }
           ],
           'Margaritas': [
             { name: 'The Big Mami', short: 'Fifty-four ounces, one glass',
@@ -321,7 +321,7 @@ const jsonLd = {
           'Desserts': [
             { name: 'Churros', short: 'Fried to order, still hot',
               full: 'Fried to order, still hot, rolled in cinnamon sugar, with chocolate for dipping.',
-              img: '/images/dishes/churros.jpg', alt: 'Churros dusted in cinnamon sugar with a chocolate drip', href: '/la-dulceria' },
+              img: '/images/dishes/churros-card.jpg', alt: 'Churros dusted in cinnamon sugar with a chocolate drip', href: '/la-dulceria' },
             { name: 'Flan', short: 'Real caramel, made here',
               full: 'Real caramel, made here, not poured from a bottle.',
               img: '/images/dishes/flan.jpg', alt: 'Flan with caramel sauce and cream', href: '/la-dulceria' },
@@ -330,7 +330,7 @@ const jsonLd = {
               img: '/images/dishes/tres-leches.jpg', alt: 'A slice of tres leches cake topped with strawberries', href: '/la-dulceria' },
             { name: 'Volcán de Chocolate', short: 'Runs when you cut it',
               full: 'Warm chocolate cake that runs when you cut it.',
-              img: '/images/dishes/volcan.jpg', alt: 'Warm chocolate cake with a molten centre', href: '/la-dulceria' }
+              img: '/images/dishes/volcan-de-xocolate.jpg', alt: 'Warm chocolate cake with a molten centre', href: '/la-dulceria' }
           ]
         };
 
@@ -692,13 +692,6 @@ const jsonLd = {
             why: 'the "[Pending] founding story" placeholder card, used for the chef slot and the 2015 timeline'
           },
           {
-            route: '/our-story',
-            match: /5ac1271d5937960b\.jpg/,
-            src: '/images/site/need-image.svg',
-            alt: 'Photograph pending: this image still needs replacing',
-            why: 'one molcajete used for the hero and both "Rivas Brothers" cards'
-          },
-          {
             route: '/',
             within: '[data-dc-tpl="104"]',
             match: /df43e9ee488c58d3\.jpg/,
@@ -706,16 +699,10 @@ const jsonLd = {
             alt: 'The happy hour flyer: Monday through Friday, 3 PM to 6 PM',
             fit: 'cover',
             why: 'the happy hour card on the homepage. Held to that card because the photograph it replaces is also the Mondays art in the nightly carousel, which gets its own flyer'
-          },
-          {
-            route: '/private-parties/quinceaneras-celebrations',
-            within: 'section[data-screen-label="Event hero"]',
-            match: /Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024\.jpg/,
-            src: '/images/site/celebration-cake.jpg',
-            alt: 'A guest in a sombrero at a long table, a sparkler burning on the cake in front of her while friends and staff cheer',
-            fit: 'cover',
-            why: 'the hero showed the lit back bar. The same remote photo appears twice more further down this page and on five other pages, so this rule is held to the hero section only'
           }
+          /* Two rules used to live here, both now applied to the markup itself from
+             design/IMAGE-MAP.json: the /our-story molcajete, which is now the real photograph
+             of the brothers rather than a "need image" card, and the quinceaneras hero. */
         ];
 
         /* ---- 15. the private event video strips -----------------------------------------------

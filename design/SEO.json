@@ -71,21 +71,21 @@
       "title": "Menu | Señor Tequilas, Germantown, MD",
       "description": "The full menu: street tacos, quesabirria, fajitas, molcajetes and desserts, on tortillas pressed this morning. Germantown, MD.",
       "canonical": "https://senortequilas.com/menu",
-      "ogImage": "/images/4e4e97cc03520928.jpg",
+      "ogImage": "/images/dishes/quesabirrias-hero.jpg",
       "extraTypes": []
     },
     "/our-story": {
       "title": "Our Story | Family-Owned Mexican Restaurant, Germantown",
       "description": "On Century Boulevard since 2015, owned and run by the Rivas brothers. Handmade tortillas, six-hour birria, a family kitchen.",
       "canonical": "https://senortequilas.com/our-story",
-      "ogImage": "/images/5ac1271d5937960b.jpg",
+      "ogImage": "/images/site/brothers.jpg",
       "extraTypes": []
     },
     "/takeout-delivery": {
       "title": "Mexican Food Delivery & Takeout | Germantown, MD",
       "description": "Real Mexican food, delivered or ready for pickup in Germantown. Order online from Toast and skip the dishes.",
       "canonical": "https://senortequilas.com/takeout-delivery",
-      "ogImage": "/images/02aadf27d5cebfb7.jpg",
+      "ogImage": "/images/dishes/quesabirrias-card.jpg",
       "extraTypes": []
     },
     "/birria-tacos": {
@@ -99,35 +99,35 @@
       "title": "Quesabirria Tacos in Germantown, MD | Señor Tequilas",
       "description": "Six hours of braising, then a griddle, then cheese, with consomme on the side. Quesabirria tacos in Germantown, MD.",
       "canonical": "https://senortequilas.com/quesabirria-tacos",
-      "ogImage": "/images/81c82458b034e717.jpg",
+      "ogImage": "/images/dishes/quesabirrias-hero.jpg",
       "extraTypes": []
     },
     "/street-tacos": {
       "title": "Street Tacos in Germantown, MD | Señor Tequilas",
       "description": "Small, simple street tacos on tortillas we press ourselves, the way they are made in Mexico. Germantown, MD.",
       "canonical": "https://senortequilas.com/street-tacos",
-      "ogImage": "/images/0158f8e0dc2e230a.jpg",
+      "ogImage": "/images/dishes/tacos-de-arrachera-hero.jpg",
       "extraTypes": []
     },
     "/fajitas-molcajetes": {
       "title": "Fajitas & Molcajetes | Señor Tequilas Germantown",
       "description": "Skillets that arrive loud and molcajetes bubbling in volcanic stone, with rice, beans, guacamole and hot tortillas.",
       "canonical": "https://senortequilas.com/fajitas-molcajetes",
-      "ogImage": "/images/5ac1271d5937960b.jpg",
+      "ogImage": "/images/dishes/triple-a-molcajete-hero.jpg",
       "extraTypes": []
     },
     "/la-dulceria": {
       "title": "Mexican Desserts & Churros | La Dulcería Germantown",
       "description": "Churros, flan, tres leches and Volcan de Xocolate, made in house by our dessert chef. Germantown, MD.",
       "canonical": "https://senortequilas.com/la-dulceria",
-      "ogImage": "/images/0e000bad1f66aea4.jpg",
+      "ogImage": "/images/dishes/churros-hero.jpg",
       "extraTypes": []
     },
     "/private-parties/quinceaneras-celebrations": {
       "title": "Quinceañera Venue in Germantown, MD | Señor Tequilas",
       "description": "A quinceanera venue in Germantown for up to 100 guests, without the ballroom price. Food, room and sound in one place.",
       "canonical": "https://senortequilas.com/private-parties/quinceaneras-celebrations",
-      "ogImage": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+      "ogImage": "/images/site/celebration-cake.jpg",
       "extraTypes": [
         "EventVenue"
       ]
@@ -136,7 +136,7 @@
       "title": "Wedding Reception & Shower Venue | Germantown, MD",
       "description": "Weddings, showers and rehearsal dinners in Germantown for up to 100 guests, with a kitchen that has fed this room for years.",
       "canonical": "https://senortequilas.com/private-parties/weddings-receptions",
-      "ogImage": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+      "ogImage": "/images/site/open-graph.jpg",
       "extraTypes": [
         "EventVenue"
       ]
@@ -145,7 +145,7 @@
       "title": "Mexican & Taco Catering in Germantown, MD | Señor Tequilas",
       "description": "Taco catering in Germantown, MD. Drop-off or full service, we travel to you. Same-day quotes on drop-off orders.",
       "canonical": "https://senortequilas.com/catering",
-      "ogImage": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+      "ogImage": "/images/site/open-graph.jpg",
       "extraTypes": [
         "EventVenue",
         "FoodService"

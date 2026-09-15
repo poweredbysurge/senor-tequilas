@@ -1,0 +1,1211 @@
+{
+  "note": "One row per image slot that changes. Slot indices are the DOM order of image slots on the design page, the same discipline design/LINK-MAP.json uses for links. `was` is a guard: if it no longer matches, the build stops rather than writing to the wrong slot.",
+  "pages": {
+    "home": [
+      {
+        "slot": 11,
+        "kind": "bg",
+        "section": "Hitters: Toast top sellers",
+        "shows": "#1 sellertap to expand Quesabirria TacosSix-hour birria, oaxaca cheese",
+        "was": "images/81c82458b034e717.jpg",
+        "now": "/images/dishes/quesabirrias-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 12,
+        "kind": "bg",
+        "section": "Hitters: Toast top sellers",
+        "shows": "#2 sellertap to expand Tacos al PastorAdobo pork carved off the trompo",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/dishes/tacos-al-pastor.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 13,
+        "kind": "bg",
+        "section": "Hitters: Toast top sellers",
+        "shows": "#3 sellertap to expand Tacos PerronesSteak, guacamole, nopales, queso ",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/dishes/tacos-perrones.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 19,
+        "kind": "img",
+        "section": "Social feed",
+        "shows": "Quesabirria",
+        "was": "images/4e4e97cc03520928.jpg",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical",
+        "note": "alt says Quesabirria; the file was the birria overhead"
+      },
+      {
+        "slot": 20,
+        "kind": "img",
+        "section": "Social feed",
+        "shows": "The dining room",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/site/dining-room-night.jpg",
+        "confidence": "mechanical",
+        "note": "alt says The dining room; the file was street tacos"
+      },
+      {
+        "slot": 21,
+        "kind": "img",
+        "section": "Social feed",
+        "shows": "Fajitas",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/dishes/steak-fajitas-card.jpg",
+        "confidence": "mechanical",
+        "note": "alt says Fajitas; the file was a molcajete"
+      },
+      {
+        "slot": 25,
+        "kind": "img",
+        "section": "Social feed",
+        "shows": "Quesabirria",
+        "was": "images/4e4e97cc03520928.jpg",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 26,
+        "kind": "img",
+        "section": "Social feed",
+        "shows": "The dining room",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/site/dining-room-night.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 27,
+        "kind": "img",
+        "section": "Social feed",
+        "shows": "Fajitas",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/dishes/steak-fajitas-card.jpg",
+        "confidence": "mechanical"
+      }
+    ],
+    "menu": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Menu hero",
+        "shows": "Quesabirria tacos with consommé",
+        "was": "images/4e4e97cc03520928.jpg",
+        "now": "/images/dishes/quesabirrias-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Guacamole Fresco Bowl V Fresh avocados, cilantro, tomatoes, onion, lim",
+        "was": "images/3ea57ecd4ab2f915.jpg",
+        "now": "/images/dishes/guacamole.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Esquites V Grilled street corn tossed in mayo, topped with Tajín, coti",
+        "was": "images/74fa7764d8487331.jpg",
+        "now": "/images/dishes/esquites.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Nachos House-made chips loaded with refried beans, shredded cheese, qu",
+        "was": "images/f74cd8d088f12508.jpg",
+        "now": "/images/dishes/nachos.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 5,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Carne Asada Fries Seasoned fries topped with flank steak, house queso,",
+        "was": "images/6210e573f930f656.jpg",
+        "now": "/images/dishes/asada-fries.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 6,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Quesadilla Large flour tortilla stuffed with cheese. Served with lettu",
+        "was": "images/4027f5f63b179fad.jpg",
+        "now": "/images/dishes/quesadilla.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Seasonal Ceviche Please ask your server.",
+        "was": "images/1fa0f161ad845b33.jpg",
+        "now": "/images/dishes/ceviche.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 8,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Burrito Bowl Grilled chicken, Mexican rice, black beans, romaine, pico",
+        "was": "images/dc26263341bbaecf.jpg",
+        "now": "/images/dishes/burrito-bowl.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 9,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Tacos de Pollo Grilled chicken. Served with salsa verde and limes.",
+        "was": "images/980cf4f67b825dd0.jpg",
+        "now": "/images/dishes/tacos-de-pollo.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 10,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Tacos al Pastor Sliced fresh from el trompo. Served with salsa verde a",
+        "was": "images/5f9316da717b3c54.jpg",
+        "now": "/images/dishes/tacos-al-pastor.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 11,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Tacos de Carnitas Shredded pork. Served with salsa verde and limes.",
+        "was": "images/90e5a4b74a747d5e.jpg",
+        "now": "/images/dishes/tacos-de-carnitas.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 12,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Tacos Perrones Steak, guacamole, nopales, queso fresco, chicharrón, on",
+        "was": "images/562378eecadc3da2.jpg",
+        "now": "/images/dishes/tacos-perrones.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 13,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Tacos Chilangos Flank steak and chorizo with melted cheese between the",
+        "was": "images/77a914930736f010.jpg",
+        "now": "/images/dishes/tacos-chilangos.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 14,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Cinco Mamalones One grilled steak, one grilled chicken, one chorizo, o",
+        "was": "images/0ee6be31b4535827.jpg",
+        "now": "/images/dishes/tacos-cinco-mamalones.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 15,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Quesabirria Tacos Three double-stacked 6\" corn tortillas filled with b",
+        "was": "images/81c82458b034e717.jpg",
+        "now": "/images/dishes/quesabirrias-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 16,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Birria Ramen A hearty 24 oz. bowl of beef birria, ramen noodles and co",
+        "was": "images/c07b265e8346f5a1.jpg",
+        "now": "/images/dishes/birria-ramen.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 17,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Birria Fries Seasoned fries loaded with birria and house-made white qu",
+        "was": "images/7e4bbd5448786686.jpg",
+        "now": "/images/dishes/birria-fries.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 18,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Cartel Molcajete Hand-cut skirt steak, shrimp, chorizo and grilled pin",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/dishes/molcajete.jpg",
+        "confidence": "proposed",
+        "note": "Cartel Molcajete has no frame of its own; the generic molcajete stands in"
+      },
+      {
+        "slot": 19,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Mr. Burrito Handheld. Flank steak, black beans, rice, mozzarella, lett",
+        "was": "images/bd4443db5bb8380e.jpg",
+        "now": "/images/dishes/mr-burrito.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 20,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Mexican Burger Angus beef stacked with house-made chorizo, pineapple, ",
+        "was": "images/3d6676c80b38df9e.jpg",
+        "now": "/images/dishes/mexican-burger.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 21,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Seasonal Ceviche Please ask your server.",
+        "was": "images/1fa0f161ad845b33.jpg",
+        "now": "/images/dishes/ceviche.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 22,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Churros V Crispy, golden fried dough dusted with cinnamon sugar, serve",
+        "was": "images/0e000bad1f66aea4.jpg",
+        "now": "/images/dishes/churros-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 23,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Flan V Rich and creamy caramel custard with a silky texture, topped wi",
+        "was": "images/5f160b46337b3506.jpg",
+        "now": "/images/dishes/flan.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 24,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Tres Leches V A modern version of the classic. Vanilla bread, three mi",
+        "was": "images/b9c063c0459d8905.jpg",
+        "now": "/images/dishes/tres-leches.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 33,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Tacos al Pastor Two tortillas filled with al pastor sliced fresh from ",
+        "was": "images/5f9316da717b3c54.jpg",
+        "now": "/images/dishes/tacos-al-pastor.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 34,
+        "kind": "bg",
+        "section": "Menu section",
+        "shows": "Esquites V Grilled street corn with mayo, lime, Tajín, cotija and cila",
+        "was": "images/74fa7764d8487331.jpg",
+        "now": "/images/dishes/esquites.jpg",
+        "confidence": "mechanical"
+      }
+    ],
+    "our-story": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Story hero",
+        "shows": "The Rivas brothers",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/site/brothers.jpg",
+        "confidence": "mechanical",
+        "note": "hero was a molcajete under alt \"The Rivas brothers\""
+      },
+      {
+        "slot": 3,
+        "kind": "img",
+        "section": "The brothers",
+        "shows": "The Rivas BrothersThe room",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/site/dining-room-night.jpg",
+        "alt": "The dining room at night, full, with the lit bar behind it",
+        "confidence": "mechanical",
+        "note": "card reads \"The room\""
+      },
+      {
+        "slot": 4,
+        "kind": "img",
+        "section": "The brothers",
+        "shows": "The Rivas BrothersThe kitchen",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/9120a505c92f1281.jpg",
+        "alt": "Two cooks pressing corn tortillas on the griddle in the kitchen",
+        "confidence": "mechanical",
+        "note": "card reads \"The kitchen\"; this is the tortilla line"
+      },
+      {
+        "slot": 8,
+        "kind": "bg",
+        "section": "Three pillars",
+        "shows": "FolkloreThe cultureLotería, mariachi, luchador masks on the wall. Mexi",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/0fcbe6ef39392a93.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Cantina / The bar\". Was a remote WordPress file"
+      }
+    ],
+    "la-dulceria": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Dulcería hero",
+        "shows": "Churros, fried to order",
+        "was": "images/0e000bad1f66aea4.jpg",
+        "now": "/images/dishes/churros-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "The case",
+        "shows": "ChurrosCrispy golden dough, cinnamon sugar, chocolate and caramel dipp",
+        "was": "images/0e000bad1f66aea4.jpg",
+        "now": "/images/dishes/churros-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "The case",
+        "shows": "Tres LechesVanilla bread, three milks, homemade whipped cream and cinn",
+        "was": "images/b9c063c0459d8905.jpg",
+        "now": "/images/dishes/tres-leches.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "The case",
+        "shows": "FlanRich caramel custard, silky, golden caramel saucePair · espresso",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/flan.jpg",
+        "confidence": "mechanical",
+        "note": "was the remote Birria.jpg on a flan card"
+      },
+      {
+        "slot": 5,
+        "kind": "bg",
+        "section": "The case",
+        "shows": "Volcán de XocolateWarm chocolate cake, melted center, vanilla ice crea",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/dishes/volcan-de-xocolate.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 6,
+        "kind": "bg",
+        "section": "The case",
+        "shows": "Fried Ice CreamCrispy golden shell, chocolate, whipped cream, strawber",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/dishes/fried-ice-cream.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "The case",
+        "shows": "Cheesecake ChimichangaGolden-fried tortilla, cheesecake, cinnamon suga",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/dishes/cheesecake-chimichanga.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 8,
+        "kind": "img",
+        "section": "For parties",
+        "shows": "",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/dishes/dessert-table.jpg",
+        "alt": "A spread of desserts laid out on a table: churros, tres leches and a layered strawberry sundae",
+        "confidence": "proposed",
+        "note": "party dessert slot held a plate of street tacos"
+      }
+    ],
+    "birria-tacos": [
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "QuesabirriaDipped and griddled with cheese, consommé for dipping",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "BirriaSlow-braised beef, handmade tortillas, consommé",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/4e4e97cc03520928.jpg",
+        "confidence": "proposed",
+        "note": "FLAG: no plain birria taco frame in the 2026 folder, so the design library photo stays"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "To goPacked with the consommé sealed. Order on Toast",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/223a406ae07f5bb3.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"To go\""
+      },
+      {
+        "slot": 5,
+        "kind": "img",
+        "section": "Pair it",
+        "shows": "",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 6,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Dipped and griddledQuesabirria Tacos",
+        "was": "images/81c82458b034e717.jpg",
+        "now": "/images/dishes/quesabirrias-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Handmade tortillasStreet Tacos",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/dishes/tacos-de-arrachera-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 8,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Made in houseLa Dulcería",
+        "was": "images/0e000bad1f66aea4.jpg",
+        "now": "/images/dishes/churros-card.jpg",
+        "confidence": "mechanical"
+      }
+    ],
+    "quesabirria-tacos": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Dish hero",
+        "shows": "Quesabirria Tacos",
+        "was": "images/81c82458b034e717.jpg",
+        "now": "/images/dishes/quesabirrias-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Quesabirria TacosDipped, griddled, oaxaca cheese, consommé on the side",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Order for hereReserve a table and get them off the plancha",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/02aadf27d5cebfb7.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Order for here\""
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Order to goConsommé sealed separately. Order on Toast",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/223a406ae07f5bb3.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Order to go\""
+      },
+      {
+        "slot": 5,
+        "kind": "img",
+        "section": "Pair it",
+        "shows": "",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 6,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "The bowlBirria de Res",
+        "was": "images/4e4e97cc03520928.jpg",
+        "now": "/images/4e4e97cc03520928.jpg",
+        "confidence": "proposed",
+        "note": "FLAG: \"Birria de Res\" keeps the library birria photo"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Handmade tortillasStreet Tacos",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/dishes/tacos-de-arrachera-card.jpg",
+        "confidence": "mechanical"
+      }
+    ],
+    "street-tacos": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Dish hero",
+        "shows": "Street Tacos",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/dishes/tacos-de-arrachera-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Tacos al PastorSliced fresh from el trompo, salsa verde and limes",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/tacos-al-pastor.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Tacos PerronesSteak, guacamole, nopales, queso fresco, chicharrón, sal",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/tacos-perrones.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Cinco MamalonesSteak, chicken, chorizo, carnitas and al pastor, one of",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/tacos-cinco-mamalones.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 5,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Tacos ChilangosFlank steak, chorizo and melted cheese between the tort",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/tacos-chilangos.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 6,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Tacos de CarnitasShredded pork, salsa verde and limes",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/tacos-de-carnitas.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Tacos de ArracheraCheese-crusted, hand-cut skirt steak, caramelized on",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/tacos-de-arrachera-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 8,
+        "kind": "img",
+        "section": "Pair it",
+        "shows": "",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 9,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Six-hour braiseBirria",
+        "was": "images/4e4e97cc03520928.jpg",
+        "now": "/images/4e4e97cc03520928.jpg",
+        "confidence": "proposed",
+        "note": "FLAG: birria cross-link keeps the library photo"
+      },
+      {
+        "slot": 10,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Still sizzlingFajitas & Molcajetes",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/dishes/triple-a-molcajete-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 11,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Made in houseLa Dulcería",
+        "was": "images/0e000bad1f66aea4.jpg",
+        "now": "/images/dishes/churros-card.jpg",
+        "confidence": "mechanical"
+      }
+    ],
+    "fajitas-molcajetes": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Dish hero",
+        "shows": "Fajitas & Molcajetes",
+        "was": "images/5ac1271d5937960b.jpg",
+        "now": "/images/dishes/triple-a-molcajete-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Cartel MolcajeteHand-cut skirt steak, shrimp, chorizo and grilled pine",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/molcajete.jpg",
+        "confidence": "proposed",
+        "note": "Cartel Molcajete has no frame of its own"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Triple \"A\" MolcajeteFlank steak, chicken and shrimp",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/triple-a-molcajete-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Mexicano MolcajeteFlank steak, chicken and house-made chorizo",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/mexican-molcajete.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 5,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Jalisco FajitaHand-cut skirt steak, chicharrón, guacamole, frijoles ch",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/steak-fajitas-hero.jpg",
+        "confidence": "proposed",
+        "note": "Jalisco Fajita is skirt steak; the steak fajita frame stands in"
+      },
+      {
+        "slot": 6,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Carnaval FajitaFlank steak, chicken, shrimp, chorizo and pineapple",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/fajita-carnaval.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "Ways to order it",
+        "shows": "Tradicional FajitaChicken, carnitas, shrimp or flank steak",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/fajita-de-pollo.jpg",
+        "confidence": "mechanical",
+        "note": "Tradicional Fajita, chicken listed first"
+      },
+      {
+        "slot": 8,
+        "kind": "img",
+        "section": "Pair it",
+        "shows": "",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 9,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Six-hour braiseBirria",
+        "was": "images/4e4e97cc03520928.jpg",
+        "now": "/images/4e4e97cc03520928.jpg",
+        "confidence": "proposed",
+        "note": "FLAG: birria cross-link keeps the library photo"
+      },
+      {
+        "slot": 10,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Handmade tortillasStreet Tacos",
+        "was": "images/0158f8e0dc2e230a.jpg",
+        "now": "/images/dishes/tacos-de-arrachera-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 11,
+        "kind": "bg",
+        "section": "Also try",
+        "shows": "Made in houseLa Dulcería",
+        "was": "images/0e000bad1f66aea4.jpg",
+        "now": "/images/dishes/churros-card.jpg",
+        "confidence": "mechanical"
+      }
+    ],
+    "takeout-delivery": [
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Travels well",
+        "shows": "Quesabirria TacosConsommé sealed separately",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Travels well",
+        "shows": "Tacos al PastorTortillas wrapped hot",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/tacos-al-pastor.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 5,
+        "kind": "bg",
+        "section": "Travels well",
+        "shows": "Tradicional FajitaPacked to sizzle at home",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/fajita-de-pollo.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 6,
+        "kind": "bg",
+        "section": "Travels well",
+        "shows": "Birria RamenTravels best of all",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/birria-ramen.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "Travels well",
+        "shows": "Enchiladas de MoleSauce on the side on request",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/enchiladas-de-mole.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 8,
+        "kind": "bg",
+        "section": "Travels well",
+        "shows": "ChurrosFried right before pickup",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/churros-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 9,
+        "kind": "bg",
+        "section": "Family packs",
+        "shows": "Pa’ la BandaFlautitas, chorizo quesadillas, wings, plantains, carnitas",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/flautitas-de-la-casa.jpg",
+        "confidence": "mechanical",
+        "note": "Pa la Banda lists flautitas first"
+      },
+      {
+        "slot": 10,
+        "kind": "bg",
+        "section": "Family packs",
+        "shows": "Cinco MamalonesFive tacos, five fillings, one meal",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/dishes/tacos-cinco-mamalones.jpg",
+        "confidence": "mechanical"
+      }
+    ],
+    "catering": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Event hero",
+        "shows": "Taco Catering",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/site/need-image.svg",
+        "alt": "Photograph pending: this image still needs replacing",
+        "confidence": "mechanical",
+        "note": "was a remote WordPress file. The only catering photograph on hand is a 361x652 screenshot, too small to ship"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "Trays set up at an office Birria, packed to travel Batched margaritas",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "mechanical",
+        "note": "card reads \"Trays set up at an office\". Same missing photograph as the hero"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "Trays set up at an office Birria, packed to travel Batched margaritas",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/4e4e97cc03520928.jpg",
+        "confidence": "proposed",
+        "note": "card reads \"Birria, packed to travel\""
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "Trays set up at an office Birria, packed to travel Batched margaritas",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Batched margaritas\""
+      }
+    ],
+    "happy-hour": [
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Deals",
+        "shows": "DrinksThe Bar ✓House Margarita, 12 oz. rocks✓Handcrafted Margaritas: j",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Drinks / The Bar\""
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Deals",
+        "shows": "FoodThe Bites ✓1 Quesabirria Taco✓2 Tacos de Pollo✓Tacos al Pastor✓2 T",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical",
+        "note": "card lists 1 Quesabirria Taco first"
+      }
+    ],
+    "late-night": [
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Late menu rail",
+        "shows": "Full menu until closeIf you're seated before we lock the door, you eat",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/tacos-perrones.jpg",
+        "confidence": "proposed",
+        "note": "card reads \"Full menu until close\""
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Late menu rail",
+        "shows": "Quesabirria TacosBraised 12+ hours, consommé on the side",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Late menu rail",
+        "shows": "Cinco MamalonesFive tacos, five fillings",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/dishes/tacos-cinco-mamalones.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "What happens late",
+        "shows": "ThuKaraoke ThursdaysKaraoke in the bar area, 7:30 to midnight, hosted ",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical",
+        "note": "Sat card, was a remote WordPress file"
+      }
+    ],
+    "tequila-bar": [
+      {
+        "slot": 2,
+        "kind": "img",
+        "section": "Bar photo + hours",
+        "shows": "",
+        "was": "images/3468c5be0b3897f2.jpg",
+        "now": "/images/8cd7641ffaf36916.jpg",
+        "alt": "The bar counter and its painted chairs, before service",
+        "confidence": "mechanical",
+        "note": "bar photo slot held the karaoke poster"
+      }
+    ],
+    "karaoke": [
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Karaoke specials + photo strip",
+        "shows": "The bar, before the crowdTornados, lined upThe table, singing alongPla",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/8cd7641ffaf36916.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"The bar, before the crowd\""
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Karaoke specials + photo strip",
+        "shows": "The bar, before the crowdTornados, lined upThe table, singing alongPla",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/e6338cdda4653beb.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Tornados, lined up\""
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Karaoke specials + photo strip",
+        "shows": "The bar, before the crowdTornados, lined upThe table, singing alongPla",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/20d856a9f66a9c4c.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"The table, singing along\""
+      },
+      {
+        "slot": 5,
+        "kind": "bg",
+        "section": "Karaoke specials + photo strip",
+        "shows": "The bar, before the crowdTornados, lined upThe table, singing alongPla",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "mechanical",
+        "note": "card reads \"Placeholder: the host\". No photograph of the host exists"
+      }
+    ],
+    "private-parties": [
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Party types",
+        "shows": "Quinceañeras · Sweet 16 Quinceañeras and Celebrations A private room, ",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/site/quince-airplane.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Party types",
+        "shows": "Weddings · Showers · Rehearsals Weddings, Receptions and Showers Rehea",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/site/celebration-cake.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Party types",
+        "shows": "Catering · Drop-off · Full service Taco Catering Same kitchen, same ha",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "mechanical",
+        "note": "Catering card: no catering photograph on hand"
+      },
+      {
+        "slot": 7,
+        "kind": "bg",
+        "section": "Spaces",
+        "shows": "Indoor PatioSeats 48Under a roof, windows open all summer, warm and cl",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "mechanical",
+        "note": "Indoor Patio: no photograph of this room"
+      },
+      {
+        "slot": 10,
+        "kind": "bg",
+        "section": "Spaces",
+        "shows": "TulumSeats 60Outdoor patio, open in the summer.OutdoorSummer",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "mechanical",
+        "note": "Tulum: no photograph of this room"
+      },
+      {
+        "slot": 11,
+        "kind": "bg",
+        "section": "Spaces",
+        "shows": "The Whole HouseUp to 400Nobody's done it yet. We'd love to be talked i",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "mechanical",
+        "note": "The Whole House: no photograph"
+      }
+    ],
+    "private-parties-quinceaneras-celebrations": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Event hero",
+        "shows": "Quinceañeras, Without the Ballroom Price",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/site/celebration-cake.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "The room, set for the night Family-style platters Agua fresca station",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/site/quince-airplane.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"The room, set for the night\""
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "The room, set for the night Family-style platters Agua fresca station",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "proposed",
+        "note": "card reads \"Family-style platters\". No photograph of a family-style spread at an event"
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "The room, set for the night Family-style platters Agua fresca station",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "proposed",
+        "note": "card reads \"Agua fresca station\""
+      }
+    ],
+    "private-parties-weddings-receptions": [
+      {
+        "slot": 1,
+        "kind": "img",
+        "section": "Event hero",
+        "shows": "Weddings, Showers, Receptions",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/site/need-image.svg",
+        "alt": "Photograph pending: this image still needs replacing",
+        "confidence": "mechanical",
+        "note": "no wedding photograph exists; was a remote WordPress file"
+      },
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "Long table, candlelight Signature cocktails Patio at dusk",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/site/need-image.svg",
+        "confidence": "mechanical",
+        "note": "card reads \"Long table, candlelight\""
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "Long table, candlelight Signature cocktails Patio at dusk",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/02/Margaritas.jpg",
+        "now": "/images/df43e9ee488c58d3.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Signature cocktails\""
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "The room / gallery",
+        "shows": "Long table, candlelight Signature cocktails Patio at dusk",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/abf153efda62144c.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Patio at dusk\""
+      }
+    ],
+    "mexican-restaurant-gaithersburg-md": [
+      {
+        "slot": 2,
+        "kind": "bg",
+        "section": "Why the drive",
+        "shows": "Six-Hour BirriaQuesabirria tacos and the bowl. The reason most people ",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/04/Birria.jpg",
+        "now": "/images/dishes/quesabirrias-hero.jpg",
+        "confidence": "mechanical"
+      },
+      {
+        "slot": 3,
+        "kind": "bg",
+        "section": "Why the drive",
+        "shows": "The New BarA real tequila and mezcal list, margaritas on house pulps.",
+        "was": "https://senortequilas.com/wp-content/uploads/2025/11/Photo-Sep-05-2025-11-07-18-AM-1-1-1536x1024.jpg",
+        "now": "/images/0fcbe6ef39392a93.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"The New Bar\""
+      },
+      {
+        "slot": 4,
+        "kind": "bg",
+        "section": "Why the drive",
+        "shows": "Taco TuesdayStreet tacos on tortillas pressed that morning, plus free ",
+        "was": "https://senortequilas.com/wp-content/uploads/2022/03/DSC07183-HDR.jpg",
+        "now": "/images/dishes/tacos-al-pastor.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Taco Tuesday\""
+      },
+      {
+        "slot": 5,
+        "kind": "bg",
+        "section": "Why the drive",
+        "shows": "Private EventsQuinces, showers, office parties. Four private rooms, te",
+        "was": "https://senortequilas.com/wp-content/uploads/2024/11/DSC00415-scaled.jpg",
+        "now": "/images/site/celebration-cake.jpg",
+        "confidence": "mechanical",
+        "note": "card reads \"Private Events\""
+      }
+    ]
+  }
+}

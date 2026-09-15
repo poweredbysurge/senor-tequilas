@@ -7,6 +7,7 @@
  *
  *   markup      design/pages/<slug>.html, unchanged apart from hrefs
  *   hrefs       design/LINK-MAP.json, applied by document position, not by label
+ *   photos      design/IMAGE-MAP.json, the 2026 food photography, same positional discipline
  *   overlay     design/overlay/, the nav rule, the panel and its toggle
  *   images      design/pages/images/ -> public/images/
  *
@@ -128,6 +129,7 @@ async function main() {
   const manifest = JSON.parse(await readFile(path.join(ROOT, 'design', 'pages', 'manifest.json'), 'utf8'));
   const linkMap = JSON.parse(await readFile(path.join(ROOT, 'design', 'LINK-MAP.json'), 'utf8'));
   const altText = JSON.parse(await readFile(path.join(ROOT, 'design', 'ALT-TEXT.json'), 'utf8'));
+  const imageMap = JSON.parse(await readFile(path.join(ROOT, 'design', 'IMAGE-MAP.json'), 'utf8'));
   const seo = JSON.parse(await readFile(path.join(ROOT, 'design', 'SEO.json'), 'utf8'));
   const byPage = new Map();
   for (const l of linkMap.links) {
@@ -147,7 +149,6 @@ async function main() {
     }
   }
   await rm(SRC, { recursive: true, force: true });
-  await rm(path.join(PUBLIC, 'images'), { recursive: true, force: true });
   for (const d of ['pages', 'components', 'layouts', 'styles']) await mkdir(path.join(SRC, d), { recursive: true });
   await mkdir(path.join(PUBLIC, 'images'), { recursive: true });
 
@@ -157,6 +158,11 @@ async function main() {
   await writeFile(path.join(SRC, 'styles', 'overlay.css'), await readFile(path.join(ROOT, 'design', 'overlay', 'mobile-nav.css'), 'utf8'));
   await writeFile(path.join(SRC, 'styles', 'tweaks.css'), await readFile(path.join(ROOT, 'design', 'overlay', 'site-tweaks.css'), 'utf8'));
 
+  // Only the files this build is about to write are replaced. public/images/ also holds
+  // photography the client sent that the design never carried, dropped in by hand and
+  // committed: the dishes/ and site/ folders, and a handful of loose files. An earlier
+  // version of this script deleted public/images/ wholesale, which destroyed all of it on
+  // every run. Copy over, never wipe.
   const imgs = await readdir(path.join(ROOT, 'design', 'pages', 'images'));
   for (const f of imgs) {
     await copyFile(path.join(ROOT, 'design', 'pages', 'images', f), path.join(PUBLIC, 'images', f));
@@ -170,14 +176,14 @@ async function main() {
 
   const variants = new Map();     // "Header" -> Map(hash -> {name, html, pages[]})
   const pageParts = [];
-  let rewritten = 0, unresolvedLeft = 0, formsMarked = 0, altFilled = 0, mapsPlaced = 0;
+  let rewritten = 0, unresolvedLeft = 0, formsMarked = 0, altFilled = 0, mapsPlaced = 0, photosSwapped = 0;
 
   let dominantFooter = null;   // filled on the second page, once a majority is visible
   for (const p of manifest.pages) {
     await page.goto(`http://127.0.0.1:${port}/design/pages/${p.slug}.html`, { waitUntil: 'load', timeout: 120000 });
 
     const rows = [...byPage.get(p.slug).values()].map((l) => ({ index: l.index, to: l.to, from: l.from }));
-    const applied = await page.evaluate(({ rows, shared, alt }) => {
+    const applied = await page.evaluate(({ rows, shared, alt, photos }) => {
       const anchors = [...document.querySelectorAll('a[href]')];
       let n = 0, unresolved = 0;
       for (const r of rows) {
@@ -218,6 +224,39 @@ async function main() {
         altFilled++;
       }
 
+      // The 2026 food photography, from design/IMAGE-MAP.json. Slots are counted in DOM
+      // order, <img> and inline background alike, and each row carries the URL it expects
+      // to find. A slot that has moved throws rather than writing the picture somewhere
+      // else. Runs after the alt pass so hand-written alt text survives the swap.
+      const TEXTURE = /86475be0134bfc90\.png|ecf6382a259b5884\.png|9cf29efa1cbf0c3e\.png|black bg\.png|texture-black/;
+      const slots = [];
+      for (const el of document.querySelectorAll('*')) {
+        if (el.tagName === 'IMG') {
+          const u = el.getAttribute('src') || '';
+          if (u && !TEXTURE.test(u)) slots.push({ el, kind: 'img', url: u });
+        }
+        const bg = el.style && el.style.backgroundImage;
+        if (bg && bg.includes('url(')) {
+          for (const m of bg.matchAll(/url\(["']?([^"')]+)["']?\)/g)) {
+            if (!TEXTURE.test(m[1])) slots.push({ el, kind: 'bg', url: m[1] });
+          }
+        }
+      }
+      let photosSwapped = 0;
+      for (const row of photos) {
+        const s = slots[row.slot];
+        if (!s || s.url !== row.was || s.kind !== row.kind) {
+          return { error: `image slot ${row.slot} moved: expected ${row.kind} ${row.was}, found ${s ? s.kind + ' ' + s.url : 'nothing'}` };
+        }
+        if (row.kind === 'img') {
+          s.el.setAttribute('src', row.now);
+          if (row.alt) s.el.setAttribute('alt', row.alt);
+        } else {
+          s.el.style.backgroundImage = s.el.style.backgroundImage.split(s.url).join(row.now);
+        }
+        photosSwapped++;
+      }
+
       // The design drew a working-looking inquiry form. It stays exactly as drawn; the
       // comment marks where the real Toast embed replaces it.
       let formsMarked = 0;
@@ -237,8 +276,8 @@ async function main() {
         blocks.push({ name: s.name, html: el.outerHTML });
         el.replaceWith(document.createComment(`COMPONENT:${s.name}`));
       }
-      return { n, unresolved, formsMarked, altFilled, mapsPlaced, blocks, host: host.outerHTML };
-    }, { rows, shared: SHARED, alt: altText.byImage });
+      return { n, unresolved, formsMarked, altFilled, mapsPlaced, photosSwapped, blocks, host: host.outerHTML };
+    }, { rows, shared: SHARED, alt: altText.byImage, photos: imageMap.pages[p.slug] ?? [] });
 
     if (applied.error) throw new Error(`${p.slug}: ${applied.error}`);
     rewritten += applied.n;
@@ -246,6 +285,7 @@ async function main() {
     formsMarked += applied.formsMarked;
     altFilled += applied.altFilled;
     mapsPlaced += applied.mapsPlaced;
+    photosSwapped += applied.photosSwapped;
 
     const used = [];
     for (const b of applied.blocks) {
@@ -465,6 +505,7 @@ export default defineConfig({
 
   console.log(`\n${rewritten} hrefs rewritten from the link map, ${unresolvedLeft} left inert (the delivery links).`);
   console.log(`${formsMarked} inquiry form(s) marked with <!-- TOAST FORM EMBED -->.`);
+  console.log(`${photosSwapped} photograph(s) swapped from the image map.`);
   console.log(`${altFilled} empty alt attribute(s) filled from ALT-TEXT.json.`);
   console.log(`${mapsPlaced} map placeholder(s) replaced with a real embedded map.`);
 }

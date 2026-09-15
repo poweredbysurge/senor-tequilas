@@ -721,3 +721,73 @@ client's own artwork.
 
 The happy hour flyer is on the homepage happy hour card only. It is not on `/happy-hour`,
 whose hero is a photograph rather than a flyer slot. Say so and it is a one line change.
+
+
+## 35. The 2026 food photography, and what the menu page does not list
+
+The client sent 283 professional photographs in September 2026, about 60 distinct dishes with
+several frames each. They are curated to 64 files in `public/images/dishes/`, one frame per
+dish plus a second for the five that need both a hero and a card, at 1600px on the long edge,
+JPEG quality 82, EXIF stripped. 9.2MB for the set. The picks and the slots they fill are
+recorded in `design/IMAGE-MAP.json`, 124 rows.
+
+**Birria still has no photograph of its own.** The folder has birria fries, birria ramen and
+quesabirrias, but no plain birria taco. Four slots keep the design library's
+`4e4e97cc03520928.jpg` and are flagged `proposed` in the map for that reason. A single frame
+of birria tacos would close it.
+
+**Still waiting on a photograph**, each one a labelled placeholder rather than a wrong picture:
+
+- Catering, the hero and the "trays at an office" card, and the catering card on the events
+  hub. The only catering photograph on hand is a 361x652 screenshot of a phone photo, too
+  small to ship at any of those sizes.
+- Weddings, the hero and the "long table, candlelight" card. There is no wedding photograph.
+- Quinceañeras, the "family-style platters" card.
+- The Indoor Patio, Tulum, and the whole house, on `/private-parties`. Mexican Room,
+  International Room, Bar Area and Vallarta have real photographs; these three do not.
+- The karaoke host.
+
+**The menu page against the photography.** The folder names dishes as a de facto inventory, so
+it is worth knowing which ones `/menu` never mentions. Of the seventeen checked, only three
+are absent: **Pork Belly Guacamole**, **QuesaVeggies**, and **Chile en Nogada**, which the
+client marked a limited-time dish and which is deliberately placed nowhere. Everything else is
+already listed, including Sopa de Tortilla, which appears as "Tortilla Soup". So the menu page
+is very close to complete, not materially short. Worth one question to the client about the
+two non-seasonal gaps rather than a menu rewrite. Nothing was added.
+
+The client marked eleven files do-not-use and those are excluded. One more was excluded beyond
+that list: the single unmarked `Pollos divorciados` frame, because the client rejected the
+other four frames of that dish and the plate is cropped at the top edge. `Cheesecake
+Chimichanga (2).jpg` is mislabelled in the client's folder, it is a fried ice cream shot.
+
+
+## 36. `src/` and `design/overlay/` have diverged, so `npm run assemble` is destructive
+
+`scripts/build-site.mjs` regenerates `src/` from `design/pages/` plus `design/overlay/`, and
+its own guard says so. That guard is now load-bearing, because the two have drifted apart in
+**both** directions. Regenerating at `dd09ac9` rewrites eleven files:
+
+*Lost by regenerating* (these live only in `src/`): the real gift card artwork, which reverts
+to the design's churros photograph; the reviews rail navigation; the Footer1/Footer2 choice on
+the homepage; and roughly eight `[PENDING: ...]` placeholder blocks that were deleted by hand,
+on `/karaoke`, `/catering`, `/happy-hour`, `/menu`, `/our-story`, `/quesabirria-tacos` and both
+event pages.
+
+*Gained by regenerating* (these live only in `design/`): the three delivery storefront links
+from `design/LINK-MAP.json`, which are still `href="#"` in the shipped `src/`, and the nightly
+carousel poster labels.
+
+Because of that, the 2026 photography was applied to `src/` directly rather than by
+regenerating. `design/IMAGE-MAP.json` and the code that applies it in `build-site.mjs` are in
+place and correct, so a future clean regeneration reproduces the photography; it is everything
+*else* that would not survive.
+
+Two things follow. The delivery links are inert in production right now and should be fixed.
+And somebody has to decide whether `design/overlay/` is still the source of truth: either port
+the hand edits back into it, or retire the regeneration path and treat `src/` as the artifact.
+Until then, do not run `npm run assemble` without reading this entry.
+
+`build-site.mjs` also used to delete `public/images/` wholesale on every run, which destroyed
+every photograph the client sent, since none of them come from `design/pages/images/`. It now
+copies over instead of wiping. That is fixed.
+
