@@ -744,6 +744,11 @@ body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
     top: 50%;
     transform: translate(-50%, -50%);
     margin-right: 0 !important;
+    /* Out of flow, shrink-to-fit sizes against the space from left:50% to the container's
+       right edge, which is half the header. Eight links do not fit in half a header, so every
+       width wrapped to two lines. max-content sizes to the links themselves; the transform
+       still centres whatever that comes to. */
+    width: max-content;
   }
 }
 
@@ -856,4 +861,170 @@ body[data-route="/game-day"] section[data-screen-label="Fight nights"] > div > d
 body[data-route="/game-day"] section[data-screen-label="Fight nights"] > div > p {
   margin-left: auto !important;
   margin-right: auto !important;
+}
+
+/* ---- 35. Reserve stays in the header on a phone -------------------------------------------
+   Requested 15 September. The design marks the Reserve pill `data-m-hide` on every header but
+   the homepage's, and site.css hides that at phone widths, so six of the seven headers showed
+   Order alone. Reserve is on every page now, at every width. */
+body[data-route] header a[data-m-hide] { display: inline-flex !important; }
+
+/* ==========================================================================================
+   MOBILE PASS, 15 September. Entries 36 to 40. Everything below 768 unless stated.
+   ========================================================================================== */
+
+/* ---- 36. the footer's two buttons go full width -------------------------------------------
+   Entry 19 stretches every call to action across the column on a phone but deliberately
+   skipped the header, the footer and the menu panel. The client's rule is that a button not
+   sharing its line with another button spans the screen, and the footer's Order and Reserve
+   pills were sitting at 186px and 214px in the middle of a 390px screen. They span now. The
+   header and the menu panel are still out: those two are rows by design. */
+@media (max-width: 767px) {
+  body[data-route] footer a[href*="toasttab"] {
+    display: flex !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* ---- 37. the menu section headings centre --------------------------------------------------
+   Requested 15 September. "Para empezar" and "Appetizers", and the eleven headings like them,
+   already had centred text from entry 19, but the block holding them sits in a
+   space-between row next to the section's description, so the whole block was parked on the
+   left of the screen and the centring inside it did nothing. Centre the row and the
+   description with it. Entry 22 keeps the dish cards below ranged left, which is unchanged. */
+@media (max-width: 767px) {
+  body[data-route="/menu"] section[data-screen-label="Menu section"] [data-dc-tpl="79"] {
+    /* A column, not a centred row. The row wraps, so on the sections whose description is
+       short enough to sit beside the heading, "Seafood" being the one, centring the row
+       centres the pair and leaves the heading itself left of the middle. Stacked, each child
+       centres on its own. */
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  body[data-route="/menu"] section[data-screen-label="Menu section"] [data-dc-tpl="84"] {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* ---- 38. the entertainment add-ons become a rail -------------------------------------------
+   Requested 15 September. Seven cards stacked one per screen on a phone is seven screens of
+   scrolling. They are a horizontal rail now, and the card width is set so one and a half sit
+   in view: that half card past the edge is the whole point, it is what tells you there is
+   more to the right. Snap points so it settles on a card, and the scrollbar hidden like the
+   site's other rails. */
+@media (max-width: 767px) {
+  body[data-route="/private-parties"] #entertainment > div > div:last-child {
+    display: flex !important;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: clamp(18px, 4.6vw, 48px);
+    scrollbar-width: none;
+    /* the rail runs to the screen edge, so it needs the gutter back as padding */
+    margin-left: calc(clamp(18px, 4.6vw, 48px) * -1);
+    margin-right: calc(clamp(18px, 4.6vw, 48px) * -1);
+    padding: 2px clamp(18px, 4.6vw, 48px);
+  }
+  body[data-route="/private-parties"] #entertainment > div > div:last-child::-webkit-scrollbar {
+    display: none;
+  }
+  body[data-route="/private-parties"] #entertainment > div > div:last-child > div {
+    flex: 0 0 66%;
+    scroll-snap-align: start;
+  }
+}
+
+/* ---- 39. the heroes darken behind their text -----------------------------------------------
+   Requested 15 September: on a phone the copy sits directly on the photograph and the
+   design's own scrims were drawn for a wide hero, not a stacked one.
+
+   Two mechanisms, because the heroes carry their pictures two different ways. Eighteen of the
+   twenty-two use an <img> or a <video>, which a filter darkens without touching the stacking
+   order. The rest paint a background, and an inset shadow covers a background while staying
+   under the element's own children, so the text still sits on top of it. Neither adds a box
+   to the page or moves anything. */
+@media (max-width: 767px) {
+  body[data-route] section[data-screen-label*="hero" i] img,
+  body[data-route] section[data-screen-label*="hero" i] video,
+  body[data-route] section[data-screen-label*="Hero" i] img,
+  body[data-route] section[data-screen-label*="Hero" i] video {
+    filter: brightness(0.42);
+  }
+  body[data-route] section[data-screen-label*="hero" i] {
+    box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.45);
+  }
+  /* /taco-tuesday paints its hero photograph on an inner div rather than an <img>. The other
+     inner backgrounds inside heroes are the lucha collage texture, which is already dark. */
+  body[data-route="/taco-tuesday"] section[data-screen-label="Taco hero"] [style*="eca8597506381a36"] {
+    box-shadow: inset 0 0 0 100vmax rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ---- 40. Order and Reserve are pinned to the bottom of a phone ------------------------------
+   Requested 15 September. Both calls to action stay on screen for the whole scroll rather
+   than living at the top and the bottom of a long page. The shadow above the bar is doing a
+   job: it is what tells you the cards behind it keep going.
+
+   The bar is drawn by the layout, so it is on every page. A spacer box after the footer
+   gives it clearance: padding on the body does not work here, because the extraction reset
+   pins html and body to height 100% and the real content overflows that box, so the padding
+   sits a screen from the top rather than after the footer. Anything the page scrolls to by
+   anchor gets the same clearance. */
+#st-mobile-cta, #st-cta-spacer { display: none; }
+@media (max-width: 767px) { #st-cta-spacer { display: block; } }
+@media (max-width: 767px) {
+  #st-mobile-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    display: flex;
+    gap: 10px;
+    padding: 10px clamp(12px, 4vw, 18px) calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(13, 13, 11, 0.96);
+    backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(185, 156, 102, 0.28);
+    box-shadow: 0 -18px 34px rgba(0, 0, 0, 0.75), 0 -4px 10px rgba(0, 0, 0, 0.6);
+  }
+  #st-mobile-cta a {
+    flex: 1 1 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  #st-mobile-cta a[data-cta="order"] {
+    background: rgb(56, 176, 73);
+    color: rgb(12, 18, 13);
+    box-shadow: rgba(56, 176, 73, 0.35) 0 0 24px;
+  }
+  #st-mobile-cta a[data-cta="reserve"] {
+    border: 1.5px solid rgba(185, 156, 102, 0.75);
+    color: rgb(234, 226, 214);
+    font-weight: 700;
+    background: rgba(18, 18, 16, 0.6);
+  }
+  #st-cta-spacer { height: var(--st-cta-height, 84px); }
+  body[data-route] [id] { scroll-margin-bottom: var(--st-cta-height, 84px); }
+  /* The panel is fixed and full screen, so the bar must not float over it. */
+  body:has(#mobile-menu:not([hidden])) #st-mobile-cta { display: none; }
+}
+
+/* ---- 41. the header row fits a 360 screen --------------------------------------------------
+   Reserve is on every header now, see entry 35, which put 9px of overflow back into a 360
+   viewport. The two pills lose four pixels of side padding each below 390, which is the same
+   proportional trim the logo and the row padding already take there. 320 still overflows and
+   is still knowingly left, as recorded in entry 33 of this file's older numbering. */
+@media (max-width: 389px) {
+  header a[class^="scp"] { padding-left: 10px !important; padding-right: 10px !important; }
 }

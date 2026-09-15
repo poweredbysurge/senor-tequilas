@@ -1053,3 +1053,46 @@ change.
 shows about 41% of its height at 1440 and 60% on a phone. That is exactly what the still it
 replaced was doing, and the framing carried over unchanged at `center 30%`. The panel's
 `min-height: clamp(300px, 46vh, 720px)` is the dial if more of the frame is ever wanted.
+
+## 45. The mobile pass, 15 September
+
+Client-requested, phone only unless stated. tweaks.css entries 35 to 41.
+
+| # | change |
+|---|---|
+| 1 | the footer's Order and Reserve span the screen, 186px and 214px before |
+| 2 | the twelve menu section headings centre |
+| 3 | the entertainment add-ons become a rail showing one and a half cards |
+| 4 | every hero darkens behind its text |
+| 5 | Order and Reserve are pinned to the bottom of the screen with a shadow above them |
+| 6 | the menu panel carries every destination the header nav does |
+| 7 | Reserve is in the header on a phone, on every page, not just the homepage |
+| 8 | **desktop:** Gift Cards joins the nav, left of Contact |
+
+**The heroes needed two mechanisms, not one.** Eighteen of the twenty-two carry their picture
+in an `<img>` or a `<video>`, which `filter: brightness()` darkens without touching the
+stacking order. The rest paint a background, and an inset `box-shadow` covers a background
+while staying under the element's own children, so the copy still sits on top. `/taco-tuesday`
+needed its own line because it paints the hero photograph on an inner div rather than an
+`<img>`; the other inner backgrounds inside heroes are the lucha collage texture, already dark.
+
+**The fixed bar could not take its clearance from the body.** `padding-bottom` on `body` looks
+right and does nothing: the extraction reset pins `html, body` to `height: 100%`, so the real
+content overflows that box and the padding sits a screen from the top rather than after the
+footer. A real spacer box after the footer is what works. Measured: the footer's bottom edge
+lands exactly on the bar's top edge on every page tested.
+
+**One heading needed more than a centred row.** The menu section header is a wrapping
+space-between row holding the heading block and the section description. Centring the row
+centres the pair, so on "Seafood", the one section whose description is short enough to sit
+beside its heading, the heading itself stayed left of the middle. Stacking the row into a
+column centres each child on its own. All twelve measured on the page's centre line.
+
+**Eight nav links still fit at 1200.** Adding Gift Cards took the nav from 593px to 690px. It
+wraps nowhere now, which it did at every width before `width: max-content` was added: the nav
+is absolutely positioned for centring, and shrink-to-fit was sizing it against the space from
+`left: 50%` to the container's right edge, which is half a header. At 1200 it clears the logo
+by 68px and the buttons by 51px, so the breakpoint from entry 40 holds.
+
+**Still open: 320px.** The header overflows by 29px there, down from 49px before the pills
+were trimmed below 390. It overflowed before this pass too, and remains knowingly left.
