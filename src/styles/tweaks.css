@@ -809,3 +809,19 @@ body[data-route="/catering"] section[data-screen-label="Related event pages"] > 
 body[data-route="/catering"] section[data-screen-label="Related event pages"] > div > div {
   justify-content: center;
 }
+
+/* ---- 32. the two deals cards line their photographs up ----------------------------------
+   Requested 15 September. The Bar card lists six things and Bites lists ten. Both cards are
+   flex columns stretched to the same height by the grid, but each stacks from the top, so
+   the Bar's photograph strip finished nearly a hundred pixels above the Bites one and the
+   pair read as misaligned.
+
+   The list is what grows, not the strip: give it the spare height and the strip is pushed to
+   the bottom of both cards while keeping its own 18px margin above. align-content: start is
+   the other half of it, because a grid with spare height stretches its auto rows by default,
+   which would have spread the six drink prices out to fill the gap instead of collecting the
+   space under them. */
+body[data-route="/happy-hour"] section[data-screen-label="Deals"] [data-dc-tpl="782"] {
+  flex: 1 1 auto;
+  align-content: start;
+}

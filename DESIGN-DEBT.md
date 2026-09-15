@@ -990,7 +990,7 @@ web-sized to JPEG in `public/images/site/`, originals parked in `design/library/
 | `/catering` | hero takes the supplied photograph, closing the last placeholder on that page's hero |
 | `/catering` | "Who we feed" gallery drops from three tiles to one |
 | `/catering` | "More on private events" centres, eyebrow and the three page links |
-| `/happy-hour` | the deals strip shows the bottom of its frame instead of the middle |
+| `/happy-hour` | the two deals cards line their photographs up; the drinks crop stays centred |
 | `/happy-hour` | "After Work, Before Everything Else" becomes the flyer carousel, keeping its heading |
 | `/happy-hour` | "Nearby" gains the map, to the right of the copy |
 
@@ -1013,3 +1013,10 @@ were not merged because only the one was asked for.
 `data-real-map` attribute, so the one rule in tweaks entry 5 sizes both. The section becomes
 a two column grid on the same `auto-fit, minmax(290px, 1fr)` the rest of the site uses, so it
 stacks under the copy below 390.
+
+**The deals strip was a crop problem that turned out to be an alignment problem.** The first
+pass moved the drinks photograph to `center bottom`, which was not what was wrong: the Bar
+card lists six things and Bites lists ten, so the two photograph strips ended at different
+heights and the pair read as misaligned. The crop is back to centre and the list inside each
+card takes the spare height instead, which puts both strips on the card bottom. Measured
+identical at 1440, 1024 and 768; below 768 the cards stack and there is nothing to align.
