@@ -805,3 +805,12 @@ place as the archive. The delivery storefront links noted above are still `href=
 `src/`; that is now a plain edit to `src/pages/takeout-delivery.astro`, not a regeneration
 question. Closed.
 
+
+## 37. Local SEO: the Business Profile does more for "sports bar near me" than the page does
+
+`/game-day` competes for the specific questions, "where to watch the commanders game" and the
+rest, which are uncontested. The generic one, "sports bar near me" at 105,000 a month, is
+answered by Google's local pack, not by a page. So: **add "Sports bar" as a secondary Google
+Business Profile category**, and post three of the World Cup watch party photographs to the
+profile. Neither is a change to this repo; both belong on the local SEO list.
+

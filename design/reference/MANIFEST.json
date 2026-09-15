@@ -1,5 +1,5 @@
 {
-  "note": "Reference captures are generated, not committed. Regenerate with: node scripts/references.mjs",
+  "note": "Reference captures are generated, not committed. Regenerate with: node scripts/references.mjs. game-day-*.png are captured from the built site instead, because /game-day is authored in src/ and has no design/pages/ source.",
   "generatedAt": "2026-09-11T22:11:50.507Z",
   "viewports": [
     {
@@ -15,8 +15,8 @@
       "height": 900
     }
   ],
-  "count": 60,
-  "totalBytes": 152011989,
+  "count": 63,
+  "totalBytes": 161333143,
   "files": [
     {
       "file": "birria-tacos-1440.png",
@@ -80,6 +80,27 @@
       "width": 768,
       "height": 3761,
       "sha256": "af4a00cb05a64655845aeea1f5aaac1bb8ca4b3ec75706a39ac72205876898f9"
+    },
+    {
+      "file": "game-day-1440.png",
+      "bytes": 3863210,
+      "width": 1440,
+      "height": 5646,
+      "sha256": "78e4176c2cbf0059651315cebfd45d3341c1763636d415f81b03144601327446"
+    },
+    {
+      "file": "game-day-390.png",
+      "bytes": 2563589,
+      "width": 390,
+      "height": 9467,
+      "sha256": "083abd4ea521f61d43139d947b93e8f61fe9e11f2c40e4be8df0f18d6bfc3d64"
+    },
+    {
+      "file": "game-day-768.png",
+      "bytes": 2894355,
+      "width": 768,
+      "height": 6928,
+      "sha256": "6b672dae7b553196215da0f7390d575c727b1f42476f44df4cab9c2ee50e0b5f"
     },
     {
       "file": "happy-hour-1440.png",
@@ -438,5 +459,6 @@
       "height": 3348,
       "sha256": "7b59bedf2515d6c033644b45f371acf896f7c27c0b7011416412551faf9f9aa4"
     }
-  ]
+  ],
+  "gameDayAddedAt": "2026-09-14T22:46:23.396Z"
 }
