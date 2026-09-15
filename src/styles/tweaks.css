@@ -733,9 +733,10 @@ body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
    header's own centred 1180px box, so its middle is the page's middle. Only applied where
    the nav is on screen: below 960 it is display: none, see overlay.css.
 
-   Measured at 960, the tightest width this runs at: the widest nav on the site is the
-   homepage at 426px, which leaves 81px to the logo and 64px to the buttons. */
-@media (min-width: 960px) {
+   Measured at 1200, the tightest width this runs at. Catering and Contact were added on
+   15 September, so the widest nav on the site is now the homepage at 593px, which leaves
+   116px to the logo and 100px to the buttons. */
+@media (min-width: 1200px) {
   header > div { position: relative; }
   header nav {
     position: absolute !important;
@@ -748,11 +749,11 @@ body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
 
 /* ---- 27. the hamburger is a phone and tablet control -----------------------------------
    Requested 14 September. The design drew it at every width and Gate A passed with it
-   there, so this is a departure, recorded as one. From 960 up the full nav is on screen and
-   the button opened a panel listing the same links a second time; below 960 the nav is
+   there, so this is a departure, recorded as one. From 1200 up the full nav is on screen and
+   the button opened a panel listing the same links a second time; below 1200 the nav is
    hidden and the button is the only navigation. The two rules are exact complements, so
    every width has one navigation and no width has two. */
-@media (min-width: 960px) {
+@media (min-width: 1200px) {
   header button[aria-label="Open menu"] { display: none !important; }
 }
 
@@ -768,3 +769,12 @@ body[data-route="/menu"] section[data-screen-label="About the tortillas"] > div 
   justify-content: center;
   text-align: center;
 }
+
+/* ---- 29. the nightly cards are not links -------------------------------------------------
+   Requested 15 September. The seven cards in the homepage carousel were anchors pointing at
+   /game-day, /margaritas and /taco-tuesday: a card about Sunday mariachi opened the game day
+   page, which is not where anyone tapping it expects to land. They are now plain divs with
+   no href, so the pointer and the hover lift have to come off with them. "Full lineup" above
+   the rail still goes to /taco-tuesday, and the arrows still scroll. */
+body[data-route="/"] [data-dc-tpl="93"] { cursor: default; }
+body[data-route="/"] [data-dc-tpl="93"]:hover { transform: none; }

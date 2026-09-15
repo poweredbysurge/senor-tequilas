@@ -882,3 +882,45 @@ The two dance floor frames come from client footage that is only 540x960, so at 
 are a little under 2x on the widest card, 352px on a phone. They are sharp on a desktop card
 and soft on a retina phone. A still from the same night at camera resolution would replace
 them cleanly.
+
+## 40. Client changes, 15 September
+
+Six requested departures in one pass.
+
+| change | what was there | what it is now |
+|---|---|---|
+| tortillas note, `/menu` | left aligned against the gutter | centred in the container |
+| `/our-story` hero | the brothers photograph | `need-image.svg`, photograph pending |
+| `/our-story` "The brothers" cards | both titled "The Rivas Brothers", showing the room and the kitchen | titled "Roberto Rivas" and "Alex Rivas", both photographs pending |
+| header nav | five links | seven: Catering and Contact added, on all 22 pages |
+| homepage nightly carousel | seven cards linking to `/game-day`, `/margaritas`, `/taco-tuesday` | plain divs, not clickable |
+| `/private-parties` | "Four rooms, two patios" and "What Usually Happens in These Rooms" above the room cards | removed |
+| Facebook | `facebook.com/senortequilasDMV` | `facebook.com/senortequilasgermantown/`, footer and JSON-LD |
+| catering card, `/private-parties` | `need-image.svg`, entry 27 | the photograph the client supplied on 15 September |
+
+**The nav breakpoint moved from 960 to 1200, and that has a cost.** Seven links do not
+compose at 960: measured on the homepage, the widest nav on the site, they wrap to two lines
+at every width from 960 to 1199 and only sit on one line at 1200, where the nav is 593px and
+clears the logo by 116px and the buttons by 100px. Same method the original 960 was measured
+by. The consequence is that iPad landscape at 1024 now gets the hamburger rather than the
+nav. Catering and Contact were added to the mobile menu panel as well, so all seven
+destinations are reachable at every width, but if the client wants the nav back at 1024 the
+only ways there are a shorter label set or a smaller gap than the design's 22px.
+
+**The brothers' names come from the brief, not from the request.** `design/brief/facts-consolidated-2026-09-09.md`
+Q11 and Q12: the brothers are Roberto and Alex Rivas; Roberto has front of house oversight,
+Alex has back of house. That is why the card captioned "The room" is Roberto and the one
+captioned "The kitchen" is Alex. The same brief says "The Rivas brothers" stays on every
+page, which the 15 September request supersedes for these two cards only. The hero eyebrow
+still reads "The Rivas Brothers" and every body mention is untouched.
+
+**Still open.** The brothers photograph is still the `/our-story` `ogImage` and still fills
+the founding-story card in the timeline, on the homepage and on `/our-story`, through the
+entry 10 swap. Only the two places the client pointed at were changed. If the photograph is
+being retired, those are the remaining three.
+
+**The catering photograph is small.** It arrived as a 361x652 phone screenshot, converted to
+`public/images/site/catering-card.jpg`. The card renders 384x410, so at 1x it is fine and at
+2x it is soft. The original PNG is still sitting unreferenced in `public/images/` under its
+screenshot name, which contains a narrow no-break space; it can be deleted once the client
+confirms they do not want it elsewhere. Entry 27 is closed by this.

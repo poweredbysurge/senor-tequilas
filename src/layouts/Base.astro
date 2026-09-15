@@ -124,11 +124,11 @@ const jsonLd = {
           if (e.key === 'Escape' && !panel.hidden) setOpen(false);
         });
 
-        /* From 960 up the full nav is on screen and the opener is hidden, see tweaks.css entry
+        /* From 1200 up the full nav is on screen and the opener is hidden, see tweaks.css entry
            27. A panel left open across that line would have no control left to close it, so it
            closes itself. */
         window.addEventListener('resize', function () {
-          if (!panel.hidden && window.matchMedia('(min-width: 960px)').matches) setOpen(false);
+          if (!panel.hidden && window.matchMedia('(min-width: 1200px)').matches) setOpen(false);
         });
       })();
 

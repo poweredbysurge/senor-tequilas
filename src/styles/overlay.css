@@ -5,8 +5,21 @@
    would otherwise beat the user agent's [hidden] rule, so this has to be explicit. */
 #mobile-menu[hidden] { display: none !important; }
 
-@media (max-width: 959px) {
-  /* The design never hides the desktop nav: it computes to display:flex at every width from
+@media (max-width: 1199px) {
+  /* RAISED TO 1200 on 15 September, when Catering and Contact were added to the nav.
+
+     The 960 below was measured for five items. Seven do not compose there: measured on the
+     homepage, the widest nav on the site, the links wrap to two lines at every width from 960
+     to 1199 and only sit on one line at 1200, where the nav is 593px wide. Same method as the
+     original number, same failure mode avoided.
+
+     The cost is real and deliberate: iPad landscape at 1024 now gets the hamburger rather
+     than the nav. The mobile menu carries all seven destinations, Catering and Contact
+     included, so nothing is unreachable. See DESIGN-DEBT.md entry 40.
+
+     The original note follows, and its numbers still describe the five-item nav.
+
+     The design never hides the desktop nav: it computes to display:flex at every width from
      360 to 1920, so both navigations render at once and every page scrolls sideways from 360
      up to between 653 and 724 depending on how many links that page's nav carries.
 
