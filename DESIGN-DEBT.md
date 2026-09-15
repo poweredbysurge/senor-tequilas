@@ -982,3 +982,34 @@ who can see them before launch.
 
 All four arrived as PNGs in `public/`, 1.7MB to 2.5MB each. Same treatment as entry 41:
 web-sized to JPEG in `public/images/site/`, originals parked in `design/library/originals/`.
+
+## 43. Catering and happy hour changes, 15 September
+
+| page | change |
+|---|---|
+| `/catering` | hero takes the supplied photograph, closing the last placeholder on that page's hero |
+| `/catering` | "Who we feed" gallery drops from three tiles to one |
+| `/catering` | "More on private events" centres, eyebrow and the three page links |
+| `/happy-hour` | the deals strip shows the bottom of its frame instead of the middle |
+| `/happy-hour` | "After Work, Before Everything Else" becomes the flyer carousel, keeping its heading |
+| `/happy-hour` | "Nearby" gains the map, to the right of the copy |
+
+**The gallery kept a photograph rather than the placeholder.** The three tiles were a 16:9
+lead spanning the grid, which held `need-image.svg` captioned "Trays set up at an office",
+and two square tiles below it with real photographs. Collapsing to one slot would have left
+the section showing only the placeholder, so the surviving slot keeps the lead's 16:9 shape
+and takes the birria photograph and caption from the tile below it. The office trays photo
+is no longer wanted by the markup, so it is off the list of things to shoot.
+
+**The carousel is now on three routes.** `/`, `/taco-tuesday` and `/happy-hour`. The sixteen
+selectors from entry 41 take a third `:is()` argument; the script was already ungated. Its
+headline is the only thing that differs per page: the client asked to keep "After Work,
+Before Everything Else" where the old weekly list had it. `/happy-hour` carries no
+`data-dc-tpl` in the 76 to 99 range, so the copied numbering collides with nothing there
+either. `/happy-hour` also still has its own separate "Tonight rail" section above; the two
+were not merged because only the one was asked for.
+
+**The map is the homepage embed, not a second implementation.** Same Google embed URL, same
+`data-real-map` attribute, so the one rule in tweaks entry 5 sizes both. The section becomes
+a two column grid on the same `auto-fit, minmax(290px, 1fr)` the rest of the site uses, so it
+stacks under the copy below 390.

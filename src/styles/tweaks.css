@@ -18,7 +18,7 @@ body[data-route="/"] [data-dc-tpl="68"] { display: none !important; }
    The rail was capped at max-width 1180px, so it stopped 130px short of the viewport and
    the next card was clipped mid-air. It now starts on the same gutter as the headline and
    runs off the right edge, which is what a scrolling rail should look like. */
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="91"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="91"] {
   max-width: none !important;
   margin-right: 0 !important;
   padding-right: 0 !important;
@@ -27,10 +27,10 @@ body[data-route="/"] [data-dc-tpl="68"] { display: none !important; }
    not get an extra margin on top of it or the row overflows at narrow widths. */
 
 /* The arrows are real controls now, so show them as such. */
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="84"],
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="87"] { cursor: pointer; }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="84"][disabled],
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="87"][disabled] { opacity: .35; cursor: default; }
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="84"],
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="87"] { cursor: pointer; }
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="84"][disabled],
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="87"][disabled] { opacity: .35; cursor: default; }
 
 /* ---- 4. signature dish filters ---------------------------------------------------------
    The chips are buttons the design never wired up. A card hidden by a filter is removed
@@ -623,28 +623,28 @@ body[data-route] header [data-cta] {
 
    The flyers are 4:5 and the card's art slot is 0.82, so cover crops about two percent off
    the long edge. That is within the flyers' own margin and no type is lost. */
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day="Mondays"] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day="Mondays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-monday.jpg) !important;
 }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day="Tuesdays"] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day="Tuesdays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-tuesday.jpg) !important;
 }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day="Wednesdays"] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day="Wednesdays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-wednesday.jpg) !important;
 }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day="Thursdays"] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day="Thursdays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-thursday.jpg) !important;
 }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day="Sundays"] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day="Sundays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-sunday.jpg) !important;
 }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day="Fridays"] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day="Fridays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-friday.jpg) !important;
 }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day="Saturdays"] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day="Saturdays"] [data-dc-tpl="94"] {
   background-image: url(/images/site/day-saturday.jpg) !important;
 }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-day] [data-dc-tpl="94"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-day] [data-dc-tpl="94"] {
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
@@ -689,7 +689,7 @@ body[data-route="/"] [data-dc-tpl="42"] {
 
 /* The Tonight rail. scroll-padding has to move with the padding or the arrows park each
    card under the gutter instead of against it. */
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="91"] {
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="91"] {
   padding-left: var(--st-edge) !important;
   scroll-padding-left: var(--st-edge) !important;
 }
@@ -776,8 +776,8 @@ body[data-route="/menu"] section[data-screen-label="About the tortillas"] > div 
    page, which is not where anyone tapping it expects to land. They are now plain divs with
    no href, so the pointer and the hover lift have to come off with them. "Full lineup" above
    the rail still goes to /taco-tuesday, and the arrows still scroll. */
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="93"] { cursor: default; }
-:is(body[data-route="/"], body[data-route="/taco-tuesday"]) [data-dc-tpl="93"]:hover { transform: none; }
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="93"] { cursor: default; }
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"]) [data-dc-tpl="93"]:hover { transform: none; }
 
 /* ---- 30. "Planning a visit" centres ------------------------------------------------------
    Requested 15 September, /taco-tuesday only. The block was ranged left against the gutter:
@@ -796,4 +796,16 @@ body[data-route="/taco-tuesday"] section[data-screen-label="Planning a visit"] >
 body[data-route="/taco-tuesday"] section[data-screen-label="Planning a visit"] > div > p {
   margin-left: auto !important;
   margin-right: auto !important;
+}
+
+/* ---- 31. "More on private events" centres ------------------------------------------------
+   Requested 15 September, /catering only. The gold eyebrow and the three page links under it
+   were ranged left against the gutter while the row itself spanned the container. Both centre
+   now, so the three buttons sit as a group in the middle rather than trailing off to the
+   right of the first one. */
+body[data-route="/catering"] section[data-screen-label="Related event pages"] > div {
+  text-align: center;
+}
+body[data-route="/catering"] section[data-screen-label="Related event pages"] > div > div {
+  justify-content: center;
 }
