@@ -1,5 +1,5 @@
 {
-  "note": "One row per image slot that changes. Slot indices are the DOM order of image slots on the design page, the same discipline design/LINK-MAP.json uses for links. `was` is a guard: if it no longer matches, the build stops rather than writing to the wrong slot.",
+  "note": "One row per image slot that changes. Slot indices are the DOM order of image slots on the design page, the same discipline design/LINK-MAP.json uses for links. `was` is a guard: if it no longer matches, the build stops rather than writing to the wrong slot. Rows with slot null are the /menu card thumbnails filled on 14 September after src/ became the artifact; they are recorded here for the decision, not for regeneration.",
   "pages": {
     "home": [
       {
@@ -322,6 +322,366 @@
         "was": "images/74fa7764d8487331.jpg",
         "now": "/images/dishes/esquites.jpg",
         "confidence": "mechanical"
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Appetizers",
+        "shows": "Mexican Chicken Wings",
+        "was": "",
+        "now": "/images/dishes/mexican-chicken-wings.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Appetizers",
+        "shows": "Flautitas de la Casa",
+        "was": "",
+        "now": "/images/dishes/flautitas-de-la-casa.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Happy Hour",
+        "shows": "Flautitas de Pollo",
+        "was": "",
+        "now": "/images/dishes/flautitas.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Appetizers",
+        "shows": "Tamales",
+        "was": "",
+        "now": "/images/dishes/tamales-de-pollo.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Appetizers",
+        "shows": "Sopes",
+        "was": "",
+        "now": "/images/dishes/sopes.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Happy Hour",
+        "shows": "1 Sope",
+        "was": "",
+        "now": "/images/dishes/sopes.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Appetizers",
+        "shows": "Chicken Tortilla Soup",
+        "was": "",
+        "now": "/images/dishes/sopa-de-tortilla.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Street Tacos",
+        "shows": "Tacos de Arrachera",
+        "was": "",
+        "now": "/images/dishes/tacos-de-arrachera-card.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Fajitas",
+        "shows": "Mazatlán Fajita",
+        "was": "",
+        "now": "/images/dishes/fajita-mazatlan.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Fajitas",
+        "shows": "Carnaval Fajita",
+        "was": "",
+        "now": "/images/dishes/fajita-carnaval.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Fajitas",
+        "shows": "Jalisco Fajita",
+        "was": "",
+        "now": "/images/dishes/steak-fajitas-card.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Fajitas",
+        "shows": "Tradicional Fajita",
+        "was": "",
+        "now": "/images/dishes/fajita-de-pollo.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Fajitas",
+        "shows": "Triple \"A\" Molcajete",
+        "was": "",
+        "now": "/images/dishes/triple-a-molcajete-card.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Fajitas",
+        "shows": "Mexicano Molcajete",
+        "was": "",
+        "now": "/images/dishes/mexican-molcajete.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Enchiladas",
+        "shows": "Enchiladas de Mole",
+        "was": "",
+        "now": "/images/dishes/enchiladas-de-mole.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Vegetarian",
+        "shows": "Enchiladas de Espinaca",
+        "was": "",
+        "now": "/images/dishes/enchiladas-de-espinaca.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Enchiladas",
+        "shows": "Arrachera",
+        "was": "",
+        "now": "/images/dishes/arrachera.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Enchiladas",
+        "shows": "Carnitas",
+        "was": "",
+        "now": "/images/dishes/carnitas-platter.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Enchiladas",
+        "shows": "Torta Chingona",
+        "was": "",
+        "now": "/images/dishes/torta-de-pollo.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Seafood",
+        "shows": "Frida’s Salmon",
+        "was": "",
+        "now": "/images/dishes/fridas-salmon.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Enchiladas",
+        "shows": "Mixed Grill Chimichanga",
+        "was": "",
+        "now": "/images/dishes/chimichanga.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Vegetarian",
+        "shows": "Garden Burrito",
+        "was": "",
+        "now": "/images/dishes/vegetarian-burrito.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Street Tacos",
+        "shows": "Tacos de la Costa",
+        "was": "",
+        "now": "/images/dishes/tacos-de-camaron.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Seafood",
+        "shows": "Tacos de la Costa",
+        "was": "",
+        "now": "/images/dishes/tacos-de-camaron.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Street Tacos",
+        "shows": "Tacos al Carbón",
+        "was": "",
+        "now": "/images/dishes/tacos-de-pollo.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Appetizers",
+        "shows": "Queso Bowl",
+        "was": "",
+        "now": "/images/dishes/queso-dip.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Happy Hour",
+        "shows": "Chips &amp; Queso",
+        "was": "",
+        "now": "/images/dishes/queso-dip.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Niños",
+        "shows": "Chicken Quesadilla",
+        "was": "",
+        "now": "/images/dishes/quesadilla.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Happy Hour",
+        "shows": "Mini Nachos",
+        "was": "",
+        "now": "/images/dishes/nachos.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Happy Hour",
+        "shows": "1 Quesabirria Taco",
+        "was": "",
+        "now": "/images/dishes/quesabirrias-card.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Happy Hour",
+        "shows": "2 Tacos de Pollo",
+        "was": "",
+        "now": "/images/dishes/tacos-de-pollo.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: La Dulcería",
+        "shows": "Malteadas Deluxe",
+        "was": "",
+        "now": "/images/dishes/oreo-milkshake.jpg",
+        "confidence": "proposed",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: La Dulcería",
+        "shows": "Cheesecake Chimichanga",
+        "was": "",
+        "now": "/images/dishes/cheesecake-chimichanga.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: La Dulcería",
+        "shows": "Volcán de Xocolate",
+        "was": "",
+        "now": "/images/dishes/volcan-de-xocolate.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: La Dulcería",
+        "shows": "Fried Ice Cream",
+        "was": "",
+        "now": "/images/dishes/fried-ice-cream.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
+      },
+      {
+        "slot": null,
+        "kind": "bg",
+        "section": "Menu section: Margaritas",
+        "shows": "Tornado",
+        "was": "",
+        "now": "/images/dishes/tornado.jpg",
+        "confidence": "mechanical",
+        "note": "76px dish-card thumbnail, was url(\"\") with a PHOTO label. Not counted by the original DOM inventory because an empty url() never matched. Applied to src/ directly, 14 September."
       }
     ],
     "our-story": [

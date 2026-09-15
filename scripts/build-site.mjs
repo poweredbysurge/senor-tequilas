@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 /**
+ * RETIRED 14 September 2026. src/ is the artifact; this script no longer runs without
+ * --i-know-this-overwrites-src, and you almost certainly do not want it. DESIGN-DEBT.md
+ * entry 36 has the reasoning. design/ stays as the archive of the export it came from.
+ *
  * Phase 3: assemble the production site from the design plus the overlay.
  *
  * Generated rather than hand-written, so a future export re-applies every decision instead
@@ -137,16 +141,18 @@ async function main() {
     byPage.get(l.page).set(l.index, l);
   }
 
-  // This wipes src/ and regenerates it from design/pages/ plus the overlay. Anything hand
-  // edited under src/ is destroyed. If you have edits there, move them into design/overlay/
-  // first, or run with --force to say you meant it.
-  if (!process.argv.includes('--force')) {
-    const { existsSync } = await import('node:fs');
-    if (existsSync(SRC)) {
-      console.error('src/ already exists. Regenerating destroys any hand edits in it.');
-      console.error('Move edits into design/overlay/ first, then re-run with --force.');
-      process.exit(1);
-    }
+  // Decided 14 September 2026: src/ is the artifact and the regeneration path is retired.
+  // Running this wipes src/ and rebuilds it from design/pages/ plus the overlay, which
+  // destroys every change made directly in src/ since Phase 5. It refuses unless you spell
+  // out that you know that, and prints DESIGN-DEBT.md entry 36 so nobody has to remember why.
+  if (!process.argv.includes('--i-know-this-overwrites-src')) {
+    const debt = await readFile(path.join(ROOT, 'DESIGN-DEBT.md'), 'utf8');
+    const at = debt.indexOf('## 36.');
+    const end = debt.indexOf('\n## ', at + 1);
+    console.error('Refusing to run: src/ is the artifact and this script overwrites it.\n');
+    console.error(debt.slice(at, end === -1 ? undefined : end).trim());
+    console.error('\nIf you really mean it: node scripts/build-site.mjs --i-know-this-overwrites-src');
+    process.exit(1);
   }
   await rm(SRC, { recursive: true, force: true });
   for (const d of ['pages', 'components', 'layouts', 'styles']) await mkdir(path.join(SRC, d), { recursive: true });

@@ -755,13 +755,19 @@ already listed, including Sopa de Tortilla, which appears as "Tortilla Soup". So
 is very close to complete, not materially short. Worth one question to the client about the
 two non-seasonal gaps rather than a menu rewrite. Nothing was added.
 
+**Six photographs match nothing on `/menu`.** `pork-belly-tacos.jpg`, `pork-belly-guacamole.jpg`,
+`quesaveggies.jpg`, `fajita-de-camarones.jpg`, `enchiladas-de-pollo.jpg` and `fresa-milkshake.jpg`
+are curated and sitting in `public/images/dishes/`, but the client photographed six things the
+menu page does not sell. No rows were added. Either the menu is missing them or the shoot
+included dishes that are not on it; one question to the client settles which.
+
 The client marked eleven files do-not-use and those are excluded. One more was excluded beyond
 that list: the single unmarked `Pollos divorciados` frame, because the client rejected the
 other four frames of that dish and the plate is cropped at the top edge. `Cheesecake
 Chimichanga (2).jpg` is mislabelled in the client's folder, it is a fried ice cream shot.
 
 
-## 36. `src/` and `design/overlay/` have diverged, so `npm run assemble` is destructive
+## 36. `src/` and `design/overlay/` have diverged, so `npm run assemble` is destructive  [DECIDED 14 September: src/ is the artifact]
 
 `scripts/build-site.mjs` regenerates `src/` from `design/pages/` plus `design/overlay/`, and
 its own guard says so. That guard is now load-bearing, because the two have drifted apart in
@@ -790,4 +796,12 @@ Until then, do not run `npm run assemble` without reading this entry.
 `build-site.mjs` also used to delete `public/images/` wholesale on every run, which destroyed
 every photograph the client sent, since none of them come from `design/pages/images/`. It now
 copies over instead of wiping. That is fixed.
+
+**Decided, 14 September.** `src/` is the artifact from here on and the regeneration path is
+retired. The design will not be re-exported before launch, and every real change since Phase 5
+has gone into `src/` directly. `npm run assemble` now refuses to run unless invoked with
+`--i-know-this-overwrites-src`, and prints this entry when it refuses. `design/` stays in
+place as the archive. The delivery storefront links noted above are still `href="#"` in
+`src/`; that is now a plain edit to `src/pages/takeout-delivery.astro`, not a regeneration
+question. Closed.
 

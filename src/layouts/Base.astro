@@ -606,7 +606,7 @@ const jsonLd = {
           })[0];
           if (!section) return [];
           var cards = [].slice.call(section.querySelectorAll('[data-dc-tpl]')).filter(function (el) {
-            return el.querySelectorAll('a, button').length === 1 && /per guest|a person/i.test(el.textContent || '');
+            return el.querySelectorAll('a, button').length === 1 && /per guest|a person|custom quote/i.test(el.textContent || '');
           });
           // keep only the innermost, which is one card each
           return cards.filter(function (el) {
@@ -632,7 +632,7 @@ const jsonLd = {
           var leaves = packageLeaves(card);
           var priceAt = -1;
           leaves.forEach(function (el, i) {
-            if (priceAt < 0 && /\$|\ba person\b/i.test(el.textContent || '')) priceAt = i;
+            if (priceAt < 0 && /\$|\ba person\b|custom quote/i.test(el.textContent || '')) priceAt = i;
           });
           if (priceAt > 0) leaves = leaves.slice(priceAt);
           return leaves.map(function (el) {
@@ -670,7 +670,7 @@ const jsonLd = {
           var leaves = packageLeaves(keep);
           var priceAt = -1;
           leaves.forEach(function (el, i) {
-            if (priceAt < 0 && /\$|\ba person\b/i.test(el.textContent || '')) priceAt = i;
+            if (priceAt < 0 && /\$|\ba person\b|custom quote/i.test(el.textContent || '')) priceAt = i;
           });
           if (priceAt > 0) {
             var eyebrow = leaves[priceAt - 1];
