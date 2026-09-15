@@ -649,3 +649,109 @@ body[data-route="/"] [data-day] [data-dc-tpl="94"] {
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
+
+/* ---- 24. one gutter for the whole homepage ---------------------------------------------
+   Requested 14 September. Almost every homepage block sits in the same container,
+   max-width 1180px with a clamp(18px, 4.5vw, 48px) gutter, which puts its first pixel of
+   content 130px in at 1440. Three blocks did not: the hero copy, which used the hero's own
+   clamp(20px, 5vw, 64px) and started at 64, and the two rails, which were released to bleed
+   off the right edge in entries 3 and 12 and lost their left gutter with it, starting at 48.
+
+   These two values rebuild that container's left content edge from whatever box the rule is
+   applied to, so nothing has to know the viewport width:
+
+     --st-gutter   the container's own side padding, copied from the design
+     --st-page     the container's max-width, copied from the design
+
+   The left edge is the gutter until the viewport is wide enough for the 1180px cap to start
+   centring the container, and the centring offset after that, which is exactly what
+   max-width plus auto margins computes. `100%` is the section width, so it works in any
+   full width block; the hero copy column is half the section, so it uses `200%`.
+
+   The self-scrolling social rail is deliberately not included. It is edge to edge by design
+   and the client asked for it to stay that way. */
+:root {
+  --st-page: 1180px;
+  --st-gutter: clamp(18px, 4.5vw, 48px);
+  --st-edge: max(var(--st-gutter), calc((100% - var(--st-page)) / 2));
+  --st-edge-half: max(var(--st-gutter), calc((200% - var(--st-page)) / 2));
+}
+
+/* The hero copy. Below 680 the hero grid is a single column, minmax(340px, 1fr) with
+   auto-fit, and half-width maths would be wrong, so it is the plain gutter there. */
+body[data-route="/"] [data-dc-tpl="42"] {
+  padding-left: var(--st-gutter) !important;
+  padding-right: var(--st-gutter) !important;
+}
+@media (min-width: 680px) {
+  body[data-route="/"] [data-dc-tpl="42"] { padding-left: var(--st-edge-half) !important; }
+}
+
+/* The Tonight rail. scroll-padding has to move with the padding or the arrows park each
+   card under the gutter instead of against it. */
+body[data-route="/"] [data-dc-tpl="91"] {
+  padding-left: var(--st-edge) !important;
+  scroll-padding-left: var(--st-edge) !important;
+}
+
+/* The Google reviews block. Entry 12 released the whole container, not just the rail, so
+   the headline and the rating line moved out with it. This puts them back.
+
+   Their right gutter was a flat 48px, which the headline's own inline margin shorthand beat
+   anyway, so it ran to the screen edge below 1276. Same gutter as everything else now, and
+   it has to be !important to outrank that inline margin. Only the rail still bleeds. */
+body[data-route="/"] [data-dc-tpl="140"] { padding-left: var(--st-edge) !important; }
+body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
+  margin-right: var(--st-gutter) !important;
+}
+
+/* ---- 25. the hero fills the fold -------------------------------------------------------
+   Requested 14 September: the homepage hero is one full screen. The announcement bar and
+   the header sit above it and are part of that screen, so the hero takes what is left,
+   which is measured at runtime rather than hard-coded because the bar wraps to two lines on
+   a narrow laptop. See heroFold() in Base.astro for the measurement.
+
+   Entry 18 locked the video panel to the clip's own 4:5 so nothing was cropped. A full
+   screen hero and an uncropped 4:5 cannot both be true, and the client chose the full
+   screen, so above 680 the ratio comes off and object-fit: cover trims the clip's sides.
+   Below 680 the hero is stacked, a full screen of it would leave the copy squashed under a
+   letterboxed clip, and the 4:5 stays. */
+@media (min-width: 680px) {
+  body[data-route="/"] section[data-screen-label="Hero: split copy + new bar"] {
+    min-height: calc(100vh - var(--st-hero-chrome, 96px));
+    min-height: calc(100svh - var(--st-hero-chrome, 96px));
+  }
+  body[data-route="/"] [data-dc-tpl="60"] { aspect-ratio: auto !important; }
+}
+
+/* ---- 26. the nav sits in the middle of the header --------------------------------------
+   Requested 14 September, every page. The links centre on the header, the logo stays left
+   and the buttons stay right, untouched.
+
+   Taking the nav out of flow is what makes it centre on the page rather than on the gap
+   between the logo and the buttons, and the container it is positioned against is the
+   header's own centred 1180px box, so its middle is the page's middle. Only applied where
+   the nav is on screen: below 960 it is display: none, see overlay.css.
+
+   Measured at 960, the tightest width this runs at: the widest nav on the site is the
+   homepage at 426px, which leaves 81px to the logo and 64px to the buttons. */
+@media (min-width: 960px) {
+  header > div { position: relative; }
+  header nav {
+    position: absolute !important;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-right: 0 !important;
+  }
+}
+
+/* ---- 27. the hamburger is a phone and tablet control -----------------------------------
+   Requested 14 September. The design drew it at every width and Gate A passed with it
+   there, so this is a departure, recorded as one. From 960 up the full nav is on screen and
+   the button opened a panel listing the same links a second time; below 960 the nav is
+   hidden and the button is the only navigation. The two rules are exact complements, so
+   every width has one navigation and no width has two. */
+@media (min-width: 960px) {
+  header button[aria-label="Open menu"] { display: none !important; }
+}

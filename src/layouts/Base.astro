@@ -123,6 +123,13 @@ const jsonLd = {
         document.addEventListener('keydown', function (e) {
           if (e.key === 'Escape' && !panel.hidden) setOpen(false);
         });
+
+        /* From 960 up the full nav is on screen and the opener is hidden, see tweaks.css entry
+           27. A panel left open across that line would have no control left to close it, so it
+           closes itself. */
+        window.addEventListener('resize', function () {
+          if (!panel.hidden && window.matchMedia('(min-width: 960px)').matches) setOpen(false);
+        });
       })();
 
     </script>
@@ -803,9 +810,10 @@ const jsonLd = {
         }
 
         /* ---- 18. the homepage hero video ------------------------------------------------------
-           The right half of the split hero was a still. It now carries a 4:5 clip, locked to that
-           ratio so the footage fills the panel exactly with nothing cropped away, and the left
-           half stretches to match it as a grid row.
+           The right half of the split hero was a still. It now carries a 4:5 clip. Below 680,
+           where the hero is stacked, the panel keeps that ratio and the footage fills it exactly;
+           above 680 the hero is one full screen and cover trims the clip's sides to fit. Either
+           way the left half stretches to match it as a grid row. See tweaks.css entry 25.
 
            Muted, looping, no controls, and it starts on its own: this is hero furniture, not
            something anyone chose to watch. The muted property is set as well as the attribute
@@ -1092,6 +1100,31 @@ const jsonLd = {
           });
         }
 
+        /* ---- 20. the hero fills the fold ------------------------------------------------------
+           The hero is one full screen, and the announcement bar and the header are part of that
+           screen, so the hero gets the rest. CSS cannot measure two earlier siblings, and the
+           bar's one line of text wraps to two somewhere around a narrow laptop, so the height of
+           the two of them is measured here and published as a custom property. tweaks.css entry
+           25 subtracts it. If this never runs the stylesheet falls back to 96px, the height at
+           1440, and the hero is a few pixels out rather than broken. */
+        function heroFold() {
+          if (!isHome) return;
+          var bar = document.querySelector('[data-screen-label="Announcement bar"]');
+          var hdr = document.querySelector('header');
+          if (!hdr) return;
+
+          function measure() {
+            var chrome = (bar ? bar.offsetHeight : 0) + hdr.offsetHeight;
+            document.documentElement.style.setProperty('--st-hero-chrome', chrome + 'px');
+          }
+
+          measure();
+          window.addEventListener('resize', measure);
+          // Web fonts land after first paint and the bar is set in Barlow Condensed, so its
+          // line box can change height once. Re-measure when the fonts are ready.
+          if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+        }
+
         function start() {
           try { if (isHome) tonightCarousel(); } catch (e) {}
           try { if (isHome) reviewsCarousel(); } catch (e) {}
@@ -1108,6 +1141,7 @@ const jsonLd = {
           try { videoStrip(); } catch (e) {}
           try { introVideo(); } catch (e) {}
           try { heroVideo(); } catch (e) {}
+          try { heroFold(); } catch (e) {}
           try { mobileCtas(); } catch (e) {}
           try { eyebrowRules(); } catch (e) {}
           try { dropChefPlaceholder(); } catch (e) {}

@@ -814,3 +814,37 @@ answered by Google's local pack, not by a page. So: **add "Sports bar" as a seco
 Business Profile category**, and post three of the World Cup watch party photographs to the
 profile. Neither is a change to this repo; both belong on the local SEO list.
 
+
+## 38. One gutter, a full screen hero and a centred nav, 14 September
+
+Four client-requested departures. They live in `src/styles/tweaks.css` entries 24 to 27 and
+`heroFold()` in `src/layouts/Base.astro`; `design/pages/` is still untouched.
+
+| change | what was there | what it is now |
+|---|---|---|
+| homepage gutter | three blocks sat on their own margin: hero copy at 64px, and both rails at 48px after entries 3 and 12 released them | every block starts on the container's gutter, 130px at 1440 |
+| homepage hero | 900px tall, so the fold ran 96px past the screen | the announcement bar, the header and the hero are exactly one screen |
+| header nav | in the button group, hard against the Reserve pill | centred on the header, logo and buttons untouched |
+| hamburger | drawn at every width, so 960 and up had two navigations | 960 and up has the nav only, below has the button only |
+
+**Three things to know about these.**
+
+The hero was full bleed on the left because the design drew it that way, as a photograph
+running to the edge with the copy floated on it. Putting the copy on the page gutter narrows
+it from 560px to 542px at 1440, so the headline and the paragraph rewrap by a word or two.
+That is the trade the alignment costs and the client asked for the alignment.
+
+Entry 18 locked the hero video to the clip's own 4:5 so nothing was cropped. A full screen
+hero and an uncropped 4:5 cannot both be true. Above 680 the ratio now comes off and
+`object-fit: cover` trims the clip's sides, which is what the client meant by "we can crop a
+bit of the video on the right". Below 680 the hero is stacked and the 4:5 stays.
+
+The 960 breakpoint for the hamburger is not a new number. It is the one `overlay.css` already
+measured for hiding the nav, and the two rules are now exact complements, so no width shows
+both navigations and no width shows neither. The note in `overlay.css` calling the
+hamburger's visibility "a design decision to revisit" is the decision this records.
+
+**Still open.** The reference set at `design/reference/` predates all four changes, so
+`npm run verify` will flag the homepage and all 22 headers until it is regenerated. Nothing
+here is a fidelity regression; the baseline is simply behind the intent again, the same way
+entry 19 left it before it was regenerated.
