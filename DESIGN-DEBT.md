@@ -1031,3 +1031,25 @@ Playing it is a choice the visitor makes: controls on, no autoplay, sound on, an
 `preload="metadata"` so the 5.5MB is only fetched when somebody presses play. That is the
 opposite of the other clips on the site, which are muted autoplaying furniture, and it is
 what the client asked for. The original is in `design/source-video/`.
+
+## 44. The carousel reaches a fourth route, 15 September
+
+`/game-day` carried the same "Every Night of the Week" text list that `/taco-tuesday` and
+`/happy-hour` did, and takes the flyer carousel in its place, keeping its own heading. Four
+routes now: `/`, `/taco-tuesday`, `/happy-hour`, `/game-day`. The sixteen selectors from
+entry 41 take a fourth `:is()` argument; the script has been ungated since then, and
+`/game-day` was hand-built so it carries no `data-dc-tpl` at all, meaning the copied
+numbering collides with nothing.
+
+That is the last of the three text lists. The copy is now in one place and one shape, and a
+change to the nightly flyers reaches every page that shows them.
+
+**"Fight Nights" centres, and only it.** The client was explicit that the rest of `/game-day`
+stays ranged left. Verified: every other heading on the page still computes to `start` above
+768, and to `center` below it, which is the site-wide mobile rule from entry 19 and not this
+change.
+
+**The hero video crops hard.** The clip is 720x1280 and the hero panel is landscape, so cover
+shows about 41% of its height at 1440 and 60% on a phone. That is exactly what the still it
+replaced was doing, and the framing carried over unchanged at `center 30%`. The panel's
+`min-height: clamp(300px, 46vh, 720px)` is the dial if more of the frame is ever wanted.

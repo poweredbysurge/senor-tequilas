@@ -177,54 +177,93 @@ import Footer2 from '../components/Footer2.astro';
     </div>
   </section>
 
-  <section id="tonight" data-screen-label="Every night of the week" style="background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0px; scroll-margin-top: 70px;">
-    <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);">
-      <div style="display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);">
-        <span style="width: 26px; height: 1px; background: rgba(214, 188, 133, 0.7);"></span>Seven nights
-      </div>
-      <h2 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(26px, 4.6vw, 42px); line-height: 1.04; margin: 10px 0px 22px; text-transform: uppercase;">Every Night of the Week</h2>
-
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 12px;">
-        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;">
-          <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);">Monday · all night</div>
-          <div style="font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;">2-for-1 Margaritas</div>
-          <p style="font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">On the rocks, in lime, strawberry or mango. Three sizes: 14 oz, 18 oz, and the 54 oz Big Mami. <a href="/margaritas" style="color: rgb(214, 188, 133); font-weight: 700;">The margaritas</a>.</p>
-        </div>
-        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;">
-          <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);">Tuesday · 8 to 10</div>
-          <div style="font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;">Free Bingo</div>
-          <p style="font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Free bingo, 8 to 10, with prizes.</p>
-        </div>
-        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;">
-          <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);">Wednesday · 8 to 10</div>
-          <div style="font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;">Free Lotería</div>
-          <p style="font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Free lotería, 8 to 10, with prizes.</p>
-        </div>
-        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;">
-          <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);">Thursday · 7:30 to midnight</div>
-          <div style="font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;">Karaoke</div>
-          <p style="font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Karaoke in the bar area, hosted by DJ Willy. Thursday night football on. <a href="/karaoke" style="color: rgb(214, 188, 133); font-weight: 700;">Karaoke Thursdays</a>.</p>
-        </div>
-        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;">
-          <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);">Friday · 9 PM to 1 AM</div>
-          <div style="font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;">Live DJ</div>
-          <p style="font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Live DJ in the bar area, 9 PM to 1 AM. <a href="/late-night" style="color: rgb(214, 188, 133); font-weight: 700;">Late night</a>.</p>
-        </div>
-        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;">
-          <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);">Saturday · 9 PM to 1 AM</div>
-          <div style="font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;">Live DJ</div>
-          <p style="font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Live DJ in the bar area, 9 PM to 1 AM. College football on.</p>
-        </div>
-        <div style="background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;">
-          <div style="font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);">Sunday · 6:30 to 9:30</div>
-          <div style="font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;">Live Mariachi</div>
-          <p style="font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;">Live mariachi over dinner. Happy hour all day in the bar area. NFL on. <a href="/happy-hour#sunday" style="color: rgb(214, 188, 133); font-weight: 700;">Sunday happy hour</a>.</p>
-        </div>
-      </div>
-
-      <p style="font-size: 13px; line-height: 1.6; color: rgba(234, 226, 214, 0.65); margin: 16px 0px 0px;">NFL games are on every day we are open during the season.</p>
+  <section data-dc-tpl="76" id="tonight" data-screen-label="Tonight carousel" style="padding: clamp(40px, 7vw, 80px) 0px clamp(24px, 4vw, 40px); scroll-margin-top: 70px; background: linear-gradient(rgba(14, 14, 13, 0.72), rgba(10, 10, 9, 0.88)), url(/images/86475be0134bfc90.png) center center / cover no-repeat; border-top: 1px solid rgba(56, 176, 73, 0.18); border-bottom: 1px solid rgba(56, 176, 73, 0.18);">
+  <div data-dc-tpl="77" style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px); display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;">
+    <div data-dc-tpl="78">
+      <div data-dc-tpl="79" style="display: flex; align-items: center; gap: 10px; font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);"><span data-dc-tpl="80" style="width: 26px; height: 1px; background: rgba(185, 156, 102, 0.6);"></span><span data-dc-tpl="81"><span class="sc-interp">Thursday · every week</span></span></div>
+      <h2 data-dc-tpl="82" style="color: rgb(246, 239, 228); font-family: &quot;Archivo Black&quot;, sans-serif; font-size: clamp(28px, 5.5vw, 46px); line-height: 1.02; margin: 8px 0px 0px; text-transform: uppercase;">Every Night of the Week</h2>
     </div>
-  </section>
+    <div data-dc-tpl="83" style="flex: 0 0 auto; display: flex; align-items: center; gap: 10px;">
+      <button data-dc-tpl="84" aria-label="Previous events" class="scp5" style="width: 44px; height: 44px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid rgba(185, 156, 102, 0.5); background: rgba(28, 27, 24, 0.85); color: rgb(234, 226, 214); cursor: pointer;"><svg data-dc-tpl="85" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="86" d="M15 5l-7 7 7 7"></path></svg></button>
+      <button data-dc-tpl="87" aria-label="Next events" class="scp5" style="width: 44px; height: 44px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; border: 1px solid rgba(185, 156, 102, 0.5); background: rgba(28, 27, 24, 0.85); color: rgb(234, 226, 214); cursor: pointer;"><svg data-dc-tpl="88" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="89" d="M9 5l7 7-7 7"></path></svg></button>
+      <a data-dc-tpl="90" href="/taco-tuesday" class="scp6" style="font-weight: 700; font-size: 13px; color: rgb(185, 156, 102); border-bottom: 1px solid rgba(185, 156, 102, 0.5); padding-bottom: 2px;">Full lineup →</a>
+    </div>
+  </div>
+  <div data-dc-tpl="91" data-rail="" style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; scroll-snap-type: x; scroll-padding-left: clamp(18px, 4.5vw, 48px); padding: 20px clamp(18px, 4.5vw, 48px) 10px; max-width: 1180px; margin: 0px auto; box-sizing: border-box;">
+    
+      <div data-dc-tpl="93" class="scp7" style="flex: 0 0 auto; width: min(78vw, 250px); scroll-snap-align: start; display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(56, 176, 73); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); transition: transform 0.25s, border-color 0.25s;">
+        <div data-dc-tpl="94" style="position: relative; aspect-ratio: 4 / 5; background: url(/images/5ac1271d5937960b.jpg) center center / cover no-repeat rgb(28, 27, 24); box-shadow: rgba(10, 10, 9, 0.9) 0px -80px 70px -20px inset; display: flex; align-items: flex-end; padding: 14px;">
+          <span data-dc-tpl="96" style="position: absolute; top: 12px; left: 12px; background: rgb(191, 30, 46); color: rgb(246, 239, 228); font-size: 10px; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px;">Tonight</span>
+        </div>
+        <div data-dc-tpl="98" style="padding: 14px 16px 16px;">
+          <div data-dc-tpl="99" style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 13px; color: rgb(185, 156, 102); letter-spacing: 0.12em; text-transform: uppercase;"><span class="sc-interp">Thursdays</span> · <span class="sc-interp">7:30 to midnight</span></div>
+          <div data-dc-tpl="100" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 17px; text-transform: uppercase; line-height: 1.1; margin-top: 4px;"><span class="sc-interp">Karaoke</span></div>
+          <div data-dc-tpl="101" style="font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.85); margin-top: 6px;"><span class="sc-interp">Karaoke in the bar area, hosted by DJ Willy. NFL on.</span></div>
+        </div>
+      </div>
+    
+      <div data-dc-tpl="93" class="scp7" style="flex: 0 0 auto; width: min(78vw, 250px); scroll-snap-align: start; display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); transition: transform 0.25s, border-color 0.25s;">
+        <div data-dc-tpl="94" style="position: relative; aspect-ratio: 4 / 5; background: url(/images/24e322da4fd1060e.jpg) center center / cover no-repeat rgb(28, 27, 24); box-shadow: rgba(10, 10, 9, 0.9) 0px -80px 70px -20px inset; display: flex; align-items: flex-end; padding: 14px;">
+        </div>
+        <div data-dc-tpl="98" style="padding: 14px 16px 16px;">
+          <div data-dc-tpl="99" style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 13px; color: rgb(185, 156, 102); letter-spacing: 0.12em; text-transform: uppercase;"><span class="sc-interp">Fridays</span> · <span class="sc-interp">9 PM to 1 AM</span></div>
+          <div data-dc-tpl="100" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 17px; text-transform: uppercase; line-height: 1.1; margin-top: 4px;"><span class="sc-interp">Live DJ</span></div>
+          <div data-dc-tpl="101" style="font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.85); margin-top: 6px;"><span class="sc-interp">Live DJ in the bar area, 9 PM to 1 AM. 21 and over in the bar area after 9.</span></div>
+        </div>
+      </div>
+    
+      <div data-dc-tpl="93" class="scp7" style="flex: 0 0 auto; width: min(78vw, 250px); scroll-snap-align: start; display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); transition: transform 0.25s, border-color 0.25s;">
+        <div data-dc-tpl="94" style="position: relative; aspect-ratio: 4 / 5; background: url(/images/d8219db4b8a2f6cf.jpg) center center / cover no-repeat rgb(28, 27, 24); box-shadow: rgba(10, 10, 9, 0.9) 0px -80px 70px -20px inset; display: flex; align-items: flex-end; padding: 14px;">
+        </div>
+        <div data-dc-tpl="98" style="padding: 14px 16px 16px;">
+          <div data-dc-tpl="99" style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 13px; color: rgb(185, 156, 102); letter-spacing: 0.12em; text-transform: uppercase;"><span class="sc-interp">Saturdays</span> · <span class="sc-interp">9 PM to 1 AM</span></div>
+          <div data-dc-tpl="100" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 17px; text-transform: uppercase; line-height: 1.1; margin-top: 4px;"><span class="sc-interp">Live DJ</span></div>
+          <div data-dc-tpl="101" style="font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.85); margin-top: 6px;"><span class="sc-interp">Live DJ in the bar area, 9 PM to 1 AM. College football on. 21 and over in the bar area after 9.</span></div>
+        </div>
+      </div>
+    
+      <div data-dc-tpl="93" class="scp7" style="flex: 0 0 auto; width: min(78vw, 250px); scroll-snap-align: start; display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); transition: transform 0.25s, border-color 0.25s;">
+        <div data-dc-tpl="94" style="position: relative; aspect-ratio: 4 / 5; background: url(/images/0158f8e0dc2e230a.jpg) center center / cover no-repeat rgb(28, 27, 24); box-shadow: rgba(10, 10, 9, 0.9) 0px -80px 70px -20px inset; display: flex; align-items: flex-end; padding: 14px;">
+        </div>
+        <div data-dc-tpl="98" style="padding: 14px 16px 16px;">
+          <div data-dc-tpl="99" style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 13px; color: rgb(185, 156, 102); letter-spacing: 0.12em; text-transform: uppercase;"><span class="sc-interp">Sundays</span> · <span class="sc-interp">6:30 to 9:30</span></div>
+          <div data-dc-tpl="100" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 17px; text-transform: uppercase; line-height: 1.1; margin-top: 4px;"><span class="sc-interp">Live Mariachi</span></div>
+          <div data-dc-tpl="101" style="font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.85); margin-top: 6px;"><span class="sc-interp">Live mariachi over dinner. Happy hour all day in the bar area. NFL on.</span></div>
+        </div>
+      </div>
+    
+      <div data-dc-tpl="93" class="scp7" style="flex: 0 0 auto; width: min(78vw, 250px); scroll-snap-align: start; display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); transition: transform 0.25s, border-color 0.25s;">
+        <div data-dc-tpl="94" style="position: relative; aspect-ratio: 4 / 5; background: url(/images/df43e9ee488c58d3.jpg) center center / cover no-repeat rgb(28, 27, 24); box-shadow: rgba(10, 10, 9, 0.9) 0px -80px 70px -20px inset; display: flex; align-items: flex-end; padding: 14px;">
+        </div>
+        <div data-dc-tpl="98" style="padding: 14px 16px 16px;">
+          <div data-dc-tpl="99" style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 13px; color: rgb(185, 156, 102); letter-spacing: 0.12em; text-transform: uppercase;"><span class="sc-interp">Mondays</span> · <span class="sc-interp">All night</span></div>
+          <div data-dc-tpl="100" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 17px; text-transform: uppercase; line-height: 1.1; margin-top: 4px;"><span class="sc-interp">2-for-1 Margaritas</span></div>
+          <div data-dc-tpl="101" style="font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.85); margin-top: 6px;"><span class="sc-interp">On the rocks, in lime, strawberry or mango. Any size: 14 oz, 18 oz, or the 54 oz Big Mami. Rim it with chamoy and tajín, salt, or sugar.</span></div>
+        </div>
+      </div>
+    
+      <div data-dc-tpl="93" class="scp7" style="flex: 0 0 auto; width: min(78vw, 250px); scroll-snap-align: start; display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); transition: transform 0.25s, border-color 0.25s;">
+        <div data-dc-tpl="94" style="position: relative; aspect-ratio: 4 / 5; background: url(/images/4e4e97cc03520928.jpg) center center / cover no-repeat rgb(28, 27, 24); box-shadow: rgba(10, 10, 9, 0.9) 0px -80px 70px -20px inset; display: flex; align-items: flex-end; padding: 14px;">
+        </div>
+        <div data-dc-tpl="98" style="padding: 14px 16px 16px;">
+          <div data-dc-tpl="99" style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 13px; color: rgb(185, 156, 102); letter-spacing: 0.12em; text-transform: uppercase;"><span class="sc-interp">Tuesdays</span> · <span class="sc-interp">8 to 10</span></div>
+          <div data-dc-tpl="100" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 17px; text-transform: uppercase; line-height: 1.1; margin-top: 4px;"><span class="sc-interp">Free Bingo</span></div>
+          <div data-dc-tpl="101" style="font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.85); margin-top: 6px;"><span class="sc-interp">Free bingo, 8 to 10, with prizes.</span></div>
+        </div>
+      </div>
+    
+      <div data-dc-tpl="93" class="scp7" style="flex: 0 0 auto; width: min(78vw, 250px); scroll-snap-align: start; display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); transition: transform 0.25s, border-color 0.25s;">
+        <div data-dc-tpl="94" style="position: relative; aspect-ratio: 4 / 5; background: url(/images/3468c5be0b3897f2.jpg) center center / cover no-repeat rgb(28, 27, 24); box-shadow: rgba(10, 10, 9, 0.9) 0px -80px 70px -20px inset; display: flex; align-items: flex-end; padding: 14px;">
+        </div>
+        <div data-dc-tpl="98" style="padding: 14px 16px 16px;">
+          <div data-dc-tpl="99" style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 13px; color: rgb(185, 156, 102); letter-spacing: 0.12em; text-transform: uppercase;"><span class="sc-interp">Wednesdays</span> · <span class="sc-interp">8 to 10</span></div>
+          <div data-dc-tpl="100" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 17px; text-transform: uppercase; line-height: 1.1; margin-top: 4px;"><span class="sc-interp">Free Lotería</span></div>
+          <div data-dc-tpl="101" style="font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.85); margin-top: 6px;"><span class="sc-interp">Free lotería, 8 to 10, with prizes.</span></div>
+        </div>
+      </div>
+    
+  </div></section>
+  
 
   <section data-screen-label="Proof strip" style="background: rgb(20, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(24px, 4vw, 44px) 0px;">
     <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;">
