@@ -1020,3 +1020,14 @@ card lists six things and Bites lists ten, so the two photograph strips ended at
 heights and the pair read as misaligned. The crop is back to centre and the list inside each
 card takes the spare height instead, which puts both strips on the card bottom. Measured
 identical at 1440, 1024 and 768; below 768 the cards stack and there is nothing to align.
+
+**The Sunday happy hour video, 15 September.** The clip arrived as a 6.1MB `.mov`: HEVC,
+which Chrome and Firefox will not decode, with two audio tracks, one plain AAC and one
+Apple spatial APAC. Transcoded to H.264 with the AAC track mapped explicitly, 5.5MB at CRF
+27, plus a poster frame. It is 720x1280, so the box is locked to 9:16 and capped at 330px
+wide rather than taking half the container, which at 1440 would have made it 995px tall.
+
+Playing it is a choice the visitor makes: controls on, no autoplay, sound on, and
+`preload="metadata"` so the 5.5MB is only fetched when somebody presses play. That is the
+opposite of the other clips on the site, which are muted autoplaying furniture, and it is
+what the client asked for. The original is in `design/source-video/`.
