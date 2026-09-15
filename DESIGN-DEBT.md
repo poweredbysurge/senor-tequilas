@@ -848,3 +848,37 @@ hamburger's visibility "a design decision to revisit" is the decision this recor
 `npm run verify` will flag the homepage and all 22 headers until it is regenerated. Nothing
 here is a fidelity regression; the baseline is simply behind the intent again, the same way
 entry 19 left it before it was regenerated.
+
+## 39. The entertainment add-on cards now carry photographs, and three are still pending
+
+Requested 14 September. The seven cards under "Entertainment Add-Ons" on `/private-parties`
+were text only. Each now opens with a 16:9 image slot, built the same way as the room cards
+in the same page: a `role="img"` div with the photograph as a cover background. Four have a
+real photograph. Three do not and draw `need-image.svg`, the same labelled placeholder the
+rest of the port uses, rather than borrowing a photograph of something else.
+
+| card | image |
+|---|---|
+| Sound and light, DJ booth | **pending** |
+| Hosts, DJs and party hosts | staff leading a sparkler celebration, already on `/karaoke` |
+| Sing, Karaoke | **pending** |
+| Live music, guitar or saxophone | **pending** |
+| Mariachi | the mariachi trio from `design/library/`, new to `public/` |
+| Dance floor, LED | a frame from `party-dancefloor.mp4` |
+| Show, Transformer performers | a frame from `party-dancefloor.mp4` |
+
+**What the client needs to shoot.** A DJ booth with the sound and lighting rig, a karaoke
+singer mid-song, and whoever plays the acoustic guitar or saxophone. Three photographs and
+the section is complete.
+
+**Two things to know about these.**
+
+There is a karaoke image on the site, `3468c5be0b3897f2.jpg`, but it is the Thursday flyer
+with the headline type burned into it. A 16:9 slice of a portrait poster cuts the type
+mid-word, so the card takes the placeholder instead. If the flyer is wanted here anyway it is
+a one-line change.
+
+The two dance floor frames come from client footage that is only 540x960, so at 540x304 they
+are a little under 2x on the widest card, 352px on a phone. They are sharp on a desktop card
+and soft on a retina phone. A still from the same night at camera resolution would replace
+them cleanly.
