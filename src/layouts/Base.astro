@@ -851,20 +851,25 @@ const jsonLd = {
           var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
           if (c && (c.saveData === true || c.effectiveType === '2g' || c.effectiveType === 'slow-2g')) return;
 
-          // WebM first so browsers that decode VP9 take the smaller file; the MP4 is the fallback
-          // and is untouched. Both are attached only after the window load event, so the clip
-          // competes with nothing the page needs to paint or become interactive.
+          // The MP4 is the only source, and it is attached as a src rather than as a <source>
+          // child. That is not a style choice, it is the whole bug:
+          //
+          // Inserting the first <source> into a media element whose networkState is
+          // NETWORK_EMPTY invokes the HTML resource selection algorithm there and then, before
+          // the second <source> exists. Traced in Chrome, the element had already reached
+          // networkState 3, NETWORK_NO_SOURCE, by the time the second source was appended. The
+          // explicit load() that followed then fired "emptied" and ran selection a second time.
+          // Two runs of the algorithm, so up to two fetches: unthrottled the first run is reset
+          // before it reaches the network, but throttled it has time to put bytes on the wire
+          // and they are not cancelled cleanly, which is how one page load downloaded two
+          // videos. With a single <source> it would still have fetched the same file twice.
+          //
+          // Setting .src once runs selection once. preload="none" means nothing is fetched
+          // until play() asks for it, so there is no load() call here at all.
           function attach() {
-            if (v.querySelector('source')) return;
-            [['/videos/home-hero.webm', 'video/webm'],
-             ['/videos/home-hero.mp4', 'video/mp4']].forEach(function (pair) {
-              var s = document.createElement('source');
-              s.setAttribute('src', pair[0]);
-              s.setAttribute('type', pair[1]);
-              v.appendChild(s);
-            });
-            v.load();
-            // If a browser still refuses the autoplay, the poster stays rather than a dead black box.
+            if (v.getAttribute('src')) return;
+            v.setAttribute('src', '/videos/home-hero.mp4');
+            // If a browser refuses the autoplay, the poster stays rather than a dead black box.
             var pr = v.play();
             if (pr && pr.catch) pr.catch(function () {});
           }
