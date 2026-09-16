@@ -1197,3 +1197,37 @@ WebM is listed first as asked, so Chrome, Firefox and Edge take the 13.11 MB fil
 takes the 11.04 MB MP4. **That is 2MB more on the browsers most Android visitors use.** It is
 one number to change: CRF 44 or 45 is where the WebM becomes smaller than the MP4 and the
 visible difference is still marginal. Left as specified pending that call.
+
+## 49. The 1.25MB stylesheet was 57 fonts inlined as base64, 15 September
+
+Lighthouse put `/_astro/Footer2.*.css` at 536.7KB transferred, 99% unused, blocking render for
+2,730ms. It was the Claude Design export's `@font-face` block: 57 rules, every one a
+`data:font/woff2;base64` URI, **1,204.7KB of the 1,252.8KB uncompressed file, 96.2%**. The
+stylesheet is now 31.2KB and the fonts are nine real files in `public/fonts/`, 166.1KB total,
+each separately cacheable and none of them render-blocking.
+
+**Two families were dead weight.** Roboto was 27 of the 57 faces and 563KB. Checked by reading
+the computed `font-family` of every element on all 22 pages: it is referenced nowhere, in no
+markup file and on no page. Dropped. Barlow 500 went with it, never being the nearest match
+while 400 and 600 both exist.
+
+**The triplicates were Cyrillic and Greek subsets with their `unicode-range` stripped by the
+export.** Each family and weight had two or three faces. Without a `unicode-range` the last
+declared one wins, and it is the only one of each group carrying Latin letters: the others have
+113 glyphs and no `a e i o u`, let alone `ñ é í á ú`. They could never have rendered this site.
+Only the winner of each group was extracted.
+
+**Nothing moved.** Text layout was fingerprinted before and after across all 22 pages: 2,720
+text elements compared, family, weight and rendered box, and 166 accented strings compared at
+sub-pixel width. Zero differences.
+
+**Special Elite is declared and never applied.** Its two references in `site.css` are both
+inside its own `@font-face` blocks; nothing else in the project asks for it. Kept as
+`public/fonts/special-elite-400.woff2` with its rule intact, at the client's direction: an
+unreferenced face is never fetched, so it costs nothing until someone wants it. Worth a look
+before launch: either something was meant to use it, or it can go.
+
+Three faces are preloaded, the ones carrying the top of the homepage, measured above the fold
+at 412x823: Archivo Black 400 for the H1, Barlow 400 for the body copy, Barlow Condensed 600
+for the gold eyebrow. 39.4KB. Everything else swaps in, including the announcement bar, which
+is a deliberate call rather than an oversight.

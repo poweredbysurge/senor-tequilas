@@ -77,6 +77,19 @@ old WordPress site and stays untouched until the client says otherwise. The DNS 
 the thing this rule stops. See also the `LAUNCH`/`LIVE` constants at the top of
 `src/layouts/Base.astro`, which keep canonical and share URLs on the review host until then.
 
+## Performance
+
+Mobile Lighthouse, against any deployed URL or a local `npm run preview`:
+
+```
+node .lh.mjs https://senor-tequilas.vercel.app/
+```
+
+It prints score, FCP, LCP, TBT, Speed Index, total bytes and the heaviest requests, throttled
+to Lighthouse's mobile profile. `lighthouse` is a devDependency; the runner is `.lh.mjs` at the
+repo root. Re-run it after anything that touches images, fonts or the hero video, and record
+the numbers in DESIGN-DEBT.md alongside the change.
+
 ## Links
 
 - Order Online: `https://order.toasttab.com/online/senortequilastogo`

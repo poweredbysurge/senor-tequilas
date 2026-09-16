@@ -80,6 +80,12 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absolute(shareCard)} />
+    <!-- The three faces that carry the top of the homepage: the H1, the body copy and the
+         gold eyebrow. Everything else swaps in, which font-display: swap makes cheap.
+         See DESIGN-DEBT.md entry 49. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/archivo-black-400.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/barlow-400.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/barlow-condensed-600.woff2" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
