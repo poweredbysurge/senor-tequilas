@@ -1337,3 +1337,17 @@ Five more heroes are under-resolved between 0.57x and 0.79x: `/birria-tacos`, `/
 `/karaoke`, `/tequila-bar` and `/late-night`. They are the design's own assets and cannot be
 sharpened by resampling; replacing them needs the original captures. Soft on a retina phone,
 correct everywhere else.
+
+## 54. The gift card image was squashed by entry 52, fixed 16 September
+
+Entry 52 gave the homepage gift card image its intrinsic `width="952" height="880"`. Its style
+sets `width: min(420px, 100%)` and no height, so the height attribute was applied literally:
+a 952x880 photograph drawn into a 422x882 box with `object-fit: fill`, squashed to under half
+its width. The same trap as the logo in entry 52, from the other axis. `height: auto` restores
+the derivation while the attributes still reserve the box.
+
+The earlier check missed it because the image is lazy and had not decoded when it was
+measured. The sweep that confirmed the fix scrolls every page first, then compares every
+decoded `<img>` box against its natural ratio: all 22 pages, 1440 and 390, no distortion.
+The "gift cards page" is the homepage's `#gift` section, which the menu panel links to, so the
+one fix covers both.
