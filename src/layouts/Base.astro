@@ -80,6 +80,10 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absolute(shareCard)} />
+    <!-- The homepage LCP element: the photograph behind the hero copy. It is in the markup
+         already, so this is about priority rather than discovery, the browser otherwise finding
+         it behind the stylesheet and giving it a low priority. Homepage only. -->
+    {route === '/' && <link rel="preload" as="image" fetchpriority="high" href="/images/d8219db4b8a2f6cf.jpg" />}
     <!-- The three faces that carry the top of the homepage: the H1, the body copy and the
          gold eyebrow. Everything else swaps in, which font-display: swap makes cheap.
          See DESIGN-DEBT.md entry 49. -->

@@ -1231,3 +1231,19 @@ Three faces are preloaded, the ones carrying the top of the homepage, measured a
 at 412x823: Archivo Black 400 for the H1, Barlow 400 for the body copy, Barlow Condensed 600
 for the gold eyebrow. 39.4KB. Everything else swaps in, including the announcement bar, which
 is a deliberate call rather than an oversight.
+
+## 50. The homepage LCP image, 15 September
+
+`/images/d8219db4b8a2f6cf.jpg` is the LCP element on the homepage. It carried `loading="lazy"`
+and no `fetchpriority`, so the browser deprioritised the one image the score is measured on.
+Both `<img>` tags using it, the backdrop behind the hero copy and the still in the right panel,
+are eager and `fetchpriority="high"` now, and the homepage head carries a matching
+`<link rel="preload" as="image" fetchpriority="high">`. Homepage only, keyed on `route`.
+
+**One part of the brief did not apply.** The image was described as script-inserted and
+therefore undiscoverable in the initial HTML. It is not: both tags are in the server-rendered
+markup and always were, confirmed in `dist/index.html`. What the script replaces is the right
+panel's `<img>`, swapped for the video after the window load event, and that is the tag the
+description was probably thinking of. The LCP element is the other one, the backdrop at
+`data-dc-tpl="43"`, measured with a `largest-contentful-paint` PerformanceObserver on the
+deployed page. So this was a priority problem, not a discovery one, and no markup was moved.
