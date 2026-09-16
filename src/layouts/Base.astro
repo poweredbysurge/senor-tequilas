@@ -838,16 +838,39 @@ const jsonLd = {
           v.setAttribute('webkit-playsinline', '');
           v.setAttribute('autoplay', '');
           v.setAttribute('loop', '');
-          v.setAttribute('preload', 'auto');
+          // No source and preload none, so nothing is fetched while the page is painting. The
+          // poster is the hero until the sources are attached below.
+          v.setAttribute('preload', 'none');
           v.setAttribute('poster', '/videos/home-hero.jpg');
           v.setAttribute('aria-label', 'The dining room and bar at Senor Tequila\'s during service');
-          v.setAttribute('src', '/videos/home-hero.mp4');
 
           img.parentNode.replaceChild(v, img);
 
-          // If a browser still refuses the autoplay, the poster stays rather than a dead black box.
-          var p = v.play();
-          if (p && p.catch) p.catch(function () {});
+          // A metered or very slow connection never gets the clip at all. The poster is a still of
+          // the same footage, so the hero still reads; it simply does not move.
+          var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          if (c && (c.saveData === true || c.effectiveType === '2g' || c.effectiveType === 'slow-2g')) return;
+
+          // WebM first so browsers that decode VP9 take the smaller file; the MP4 is the fallback
+          // and is untouched. Both are attached only after the window load event, so the clip
+          // competes with nothing the page needs to paint or become interactive.
+          function attach() {
+            if (v.querySelector('source')) return;
+            [['/videos/home-hero.webm', 'video/webm'],
+             ['/videos/home-hero.mp4', 'video/mp4']].forEach(function (pair) {
+              var s = document.createElement('source');
+              s.setAttribute('src', pair[0]);
+              s.setAttribute('type', pair[1]);
+              v.appendChild(s);
+            });
+            v.load();
+            // If a browser still refuses the autoplay, the poster stays rather than a dead black box.
+            var pr = v.play();
+            if (pr && pr.catch) pr.catch(function () {});
+          }
+
+          if (document.readyState === 'complete') attach();
+          else window.addEventListener('load', attach, { once: true });
         }
 
         /* ---- 19. mobile: centred text and full width buttons ----------------------------------

@@ -1163,3 +1163,37 @@ checked.
 content on most pages at that width, independent of the header, so 320 is not a supported
 width rather than a header bug. It was already recorded as knowingly left before any of
 today's work.
+
+## 48. The homepage hero video is deferred, and gains a VP9 sibling, 15 September
+
+Two changes about loading, none about the clip: same 30 seconds, same 1080x1350, same framing.
+
+**The fetch waits for the window load event.** `heroVideo()` now builds the element with the
+poster and no source at all, and `preload="none"`, so the page paints and becomes interactive
+on `/videos/home-hero.jpg` alone. The sources are appended after `load` fires, then `load()`
+and `play()`. The iOS ordering from the original is untouched and still matters: `muted` and
+`playsinline` are set before anything can begin loading, because Safari decides whether an
+inline video may autoplay at the moment loading starts.
+
+A metered or very slow connection never gets the clip. If `navigator.connection.saveData` is
+true, or `effectiveType` is `2g` or `slow-2g`, no source is attached and the poster stays. The
+poster is a still of the same footage, so the hero still reads, it simply does not move.
+
+**The WebM is bigger than the MP4, which is worth knowing before it stays.**
+
+| encode | size | mean SSIM vs the MP4 |
+|---|---|---|
+| `home-hero.mp4`, unchanged | 11.04 MB | reference |
+| `home-hero.webm`, VP9 CRF 33 two-pass, as specified | **13.11 MB** | 0.9437 |
+| VP9 CRF 40, for comparison only | 9.25 MB | 0.9370 |
+| VP9 CRF 45, for comparison only | 6.59 MB | 0.9311 |
+
+VP9 at CRF 33 spends 19% more bytes than the H.264 file it is meant to match and does not
+reach parity with it. The footage is the reason: a dark, noisy, LED-lit party scene, where the
+grain dominates the metric and VP9 cannot reproduce H.264's particular artifacts cheaply. The
+SSIM curve is almost flat across the range, 0.013 from CRF 33 to CRF 45, while the file halves.
+
+WebM is listed first as asked, so Chrome, Firefox and Edge take the 13.11 MB file and Safari
+takes the 11.04 MB MP4. **That is 2MB more on the browsers most Android visitors use.** It is
+one number to change: CRF 44 or 45 is where the WebM becomes smaller than the MP4 and the
+visible difference is still marginal. Left as specified pending that call.
