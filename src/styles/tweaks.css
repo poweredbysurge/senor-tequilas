@@ -216,7 +216,7 @@ body[data-route="/"] a[data-dc-tpl="111"] {
      eyebrow and nothing more. */
   background-image:
     linear-gradient(to top, rgba(10, 9, 8, 0.92) 0%, rgba(10, 9, 8, 0.55) 42%, rgba(10, 9, 8, 0.12) 100%),
-    url(/images/site/dining-room-night.jpg) !important;
+    url(/images/site/dining-room-night.webp) !important;
   background-size: cover !important;
   background-position: center !important;
   background-color: rgb(28, 27, 24) !important;
@@ -624,25 +624,25 @@ body[data-route] header [data-cta] {
    The flyers are 4:5 and the card's art slot is 0.82, so cover crops about two percent off
    the long edge. That is within the flyers' own margin and no type is lost. */
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day="Mondays"] [data-dc-tpl="94"] {
-  background-image: url(/images/site/day-monday.jpg) !important;
+  background-image: url(/images/site/day-monday.webp) !important;
 }
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day="Tuesdays"] [data-dc-tpl="94"] {
-  background-image: url(/images/site/day-tuesday.jpg) !important;
+  background-image: url(/images/site/day-tuesday.webp) !important;
 }
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day="Wednesdays"] [data-dc-tpl="94"] {
-  background-image: url(/images/site/day-wednesday.jpg) !important;
+  background-image: url(/images/site/day-wednesday.webp) !important;
 }
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day="Thursdays"] [data-dc-tpl="94"] {
-  background-image: url(/images/site/day-thursday.jpg) !important;
+  background-image: url(/images/site/day-thursday.webp) !important;
 }
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day="Sundays"] [data-dc-tpl="94"] {
-  background-image: url(/images/site/day-sunday.jpg) !important;
+  background-image: url(/images/site/day-sunday.webp) !important;
 }
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day="Fridays"] [data-dc-tpl="94"] {
-  background-image: url(/images/site/day-friday.jpg) !important;
+  background-image: url(/images/site/day-friday.webp) !important;
 }
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day="Saturdays"] [data-dc-tpl="94"] {
-  background-image: url(/images/site/day-saturday.jpg) !important;
+  background-image: url(/images/site/day-saturday.webp) !important;
 }
 :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-day] [data-dc-tpl="94"] {
   background-size: cover !important;

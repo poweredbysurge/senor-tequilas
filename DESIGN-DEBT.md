@@ -1247,3 +1247,27 @@ panel's `<img>`, swapped for the video after the window load event, and that is 
 description was probably thinking of. The LCP element is the other one, the backdrop at
 `data-dc-tpl="43"`, measured with a `largest-contentful-paint` PerformanceObserver on the
 deployed page. So this was a priority problem, not a discovery one, and no markup was moved.
+
+## 51. The photographs saved as PNG, 15 September
+
+Four PNGs in `public/images/` were opaque photographs, checked for a real alpha channel before
+anything was touched: every one is mode RGB with no alpha channel at all, so nothing was lost
+converting them.
+
+| file | before | after | saved |
+|---|---|---|---|
+| `ecf6382a259b5884` lucha collage, 16 refs | 2,247KB | 208KB | 91% |
+| `86475be0134bfc90` lucha collage, 38 refs | 2,217KB | 89KB | 96% |
+| `9cf29efa1cbf0c3e` happy hour hero, 2 refs | 2,517KB | 322KB | 87% |
+| `dining-room-night` | 830KB | 371KB | 55% |
+| `happy-hour-drinks` | 446KB | 179KB | 60% |
+| seven `day-*` flyers | 1,756KB | 1,137KB | 35% |
+| **total** | **10,012KB** | **2,308KB** | **77%** |
+
+WebP at quality 82, same dimensions, originals deleted and 76 references rewritten across 23
+files. Every page was loaded afterwards and checked for 404s and broken images: none.
+`loading="lazy"` is untouched, 18 of the homepage's 21 images still carry it, the exceptions
+being the two hero tags from entry 50 and the logo.
+
+**`black bg.png` was 2,217KB with zero references.** It shipped in every deploy and no page
+ever asked for it. Parked in `design/library/originals/`.
