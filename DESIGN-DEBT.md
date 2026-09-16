@@ -1271,3 +1271,33 @@ being the two hero tags from entry 50 and the logo.
 
 **`black bg.png` was 2,217KB with zero references.** It shipped in every deploy and no page
 ever asked for it. Parked in `design/library/originals/`.
+
+## 52. The logo is self-hosted, and the last hotlink is gone, 15 September
+
+The logo was fetched from `senortequilas.com/wp-content/uploads/...` on every page load, twice
+per page, 44 requests across the build. A 2095x484 PNG at 152.5KB, displayed at 205x47.
+
+That was a launch blocker before it was a performance one: the domain is being cut over to this
+site, and the moment it is, the WordPress upload path stops resolving and every header on the
+site loses its logo.
+
+Now `public/images/site/logo.webp`, 410x94 at 20.3KB, with `width` and `height` attributes so
+the box is reserved before it loads. The source is a palette PNG with real transparency, alpha
+range 0 to 255, so WebP was chosen over JPEG to keep it.
+
+**The attributes needed `width: auto` alongside them.** The design sizes the logo with
+`height: 34px` and no width, letting the intrinsic ratio do the rest. Adding `width="410"`
+gave the browser an explicit width that the CSS never overrode, and the logo rendered 410px
+wide and broke the header row on every page. `width: auto` in the inline style restores the
+derivation while the attributes still declare the ratio. Measured 148x34 at 1440, 118x27 on a
+phone, 131x30 in the menu panel.
+
+Also: the gift card image carries its intrinsic 952x880, and the `fonts.googleapis.com` and
+`fonts.gstatic.com` preconnects are gone, the fonts having been local since entry 49.
+
+**One `senortequilas.com` reference is deliberately left.** The "Buy a Gift Card" button on the
+homepage points at `https://senortequilas.com`, the old WordPress site. After the cutover it
+will point at this site's own homepage, from a button inside the gift card section, which is a
+link to itself. The right destination is not known here: the brief lists `/gift-cards/` as an
+old URL and leaves open whether any `/shop/*` path is tied to a live gift card integration.
+**This needs an answer before the 28th.** Guessing a destination would risk a revenue path.
