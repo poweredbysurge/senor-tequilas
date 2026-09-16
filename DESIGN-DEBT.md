@@ -1301,3 +1301,39 @@ will point at this site's own homepage, from a button inside the gift card secti
 link to itself. The right destination is not known here: the brief lists `/gift-cards/` as an
 old URL and leaves open whether any `/shop/*` path is tied to a live gift card integration.
 **This needs an answer before the 28th.** Guessing a destination would risk a revenue path.
+
+## 53. The LCP element of every page, 15 September
+
+Entry 50 gave the homepage's LCP image priority. The same treatment is applied site-wide, with
+the element on every page confirmed by a `largest-contentful-paint` PerformanceObserver on the
+deployed page under mobile throttling rather than assumed to be the hero. That assumption was
+already wrong once, on the homepage, where the LCP turned out to be the backdrop behind the
+copy rather than the panel photograph.
+
+It was wrong again in eight more places. The twenty-two pages fall into three groups:
+
+- **13 pages with an `<img>` LCP.** All were `loading="lazy"` with no `fetchpriority`. Now
+  eager and `fetchpriority="high"`, matched inside the hero section so the same photograph
+  used further down the page keeps its lazy loading.
+- **5 pages with a CSS background LCP:** `/menu`, `/takeout-delivery`, `/happy-hour`,
+  `/taco-tuesday`, `/game-day`. There is no tag to mark, so the preload is the only lever.
+- **3 pages with a text LCP:** `/our-story`, `/mexican-restaurant-gaithersburg-md`,
+  `/contact`. Nothing to preload, and nothing was added.
+
+The preload is a route-keyed map in `Base.astro` rather than 19 hand-written tags, so a page
+cannot quietly acquire the wrong one.
+
+**The sizing question, answered.** The two heroes asked about have opposite problems:
+
+- `/game-day`, `game-day-hero.jpg`, was genuinely **oversized 1.7x**: a 1200x1600 portrait in
+  a 412x379 landscape box, which needs 721x663 at a phone's 1.75 DPR. Resized to 900x1200,
+  277KB to 210KB, keeping margin at every phone DPR.
+- `/private-parties`, `24e322da4fd1060e.jpg`, is the opposite: **under-resolved at 0.57x**,
+  860x573 where the box wants 721x1008. It is 95KB on disk, not the 237KB reported earlier;
+  that number was the LCP entry's `size` field, which is the element's area in CSS pixels,
+  412 x 576 = 237,312, not bytes. Correcting that here.
+
+Five more heroes are under-resolved between 0.57x and 0.79x: `/birria-tacos`, `/margaritas`,
+`/karaoke`, `/tequila-bar` and `/late-night`. They are the design's own assets and cannot be
+sharpened by resampling; replacing them needs the original captures. Soft on a retina phone,
+correct everywhere else.

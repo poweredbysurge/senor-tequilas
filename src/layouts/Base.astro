@@ -20,6 +20,30 @@ const site = LIVE;
 const absolute = (u) => (u.startsWith('http') ? rebase(u) : site + u);
 const pageUrl = rebase(canonical);
 
+// The LCP element per route. See the preload in the head below.
+const LCP_IMAGE = {
+  '/': '/images/d8219db4b8a2f6cf.jpg',
+  '/menu': '/images/86475be0134bfc90.webp',
+  '/takeout-delivery': '/images/86475be0134bfc90.webp',
+  '/birria-tacos': '/images/4e4e97cc03520928.jpg',
+  '/quesabirria-tacos': '/images/dishes/quesabirrias-hero.jpg',
+  '/street-tacos': '/images/dishes/tacos-de-arrachera-hero.jpg',
+  '/fajitas-molcajetes': '/images/dishes/triple-a-molcajete-hero.jpg',
+  '/la-dulceria': '/images/dishes/churros-hero.jpg',
+  '/private-parties': '/images/24e322da4fd1060e.jpg',
+  '/private-parties/quinceaneras-celebrations': '/images/site/celebration-cake.jpg',
+  '/private-parties/weddings-receptions': '/images/site/weddings-hero.jpg',
+  '/catering': '/images/site/catering-hero.jpg',
+  '/margaritas': '/images/20d856a9f66a9c4c.jpg',
+  '/tequila-bar': '/images/0fcbe6ef39392a93.jpg',
+  '/happy-hour': '/images/9cf29efa1cbf0c3e.webp',
+  '/late-night': '/images/24e322da4fd1060e.jpg',
+  '/karaoke': '/images/3468c5be0b3897f2.jpg',
+  '/taco-tuesday': '/images/eca8597506381a36.jpg',
+  '/game-day': '/images/site/game-day-hero.jpg',
+};
+const lcpImage = LCP_IMAGE[route];
+
 // One branded share card for every link on the site, supplied 11 September. Each page keeps
 // its own ogImage for the JSON-LD image, where a photograph of the thing itself is the right
 // answer, but every og:image and twitter:image is the card, so a link to any page previews
@@ -80,10 +104,13 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absolute(shareCard)} />
-    <!-- The homepage LCP element: the photograph behind the hero copy. It is in the markup
-         already, so this is about priority rather than discovery, the browser otherwise finding
-         it behind the stylesheet and giving it a low priority. Homepage only. -->
-    {route === '/' && <link rel="preload" as="image" fetchpriority="high" href="/images/d8219db4b8a2f6cf.jpg" />}
+    <!-- The LCP element of each page, every one confirmed with a largest-contentful-paint
+         PerformanceObserver on the deployed page rather than assumed to be the hero. Five of
+         them are CSS backgrounds, which a preload is the only lever on; the rest are <img>
+         tags that also carry fetchpriority. Three pages are missing on purpose: /our-story,
+         /mexican-restaurant-gaithersburg-md and /contact have a text LCP and nothing to
+         preload. See DESIGN-DEBT.md entry 53. -->
+    {lcpImage && <link rel="preload" as="image" fetchpriority="high" href={lcpImage} />}
     <!-- The three faces that carry the top of the homepage: the H1, the body copy and the
          gold eyebrow. Everything else swaps in, which font-display: swap makes cheap.
          See DESIGN-DEBT.md entry 49. -->
