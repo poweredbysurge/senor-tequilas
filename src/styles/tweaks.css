@@ -975,70 +975,31 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
   }
 }
 
-/* ---- 40. Order and Reserve are pinned to the bottom of a phone ------------------------------
-   Requested 15 September. Both calls to action stay on screen for the whole scroll rather
-   than living at the top and the bottom of a long page. The shadow above the bar is doing a
-   job: it is what tells you the cards behind it keep going.
+/* ---- 41. the header row fits a phone ------------------------------------------------------
+   The row carries four things on a phone: the logo, Reserve, the page's green pill and the
+   menu button. On the four pages whose green pill reads "Book a Tour" rather than "Order",
+   Header6 and Header7, that came to 427px in a 390px screen and the document scrolled
+   sideways.
 
-   The bar is drawn by the layout, so it is on every page. A spacer box after the footer
-   gives it clearance: padding on the body does not work here, because the extraction reset
-   pins html and body to height 100% and the real content overflows that box, so the padding
-   sits a screen from the top rather than after the footer. Anything the page scrolls to by
-   anchor gets the same clearance. */
-#st-mobile-cta, #st-cta-spacer { display: none; }
-@media (max-width: 767px) { #st-cta-spacer { display: block; } }
+   Nothing is dropped. The row is scaled instead, which is what the design already does to the
+   logo and the row padding below 390, taken one step further and applied from 768 down:
+
+     logo   34px tall to 27, which is 30px of width
+     pills  16px of side padding to 10, and 13px type to 12
+     gap    8px to 6
+
+   Measured on the widest header, the "Book a Tour" one: 365px at 390 and 328px at 360, both
+   inside the screen with room to spare. The "Order" headers land at 327px and 293px. 320 is
+   still short by a little and is still knowingly left. The menu button keeps its 44px, being
+   a touch target rather than a decoration. */
 @media (max-width: 767px) {
-  #st-mobile-cta {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 90;
-    display: flex;
-    gap: 10px;
-    padding: 10px clamp(12px, 4vw, 18px) calc(10px + env(safe-area-inset-bottom, 0px));
-    background: rgba(13, 13, 11, 0.96);
-    backdrop-filter: blur(14px);
-    border-top: 1px solid rgba(185, 156, 102, 0.28);
-    box-shadow: 0 -18px 34px rgba(0, 0, 0, 0.75), 0 -4px 10px rgba(0, 0, 0, 0.6);
+  header > div > a:first-child img { height: 27px !important; }
+  header > div > div { gap: 6px !important; }
+  header a[class^="scp"] {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    font-size: 12px !important;
   }
-  #st-mobile-cta a {
-    flex: 1 1 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 52px;
-    box-sizing: border-box;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
-  #st-mobile-cta a[data-cta="order"] {
-    background: rgb(56, 176, 73);
-    color: rgb(12, 18, 13);
-    box-shadow: rgba(56, 176, 73, 0.35) 0 0 24px;
-  }
-  #st-mobile-cta a[data-cta="reserve"] {
-    border: 1.5px solid rgba(185, 156, 102, 0.75);
-    color: rgb(234, 226, 214);
-    font-weight: 700;
-    background: rgba(18, 18, 16, 0.6);
-  }
-  #st-cta-spacer { height: var(--st-cta-height, 84px); }
-  body[data-route] [id] { scroll-margin-bottom: var(--st-cta-height, 84px); }
-  /* The panel is fixed and full screen, so the bar must not float over it. */
-  body:has(#mobile-menu:not([hidden])) #st-mobile-cta { display: none; }
-}
-
-/* ---- 41. the header row fits a 360 screen --------------------------------------------------
-   Reserve is on every header now, see entry 35, which put 9px of overflow back into a 360
-   viewport. The two pills lose four pixels of side padding each below 390, which is the same
-   proportional trim the logo and the row padding already take there. 320 still overflows and
-   is still knowingly left, as recorded in entry 33 of this file's older numbering. */
-@media (max-width: 389px) {
-  header a[class^="scp"] { padding-left: 10px !important; padding-right: 10px !important; }
 }
 
 /* ---- 42. /happy-hour drops its duplicate week on a phone -----------------------------------
@@ -1097,22 +1058,6 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
   body[data-route="/happy-hour"] section[data-screen-label="Deals"] [data-dc-tpl="784"] * {
     text-align: left !important;
   }
-}
-
-/* ---- 45. the header row fits a phone -------------------------------------------------------
-   Entry 35 put Reserve back on every header at phone widths. On the four pages whose green
-   pill reads "Book a Tour" rather than "Order", Header6 and Header7, that tipped the row over:
-   logo 147 + Reserve 84 + Book a Tour 110 + the button 44, plus gaps and padding, ran to 427px
-   in a 390px screen and the whole document scrolled sideways.
-
-   The green pill comes off the header on a phone, not Reserve. It is the one of the two that
-   is already permanently on screen: entry 40 pins Order and Reserve to the bottom of every
-   page, so the header pill was the duplicate. "Book a Tour" is not lost with it, it appears
-   twice more in the body of each of those pages.
-
-   That leaves logo, Reserve and the menu button: 322px at 390 and 320px at 360. */
-@media (max-width: 767px) {
-  header a.scp2 { display: none !important; }
 }
 
 /* ---- 46. the menu panel's two buttons stay on screen ---------------------------------------

@@ -1064,7 +1064,7 @@ Client-requested, phone only unless stated. tweaks.css entries 35 to 41.
 | 2 | the twelve menu section headings centre |
 | 3 | the entertainment add-ons become a rail showing one and a half cards |
 | 4 | every hero darkens behind its text |
-| 5 | Order and Reserve are pinned to the bottom of the screen with a shadow above them |
+| 5 | ~~Order and Reserve pinned to the bottom of the screen~~ **reverted 15 September, see entry 47** |
 | 6 | the menu panel carries every destination the header nav does |
 | 7 | Reserve is in the header on a phone, on every page, not just the homepage |
 | 8 | **desktop:** Gift Cards joins the nav, left of Contact |
@@ -1134,3 +1134,32 @@ rule carrying two `:not()` arguments and needed marking; the delivery pills were
 `width: 100%` and still overflowed because the design leaves them `content-box`, so 32px of
 padding and 2px of border sat outside the 100%; and `min-height: 0` is what lets the menu
 panel's card grid shrink instead of pushing the buttons off the bottom.
+
+## 47. The page-level call-to-action bar is reverted, 15 September
+
+Entry 45 item 5 pinned Order and Reserve to the bottom of every page on a phone. The client
+clarified that the pinning was only ever meant for the menu panel, which entry 46 did
+separately and which stays. The bar, its spacer, its measuring function and the rules that
+positioned it are all removed; nothing of it remains in the layout or the stylesheet.
+
+**The header keeps both pills, and the row is scaled to hold them.** Entry 45 had removed the
+green pill on a phone to stop the row overflowing, on the grounds that the bar carried Order
+anyway. With the bar gone that reasoning goes with it, so the pill is back and the row is
+scaled instead, the way the design already scales the logo and the row padding below 390:
+
+| | desktop | phone |
+|---|---|---|
+| logo | 34px | 27px |
+| pill side padding | 14 to 16px | 10px |
+| pill type | 13px | 12px |
+| row gap | 8px | 6px |
+
+Measured on the widest header, the "Book a Tour" one on Header6 and Header7: 374px at 390 and
+328px at 360. Nothing is dropped and nothing scrolls sideways at 360, 390 or 430 on any page
+checked.
+
+**320 is worse than it was and is still knowingly left.** The four pages whose pill reads
+"Book a Tour" or "Get a Quote" overflow their header by about 34px there. So does other
+content on most pages at that width, independent of the header, so 320 is not a supported
+width rather than a header bug. It was already recorded as knowingly left before any of
+today's work.

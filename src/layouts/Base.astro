@@ -86,17 +86,7 @@ const jsonLd = {
   </head>
   <body data-route={route}>
     <slot />
-    <!-- Clearance for the fixed bar below. A real box in flow, not padding on the body:
-         the extraction reset pins html and body to height 100%, so padding on the body sits
-         inside that 100% and never reaches past the footer. -->
-    <div id="st-cta-spacer" aria-hidden="true"></div>
     <MobileMenu />
-    <!-- The phone call-to-action bar. Fixed to the bottom below 768, invisible above it.
-         See tweaks.css entry 40. -->
-    <div id="st-mobile-cta">
-      <a data-cta="order" href={business.orderUrl} target="_blank" rel="noopener">Order</a>
-      <a data-cta="reserve" href={business.reserveUrl} target="_blank" rel="noopener">Reserve</a>
-    </div>
     <script is:inline>
       /* port: mobile menu toggle. See DESIGN-DEBT.md entry 6.
 
@@ -1135,23 +1125,6 @@ const jsonLd = {
           if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
         }
 
-        /* ---- 21. the phone call-to-action bar ---------------------------------------------
-           The bar is fixed, so the body needs padding the height of it or the footer sits
-           underneath. The height is not a constant: it grows by the safe area inset on a
-           notched phone. Measure it and publish it; tweaks.css entry 40 falls back to 84px if
-           this never runs. */
-        function mobileCtaBar() {
-          var bar = document.getElementById('st-mobile-cta');
-          if (!bar) return;
-          function measure() {
-            var h = getComputedStyle(bar).display === 'none' ? 0 : bar.offsetHeight;
-            document.documentElement.style.setProperty('--st-cta-height', h + 'px');
-          }
-          measure();
-          window.addEventListener('resize', measure);
-          if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-        }
-
         function start() {
           // Not gated on the homepage any more: the same carousel is on /taco-tuesday as of
           // 15 September, and the function already returns early when the rail is absent.
@@ -1171,7 +1144,6 @@ const jsonLd = {
           try { introVideo(); } catch (e) {}
           try { heroVideo(); } catch (e) {}
           try { heroFold(); } catch (e) {}
-          try { mobileCtaBar(); } catch (e) {}
           try { mobileCtas(); } catch (e) {}
           try { eyebrowRules(); } catch (e) {}
           try { dropChefPlaceholder(); } catch (e) {}
