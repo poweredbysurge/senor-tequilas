@@ -118,6 +118,31 @@ const jsonLd = {
     <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/barlow-400.woff2" />
     <link rel="preload" as="font" type="font/woff2" crossorigin href="/fonts/barlow-condensed-600.woff2" />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <!-- GA4. Out of the critical path: this inline block is a few hundred bytes and does no
+         network work; gtag.js itself is injected async only after the window load event, so it
+         can never block rendering or compete with the LCP image. Hits are sent only from the
+         production hostnames in business.json, so previews and localhost stay out of the
+         property, and the tag starts working by itself once the domain cuts over. The one
+         override is ?ga_debug=1, which fires anywhere and flags the hits for DebugView.
+         See DESIGN-DEBT.md entry 55. -->
+    <script is:inline define:vars={{ ga: business.ga4 }}>
+      (function () {
+        var debug = new RegExp('[?&]' + ga.debugParam + '=1(&|$)').test(location.search);
+        if (!debug && ga.hosts.indexOf(location.hostname) === -1) return;
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', ga.measurementId, debug ? { debug_mode: true } : {});
+        function load() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(ga.measurementId);
+          document.head.appendChild(s);
+        }
+        if (document.readyState === 'complete') load();
+        else window.addEventListener('load', load, { once: true });
+      })();
+    </script>
   </head>
   <body data-route={route}>
     <slot />

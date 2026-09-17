@@ -54,5 +54,15 @@
     "https://www.google.com/maps/place/?q=place_id:ChIJfQWUP2wstokR0hf-aq2yO5Y"
   ],
   "orderUrl": "https://order.toasttab.com/online/senortequilastogo",
-  "reserveUrl": "https://tables.toasttab.com/restaurants/d94fa749-fbd5-4a66-90b6-d7755b8c3af3/findTime"
+  "reserveUrl": "https://tables.toasttab.com/restaurants/d94fa749-fbd5-4a66-90b6-d7755b8c3af3/findTime",
+  "siteUrl": "https://senortequilas.com",
+  "ga4": {
+    "measurementId": "G-4GXG4DRXQF",
+    "propertyId": "313401413",
+    "hosts": [
+      "senortequilas.com",
+      "www.senortequilas.com"
+    ],
+    "debugParam": "ga_debug"
+  }
 }

@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /
-
-# WordPress cruft that must stay out of the index
-Disallow: /author/
-Disallow: /feed/
-Disallow: /comments/feed/
-
-Sitemap: https://senor-tequilas.vercel.app/sitemap.xml

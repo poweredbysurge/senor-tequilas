@@ -1351,3 +1351,37 @@ measured. The sweep that confirmed the fix scrolls every page first, then compar
 decoded `<img>` box against its natural ratio: all 22 pages, 1440 and 390, no distortion.
 The "gift cards page" is the homepage's `#gift` section, which the menu panel links to, so the
 one fix covers both.
+
+## 55. GA4, and a generated sitemap and robots.txt, 16 September
+
+**GA4 is installed**, measurement ID `G-4GXG4DRXQF`, property 313401413, both kept in
+`src/data/business.json` under `ga4` with the hostnames it may fire from. `Base.astro` carries
+the tag, so every page has it.
+
+It is kept out of the critical path on purpose. The inline block in the head is a few hundred
+bytes and makes no request. It queues the `config` call and injects `gtag.js` with `async` only
+after the window `load` event, so the script can neither block rendering nor compete with the
+LCP image.
+
+It fires only on `senortequilas.com` and `www.senortequilas.com`. The Vercel preview and
+localhost send nothing, which keeps our own testing out of the property, and on the day the
+domain cuts over the tag starts sending hits by itself, with no deploy. The one override is
+`?ga_debug=1`, which fires on any host and sets `debug_mode`, so the hits show in GA4's
+DebugView. Those debug hits are real hits against the property, so use the flag for
+verification, not for browsing.
+
+**The sitemap and robots.txt are generated at build time now.** Both were static files in
+`public/`, last written by the retired assemble script (entry 36), with every URL on the Vercel
+host. `src/pages/sitemap.xml.js` lists every page under `src/pages` on the production domain,
+so adding or removing a page can no longer leave the sitemap out of date. `src/pages/robots.txt.js`
+gives an absolute `Sitemap:` line on the same domain. Both read `siteUrl` from business.json.
+The old sitemap's `lastmod` dates were dropped: every page carried the same hand-set date,
+which tells a crawler nothing.
+
+`npm run assemble` still writes `public/sitemap.xml` and `public/robots.txt`. If it is ever run
+again those would collide with the generated routes; another reason, beyond entry 36, not to
+run it.
+
+**Still a launch-day step:** canonical and share URLs follow `LIVE` at the top of `Base.astro`,
+which still points at the Vercel host. Until it is set to `LAUNCH`, the canonicals disagree with
+the sitemap. GA4 needs no change on the 28th; the canonicals do.
