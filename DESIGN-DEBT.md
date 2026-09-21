@@ -2007,3 +2007,27 @@ the artwork rather than an element, so there is nothing to measure at runtime: r
 is 18px of the media block's 306, and the badge sat at `top: 12px` and crossed it. At 26px
 it clears with 8px to spare on every day's card. 10px to 12px with the padding grown to
 match, so 64x22 becomes 80x28.
+
+## 72. La Cocina and the Instagram heading, 21 September
+
+**La Cocina.** Heading is now "Mexican family...Mexican kitchen.", carried through from the
+request as written, ellipsis included.
+
+The description leads with the client's own language, which is the part that was asked to
+survive intact: "There is nothing more authentically Mexican than this. Homemade corn and
+flour tortillas, homemade salsas, and fresh, hot, chopped meats daily. This is the only
+truly authentic Mexican restaurant in Montgomery County." The previous copy merges into the
+second paragraph rather than being dropped, so the two brothers, the not-a-chain line, the
+Virginia disambiguation and the 2015 date all survive.
+
+**A claim worth knowing is there.** "The only truly authentic Mexican restaurant in
+Montgomery County" is a superlative about named competitors in a named market, which is a
+different kind of statement from the rest of the page and the sort a competitor can
+complain about. It is the client's own words and their claim to make, so it stands as
+given, but it is recorded here rather than left to be discovered.
+
+Contrast re-measured over the textured red field: 15.77:1, 14.24:1 and 14.42:1 at 1440, and
+16.85:1, 14.55:1 and 13.19:1 at 420.
+
+**The Instagram heading** becomes "It gets loud in here by nature." in place of "It gets
+loud in here. On purpose." from entry 63. One sentence rather than two.
