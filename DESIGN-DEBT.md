@@ -1974,3 +1974,36 @@ run, in which case the hero would have come up 33px short of the fold. Now 63px.
 Below 680 nothing changes. The fill-the-fold rule is scoped above that width, because a
 stacked hero at full screen leaves the copy squashed under a letterboxed clip, so the mobile
 hero keeps its natural height as before.
+
+## 71. Four copy and sizing changes, 21 September
+
+**Hero subline.** "The tortillas were flour this morning." becomes "Fresh handmade tortillas
+every hour." One occurrence, body copy only. Deliberately not a meta description, so nothing
+here crosses into the SEO items that belong to Mario. Still two lines at 1440 and at 420.
+
+**The hero rating line fills the phone.** The row was already a full-width flex container;
+what was small was its contents, about 255px of stars and sentence inside a 354 to 382px
+column, so it sat well short of the two buttons stacked above it.
+
+Both the star tracking and the gap were in pixels, 2px and 8px, which do not grow with the
+font, so raising the size alone would have grown the glyphs while the spacing stayed put.
+They are `em` now at the ratios they had at 13px. Below 680 the size is `clamp(15px, 4.4vw,
+19px)`, which tracks the column: measured 94 to 95% of it at 360, 390, 414 and 420. Above
+680 a vw is wrong, because the hero splits and the copy column gets *narrower* before it
+gets wider, 478px at 679 against 315px at 768, so it is a flat 15px there, up from 13.
+
+**The carousel eyebrow** is fixed copy, "Your place to celebrate...", in place of the
+day-aware "Monday · every week". The heading is untouched as asked. The ellipsis is carried
+through from the request as written; it is one word to drop.
+
+The JavaScript that used to write it is removed rather than edited, and that fixes something
+else: it assigned `eyebrow.textContent`, which replaces an element's children, and one of
+those children is the little gold rule every other eyebrow on the site carries. That is why
+this eyebrow alone had no rule. It has one again. The carousel is still day-aware; today's
+card is still promoted to the front and still gets the badge and the green border.
+
+**The Tonight badge** is larger and clears the flyer's own day strip. The strip is part of
+the artwork rather than an element, so there is nothing to measure at runtime: rendered, it
+is 18px of the media block's 306, and the badge sat at `top: 12px` and crossed it. At 26px
+it clears with 8px to spare on every day's card. 10px to 12px with the padding grown to
+match, so 64x22 becomes 80x28.

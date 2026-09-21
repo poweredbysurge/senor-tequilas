@@ -1556,3 +1556,45 @@ body[data-route="/menu"] [data-dish-card] [data-chevron] svg { width: 11px; heig
 #mobile-menu a[aria-current="page"]:is(:hover, :focus-visible) {
   color: var(--st-green-hi) !important;
 }
+
+/* ---- 57. the hero rating line -----------------------------------------------------------
+   Requested 21 September: fill the width on a phone, and a little larger on desktop.
+
+   The row is already a full-width flex container; what was small was its contents. At 13px
+   the stars and the sentence came to about 255px inside a 354 to 382px column, so the line
+   sat well short of the two buttons stacked above it.
+
+   Both the star tracking and the gap were in pixels, 2px and 8px, which do not grow with the
+   font. They are in `em` now, at the same ratio they had at 13px, so the whole line scales as
+   one thing rather than the glyphs growing while the spacing stays put.
+
+   Below 680 the size is a vw so it tracks the column and fills it. Above, the hero splits and
+   the copy column gets narrower before it gets wider, so a vw is wrong there: it is a fixed
+   step up from 13px instead. */
+body[data-route="/"] [data-dc-tpl="57"] {
+  gap: 0.6em !important;
+  font-size: clamp(15px, 4.4vw, 19px) !important;
+}
+body[data-route="/"] [data-dc-tpl="58"] {
+  letter-spacing: 0.15em !important;
+}
+@media (min-width: 680px) {
+  body[data-route="/"] [data-dc-tpl="57"] { font-size: 15px !important; }
+}
+
+/* ---- 58. the Tonight badge ---------------------------------------------------------------
+   Requested 21 September: larger, and moved down off the flyer's own day strip.
+
+   The strip is part of the artwork, not an element, so there is nothing to measure at
+   runtime. Rendered, it is 18px of the media block's 306. The badge sat at `top: 12px` and
+   crossed it, which is why it looked like it was fighting the banner on most of the flyers.
+   At 26px it clears the strip with 8px to spare, on every day's card.
+
+   Larger as asked: 10px to 12px, and the padding grows with it. */
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-dc-tpl="96"] {
+  top: 26px !important;
+  left: 14px !important;
+  font-size: 12px !important;
+  padding: 7px 13px !important;
+  letter-spacing: 0.08em !important;
+}

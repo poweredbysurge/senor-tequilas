@@ -423,11 +423,13 @@ const jsonLd = {
             rail.style.scrollBehavior = behavior;
           }
 
-          var eyebrow = document.querySelector('[data-dc-tpl="79"]');
-          if (eyebrow && todayCard) {
-            var singular = today.replace(/s$/, '');
-            eyebrow.textContent = singular + ' · every week';
-          }
+          /* The eyebrow used to be rewritten to "Monday · every week" and so on. It is fixed
+             copy now, set in the markup, so this no longer runs. Worth knowing why it is gone
+             rather than edited: it assigned `eyebrow.textContent`, which replaced the element's
+             children, and one of those children is the little gold rule every other eyebrow on
+             the site carries. That is why this one had no rule. Leaving the copy in the markup
+             restores it. The carousel is still day-aware, the card is still promoted to the
+             front and still gets the Tonight badge and the green border. */
 
           /* ---- the arrows, which the design drew but left inert ---- */
           var prev = document.querySelector('[data-dc-tpl="84"]');
