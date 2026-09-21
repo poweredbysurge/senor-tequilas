@@ -1912,3 +1912,41 @@ map. Added, and the preload confirmed in the rendered head.
 Hero copy measured over the new photograph, which is brighter than the placeholder it
 replaced: 5.70:1, 14.63:1, 6.99:1 and 14.31:1 at 1440, and better at 420. The existing scrim
 carries it, nothing needed changing.
+
+## 69. The current page in the nav, 21 September
+
+Reported: the green "you are here" link works on /our-story and /menu and nowhere else.
+
+**Cause.** It was hand-applied inside the header components, and there are seven of them.
+Header2, Header3 and Header4 happened to carry it, which is /menu, /our-story and
+/takeout-delivery. Header1, Header5, Header6 and Header7 did not. Header5 alone serves
+fourteen pages, so it could never hardcode a single link and all fourteen had nothing. This
+is entry 10 and D5, now closed.
+
+**Done.** `navCurrent()` marks it from `location.pathname` instead: one mechanism for all 22
+pages, and it adds the `aria-current="page"` the hand-applied version never had, so the
+current page is announced rather than only coloured. A child route marks its parent, so both
+pages under /private-parties light "Private Events". Links whose href is an in-page anchor or
+off-site are skipped, which keeps "Gift Cards", `/#gift`, from lighting on every page.
+
+Marked routes went from 3 to 9: menu, our-story, takeout-delivery, taco-tuesday,
+private-parties and its two children, catering, contact. `/` is deliberately not marked; the
+logo is home and no nav item represents it.
+
+The three headers that hardcoded the green keep it. It is the same value, so nothing
+conflicts, and those three pages still show the current link with no JavaScript. Hovering the
+current link brightens the green rather than taking it to cream the way entry 53 takes every
+other link.
+
+**A separate bug this exposed: the homepage nav is not the same nav.** Every other page shows
+Our Story, Menu, Takeout, Tacos, Private Events, Catering, Gift Cards, Contact. The homepage
+shows Happy Hour where the others show Takeout. Both are eight items, which is presumably why
+it was never spotted. It means /happy-hour cannot mark itself, because its own header has no
+Happy Hour link, and it means a visitor's nav changes under them when they leave the
+homepage. Which of the two should give way is a decision about the menu, not a bug fix, so it
+is logged as D8 rather than guessed at.
+
+**Twelve routes still mark nothing**, and for eleven of them there is genuinely no nav item
+that represents the page: the five dish pages, margaritas, tequila-bar, karaoke, late-night,
+game-day and the Gaithersburg landing page. Marking a parent section for those would mean
+inventing a hierarchy the nav does not have. The twelfth is /happy-hour, which is D8.

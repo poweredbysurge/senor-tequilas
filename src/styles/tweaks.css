@@ -1533,3 +1533,22 @@ body[data-route="/menu"] [data-dish-card] [data-chevron] {
   bottom: 4px;
 }
 body[data-route="/menu"] [data-dish-card] [data-chevron] svg { width: 11px; height: 11px; }
+
+/* ---- 56. the current page in the nav ----------------------------------------------------
+   Set by navCurrent() in Base.astro from the path. `!important` because every nav link
+   carries its colour inline, which is the same reason the hover states in entry 53 need it.
+
+   The three headers that hardcoded the green keep it. It is the same value, so nothing
+   conflicts, and it means those three pages still show the current link with no JavaScript.
+
+   Hovering the current link brightens the green rather than taking it to cream the way
+   entry 53 takes every other link, so the page you are on stays distinguishable while the
+   pointer is over it. */
+:is(header, [data-screen-label*="Header"]) nav a[aria-current="page"],
+#mobile-menu a[aria-current="page"] {
+  color: var(--st-green) !important;
+}
+:is(header, [data-screen-label*="Header"]) nav a[aria-current="page"]:is(:hover, :focus-visible),
+#mobile-menu a[aria-current="page"]:is(:hover, :focus-visible) {
+  color: var(--st-green-hi) !important;
+}

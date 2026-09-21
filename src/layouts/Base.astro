@@ -796,6 +796,32 @@ const jsonLd = {
           });
         }
 
+        /* ---- 7b. the current page in the nav -------------------------------------------------
+           See DESIGN-DEBT.md entry 69. The green "you are here" link was hand-applied inside
+           the header components, and there are seven of them, so only the three that happened
+           to carry it worked: /menu, /our-story and /takeout-delivery. Header5 alone serves
+           fourteen pages, so it could never hardcode one and none of those fourteen had it.
+
+           Marked here instead, from the path, which is one mechanism for all 22 pages and adds
+           the `aria-current="page"` the hand-applied version never had. A child route marks its
+           parent, so the two pages under /private-parties light "Private Events". Links that
+           are an in-page anchor or off-site are skipped, which is what keeps "Gift Cards",
+           `/#gift`, from lighting on every page. */
+        function navCurrent() {
+          var here = location.pathname.replace(/\/+$/, '') || '/';
+          var links = document.querySelectorAll(
+            'header nav a, [data-screen-label*="Header"] nav a, #mobile-menu a');
+          [].slice.call(links).forEach(function (a) {
+            var raw = a.getAttribute('href') || '';
+            if (raw.charAt(0) !== '/') return;                       // off-site
+            var href = raw.split('#')[0].replace(/\/+$/, '');
+            if (!href) return;                                       // home, or a bare anchor
+            var on = href === here || here.indexOf(href + '/') === 0;
+            if (on) a.setAttribute('aria-current', 'page');
+            else a.removeAttribute('aria-current');
+          });
+        }
+
         /* ---- 8. the private events FAQ --------------------------------------------------------
            Each accordion item held: the question button, the answer, and a nested copy of the
            whole enquiry form section. The answer sat outside the collapsible region, so opening a
@@ -1448,6 +1474,7 @@ const jsonLd = {
           try { socialIcons(); } catch (e) {}
           try { navLabel(); } catch (e) {}
           try { navOrder(); } catch (e) {}
+          try { navCurrent(); } catch (e) {}
           try { eventsFaq(); } catch (e) {}
           try { eventPackages(); } catch (e) {}
           try { autoScrollRails(); } catch (e) {}

@@ -560,6 +560,30 @@ and read it. 126 rows of "item to destination" takes a minute to scan and is the
 find the handful that are merely plausible rather than right. Two survived that scan as
 judgement calls worth flagging rather than silently keeping.
 
+## 29. Derive the current-page state from the path, never from the template
+
+**Date:** 2026-09-21 · **Origin:** DESIGN-DEBT 69 · **Status:** candidate
+
+A site's "you are here" nav link was hand-applied inside the header markup. There were seven
+header components, three of them carried it, and one of the four that did not was serving
+fourteen pages, so nineteen of twenty-two pages had no current-page indicator at all. Nobody
+noticed because the pages people demo first were among the three that worked.
+
+**Template:** the current-page state is computed once from `location.pathname`, never
+written into a template. Anything hand-applied per page is correct on the day it is written
+and wrong the moment a page is added, and it fails silently, because a missing highlight
+looks like a design choice rather than a bug. Three rules make the computed version right:
+a child route marks its parent section, links that are in-page anchors or off-site are
+skipped so a `/#section` link does not match everywhere, and the marker is
+`aria-current="page"` with the colour hung off that attribute, so the state is announced and
+not merely coloured.
+
+**And the audit is the valuable part.** Walking all 22 routes and printing what each one
+marked took one script and found two things the report had not mentioned: eleven pages that
+no nav item represents at all, and a header whose nav differs from every other page's. Both
+are content decisions rather than bugs, but neither was visible from the page that was
+reported.
+
 ---
 
 ## Not yet logged
