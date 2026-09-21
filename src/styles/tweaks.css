@@ -736,11 +736,15 @@ body[data-route="/"] [data-dc-tpl="140"] > *:not([data-dc-tpl="150"]) {
    screen hero and an uncropped 4:5 cannot both be true, and the client chose the full
    screen, so above 680 the ratio comes off and object-fit: cover trims the clip's sides.
    Below 680 the hero is stacked, a full screen of it would leave the copy squashed under a
-   letterboxed clip, and the 4:5 stays. */
+   letterboxed clip, and the 4:5 stays.
+
+   The fallback was 96px, the header plus the 33px announcement bar. Entry 70 removed the
+   bar, so the chrome is the header alone and the fallback is 63px. It is only reached if
+   heroFold() does not run; the measured value still wins when it does. */
 @media (min-width: 680px) {
   body[data-route="/"] section[data-screen-label="Hero: split copy + new bar"] {
-    min-height: calc(100vh - var(--st-hero-chrome, 96px));
-    min-height: calc(100svh - var(--st-hero-chrome, 96px));
+    min-height: calc(100vh - var(--st-hero-chrome, 63px));
+    min-height: calc(100svh - var(--st-hero-chrome, 63px));
   }
   body[data-route="/"] [data-dc-tpl="60"] { aspect-ratio: auto !important; }
 }

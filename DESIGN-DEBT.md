@@ -1950,3 +1950,27 @@ is logged as D8 rather than guessed at.
 that represents the page: the five dish pages, margaritas, tequila-bar, karaoke, late-night,
 game-day and the Gaithersburg landing page. Marking a parent section for those would mean
 inventing a hierarchy the nav does not have. The twelfth is /happy-hour, which is D8.
+
+## 70. The announcement bar is removed, 21 September
+
+"Happy Hour Mon to Fri 3 to 6, All Day Sun · Karaoke Thursdays · Mariachi Sundays", the
+33px gold strip above the header. Removed at the client's request, described as for now, so
+it is commented out in place in `index.astro` rather than deleted: bringing it back is
+deleting the comment wrapper and nothing else. Nothing of it ships, the copy included.
+
+**It was only ever on the homepage.** Checked against every route: no other page has one, so
+this is a single change and not 22.
+
+**Two dependencies, both already correct.** `heroFold()` measures the bar to work out how
+much screen the hero should take, and it already reads `bar ? bar.offsetHeight : 0`, so with
+the bar gone the chrome is the header alone. Measured after: 96px to 63px, and the hero
+still meets the fold exactly at 1440. The other is the inline `heroFold` selector, which is
+the one remaining mention of the bar in the built HTML and is harmless.
+
+**One thing that was not correct.** Entry 25's rule carried `var(--st-hero-chrome, 96px)`,
+and 96 was the header plus the bar. That fallback is only reached if `heroFold()` does not
+run, in which case the hero would have come up 33px short of the fold. Now 63px.
+
+Below 680 nothing changes. The fill-the-fold rule is scoped above that width, because a
+stacked hero at full screen leaves the copy squashed under a letterboxed clip, so the mobile
+hero keeps its natural height as before.
