@@ -151,6 +151,12 @@ body[data-route="/"] [data-dc-tpl="223"] { background-image: none !important; }
   font-weight: 700;
   font-size: 14px;
 }
+/* `#dish-modal a` sets display, which outranks the user-agent's `[hidden] { display: none }`,
+   so `link.hidden = true` set the attribute and the link still rendered, with no href on it.
+   It never showed before because the homepage always resolved a dish page, so the hidden
+   branch was never taken. The menu page takes it on every dish that has no page of its own. */
+#dish-modal a[hidden] { display: none; }
+
 #dish-modal [data-dish-close] {
   position: absolute;
   top: 12px;
@@ -1495,3 +1501,35 @@ header nav a:is(:hover, :focus-visible)::after,
 @media (prefers-reduced-motion: reduce) {
   [data-anim] { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
+
+/* ---- 55. the menu page's item cards -----------------------------------------------------
+   Requested 21 September.
+
+   **The dashed border.** Every one of the 126 thumbnails carries
+   `border: 1px dashed rgba(214, 188, 133, 0.45)`, the placeholder frame, including the 69
+   that have a real photograph behind it. It was only ever meant for the 57 that are still
+   `url("")` and show the word PHOTO. Matching on that empty url is what separates them, so
+   the frame stays exactly where it means something.
+
+   The border is made transparent rather than removed, so the thumbnail keeps its 76px box
+   and nothing on the page moves.
+
+   **The cards expand.** Wired to the same dialog as the homepage in menuDishes(); these are
+   the bits that only concern how they look. The chevron badge is sized down: it was drawn
+   for a 186px square on the homepage and is sitting on a 76px one here. */
+body[data-route="/menu"] [data-dc-tpl="89"]:not([style*='url("")']) {
+  border-color: transparent !important;
+}
+
+body[data-route="/menu"] [data-dc-tpl="87"] { cursor: pointer; }
+body[data-route="/menu"] [data-dc-tpl="87"]:is(:hover, :focus-visible) {
+  border-color: var(--st-gold-hi) !important;
+}
+body[data-route="/menu"] [data-dc-tpl="89"] { position: relative; }
+body[data-route="/menu"] [data-dish-card] [data-chevron] {
+  width: 22px;
+  height: 22px;
+  right: 4px;
+  bottom: 4px;
+}
+body[data-route="/menu"] [data-dish-card] [data-chevron] svg { width: 11px; height: 11px; }

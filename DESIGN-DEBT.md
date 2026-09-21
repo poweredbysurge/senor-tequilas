@@ -1838,3 +1838,46 @@ element makes it their containing block, which genuinely can move them. Those no
 without transform. It was not the cause here and measured no different, but the hazard is
 real and the cost is that 13 cards fade rather than fade and rise. One line in the script to
 drop if that is not wanted.
+
+## 67. The menu page items expand, and the placeholder frame stops lying, 21 September
+
+**The dashed frame.** Every one of the 126 thumbnails on `/menu` carried
+`border: 1px dashed rgba(214, 188, 133, 0.45)`, the placeholder frame, including the 69 that
+have a real photograph behind it. Only 57 are actually pending, and those are the ones whose
+background is `url("")` and which show the word PHOTO. Matching on that empty url is what
+separates the two, so the frame now appears only where it means something. Made transparent
+rather than removed, so the 76px box is unchanged and nothing moves.
+
+**The cards expand.** The homepage Signature Dishes cards open a dialog with the description
+and the photograph at a readable size, and the menu wanted the same. The markup already
+lined up: a menu card is thumbnail first, body last, which is the shape `makeExpandable`
+reads, so `menuDishes()` is a selector and four small changes to the shared code.
+
+- The homepage cards are `<button>`; the menu's are `<div>`. Rather than rebuild 126 of them
+  in the markup, non-buttons get `role="button"`, a tabindex and Enter/Space.
+- The name is taken from the `.sc-interp` leaf rather than the first `<span>`, because on a
+  menu card that span is a wrapper holding the name *and* the vegetarian marker, which was
+  giving titles like "Guacamole Fresco Bowl v".
+- 57 items have no photograph yet. An empty `<img>` renders as a broken frame, so the dialog
+  drops it and shows the description alone.
+- The dialog no longer offers a link to the page you are already on.
+
+**Two bugs this surfaced in shared code, both pre-existing.**
+
+`hrefForDish` matched `card.textContent`, the whole card. The homepage descriptions are
+short; the menu's list what you can add to a dish, so "Nachos … add grilled chicken, al
+pastor, carnitas, steak or chorizo" matched the street tacos rule and sent Nachos to
+`/street-tacos`. It matches the dish's own name now. The homepage resolves exactly as before,
+verified card by card.
+
+`#dish-modal a` sets `display: inline-flex`, which outranks the user agent's
+`[hidden] { display: none }`. So `link.hidden = true` set the attribute and the link rendered
+anyway, with no href on it. It had never shown, because the homepage always resolved a page
+and the hidden branch was never taken; the menu takes it on every dish without one. Fixed
+with `#dish-modal a[hidden] { display: none }`, and the href is cleared rather than left
+pointing at the previously opened dish.
+
+**Result.** 126 cards wired, 69 thumbnails cleared of the frame and all 57 placeholders
+keeping it, 44 items linking to a dish page and 82 correctly not. Two matches are a stretch,
+Carne Asada Fries and Enchiladas de Carnitas both reaching `/street-tacos` on the protein in
+their name, and both land on a page that features it. Escape closes, Enter opens.

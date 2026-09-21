@@ -690,7 +690,18 @@ const jsonLd = {
           if (card.getAttribute('data-expandable') === 'done') return;
           card.setAttribute('data-expandable', 'done');
           card.setAttribute('data-dish-card', '');
-          card.setAttribute('type', 'button');
+          // The homepage cards are real buttons. The menu page's are divs, and rebuilding 126
+          // of them into buttons in the markup is a bigger change than giving them the role
+          // and the two keys a button would have answered to.
+          if (card.tagName === 'BUTTON') {
+            card.setAttribute('type', 'button');
+          } else {
+            card.setAttribute('role', 'button');
+            if (!card.hasAttribute('tabindex')) card.tabIndex = 0;
+            card.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); card.click(); }
+            });
+          }
 
           // "tap to expand" is a label explaining a feature. The icon is the feature.
           [].slice.call(card.querySelectorAll('span')).forEach(function (s) {
@@ -707,7 +718,9 @@ const jsonLd = {
           var href = card.getAttribute('data-href');
           var name = '';
           var body = card.lastElementChild;
-          var nameEl = body && body.querySelector('span');
+          // `.sc-interp` is the interpolated leaf. On the menu cards the first plain span is a
+          // wrapper that also holds the vegetarian marker, so the leaf is the accurate name.
+          var nameEl = body && (body.querySelector('.sc-interp') || body.querySelector('span'));
           if (nameEl) name = (nameEl.textContent || '').trim();
           if (!full) {
             var desc = body && body.lastElementChild;
@@ -725,14 +738,30 @@ const jsonLd = {
           card.addEventListener('click', function () {
             var dlg = dishModal();
             var img = dlg.querySelector('[data-dish-img]');
-            img.setAttribute('src', src);
-            img.setAttribute('alt', alt);
+            // 57 of the menu items are still awaiting a photograph. An empty <img> renders as
+            // a broken frame, so the dialog drops it and shows the description alone.
+            if (src) { img.setAttribute('src', src); img.setAttribute('alt', alt); img.hidden = false; }
+            else { img.removeAttribute('src'); img.hidden = true; }
             dlg.querySelector('[data-dish-name]').textContent = name;
             dlg.querySelector('[data-dish-text]').textContent = full;
             var link = dlg.querySelector('[data-dish-link]');
-            if (href) { link.setAttribute('href', href); link.hidden = false; } else { link.hidden = true; }
+            var here = location.pathname.replace(/\/$/, '');
+            if (href && href.replace(/\/$/, '') !== here) { link.setAttribute('href', href); link.hidden = false; }
+            else { link.removeAttribute('href'); link.hidden = true; }
             if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
           });
+        }
+
+        /* ---- 6b. the menu page items expand too ----------------------------------------------
+           Asked for on 21 September: the homepage Signature Dishes cards open a dialog with the
+           description and the photograph at a readable size, and the menu wanted the same.
+
+           The markup already lines up. A menu card is thumbnail first, body last, exactly the
+           shape makeExpandable reads, so this is a selector and nothing else. Cards whose
+           thumbnail is still `url("")` are wired as well: they open without a picture rather
+           than being dead, which keeps every row behaving the same way. */
+        function menuDishes() {
+          [].slice.call(document.querySelectorAll('[data-dc-tpl="87"]')).forEach(makeExpandable);
         }
 
         var DISH_PAGES = [
@@ -743,7 +772,12 @@ const jsonLd = {
           [/churro|flan|tres leches|volc/i, '/la-dulceria']
         ];
         function hrefForDish(card) {
-          var t = card.textContent || '';
+          // Match the dish's own name, not the whole card. The menu descriptions list what you
+          // can add to a dish, so "Nachos … add grilled chicken, al pastor, carnitas, steak or
+          // chorizo" matched the street tacos rule and sent Nachos to /street-tacos.
+          var body = card.lastElementChild;
+          var leaf = body && (body.querySelector('.sc-interp') || body.querySelector('span'));
+          var t = (leaf && leaf.textContent) || card.textContent || '';
           for (var i = 0; i < DISH_PAGES.length; i++) if (DISH_PAGES[i][0].test(t)) return DISH_PAGES[i][1];
           return '/menu';
         }
@@ -1406,6 +1440,7 @@ const jsonLd = {
           try { tonightCarousel(); } catch (e) {}
           try { if (isHome) reviewsCarousel(); } catch (e) {}
           try { if (isHome) signatureDishes(); } catch (e) {}
+          try { if (document.body.getAttribute('data-route') === '/menu') menuDishes(); } catch (e) {}
           try { swapImages(); } catch (e) {}
           try { textSwaps(); } catch (e) {}
           try { deliveryLinks(); } catch (e) {}

@@ -529,6 +529,37 @@ explicitly excluded from the change. That single line settled in one run what th
 of reasoning about transforms and containing blocks had not. Ask the tool what moved before
 theorising about what might have.
 
+## 27. `element.hidden` is a suggestion if any rule sets display
+
+**Date:** 2026-09-21 · **Origin:** DESIGN-DEBT 67 · **Status:** candidate
+
+A dialog set `link.hidden = true` and the link kept rendering, with no href, because the
+component's own `#dish-modal a { display: inline-flex }` outranks the user agent's
+`[hidden] { display: none }`. The code was correct and the element was visible.
+
+**Template:** whenever a component styles an element's `display`, pair it with an explicit
+`[hidden] { display: none }` for the same selector. And when asserting that something is
+hidden, assert what the user sees, `getBoundingClientRect().height > 0` or the computed
+display, never `el.hidden`, which only reports that the attribute was set. A test that reads
+the property will pass while the element is plainly on screen; that is exactly what happened
+here, and the screenshot caught what the assertion missed.
+
+## 28. A heuristic tuned on six items will not survive a hundred and twenty-six
+
+**Date:** 2026-09-21 · **Origin:** DESIGN-DEBT 67 · **Status:** candidate
+
+A routine mapped a dish to its landing page by testing patterns against the card's whole
+text. With six cards and short captions it was right every time. Reused on a menu of 126,
+whose descriptions list what can be added to each dish, "Nachos … add grilled chicken, al
+pastor, carnitas, steak or chorizo" matched the street tacos rule and Nachos got sent to a
+tacos page.
+
+**Template:** before reusing a matcher on a larger set, narrow what it reads to the field it
+was really about, the name rather than the whole card here, and then print the full mapping
+and read it. 126 rows of "item to destination" takes a minute to scan and is the only way to
+find the handful that are merely plausible rather than right. Two survived that scan as
+judgement calls worth flagging rather than silently keeping.
+
 ---
 
 ## Not yet logged
