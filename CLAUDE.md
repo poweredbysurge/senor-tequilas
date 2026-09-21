@@ -1,94 +1,119 @@
-# Señor Tequila's, design port
+# Señor Tequila's
 
-This repo ports a finished Claude Design board into production code. The design is the
-source of truth. The job is fidelity, not improvement.
+Production site for Señor Tequila's, Germantown MD. Astro as a shell and a build step only:
+no client framework, no CSS framework. 22 pages, static output.
+
+Originally ported from a Claude Design board. That port is finished. This is now the live
+project and the code in `src/` is the source of truth, not the board.
 
 ## Rules
 
-- The extracted pages in `design/pages/` are the source of truth. Never redesign, restyle, re-space, re-color or re-type anything in them.
-- Do not convert the CSS to Tailwind, CSS modules, styled-components or any utility system. Do not round pixel values. Do not change font sizes, `clamp()` ranges, `vw` units, colors, radii, shadows, spacing or breakpoints. Copy them.
-- Every page is one responsive document. There are no separate mobile pages.
-- Never substitute, generate or fetch a stock image. A missing image stays a labeled placeholder exactly as the design draws it.
-- Every H1 is the H1 from the design, word for word. Only `/happy-hour` and `/mexican-restaurant-gaithersburg-md` may contain "Germantown" inside an H1.
-- No em dashes in any copy. Use a comma, a period or a colon.
-- A page is done only when its screenshot matches its reference within tolerance. Not when it looks right.
-- If you are about to make a judgment call about layout, stop and ask instead.
+- **Do not convert the CSS.** No Tailwind, no CSS modules, no styled-components, no utility
+  system. Do not round pixel values or normalize `clamp()` ranges. The styles are deliberate.
+- **Breakpoints are fixed** at 390, 768, 1024 and 1440, plus `clamp()` and `vw`/`vh` units.
+  No container queries. Do not add, remove or convert breakpoints.
+- **Every page is one responsive document.** There are no separate mobile pages.
+- **Never substitute, generate or fetch a stock image.** A missing image stays a labeled
+  placeholder.
+- **No em dashes in any copy.** Use a comma, a period or a colon.
+- **Fonts are embedded as `data:` URIs**, five families: Roboto, Barlow, Barlow Condensed,
+  Archivo Black, Special Elite. No network font dependency. Do not add a Google Fonts link.
+- **Record every substantive change in `DESIGN-DEBT.md`**, which is the running project log
+  and the reason most questions have an answer already. Check it before re-deriving anything.
 
-## Page table
+## Pages
 
-Pages are identified by their H1 and map to these URL paths.
+| H1 | Path |
+|---|---|
+| From Mexico, With Love | `/` |
+| The Menu | `/menu` |
+| We're Not a Chain. We're a Family. | `/our-story` |
+| Don't Do the Dishes | `/takeout-delivery` |
+| Birria Tacos | `/birria-tacos` |
+| Quesabirria Tacos | `/quesabirria-tacos` |
+| Street Tacos | `/street-tacos` |
+| Fajitas & Molcajetes | `/fajitas-molcajetes` |
+| La Dulcería | `/la-dulceria` |
+| Private Rooms for 12 to 400 | `/private-parties` |
+| Quinceañeras, Without the Ballroom Price | `/private-parties/quinceaneras-celebrations` |
+| Weddings, Showers, Receptions | `/private-parties/weddings-receptions` |
+| Taco Catering | `/catering` |
+| The Margaritas People Text Their Friends About | `/margaritas` |
+| It's in the Name for a Reason | `/tequila-bar` |
+| Happy Hour in Germantown | `/happy-hour` |
+| Still Open. Still Cooking. | `/late-night` |
+| Karaoke Every Thursday | `/karaoke` |
+| Taco Tuesday | `/taco-tuesday` |
+| Every Game, Every Night | `/game-day` |
+| Come See Us | `/contact` |
+| Mexican Food Near Gaithersburg | `/mexican-restaurant-gaithersburg-md` |
 
-| H1 | Path | Slug |
-|---|---|---|
-| From Mexico, With Love | `/` | `home` |
-| The Menu | `/menu` | `menu` |
-| We're Not a Chain. We're a Family. | `/our-story` | `our-story` |
-| Don't Do the Dishes | `/takeout-delivery` | `takeout-delivery` |
-| Birria Tacos | `/birria-tacos` | `birria-tacos` |
-| Quesabirria Tacos | `/quesabirria-tacos` | `quesabirria-tacos` |
-| Street Tacos | `/street-tacos` | `street-tacos` |
-| Fajitas & Molcajetes | `/fajitas-molcajetes` | `fajitas-molcajetes` |
-| La Dulcería | `/la-dulceria` | `la-dulceria` |
-| Private Rooms for 12 to 400 | `/private-parties` | `private-parties` |
-| Quinceañeras, Without the Ballroom Price | `/private-parties/quinceaneras-celebrations` | `private-parties-quinceaneras-celebrations` |
-| Weddings, Showers, Receptions | `/private-parties/weddings-receptions` | `private-parties-weddings-receptions` |
-| Taco Catering | `/catering` | `catering` |
-| The Margaritas People Text Their Friends About | `/margaritas` | `margaritas` |
-| It's in the Name for a Reason | `/tequila-bar` | `tequila-bar` |
-| Happy Hour in Germantown | `/happy-hour` | `happy-hour` |
-| Still Open. Still Cooking. | `/late-night` | `late-night` |
-| Karaoke Every Thursday | `/karaoke` | `karaoke` |
-| Taco Tuesday | `/taco-tuesday` | `taco-tuesday` |
-| Mexican Food Near Gaithersburg | `/mexican-restaurant-gaithersburg-md` | `mexican-restaurant-gaithersburg-md` |
+Plus two generated routes: `src/pages/sitemap.xml.js` and `src/pages/robots.txt.js`.
 
-## The bundle
+Only `/happy-hour` and `/mexican-restaurant-gaithersburg-md` may contain "Germantown" inside
+an H1.
 
-`design/export/master-board.standalone.html` is an 18MB self-unpacking bundle, not flat
-HTML. It carries the project as base64 in `<script type="__bundler/manifest">` and
-reassembles itself with JavaScript on load. Reading it as text tells you nothing. Render it.
+## SEO
 
-Verified facts, do not re-derive:
+Handled in `src/layouts/Base.astro`, which every page wraps. Each page passes `title`,
+`description`, `canonical` and `ogImage`; the layout emits canonical, OG, Twitter card and
+`Restaurant`/`LocalBusiness` JSON-LD built from `src/data/business.json`. Pass `extraTypes`
+to add schema types to a page.
 
-- After JS runs, `#dc-root` contains 29 `div.sc-host[data-sc-name]` elements. Each is one artboard.
-- 1 is the board's own title card, 1600px wide, H1 "Everything, One Board". Discard it.
-- 20 are the real pages, each 1440px wide.
-- 8 are mobile preview duplicates, each 390px wide, carrying a descendant with `data-force-mobile`. They duplicate 8 of the 20 pages. They are previews, never separate pages.
-- Images are `blob:` URLs created at runtime. **51 unique images** by content hash, which is what actually ships. Plus remote `https://senortequilas.com` URLs, 91 references across the 20 pages, to be swept in Phase 4.
-- **Fonts are embedded, not fetched.** All 57 `@font-face` blocks use `data:` URIs. The only head links are two vestigial `preconnect`s pointing at Google. There is no network font dependency, so no FOUT and no fallback risk. **Five families are in play, not three: Roboto, Barlow, Barlow Condensed, Archivo Black and Special Elite.** Barlow and Barlow Condensed were missing from the original brief. Do not let a later step drop them.
-- Body in the bundle is `margin: 0`, background `rgb(230, 227, 220)`. That background is canvas chrome. Extracted pages override only `html,body` height and background, in one visible, named `#extraction-canvas-reset` block. Never make that edit silently.
-- **The homepage 390px artboard is the only mobile preview without `data-force-mobile`.** Its mobile layout comes purely from the viewport media queries, which is exactly how production will behave. The other seven previews are forced. Classify artboards by width, never by that attribute.
-- The responsive layer is real viewport media queries at 390, 768, 1024 and 1440, plus `clamp()`, plus many `vw`/`vh` units. No container queries. Do not add, remove or convert breakpoints.
+The sitemap is generated from `src/pages/**/*.astro` at build time, so a page added or
+removed cannot drift out of it. Never hand-write `public/sitemap.xml`.
 
-## Phases
+Invariants worth protecting:
 
-0. Write these rules down. Done.
-1. Extract the bundle into real pages. Gate A: extraction fidelity at 1440, 0.5% tolerance. **Done, 19/20 passed on merit, karaoke accepted as a recorded exception. See `design/gate-a/EXCEPTIONS.md`. That exception is scoped to Gate A and does not apply to Phase 4, which keeps the full 0.5% for all 20 pages.**
-2. Generate the reference set at 390, 768, 1440.
-3. Assemble the production site. Astro as shell and build step only, no client framework, no CSS framework.
-4. Verify against the reference set. Same tolerance.
-5. SEO, only after Phase 4 is green.
-6. Stop. Do not deploy.
+- One `<h1>` per page. Every title and description unique across the site.
+- Business facts live in `business.json` only. Do not hardcode an address, phone or hour.
 
-**What "do not deploy" means, clarified 14 September.** It scopes to the custom domain
-cutover, not to the Vercel project URL. `senor-tequilas.vercel.app` is the client review URL
-and may be promoted to production freely so the client can see the work; it is public, with
-deployment protection off, so no Vercel login is needed. `senortequilas.com` still serves the
-old WordPress site and stays untouched until the client says otherwise. The DNS cutover is
-the thing this rule stops. See also the `LAUNCH`/`LIVE` constants at the top of
-`src/layouts/Base.astro`, which keep canonical and share URLs on the review host until then.
+## Launch state
+
+**The site has not cut over.** `senortequilas.com` still serves the old WordPress site.
+`senor-tequilas.vercel.app` is the client review URL, public and freely promotable.
+
+`Base.astro` has `LAUNCH` and `LIVE` constants at the top. While `LIVE` points at the Vercel
+host, canonicals point there while the sitemap and robots.txt point at the production domain.
+They disagree on purpose, and it is the main SEO exposure until cutover.
+
+### Cutover checklist
+
+1. Set `LIVE = LAUNCH` in `src/layouts/Base.astro`. Canonicals and share URLs move to the
+   real domain.
+2. Create `vercel.json`. Wire the 301 map from `deploy/redirects.json` (currently marked
+   `doNotDeployYet`) and settle `trailingSlash` against `build.format: 'directory'`. The old
+   WordPress URLs carry trailing slashes; the new canonicals do not. Decide once, then make
+   redirects, canonicals and sitemap all agree.
+3. Rebuild so the generated sitemap and robots.txt pick up the production domain.
+4. Verify in Search Console: canonical matches sitemap, no redirect chains on the 301s.
+
+Until step 1, consider gating `robots.txt.js` to emit `Disallow: /` off the production host,
+so the review URL cannot be indexed as a duplicate.
 
 ## Performance
 
-Mobile Lighthouse, against any deployed URL or a local `npm run preview`:
+Mobile Lighthouse against any deployed URL or a local `npm run preview`:
 
 ```
 node .lh.mjs https://senor-tequilas.vercel.app/
 ```
 
-It prints score, FCP, LCP, TBT, Speed Index, total bytes and the heaviest requests, throttled
-to Lighthouse's mobile profile. `lighthouse` is a devDependency; the runner is `.lh.mjs` at the
-repo root. Re-run it after anything that touches images, fonts or the hero video, and record
-the numbers in DESIGN-DEBT.md alongside the change.
+Prints score, FCP, LCP, TBT, Speed Index, total bytes and the heaviest requests, on
+Lighthouse's mobile profile. Re-run after anything touching images, fonts or the hero video
+and record the numbers in `DESIGN-DEBT.md` alongside the change.
+
+`Base.astro` carries a per-route `LCP_IMAGE` map driving a preload hint. A new page with a
+hero image should be added to it.
+
+## Commands
+
+```
+npm run build       # astro build
+npm run preview     # astro preview
+npm run check-build # scripts/check-build.mjs
+npm run verify      # scripts/visual-check.mjs, screenshot diff
+```
 
 ## Links
 
