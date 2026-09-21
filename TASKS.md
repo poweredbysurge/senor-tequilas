@@ -44,7 +44,7 @@ page files so it cannot drift. The only Astro-attributable risk is URL format, w
 | C2 | Three duplicate Uber Eats storefronts. Controls stay in the markup, inert, with `unresolved` rows in the link map until the client confirms which is live. | client | 4 |
 | C3 | Twelve dish cards are not confirmed against a current menu. | client | 23 |
 | ~~C4~~ | ~~"Top sellers from Toast" is a claim we cannot support.~~ **Done 18 September**, entry 60. The eyebrow reads "the hitters · top sellers". "People's choice" remains a one line change if the sales claim itself is ever a problem. | done | 24, 60 |
-| C5 | Outstanding photographs. Each slot is a labelled placeholder rather than a wrong picture. The two homepage taco slots are done, entry 61, and the two Instagram rail slots took the nearest real venue photograph, entry 63. Still genuinely outstanding: a wall-art shot, and the entry 35 and 39 slots. | client | 35, 39, 61 |
+| C5 | Outstanding photographs. Each slot is a labelled placeholder rather than a wrong picture. The two homepage taco slots are done, entry 61, and the two Instagram rail slots took the nearest real venue photograph, entry 63. The /our-story hero is done, entry 68. Still genuinely outstanding: the two Rivas portraits on /our-story, a wall-art shot, and the entry 35 and 39 slots. | client | 35, 39, 61 |
 
 ---
 

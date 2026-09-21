@@ -1881,3 +1881,34 @@ pointing at the previously opened dish.
 keeping it, 44 items linking to a dish page and 82 correctly not. Two matches are a stretch,
 Carne Asada Fries and Enchiladas de Carnitas both reaching `/street-tacos` on the protein in
 their name, and both land on a page that features it. Escape closes, Enter opens.
+
+## 68. The /our-story hero photograph, 21 September
+
+The page had three pending images: the hero and the two Rivas portraits. The client supplied
+one guest photograph, three people pulling apart quesabirria in a painted booth, which is an
+atmosphere shot rather than a portrait, so it belongs to the hero. The two portraits are
+still outstanding.
+
+**Where it went.** Dropped into `design/library/`, which is the design board's own image set.
+`.gitignore` names `design/source-art/` as the place for full-size artwork the client drops
+in for optimisation, and ignores it so an 800KB original does not enter the repo. Moved
+there as `our-story-hero.original.jpg`. **The original is therefore not in git**, which is
+the existing convention for source art, so the master needs keeping outside the repo.
+
+**The web copy.** `public/images/site/our-story-hero.webp`, 2000x1334, 378KB at q82. 2000px
+wide matches `weddings-hero.jpg`, the house size for a page hero, and the native 3:2 is kept
+rather than pre-cropped to the hero's 2:1 so `object-fit: cover` has vertical headroom at
+narrow viewports. Quality was chosen by measurement rather than habit: q76 is 289KB at
+35.0 dB, q82 is 378KB at 36.6 dB, q88 is 513KB at 38.6 dB. q82 sits 18% under the 460KB
+reference with faces, the part most at risk, clean at 1:1.
+
+**Two things fixed while replacing it.** The placeholder carried `loading="lazy"`, which is
+wrong for a hero and would have been actively harmful now that it is a real photograph: it
+is the largest element on the page. It now matches every other page hero, `decoding="async"`
+and `fetchpriority="high"`. And `/our-story` was the one route missing from the `LCP_IMAGE`
+preload map in `Base.astro`, because its hero was a placeholder SVG when entry 53 built that
+map. Added, and the preload confirmed in the rendered head.
+
+Hero copy measured over the new photograph, which is brighter than the placeholder it
+replaced: 5.70:1, 14.63:1, 6.99:1 and 14.31:1 at 1440, and better at 420. The existing scrim
+carries it, nothing needed changing.
