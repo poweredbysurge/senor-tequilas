@@ -1385,3 +1385,456 @@ run it.
 **Still a launch-day step:** canonical and share URLs follow `LIVE` at the top of `Base.astro`,
 which still points at the Vercel host. Until it is set to `LAUNCH`, the canonicals disagree with
 the sitemap. GA4 needs no change on the 28th; the canonicals do.
+
+## 56. The hero copy drifted into the video as the screen widened, 18 September
+
+Reported from a wide display: the hero copy sat far too close to the video, with a large
+dead band on its left.
+
+**Cause.** Entry 24 set the copy column's `padding-left` to `--st-edge-half`, which rebuilds
+the 1180px container's left edge from a half-width box. Its `padding-right` stayed at the
+flat `--st-gutter`. One value grows with the viewport and the other does not, so the gap
+ratio widens without bound:
+
+| Viewport | left | right | ratio |
+|---|---|---|---|
+| 1440 | 130 | 48 | 2.7 : 1 |
+| 1744 | 282 | 48 | 5.9 : 1 |
+| 1920 | 370 | 48 | 7.7 : 1 |
+
+It was never noticed at 1440, where 2.7:1 reads as a deliberate indent.
+
+**Why no right padding fixes it.** The copy column is half the section, so its right edge is
+already the page container's centre line. That leaves exactly 590px between the container's
+left edge and that centre, and the copy is 560px wide. There is no padding value that both
+keeps the left edge on the gutter and balances the two sides. The choice is forced.
+
+**Done.** The copy is centred in its own column above 680: `justify-content: center` with
+the plain `--st-gutter` on both sides. Gaps are 1:1 at every width, 80/80 at 1440, 156/156
+at 1744, 200/200 at 1920, and the copy reaches its full 560px instead of being squeezed to
+542.
+
+**The cost, accepted knowingly.** This is the one block that now breaks entry 24. The h1
+starts at 156 at 1744 while the header logo and every section heading below sit at 282, a
+126px step. It is visible at the hero-to-carousel seam. The hero is a full-bleed split band
+and the sections below are contained, so the two read as different systems, which is why it
+survives. Reverting is two lines, named in the rule's comment.
+
+**The third option, rejected.** Both constraints can be satisfied by making the copy column
+wider than the video column, `2 × --st-edge + 560`. That holds the video at a constant 620px
+while the copy column absorbs every extra pixel, so the video keeps shrinking as a
+proportion of the screen and looks like a thumbnail on an ultrawide. Not worth it.
+
+## 57. The open-now pill, restyled and then made true, 18 September
+
+**The look.** Reported as reading like generic AI chrome: dark fill, gold hairline, sentence
+case, a lone green dot. It matched nothing else on the site. It now uses the Order button's
+green fill and dark ink, `rgb(56, 176, 73)` on `rgb(12, 18, 13)`, and the eyebrow's
+uppercase Barlow Condensed at `0.12em`, so it belongs to the type system already in use.
+
+The dot is dark rather than green, because green on green is invisible and the fill itself
+is now what signals open. It pulses over 2s rather than hard blinking, which reads as a
+broken element, and the animation is dropped under `prefers-reduced-motion`.
+
+**Addressing it.** The pill is on 8 pages, `index`, `menu`, `birria-tacos`,
+`quesabirria-tacos`, `street-tacos`, `fajitas-molcajetes`, `takeout-delivery` and
+`late-night`, and carries a different `data-dc-tpl` on each: 46, 44, 289, 190, 820. Those
+numbers are per artboard and mean nothing across pages. A `st-openpill` class was added to
+the markup so a rule cannot silently miss a page.
+
+**The bigger problem, found while restyling.** The pill was not dynamic. No script touched
+it. Every page carried the literal string "Open now, until 12am", so it was wrong at every
+hour before 3pm, and "until 12am" was only ever right on Thursday: Monday to Wednesday close
+at 10pm, Friday and Saturday at 1am, Sunday at 10pm. It was asserting "open now" at 1pm on
+the day this was found. The restyle made it louder, which made the lie louder.
+
+**Done.** `Base.astro` now writes the text from `business.json` hours, the same data the
+JSON-LD already uses, so hours live in one place.
+
+- **Everything resolves in `America/New_York`**, via `Intl.DateTimeFormat` with an explicit
+  `hourCycle: 'h23'`, never in the visitor's own zone. Verified from four zones: a viewer in
+  Tokyo at 04:30 local sees the restaurant's real ET status.
+- **Overnight shifts are handled from both ends.** A day whose close is not after its open
+  runs past midnight, so the check looks at today's shift for the part before midnight and
+  at yesterday's for the spill into today. Thursday closes at 00:00 exactly, so its close
+  value is 0 and it correctly never spills into Friday.
+- Re-renders every 60s and on `visibilitychange`, so a page left open rolls over on its own.
+- Copy: "Open now, until 10pm" when open, "Closed, opens 3pm" later the same day, "Closed,
+  opens tomorrow 3pm" or "Closed, opens Saturday 11am" otherwise.
+
+**Green means open.** When shut, the pill returns to the dark fill and gold hairline it had
+before, and the dot stops pulsing. A green badge reading "closed" argues with itself.
+
+**It starts hidden and the script reveals it.** This is the one place that deliberately does
+not degrade to the static page. With no JavaScript the honest output is no pill, because no
+single sentence about these hours is true all week, and a false "open now" is worse than a
+missing badge.
+
+**Verified** against 10 fixed instants covering both opening minutes, both overnight
+directions, the Thursday midnight boundary and every closed branch. 10/10.
+
+## 58. The bleeding rails fade out on the container edge, 18 September
+
+Requested from a wide display. `tweaks.css` entry 3 released the Tonight rail to run off the
+right edge, which reads correctly as a scrolling rail but leaves cards colliding with the
+viewport edge and the rail measurably wider than every section below it. The ask was to fade
+it out so it ends on the same line as the rest of the page, while still showing enough of
+the next card to say there is more.
+
+**A mask, not an overlay.** The section behind the rail carries the lucha collage texture
+from entries 26 and 31. A gradient painted in a flat colour would smear a grey block across
+the artwork, and would need re-tuning on any page whose background differs. A mask fades the
+cards themselves and lets whatever is behind them show through. It also costs no extra
+element and cannot intercept a click or a drag.
+
+The fade completes on `calc(100% - var(--st-edge))`, which is the 1180px container's right
+edge, so it lands on the same line the sections below already end on. Verified:
+
+| Viewport | fade ends | sections below end |
+|---|---|---|
+| 1440 | 1310 | 1310 |
+| 1744 | 1462 | 1462 |
+| 1920 | 1550 | 1550 |
+
+**`padding-right` had to come back.** Entry 3 set it to 0. With a fade over the last
+`--st-edge` pixels, the final card would stop underneath the faded zone at full scroll and
+could never be read, which is worse than the clutter. Restoring `padding-right: var(--st-edge)`
+extends the scroll range so the last card clears it: at maximum scroll its right edge is 1462
+at 1744, exactly where the fade completes. `scroll-padding-right` matches so snapping agrees.
+
+**Below 1276** the container has stopped centring and `--st-edge` is only the gutter, so
+there is no width to give away. The rail keeps its edge-to-edge behaviour there with a
+shorter fade that runs to the viewport edge.
+
+**Scope.** Applied to the four routes entry 3 released, `/`, `/taco-tuesday`, `/happy-hour`
+and `/game-day`. Checked every other page that has a scrolling rail: `/menu` has two, both
+already capped at the container, and `/late-night` and `/tequila-bar` have none that scroll.
+No other rail bleeds, so no other rail needed this.
+
+## 59. The happy hour and private events pair, 18 September
+
+Three faults in the two cards in the `#happy` row, reported together.
+
+**The eyebrows disagreed.** Happy hour was brand green, private events was
+`rgba(246, 239, 228, 0.8)`, a cream that appears exactly once in the entire site against 163
+gold eyebrows and 33 green. Both are gold now, and **contrast decided it rather than taste.**
+Measured against these two photographs the green eyebrow came out at **3.63:1 where 4.5 is
+required**, with hot spots at 1.95:1. Green sits at 0.324 relative luminance and can only
+take a background up to 0.033; gold is 0.520 and takes 0.077, more than twice the headroom,
+which is enough to clear the same photograph. Cream would clear it too but puts the odd one
+out back.
+
+**They sat at different heights.** The happy hour headline runs to three lines against the
+other's two, so nothing lined up. Both are bottom aligned, which shares the baseline: the
+last line of each card sits on the same pixel, 313 at 1744, and the difference in headline
+length is absorbed upward into the photograph where it costs nothing.
+
+A pixel of that gap was not the copy at all: happy hour carried `border: 1px solid` and
+private events carried none, so the two cards never framed the same. Matched.
+
+**Top alignment was tried first and reverted**, on the client's call, and the measurements
+agree with them. Aligning the eyebrows pushes both copy blocks over the brightest part of
+each photograph and buries the two subjects, the drinks and the room, under scrim. Bottom
+alignment keeps the top of each photograph clear and measures better on every element,
+because the lower half of both images is darker than the upper half.
+
+**The scrims follow the copy.** Strong at the bottom under the text,
+`0.95 / 0.90 at ~48% / 0.30 at ~74% / 0.04`, near clear across the top quarter.
+
+| | green, top aligned | gold, top aligned | gold, bottom aligned | required |
+|---|---|---|---|---|
+| Happy hour eyebrow | 3.63:1 | 6.47:1 | **10.14:1** | 4.5 |
+| Happy hour headline | 7.86:1 | 8.62:1 | **14.69:1** | 3 |
+| Private events eyebrow | 4.53:1 | 7.87:1 | **9.97:1** | 4.5 |
+| Private events headline | 8.24:1 | 9.20:1 | **16.74:1** | 3 |
+
+The hot spots went with it. Worst patch behind the private events headline was 1.52:1 top
+aligned and is 15.85:1 bottom aligned: there is no bright pixel behind any letterform on
+either card now, so this needed no compromise on the photographs at all.
+
+**The photograph was sideways.** `dining-room-night.webp` was 2000x1500, landscape
+dimensions, no EXIF orientation flag, and the room inside it rotated 90 degrees: ceiling
+along the left edge, floor along the right. Nothing about the file declared it, which is why
+it shipped. Rotated clockwise to 1500x2000 upright, then cropped to 1500x880, 1.70:1, which
+brackets the card's real range of 1.45:1 on a phone to 2.20:1 at 1744. The band chosen out
+of three candidates carries the floral wall, the pendant lamps, the lit heart bar and a full
+room of people. 380KB to 259KB, a 32% saving, since two thirds of the portrait frame was
+being discarded by `cover` anyway.
+
+**It was also wrong somewhere else.** The same file is the background of the Takeout card in
+`MobileMenu.astro`, so that had been sideways too. One file, both fixed. The original is
+preserved in git.
+
+## 60. Signature dishes: the Toast claim, the letterboxing and the bouncing, 18 September
+
+**"Top sellers from Toast" is gone.** The eyebrow now reads "the hitters · top sellers".
+Toast is the point of sale; naming it tells a diner nothing and leans on data we do not
+show. This closes the concern raised in entry 24. "People's choice" is the other option the
+client offered and is a one line change if the sales claim itself is ever a problem.
+
+A second Toast reference survives in the `/takeout-delivery` meta description, "Order online
+from Toast and skip the dishes." It is customer-facing, in search results, and it is a meta
+description, so it belongs to Mario. Logged in TASKS.md as S9 rather than changed here.
+
+**68 of 71 dish photographs had black bars baked into the frame.** Not an EXIF flag, not a
+container problem: the photograph sits letterboxed inside its own JPEG. Bar sizes ranged
+from a couple of pixels to 48% of the frame, so the food landed at a different height in
+every card. This is what read as "weird cropping".
+
+Detecting them took three attempts and the first two were wrong:
+
+- Mean brightness per row flags dark photography as a bar. It wanted to cut 684px off
+  `churros-hero.jpg`, which is just a dark photograph.
+- Max brightness per row is correct in principle but stops at the first row containing one
+  bright JPEG artifact pixel. On `quesabirrias-hero.jpg` a single bright line 60 rows up
+  ended the scan and left 150 rows of black in place, which is why the first pass looked
+  fixed and was not.
+- What works is a **content bounding box**: take the 99.5th percentile brightness of each
+  row and column, keep only runs of five or more lines above threshold, and crop to the
+  first and last such run. Noise cannot end the scan early and a dark photograph has content
+  runs everywhere, so it is left alone. `tacos-al-pastor.jpg` has a genuinely dark lower
+  third and is correctly untouched; 61 files were cropped.
+
+**Re-encoding took two wrong turns too.** Saving at a flat quality 88 added 2.5MB, 29%.
+Budgeting bytes by area ratio pushed 34 images down to quality 60 to 70, because black bars
+compress to almost nothing, so the original's bytes were nearly all spent on the photograph
+and scaling that budget by area starves what is left. The answer is to reuse each file's own
+quantization tables and chroma subsampling with `progressive=True`: same bytes per pixel as
+the original, one generation of DCT rounding, worst measured PSNR 37.7 dB. 9511KB to 9409KB,
+2% smaller, with the bars gone.
+
+**The bouncing was not heights.** Every card measured 287px with a 186px square photo,
+identical across the row, before anything was changed. What moved was the photo's position
+inside the card: offsets from the card's top edge were 1, 10, 10, 18, 1 and 10 pixels,
+tracking the length of each description exactly.
+
+The cards are `<button>` elements, and Chrome centres a button's content vertically when the
+button is taller than its contents. The grid stretches every card to the tallest in the row,
+so a card with a one line description had its whole stack, photograph included, pushed down
+by half the slack. `display` computes to `block`, so nothing in the computed style says this
+is happening. Making the card a flex column fixes it.
+
+**And it needed two selectors.** Only the Tacos panel exists in the markup. `signatureDishes()`
+builds Fajitas, Margaritas and Desserts at runtime by copying the Tacos grid's style
+attribute, so those panels have no `data-dc-tpl` and their cards carry only `data-dish`.
+The first fix was written against the tpl and corrected one tab in four. All four verified:
+6, 4, 5 and 4 cards, one distinct height and one distinct photo offset each.
+
+## 61. The two missing taco photographs, 18 September
+
+`#5 Tacos de la Costa` and `#6 Tacos de Carnitas` were labelled placeholders, dashed border
+and no image, and both carried the same stale caption, "Cheese-crusted asada tacos", which
+describes neither dish. Asked to source them from the Toast ordering page.
+
+**They did not need sourcing.** Both photographs were already in the repo, from the same
+shoot as the other dish cards, and unreferenced by the homepage:
+
+- `tacos-de-camaron.jpg`, breaded shrimp with cotija and a chipotle-coloured sauce, is
+  `Tacos de la Costa`, "Crispy breaded shrimp, coleslaw, chipotle ranch, cotija".
+- `tacos-de-carnitas.jpg`, pulled pork with onion, cilantro and salsa verde, is
+  `Tacos de Carnitas`, "Michoacán-style pork, pickled onion".
+
+**Toast could not be reached, and did not need to be.** `order.toasttab.com` is behind
+Cloudflare's bot check: curl gets a 403, a real headless Chrome gets the interstitial, and
+the Firecrawl CLI is installed but unauthenticated, with no way to complete its browser
+login from a non-interactive session. If the client ever wants Toast's own item photography
+specifically rather than these, that needs a `FIRECRAWL_API_KEY` or someone saving the
+images by hand.
+
+Filling them also removed the last inconsistency in the row. The placeholders used
+`border: 1px dashed` where the real cards use `border-bottom: 1px solid`, which made their
+media boxes 185px against everyone else's 186. All six cards now report one height, 287, one
+media height, 186, and one media offset, 1. The photo dialog opens correctly on both.
+
+**Found while checking: 30 more letterboxed images outside `public/images/dishes/`**, so the
+entry 60 pass did not reach them. Not fixed, because two of them must never be cropped and a
+bulk run would damage them. Logged as D6 in TASKS.md.
+
+## 62. The brothers photograph was letterboxed by its own swap rule, 18 September
+
+Reported as black bars above and below the chef photograph in the homepage `La Cocina`
+block. Not baked into the file this time: `Brothers-e1650353623141.jpg` is a clean 1201x1201
+square with no bars, and the frame it sits in already asked for `object-fit: cover`.
+
+**The bars were painted deliberately, by the wrong branch.** `swapImages()` in `Base.astro`
+ends each swap with:
+
+```js
+img.style.objectFit = rule.fit || 'contain';
+if (!rule.fit) img.style.background = '#0d0d0b';
+```
+
+The reasoning is sound and is written above it: a rule that swaps a *placeholder* in is
+swapping in a message, and a message must not be cropped, so it defaults to `contain` and
+gets a dark field behind it so the letterboxing reads as intentional rather than broken.
+
+The brothers rule never declared `fit`, so it took that branch. But this rule swaps in the
+real photograph, replacing the "[Pending] founding story" placeholder that used to be there.
+It wanted `cover` from the day the photograph arrived and the property was simply not added.
+`fit: 'cover'` now, alongside a comment saying why the default is wrong here.
+
+**What hid it.** The painted `#0d0d0b` is almost exactly the section's own background, so the
+bars read as a deliberate inset rather than a bug. And the same photograph appears twice more
+in the social rail at 0.91, close enough to square that `contain` and `cover` nearly agree,
+so only the 4/5 chef frame showed it. Three instances, all now `cover`, all loading, and no
+broken images anywhere on the page.
+
+## 63. The Instagram rail headline and its last two placeholders, 18 September
+
+**The headline was two unrelated sentences welded together.** "Meat, veggie or vegan? A room
+that never sits still." opens on dietary options and closes on atmosphere, and the section is
+neither: it is the Instagram strip, under the eyebrow "@senortequilas_ on Instagram" and above
+the line "Excellent Mexican food, and an even better mood."
+
+Now: **"It gets loud in here. On purpose."** Two short declaratives in the voice the rest of
+the site already uses, "We're Not a Chain. We're a Family.", "Still Open. Still Cooking.", and
+it sets up photographs of a full room rather than competing with the review line underneath.
+It also stays clear of "There's a Reason to Come Every Night", which is the carousel heading
+two sections above. Fits on two lines at the existing 22ch measure where the old one took
+three.
+
+**The four green cards are filled**, two labels duplicated across the rail's two copies:
+
+- `[Karaoke night, DJ Willy hosting]` to `site/addon-karaoke.jpg`, two guests on the mic.
+- `[wall art]` to `site/addon-mariachi.jpg`, live mariachi with the flag.
+
+Neither the rail nor the repo has an actual wall-art photograph, so that slot took the
+closest real thing rather than staying empty. If the client wants wall art specifically it
+is still a photo request, under C5.
+
+**Three images were deliberately not used.** `addon-dance-floor.jpg`, `addon-live-music.jpg`
+and `addon-transformers.jpg` are illustrative stock, not this room, and they sit in the repo
+for the private events add-on list where that is understood. A rail captioned
+"@senortequilas_ on Instagram" asserts these are the restaurant's own posts, so putting
+stock in it would be a claim rather than a decoration. Everything used is the real venue.
+
+Subjects were checked against what the rail already carries, the lit heart bar, cocktails,
+two dishes, the brothers and the packed room, so mariachi and karaoke add rather than repeat.
+16 cards, 16 images, no placeholders and no broken sources.
+
+## 64. The green footer, and the green texture we already owned, 18 September
+
+Asked to see the footer on green. Held behind `data-footer-theme="green"` on the footer
+element, so it is one attribute to keep or drop.
+
+**The first attempt was the wrong road, and its numbers are worth keeping.** Putting the
+footer on the brand green, `rgb(56, 176, 73)`, cannot be a background swap. That green has
+luminance 0.324, a light surface, and every colour the footer uses fails on it: cream 2.46:1
+and 2.19:1, gold 1.52:1 and 1.07:1. Only dark ink clears, at 6.75:1. So it became a full
+inversion: everything to ink, hierarchy carried by alpha instead of by hue, the Order button
+flipped to a dark fill because green on green is invisible, and the Reserve button's inline
+`rgba(13, 13, 11, 0.4)` scrim, invisible on the dark theme, put ink on ink at 1.03:1 until it
+was cleared. It measured clean. It was still a rebuild of the footer to accommodate a colour.
+
+**What it should have been, and the site already owned it.** `9cf29efa1cbf0c3e.webp` is the
+folklore collage in green, the exact sibling of the red `ecf6382a259b5884.webp` that 16 pages
+use, and `/happy-hour` and `/karaoke` already lay it under `rgba(6, 52, 20, …)`, a deep
+forest green. That tint is luminance 0.0255, a dark surface, so nothing inverts: cream is
+12.18:1, gold 7.55:1 and 5.31:1, and the Order button's own brand green is 4.95:1 against it
+and stays exactly as it was. The whole change is now four lines of background, and the
+footer keeps every colour it had.
+
+All 29 footer elements pass, means between 5.29:1 and 14.39:1, worst patch above 4.6:1 on
+everything except the Reserve button's own edge where its dark fill meets the field.
+
+**Two false failures on the way, both mine.** An audit that screenshots the viewport and
+addresses elements by `getBoundingClientRect()` drifts if anything scrolls between the
+measure and the capture, and it reported the Order button at 1.37:1 while the button was
+plainly green on screen. Fixed by taking a full-page screenshot and addressing elements in
+absolute document coordinates. The other came from hiding text with `visibility: hidden`,
+which also hides the element's own background, so a button's fill vanishes and the panel
+behind it gets measured instead. Set `color: transparent` and the fill stays.
+
+## 65. Hover states, site wide, 18 September
+
+Asked for: every button responds to the pointer, animated, and the nav gets a hover state to
+go with its active one, built on tokens.
+
+**Why the site had no hover states.** `site.css` has carried `a:hover { color: #38B049 }`
+since the port, and it has never once applied. Every interactive element here has its colour
+in an inline `style` attribute, and an inline declaration outranks any stylesheet rule that
+is not `!important`. The rule was live, it matched, and it always lost.
+
+That also happens to be why the buttons were safe. Had it won, the Order button's dark ink
+would have turned brand green on a brand green fill. Every rule in entry 53 of `tweaks.css`
+is `!important` for the same reason the old one needed to be.
+
+**Tokens.** The port had layout tokens only, `--st-page` and the gutters from entry 24, while
+the six colours were repeated as literals across roughly 240 inline styles. Entry 53 names
+them, plus two hover tints, a duration and an easing, so a hover colour changes in one place.
+
+**The roles already existed in the markup.** `scp0` through `scp9` come from the design tool
+and are consistent across all 22 pages: `scp2` is the primary green button, 34 uses; `scp1`
+and `scp9` the outlined secondary, 36; `scp3` the outlined tertiary and card links, 63;
+`scp0`, `scp4` and `scp6` plain text links, 66; `scp5` the chip buttons, 10; `scp7` a card
+surface that is not interactive on its own. Hooking the hovers to those roles covered about
+209 elements without touching a single line of markup.
+
+Treatments: the green button brightens and lifts its glow, the ink stays because it is the
+only readable thing on green. The outlined ones take their border to full gold with a 12%
+gold wash. Text links go to full cream rather than to the green from `site.css`, which on the
+nav would read as a selected state rather than a pointer response. The nav also draws a gold
+underline, scaled from zero rather than `text-decoration`, so it can animate and clear the
+descenders. Dish cards lift 2px. The filter chips carry no class, only a tpl, and
+`signatureDishes()` writes their colours inline as tabs change, so they are keyed on
+`aria-selected` and the chosen chip brightens instead of being washed out.
+
+Every hover is paired with `:focus-visible`, so the keyboard gets what the mouse gets, and
+the transform and transitions are dropped under `prefers-reduced-motion`. The transition
+lists named properties rather than `all`, so no hover can animate a layout property.
+
+**Measured on hover**, composited against each element's real surface: primary 8.87:1, which
+is better than its 6.75:1 at rest because the brighter green lifts away from the dark ink;
+secondary 13.79:1, tertiary 13.72:1, nav 16.42:1, inactive chip 12.83:1, active chip 8.87:1.
+Rule coverage confirmed on `/`, `/menu`, `/happy-hour`, `/private-parties` and `/contact`.
+
+**Not addressed:** the nav still has no current-page state on 12 pages, which is entry 10 and
+D5. Hover is now distinct from it, which will make that easier rather than harder.
+
+## 66. Scroll reveals, and the CLS they were wrongly blamed for, 18 September
+
+Requested: slow micro animations, different by kind of element, arriving on scroll.
+
+**How it works.** Tagging is a script in `Base.astro`, treatments are entry 54 of
+`tweaks.css`. Four kinds, so it does not read as one blanket fade: headings rise 20px over
+980ms and lead the block, copy follows 12px over 760ms on a 90ms delay, photographs settle
+out of a 1.025 scale over 1150ms rather than travelling, and repeated grid children stagger
+70ms apart, capped at seven so a long list does not trail.
+
+Three rules it is built around:
+
+1. **Nothing above the fold is touched.** An element at `opacity: 0` cannot be the largest
+   contentful paint until it fades in, so animating the hero would move LCP by the length of
+   the animation. Only elements whose top starts below the first viewport are tagged.
+2. **Nothing is hidden unless the script runs.** The hidden state is applied by JavaScript,
+   not by the stylesheet. Verified: with JavaScript disabled, zero elements tagged and
+   nothing at `opacity: 0`. Same under `prefers-reduced-motion`, where the script bails.
+3. **Opacity and transform only**, so nothing can move and nothing can cost CLS.
+
+Elements carrying an inline `opacity`, the scrim images behind the cards, are skipped:
+inline beats the stylesheet, so they would silently not animate, and skipping makes that a
+decision. Verified across `/`, `/menu`, `/private-parties` and `/contact`: 60, 138, 60 and 22
+elements tagged, nothing hidden above the fold, nothing left invisible after a full scroll.
+
+**The CLS investigation, and the wrong turn in it.** Lighthouse dropped from 91 to 83 with
+the animations in, on identical FCP, LCP, TBT and SI, which pointed at CLS, and CLS read
+0.144 against 0.003. That looks conclusive and it was not. A single measurement of the
+animations-off condition happened to catch a clean run.
+
+Running the off condition properly gives **CLS 0.132, the same culprit and the same cause**.
+The shift is `data-dc-tpl="60"`, the hero column, attributed by Lighthouse to
+**"Web font loaded"** for `barlow-condensed-500.woff2` and `barlow-700.woff2`. It is
+intermittent, it depends on whether those faces land before or after first paint, and it has
+nothing to do with these animations. Both conditions swing between roughly 0.002 and 0.18.
+
+**The real bug it uncovered.** There are nine `@font-face` rules, all `font-display: swap`,
+and only three preloaded: `archivo-black-400`, `barlow-400`, `barlow-condensed-600`. The two
+that shift the hero are not among them, so the fallback paints, the real face arrives, the
+metrics change and the hero moves. Logged as D7.
+
+**One guard kept despite the misdiagnosis.** While chasing this, 13 of the 60 tagged
+elements were found to contain absolutely positioned descendants, and a transform on such an
+element makes it their containing block, which genuinely can move them. Those now fade
+without transform. It was not the cause here and measured no different, but the hazard is
+real and the cost is that 13 cards fade rather than fade and rise. One line in the script to
+drop if that is not wanted.

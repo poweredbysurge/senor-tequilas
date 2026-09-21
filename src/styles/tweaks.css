@@ -209,13 +209,15 @@ body[data-route="/"] [data-dc-tpl="129"] { display: none !important; }
 }
 
 /* The private events card on the homepage was flat red. The room behind the red does the
-   selling; the gradient keeps the headline and the eyebrow legible over it. */
+   selling; the gradient keeps the headline and the eyebrow legible over it.
+
+   Scrim direction flipped by entry 50, which moved the copy to the top of both cards. */
 body[data-route="/"] a[data-dc-tpl="111"] {
-  /* No red wash. The room is the point, so the only overlay is the neutral bottom-up scrim
-     the design already uses on its other photo cards, enough to hold the headline and the
-     eyebrow and nothing more. */
+  /* No red wash. The room is the point, so the only overlay is the neutral scrim the design
+     already uses on its other photo cards, enough to hold the headline and the eyebrow and
+     nothing more. */
   background-image:
-    linear-gradient(to top, rgba(10, 9, 8, 0.92) 0%, rgba(10, 9, 8, 0.55) 42%, rgba(10, 9, 8, 0.12) 100%),
+    linear-gradient(to top, rgba(10, 9, 8, 0.95) 0%, rgba(10, 9, 8, 0.90) 46%, rgba(10, 9, 8, 0.30) 72%, rgba(10, 9, 8, 0.04) 100%),
     url(/images/site/dining-room-night.webp) !important;
   background-size: cover !important;
   background-position: center !important;
@@ -683,8 +685,21 @@ body[data-route="/"] [data-dc-tpl="42"] {
   padding-left: var(--st-gutter) !important;
   padding-right: var(--st-gutter) !important;
 }
+
+/* DESIGN-DEBT entry 56, 18 September. The line above used to set padding-left to --st-edge-half here,
+   pinning the copy's left edge to the page container. Its right padding stayed at the flat
+   --st-gutter, so the left gap grew with the viewport while the right one did not and the
+   copy drifted into the video: 130/48 at 1440, 282/48 at 1744, 370/48 at 1920.
+
+   There is no right padding that fixes this while keeping the left edge on the gutter. The
+   column is half the section, so its right edge is already the page container's centre
+   line, which leaves exactly 590px of container to work in and no room to balance against.
+   The copy is centred in its own column instead. That is the "even weight" the hero was
+   asked for, and it costs the entry 24 alignment on this one block: the h1 now starts left
+   of the sections below it. To put it back, restore the --st-edge-half line and delete the
+   justify-content. */
 @media (min-width: 680px) {
-  body[data-route="/"] [data-dc-tpl="42"] { padding-left: var(--st-edge-half) !important; }
+  body[data-route="/"] [data-dc-tpl="42"] { justify-content: center; }
 }
 
 /* The Tonight rail. scroll-padding has to move with the padding or the arrows park each
@@ -1097,4 +1112,386 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
     text-transform: uppercase !important;
     letter-spacing: 0.04em !important;
   }
+}
+
+/* ---- 47. the open-now pill ---------------------------------------------------------------
+   Requested 18 September: the pill read as generic AI chrome. Dark fill, gold hairline
+   border and sentence case matched nothing else on the site.
+
+   It now uses the same green fill and dark ink as the Order button, and the same uppercase
+   Barlow Condensed as the eyebrow and the announcement bar, so it belongs to the type system
+   the rest of the site already uses.
+
+   The pill appears on 8 pages and carries a different data-dc-tpl on each, 46, 44, 289, 190
+   and 820, because the numbers are per artboard. It is addressed by the class
+   `st-openpill` added to the markup instead, so this rule cannot silently miss a page.
+
+   The dot is dark ink rather than green, since a green dot on a green fill is invisible, and
+   the fill itself is now what signals open. It pulses rather than hard blinking: a hard
+   on/off reads as a broken element and flashing content is an accessibility problem. The
+   pulse is 2s, well under the 3Hz threshold, and is dropped entirely for anyone who asks for
+   reduced motion. */
+.st-openpill {
+  background: rgb(56, 176, 73) !important;
+  border: none !important;
+  color: rgb(12, 18, 13) !important;
+  font-family: "Barlow Condensed", sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  padding: 7px 14px !important;
+  box-shadow: 0 0 18px rgba(56, 176, 73, 0.35);
+}
+.st-openpill-dot {
+  background: rgb(12, 18, 13) !important;
+  animation: st-openpulse 2s ease-in-out infinite;
+}
+@keyframes st-openpulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-openpill-dot { animation: none; }
+}
+
+/* ---- 48. the open-now pill tells the truth ---------------------------------------------
+   Entry 47 restyled the pill; this makes it accurate. The text is written by the script in
+   Base.astro from business.json hours, in America/New_York.
+
+   Green means open. When the restaurant is shut the pill cannot stay green, because a green
+   badge reading "closed" argues with itself, so it falls back to the dark fill and gold
+   hairline it had before entry 57. The dot stops pulsing then too: nothing is live.
+
+   It starts hidden and the script reveals it, so a page with no JavaScript shows no pill
+   rather than a stale claim. */
+.st-openpill[hidden] { display: none !important; }
+
+.st-openpill[data-open="false"] {
+  background: rgba(28, 27, 24, 0.85) !important;
+  border: 1px solid rgba(185, 156, 102, 0.32) !important;
+  color: rgba(234, 226, 214, 0.9) !important;
+  box-shadow: none;
+}
+.st-openpill[data-open="false"] .st-openpill-dot {
+  background: rgba(185, 156, 102, 0.55) !important;
+  animation: none;
+}
+
+/* ---- 49. the bleeding rails fade out at the container edge ------------------------------
+   Requested 18 September. Entry 3 released the Tonight rail to run off the right edge, which
+   reads as a scrolling rail but leaves cards colliding with the viewport edge and running
+   wider than every section below it. The ask: fade them out so the rail ends on the same
+   line as the rest of the page, while still showing enough of the next card to say there is
+   more.
+
+   This is a mask on the rail, not a gradient overlay on top of it. The section behind it
+   carries the lucha collage texture from entries 26 and 31, so a gradient painted in a flat
+   colour would smear a grey block over the artwork. A mask fades the cards themselves and
+   lets whatever is behind them show through, whatever that is.
+
+   The fade lands on `calc(100% - var(--st-edge))`, which is the 1180px container's right
+   edge, the same line the headline and the sections below already end on.
+
+   `padding-right` has to match. Entry 3 set it to 0, so at full scroll the last card would
+   stop under the faded zone and could never be read. With the padding the scroll extent
+   carries it clear of the fade. scroll-padding-right keeps snapping honest. */
+:is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-dc-tpl="91"] {
+  --st-railfade: clamp(56px, 7vw, 112px);
+  padding-right: var(--st-edge) !important;
+  scroll-padding-right: var(--st-edge) !important;
+  -webkit-mask-image: linear-gradient(to right,
+    #000 0,
+    #000 calc(100% - var(--st-edge) - var(--st-railfade)),
+    transparent calc(100% - var(--st-edge)));
+  mask-image: linear-gradient(to right,
+    #000 0,
+    #000 calc(100% - var(--st-edge) - var(--st-railfade)),
+    transparent calc(100% - var(--st-edge)));
+}
+
+/* Below the point where the container stops centring, --st-edge is just the gutter and there
+   is no room to give away, so the rail keeps its old edge-to-edge behaviour. */
+@media (max-width: 1276px) {
+  :is(body[data-route="/"], body[data-route="/taco-tuesday"], body[data-route="/happy-hour"], body[data-route="/game-day"]) [data-dc-tpl="91"] {
+    --st-railfade: clamp(40px, 6vw, 72px);
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--st-railfade)), transparent 100%);
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--st-railfade)), transparent 100%);
+  }
+}
+
+/* ---- 50. the happy hour and private events pair ----------------------------------------
+   Requested 18 September. Three things were wrong with the two cards in the #happy row.
+
+   1. Their eyebrows disagreed. Happy hour was brand green, private events was a cream that
+      appears exactly once in the whole site, against 163 gold eyebrows and 33 green. Both
+      are gold now, which is the site default, and contrast decided it rather than taste:
+      measured against these two photographs the green eyebrow came out at 3.63:1 where 4.5
+      is required, because green sits at 0.324 luminance and can only take a background up
+      to 0.033. Gold is 0.520 and takes 0.077, so it clears the same photograph. Cream would
+      clear it too but reintroduces the odd one out.
+
+   2. They sat at different heights. The happy hour headline runs to three lines against the
+      other's two, so nothing lined up. Both are bottom aligned, which shares the baseline:
+      the last line of each card sits on the same pixel and the difference in headline
+      length is absorbed upward, into the photograph, where it costs nothing.
+
+      Top alignment was tried first and reverted. It lines up the eyebrows but pushes the
+      copy over the brightest part of both photographs and buries the subjects, the drinks
+      and the room, under the scrim. Bottom alignment measured better on every text element,
+      and the hot spots behind the two headlines disappeared with it, because the lower half
+      of both photographs is darker than the upper half.
+
+   3. The scrims follow the copy. Strong at the bottom under the text, near clear across the
+      top quarter so the photographs are actually visible. The private events scrim is part
+      of its background-image in entry 11 above; the happy hour one is its own element. */
+body[data-route="/"] a[data-dc-tpl="104"],
+body[data-route="/"] a[data-dc-tpl="111"] {
+  justify-content: flex-end !important;
+}
+
+/* Happy hour carried a 1px border and private events carried none, so even once both were
+   top aligned their copy still sat a pixel apart, and the two cards did not frame the same.
+   Same border on both. */
+body[data-route="/"] a[data-dc-tpl="111"] {
+  border: 1px solid rgb(42, 40, 32) !important;
+}
+
+/* The happy hour scrim, an element rather than a background layer. */
+body[data-route="/"] [data-dc-tpl="106"] {
+  background: linear-gradient(to top,
+    rgba(18, 18, 16, 0.95) 0%,
+    rgba(18, 18, 16, 0.90) 50%,
+    rgba(18, 18, 16, 0.30) 76%,
+    rgba(18, 18, 16, 0.04) 100%) !important;
+}
+
+/* One eyebrow colour for the pair. */
+body[data-route="/"] [data-dc-tpl="108"],
+body[data-route="/"] [data-dc-tpl="112"] {
+  color: rgb(214, 188, 133) !important;
+}
+
+/* ---- 51. the signature dish cards stop bouncing ----------------------------------------
+   Requested 18 September: the cards looked like they were bouncing in height. They were
+   not. Every card measured 287px tall with a 186px square photo, identical across the row.
+   What moved was the photo's position inside the card.
+
+   The cards are `<button>` elements, and Chrome centres a button's content vertically when
+   the button is taller than what is inside it. The grid stretches every card to the tallest
+   in the row, so a card with a one line description got its whole stack, photo included,
+   pushed down by half the leftover space. Measured offsets from the card's top edge were
+   1, 10, 10, 18, 1 and 10 pixels, tracking description length exactly.
+
+   Making the card a flex column anchors the stack to the top and puts the slack at the
+   bottom where it belongs, under the text. `display: block` does not do it: the centring is
+   the button's internal layout, not a property you can read off the computed style.
+
+   Both selectors are needed. Only the Tacos panel exists in the markup; signatureDishes()
+   in Base.astro builds the Fajitas, Margaritas and Desserts panels at runtime by copying
+   the Tacos grid's style attribute, so those panels carry no data-dc-tpl and their cards
+   carry no tpl either, only data-dish. Targeting the tpl alone fixed one tab in four. */
+[data-dc-tpl="124"] > button,
+[role="tabpanel"] > button[data-dish] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+}
+
+/* ---- 52. the green footer ---------------------------------------------------------------
+   Asked for on 18 September. Held behind `data-footer-theme="green"` on the footer element
+   in Footer2.astro, so it is one attribute to keep or drop.
+
+   **First attempt, kept here because the numbers are worth not rediscovering.** Putting the
+   footer on the brand green, `rgb(56, 176, 73)`, does not work as a background swap. That
+   green has luminance 0.324, which is a light surface, and every colour the footer uses
+   fails on it: cream 2.46:1 and 2.19:1, gold 1.52:1 and 1.07:1. Only dark ink clears it, at
+   6.75:1, so the whole footer had to inverse to ink with opacity carrying the hierarchy, the
+   Order button had to flip to a dark fill, and the Reserve button's inline
+   `rgba(13, 13, 11, 0.4)` scrim put ink on ink at 1.03:1. It measured clean in the end and
+   it was the wrong road.
+
+   **What it should be.** The site already owns this: `9cf29efa1cbf0c3e.webp` is the folklore
+   collage in green, the exact sibling of the red `ecf6382a259b5884.webp` that 16 pages use,
+   and `/happy-hour` and `/karaoke` already lay it under `rgba(6, 52, 20, …)`, a deep forest
+   green. That tint has luminance 0.0255, a dark surface, so nothing has to invert: cream is
+   12.18:1, gold 7.55:1 and 5.31:1, and the Order button's own brand green is 4.95:1 against
+   it and stays exactly as it is. The footer keeps its palette and only its field changes.
+
+   The tint is held green top to bottom rather than fading to near black the way the two hero
+   uses do, because a footer has no content below it to hand off to. */
+footer[data-footer-theme="green"] {
+  background:
+    linear-gradient(rgba(6, 52, 20, 0.86), rgba(6, 52, 20, 0.93)),
+    url(/images/9cf29efa1cbf0c3e.webp) center center / cover no-repeat rgb(6, 52, 20) !important;
+}
+
+/* ---- 53. hover states, site wide --------------------------------------------------------
+   Requested 18 September: every button and the nav should respond to the pointer, animated,
+   built on tokens.
+
+   **Why nothing hovered before.** site.css does carry `a:hover { color: #38B049 }`, and it
+   has never once applied. Every interactive element in this port has its colour in an inline
+   style attribute, and an inline declaration outranks any stylesheet rule that is not
+   `!important`. So the rule was live, matched, and always lost. That is also why the buttons
+   were safe: had it won, the Order button's dark ink would have turned brand green on a
+   brand green fill. Every rule below is `!important` for the same reason.
+
+   **Tokens.** The port had layout tokens only, `--st-page` and the gutters from entry 24.
+   The colours were repeated as literals in about 240 inline styles. These name the six that
+   were actually in use, plus the two hover tints and the timing, so a hover colour is
+   changed in one place rather than in every rule below.
+
+   **The roles already existed.** `scp0` to `scp9` come from the design tool and turn out to
+   be consistent: scp2 is the primary green button, 34 uses; scp1 and scp9 the outlined
+   secondary, 36; scp3 the outlined tertiary and card links, 63; scp0, scp4 and scp6 plain
+   text links, 66; scp5 the chip buttons, 10; scp7 a card surface, not interactive on its
+   own. Hooking the hovers to those roles covers the site without touching markup.
+
+   Every hover is paired with `:focus-visible`, so the keyboard gets what the mouse gets, and
+   the whole thing is dropped under `prefers-reduced-motion`. */
+:root {
+  --st-green:    rgb(56, 176, 73);
+  --st-green-hi: rgb(76, 201, 95);
+  --st-ink:      rgb(12, 18, 13);
+  --st-gold:     rgb(185, 156, 102);
+  --st-gold-hi:  rgb(214, 188, 133);
+  --st-cream:    rgb(246, 239, 228);
+  --st-dur:      160ms;
+  --st-ease:     cubic-bezier(.2, .6, .3, 1);
+}
+
+/* One transition for everything that reacts. Named properties, never `all`, so a hover
+   cannot animate a layout property by accident. */
+:is(a, button, [role="tab"], [data-dish], [data-social], [data-dc-tpl="126"]) {
+  transition:
+    background-color var(--st-dur) var(--st-ease),
+    border-color     var(--st-dur) var(--st-ease),
+    color            var(--st-dur) var(--st-ease),
+    box-shadow       var(--st-dur) var(--st-ease),
+    opacity          var(--st-dur) var(--st-ease),
+    transform        var(--st-dur) var(--st-ease);
+}
+
+/* Primary, the green button. Brightens and lifts its glow; the ink stays put because it is
+   the only thing readable on green. */
+:is(a, button).scp2:is(:hover, :focus-visible) {
+  background: var(--st-green-hi) !important;
+  box-shadow: 0 0 24px rgba(56, 176, 73, 0.55) !important;
+}
+
+/* Secondary and tertiary, the outlined ones. The outline comes up to full gold and the fill
+   warms very slightly, which is enough on a dark field without inventing a new colour. */
+:is(a, button):is(.scp1, .scp9, .scp3):is(:hover, :focus-visible) {
+  border-color: var(--st-gold-hi) !important;
+  background-color: rgba(185, 156, 102, 0.12) !important;
+  color: var(--st-cream) !important;
+}
+
+/* The chip buttons on the dish filters and the day rail. */
+:is(a, button).scp5:is(:hover, :focus-visible) {
+  border-color: var(--st-gold-hi) !important;
+  background-color: rgba(185, 156, 102, 0.16) !important;
+}
+
+/* Plain text links, including the header nav. They sit at 0.85 cream, so hover takes them to
+   full cream rather than to the green from site.css, which on the nav would read as a
+   selected state rather than a pointer response. */
+:is(a).scp0:is(:hover, :focus-visible),
+:is(a).scp4:is(:hover, :focus-visible),
+:is(a).scp6:is(:hover, :focus-visible) {
+  color: var(--st-cream) !important;
+}
+
+/* The nav gets the underline the footer already uses, drawn rather than text-decoration so
+   it can animate from nothing and sit off the descenders. */
+header nav a, [data-screen-label*="Header"] nav a { position: relative; }
+header nav a::after, [data-screen-label*="Header"] nav a::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 2px;
+  background: var(--st-gold-hi);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--st-dur) var(--st-ease);
+}
+header nav a:is(:hover, :focus-visible)::after,
+[data-screen-label*="Header"] nav a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
+
+/* The dish cards and the rail arrows, which are buttons rather than links. */
+:is([data-dc-tpl="124"] > button, [role="tabpanel"] > button[data-dish]):is(:hover, :focus-visible) {
+  border-color: var(--st-gold-hi) !important;
+  transform: translateY(-2px);
+}
+:is([data-dc-tpl="84"], [data-dc-tpl="87"]):is(:hover, :focus-visible):not([disabled]) {
+  border-color: var(--st-gold-hi) !important;
+  background-color: rgba(185, 156, 102, 0.16) !important;
+}
+
+/* The dish filter chips carry no class, only their tpl, and signatureDishes() writes their
+   background and colour inline as you switch tabs. Keyed on aria-selected so the chosen chip
+   brightens rather than being washed out by the outlined treatment. */
+[data-dc-tpl="123"][aria-selected="false"]:is(:hover, :focus-visible) {
+  border-color: var(--st-gold-hi) !important;
+  background-color: rgba(185, 156, 102, 0.16) !important;
+  color: var(--st-cream) !important;
+}
+[data-dc-tpl="123"][aria-selected="true"]:is(:hover, :focus-visible) {
+  background-color: var(--st-green-hi) !important;
+}
+
+/* Anyone who has asked for less motion keeps the colour change and loses the movement. */
+@media (prefers-reduced-motion: reduce) {
+  :is(a, button, [role="tab"], [data-dish], [data-social], [data-dc-tpl="126"]) { transition: none; }
+  header nav a::after, [data-screen-label*="Header"] nav a::after { transition: none; }
+  :is([data-dc-tpl="124"] > button, [role="tabpanel"] > button[data-dish]):is(:hover, :focus-visible) { transform: none; }
+}
+
+/* ---- 54. scroll reveals -----------------------------------------------------------------
+   Requested 18 September: slow micro animations, different by kind of element, arriving on
+   scroll. The tagging is in Base.astro; these are the four treatments.
+
+   Only opacity and transform appear here. Both are composited, neither triggers layout, so
+   none of this can shift the page or cost CLS. There is no `will-change`: at this many
+   elements it would cost more memory than it saves, and both properties are already on the
+   compositor.
+
+   The easing is a long tail, most of the distance covered early and a slow settle, which is
+   what reads as expensive rather than bouncy. Nothing overshoots.
+
+   These selectors only ever match when the script has tagged an element, and the script only
+   tags what starts below the fold, so the hero is untouched and a page with no JavaScript
+   has no hidden state at all. */
+[data-anim] {
+  opacity: 0;
+  transition:
+    opacity   var(--st-reveal, 820ms) var(--st-reveal-ease, cubic-bezier(.16, .8, .3, 1)),
+    transform var(--st-reveal, 820ms) var(--st-reveal-ease, cubic-bezier(.16, .8, .3, 1));
+}
+
+/* Headings carry the furthest and the slowest: they lead the block. */
+[data-anim="rise"]    { --st-reveal: 980ms; transform: translateY(20px); }
+
+/* Copy follows a beat behind, on a shorter travel, so the two do not move as one slab. */
+[data-anim="soft"]    { --st-reveal: 760ms; transform: translateY(12px); }
+
+/* Photographs settle rather than travel. A picture that slides reads as a slide; a picture
+   that eases out of a very slight scale reads as focus. */
+[data-anim="media"]   { --st-reveal: 1150ms; transform: scale(1.025); }
+
+/* Repeated cards. Short travel, quick, because the stagger is doing the work. */
+[data-anim="stagger"] { --st-reveal: 700ms; transform: translateY(16px); }
+
+/* Opacity only, for anything holding an absolutely positioned child. See the guard in
+   Base.astro: a transform on those boxes re-resolves the child's containing block and the
+   movement is a real layout shift. Slightly slower, since it has only one property to say
+   it with. */
+[data-anim="fade"]    { --st-reveal: 900ms; }
+
+[data-anim].st-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-anim] { opacity: 1 !important; transform: none !important; transition: none !important; }
 }

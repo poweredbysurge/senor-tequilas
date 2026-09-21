@@ -148,6 +148,186 @@ const jsonLd = {
     <slot />
     <MobileMenu />
     <script is:inline>
+      /* Scroll reveals. See DESIGN-DEBT.md entry 66.
+
+         Three rules this is built around, in order of importance:
+
+         1. Nothing above the fold is touched. The hero holds the LCP element on every page,
+            and an element that starts at `opacity: 0` cannot be the largest contentful paint
+            until it fades in, which would move LCP by the length of the animation. Only
+            elements whose top starts below the first viewport are ever hidden.
+         2. Nothing is hidden unless this script is running. The hidden state is applied here
+            rather than in the stylesheet, so with no JavaScript, or no IntersectionObserver,
+            the page is simply the page.
+         3. Opacity and transform only. Neither triggers layout, so none of this can move
+            anything or cost CLS.
+
+         Different kinds of element get different treatments, which is what keeps it from
+         reading as one blanket fade: headings rise furthest and slowest, copy follows a beat
+         later and shorter, photographs settle out of a slight scale rather than moving, and
+         repeated cards in a grid stagger. */
+      (function () {
+        if (!('IntersectionObserver' in window)) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        var fold = window.innerHeight;
+        var SKIP = '#mobile-menu, header, [data-autoscroll], [data-rail], [data-anim]';
+
+        function tag(el, kind, delay) {
+          if (!el || el.closest(SKIP) || el.hasAttribute('data-anim')) return;
+          var r = el.getBoundingClientRect();
+          if (r.top + window.scrollY < fold) return;          // above the fold, leave alone
+          if (!r.width || !r.height) return;
+          var pos = getComputedStyle(el).position;
+          if (pos === 'fixed' || pos === 'sticky') return;
+          // An element carrying its own inline opacity, the scrim images behind the cards
+          // for instance, cannot be faded without destroying the value it was given. Inline
+          // wins over the stylesheet anyway, so it would silently not animate; skipping it
+          // makes that a decision rather than an accident.
+          if (el.style.opacity !== '') return;
+          // A transform makes an element a containing block for its absolutely positioned
+          // descendants, so putting one on a card that holds an `inset: 0` scrim or photo
+          // re-resolves that child against a different box, and taking the transform off
+          // again at reveal re-resolves it back. That is a real layout shift, it is what
+          // took CLS from 0.003 to 0.18, and it does not reproduce reliably in a local
+          // profile because it depends on when the images land. These fade only.
+          if (kind !== 'soft' && kind !== 'rise') {
+            var kids = el.querySelectorAll('*');
+            for (var j = 0; j < kids.length; j++) {
+              var kp = getComputedStyle(kids[j]).position;
+              if (kp === 'absolute' || kp === 'fixed') { kind = 'fade'; break; }
+            }
+          }
+          el.setAttribute('data-anim', kind);
+          if (delay) el.style.transitionDelay = delay + 'ms';
+          io.observe(el);
+        }
+
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            e.target.classList.add('st-in');
+            io.unobserve(e.target);                            // reveal once, never re-hide
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+
+        [].slice.call(document.querySelectorAll('section, footer')).forEach(function (sec) {
+          if (sec.closest(SKIP)) return;
+
+          [].slice.call(sec.querySelectorAll('h1, h2')).forEach(function (h) { tag(h, 'rise'); });
+          [].slice.call(sec.querySelectorAll('p')).forEach(function (el) { tag(el, 'soft', 90); });
+
+          // photographs, and the background-image boxes the port uses in place of them
+          [].slice.call(sec.querySelectorAll('img, [style*="aspect-ratio"]')).forEach(function (m) {
+            tag(m, 'media');
+          });
+
+          // repeated children of a grid or a flex row: stagger them, capped so a long list
+          // does not end with a card arriving two seconds after the one above it
+          [].slice.call(sec.querySelectorAll('*')).forEach(function (box) {
+            var d = getComputedStyle(box).display;
+            if (d !== 'grid' && d !== 'flex') return;
+            var kids = [].slice.call(box.children);
+            if (kids.length < 3 || kids.length > 24) return;
+            kids.forEach(function (k, i) { tag(k, 'stagger', Math.min(i, 7) * 70); });
+          });
+        });
+      })();
+    </script>
+    <script is:inline define:vars={{ hours: business.hours }}>
+      /* The open-now pill. See DESIGN-DEBT.md entry 57.
+
+         The pill used to be hardcoded, "Open now, until 12am" on all eight pages that carry
+         it, which was wrong on six days out of seven and wrong at every hour before 3pm. It
+         reads business.json hours now, the same data the JSON-LD already uses.
+
+         Everything is computed in America/New_York, never in the visitor's own zone. Someone
+         browsing from California has to see the restaurant's clock, not their own.
+
+         The pill starts hidden and this script reveals it. That breaks the usual rule that
+         the page degrades to its static self, and it is deliberate: with no JavaScript the
+         honest output is no pill at all, because there is no single sentence about these
+         hours that is true all week. A false "open now" is worse than a missing badge. */
+      (function () {
+        var pills = document.querySelectorAll('.st-openpill');
+        if (!pills.length) return;
+
+        var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var byDay = {};
+        hours.forEach(function (h) { h.days.forEach(function (d) { byDay[d] = h; }); });
+
+        function mins(hhmm) { return parseInt(hhmm.slice(0,2),10) * 60 + parseInt(hhmm.slice(3,5),10); }
+
+        function label(hhmm) {
+          var h = parseInt(hhmm.slice(0,2),10), m = parseInt(hhmm.slice(3,5),10);
+          var ap = (h >= 12 && h < 24) ? 'pm' : 'am';
+          var hr = h % 12; if (hr === 0) hr = 12;
+          return hr + (m ? ':' + (m < 10 ? '0' : '') + m : '') + ap;
+        }
+
+        /* The restaurant's own wall clock, whatever the visitor's zone is. */
+        function nowET() {
+          var parts = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'America/New_York',
+            weekday: 'long', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+          }).formatToParts(new Date());
+          var g = function (t) {
+            for (var i = 0; i < parts.length; i++) if (parts[i].type === t) return parts[i].value;
+            return '';
+          };
+          return { day: g('weekday'), mins: parseInt(g('hour'),10) * 60 + parseInt(g('minute'),10) };
+        }
+
+        function status() {
+          var now = nowET();
+          var i = DAYS.indexOf(now.day);
+          var today = byDay[now.day];
+          var yday = byDay[DAYS[(i + 6) % 7]];
+
+          /* Yesterday's shift can still be running. Thursday closes at 00:00 exactly, so its
+             closes value is 0 and it never spills into Friday, which is correct. */
+          if (yday) {
+            var yo = mins(yday.opens), yc = mins(yday.closes);
+            if (yc <= yo && now.mins < yc) return { open: true, until: yday.closes };
+          }
+          if (today) {
+            var o = mins(today.opens), c = mins(today.closes);
+            var overnight = c <= o;
+            if (overnight ? now.mins >= o : (now.mins >= o && now.mins < c)) {
+              return { open: true, until: today.closes };
+            }
+            if (now.mins < o) return { open: false, next: today.opens, day: null };
+          }
+          /* Shut for the night. Walk forward to the next day that opens. */
+          for (var n = 1; n <= 7; n++) {
+            var d = DAYS[(i + n) % 7], r = byDay[d];
+            if (r) return { open: false, next: r.opens, day: n === 1 ? 'tomorrow' : d };
+          }
+          return null;
+        }
+
+        function render() {
+          var s = status();
+          if (!s) return;
+          var text = s.open
+            ? 'Open now, until ' + label(s.until)
+            : 'Closed, opens ' + (s.day ? s.day + ' ' : '') + label(s.next);
+          for (var i = 0; i < pills.length; i++) {
+            var pill = pills[i];
+            var slot = pill.querySelector('.sc-interp') || pill.lastElementChild;
+            if (slot) slot.textContent = text;
+            pill.setAttribute('data-open', s.open ? 'true' : 'false');
+            pill.removeAttribute('hidden');
+          }
+        }
+
+        render();
+        /* Re-check on the minute so a page left open rolls over on its own. */
+        setInterval(render, 60000);
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) render(); });
+      })();
+    </script>
+    <script is:inline>
       /* port: mobile menu toggle. See DESIGN-DEBT.md entry 6.
 
          The design drew a <button> with aria-label="Open menu" and a matching "Close menu" button
@@ -756,7 +936,14 @@ const jsonLd = {
             match: /5e8f15f4ebe2842c\.jpg/,
             src: '/images/Brothers-e1650353623141.jpg',
             alt: 'The Rivas brothers, who opened Senor Tequila\'s in 2015',
+            fit: 'cover',
             why: 'the "[Pending] founding story" placeholder card, used for the chef slot and the 2015 timeline'
+            // `fit` was missing until 18 September, so this fell to the contain default below and
+            // the photograph sat letterboxed on a painted #0d0d0b field inside its 4/5 frame. The
+            // default is right for a rule that swaps a placeholder in, since a message must not be
+            // cropped, and wrong here: what this rule swaps in is the real photograph. The other
+            // instance of it sits in a 1/1 frame, where the picture is square and cover and contain
+            // agree, which is why only the homepage chef slot showed it. See DESIGN-DEBT entry 62.
           },
           {
             route: '/',
