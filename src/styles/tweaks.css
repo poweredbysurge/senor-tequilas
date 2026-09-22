@@ -1598,3 +1598,28 @@ body[data-route="/"] [data-dc-tpl="58"] {
   padding: 7px 13px !important;
   letter-spacing: 0.08em !important;
 }
+
+/* ---- 59. the Find Us card -----------------------------------------------------------------
+   Requested 21 September, and scoped to this card only as asked: no token is touched and no
+   global rule changes, so the footer's own hours block and every other page keep what they
+   have.
+
+   **The day labels.** Entry 19 centres section copy below 768, which is why the days sit in
+   the middle of their column on a phone and are already flush left from 768 up. This is a
+   direct rule on the labels, so it beats the inherited centring without needing to unpick it.
+   Keyed on `nth-child(odd)` rather than the ten tpl ids, so a sixth row added later behaves.
+
+   **The hours.** Friday and Saturday were green and the other three were not, which read as
+   a highlight nobody meant. All five now.
+
+   **The phone.** Gold to green. It is the one link in the card, and green is what the site
+   uses for an action. */
+@media (max-width: 767px) {
+  body[data-route="/"] [data-dc-tpl="230"] > span:nth-child(odd) { text-align: left; }
+}
+body[data-route="/"] [data-dc-tpl="230"] > span:nth-child(even) {
+  color: var(--st-green) !important;
+}
+body[data-route="/"] a[data-dc-tpl="228"] {
+  color: var(--st-green) !important;
+}

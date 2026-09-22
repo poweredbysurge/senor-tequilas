@@ -2031,3 +2031,24 @@ Contrast re-measured over the textured red field: 15.77:1, 14.24:1 and 14.42:1 a
 
 **The Instagram heading** becomes "It gets loud in here by nature." in place of "It gets
 loud in here. On purpose." from entry 63. One sentence rather than two.
+
+## 73. The Find Us card, and a redundant footer line, 21 September
+
+Scoped to these elements as asked: no token changed, no global rule touched, so the footer's
+own hours block and every other page keep exactly what they had.
+
+**The day labels align left on a phone.** They were centred because entry 19 centres section
+copy below 768, which is also why they were already flush left from 768 up, so this is a
+mobile-only correction. Done with a direct rule on the labels, which beats the inherited
+centring without unpicking it, and keyed on `nth-child(odd)` rather than the five tpl ids so
+a sixth row added later behaves.
+
+**All five hour rows are green.** Friday and Saturday were green and the other three were
+not, which read as a highlight nobody had meant. 6.13:1 against the card, measured.
+
+**The phone number is green** rather than gold. It is the one link in the card, and green is
+what the site uses for an action.
+
+**The footer's closing line is gone.** "From Mexico, With Love." sat at the bottom of the
+bottom bar, under the same words set as the footer's own 76px heading a few hundred pixels
+above it. The copyright line keeps its place.
