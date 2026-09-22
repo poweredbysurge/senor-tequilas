@@ -2052,3 +2052,28 @@ what the site uses for an action.
 **The footer's closing line is gone.** "From Mexico, With Love." sat at the bottom of the
 bottom bar, under the same words set as the footer's own 76px heading a few hundred pixels
 above it. The copyright line keeps its place.
+
+## 74. Game Day in the mobile menu, 21 September
+
+The hamburger grid held nine cards in a two-column layout, so the tenth slot sat empty.
+Game Day fills it and links to `/game-day`.
+
+The photograph is `site/watch-party-room.jpg`, already used on `/game-day` itself, where it
+carries the alt "A full table of guests in jerseys at a watch party, the lit bar and the
+screens behind them". It is the only one of the four watch-party images where both the
+guests and the wall of screens are unmistakable; `game-day-hero.jpg` is the page's own hero
+and reusing it here would have said the same thing twice.
+
+Eyebrow "Every game", label "Game Day", which is the short-teaser-then-destination pattern
+every other card uses and echoes the page's own H1, "Every Game, Every Night". Styling is
+copied from the Contact card verbatim and verified equal on min-height, padding, radius,
+border, shadow, colour and display.
+
+Placed before Contact rather than after it, so Contact stays the closing card. The grid is
+full either way; this just keeps the pattern where the last card is how to reach the
+restaurant.
+
+**Desktop is deliberately not touched yet.** Measured, the header nav has no room: it
+appears from 1200 up, and spare width is 0 at 1200, 20px at 1280 and 106px at 1366, against
+roughly 86px for a ninth item. Adding one would overflow the header between 1200 and about
+1340, which includes 1280, one of the two most common laptop widths. See D9.
