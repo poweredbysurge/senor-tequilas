@@ -2077,3 +2077,27 @@ restaurant.
 appears from 1200 up, and spare width is 0 at 1200, 20px at 1280 and 106px at 1366, against
 roughly 86px for a ninth item. Adding one would overflow the header between 1200 and about
 1340, which includes 1280, one of the two most common laptop widths. See D9.
+
+## 75. Game Day replaces Gift Cards in the header nav, 21 September
+
+Approved after entry 74 measured that a ninth header item would overflow between 1200 and
+about 1340. Swapping keeps the count at eight, so nothing moves at any width: verified 0px
+spare at 1200, 20px at 1280 and 106px at 1366, exactly as before, with no page overflow and
+no wrapping.
+
+Gift Cards was the right item to give up. It was the only nav entry that is an in-page
+anchor rather than a page, `/#gift`, which is also why it could never show a current-page
+state. Game Day is a real route, so `navCurrent()` from entry 69 now marks it, and one of
+the twelve unmarked routes in that entry is closed.
+
+Applied to all seven header components, which is also a small step toward D8: the footer nav
+already listed Game Day and did not list Gift Cards, so the header now agrees with it on
+this item.
+
+**The swap created a gap, and it is fixed here rather than left.** With the header entry
+gone, the only remaining link to gift cards was the mobile menu card, which is not rendered
+on desktop. Measured: `/menu`, `/catering` and `/game-day` had no visible gift cards link at
+all for a desktop visitor, on a page that sells them. Gift Cards is now in the footer nav,
+before Contact, so it is reachable from all 22 pages. That nav is a wrapping flex, so the
+tenth item costs nothing: one line at 1440, two at 768, three at 390, no overflow at any of
+them.
