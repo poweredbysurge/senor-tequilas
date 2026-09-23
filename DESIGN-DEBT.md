@@ -2175,3 +2175,19 @@ Relevant to R4, R5 and R6 in TASKS.md, which are all hours questions. If the ans
 any opening time, the change has to be made in business.json *and* in six markup locations,
 or the schema and the visible hours will disagree. Consolidating the visible hours onto
 business.json is the obvious fix and is worth doing at the same time.
+
+## 78. The menu's Quesabirria section becomes Birria, 23 September
+
+Steven's note, confirmed 23 September, and R7 in TASKS.md is now answered: the **section**
+was named after one of the dishes inside it. The section holds Quesabirria Tacos, Birria
+Ramen and Birria Fries, only one of which is a quesabirria, so the category is Birria.
+
+Changed in both visible places, the sticky category pill and the section heading. The three
+dish names are untouched, including "Quesabirria Tacos" and "1 Quesabirria Taco", which are
+the dishes rather than the category.
+
+**The anchor is deliberately unchanged.** The pill links to `#cat-quesabirria` and the
+section carries that id. Renaming it would break any link anyone has already shared or
+indexed, and it is not visible to a reader. Pill and section still match, and clicking the
+pill was verified to still land on the section, 124px from the top, which is the
+scroll-margin the sticky bar needs.
