@@ -2293,3 +2293,33 @@ the link was copied in. Those are not meant to be redistributed and may stop mea
 with no query string at all. The storefront is identical, so nothing about where the link
 goes has changed; what is gone is a dining mode the visitor did not choose and attribution
 that credited Google for a click from this site.
+
+## 82. Happy hour photography, and the patio that was labelled Vallarta, 23 September
+
+**Three swaps on /happy-hour**, from images the client supplied.
+
+- The hero's left photograph, the studio drinks tray, becomes the happy hour array:
+  `site/happy-hour-array.webp`, 900x1200 at 226KB. The slot is 275x344, ratio 0.80, so the
+  portrait 1800x2400 original was the right one of the two candidates; the other, at
+  4032x3024, is the same scene in landscape and would have cropped badly.
+- The "Drinks / The Bar" card becomes `site/happy-hour-bar.webp`, 1024x683 at 80KB.
+- The "Food / The Bites" card becomes `site/happy-hour-spread.webp`, 1400x933 at 243KB. It
+  was showing `quesabirrias-card.jpg`, a single dish, where the section lists eight.
+
+Named for their slots rather than their source filenames, since `happy-hour-drinks.webp`
+already exists and is the homepage card. Sources stay in `design/library/`. Only
+`Happy Hour drinks.jpg` was actually new; the array and the spread were already in the
+library and simply unused.
+
+**The hero image had no alt.** It has one now. Worth noting it was also the page's `ogImage`,
+so the share card moves with it, which is right: the card should show what the page shows.
+
+**Vallarta was showing the patio.** `abf153efda62144c.jpg` is the mobile bar cart with the
+luchador logo, on the covered patio, which the design library's own filename says outright.
+It was captioned Vallarta. Moved to Indoor Patio, which had no picture, and Vallarta falls
+back to the placeholder until a real one arrives.
+
+This is exactly what Roberto's note 4 asked for, "change the Vallarta picture, move the
+current Vallarta picture to the Indoor Patio section", and it means the remaining gap is
+smaller than R16 records: Indoor Patio is now covered, and what is still missing is
+Vallarta, Tulum, the Mexican Room and International Room replacements, and the exterior.

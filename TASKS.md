@@ -105,7 +105,7 @@ Nothing below can be done without files. Grouped by where they go.
 | # | Needed | Source |
 |---|---|---|
 | R14 | **Menu:** the remaining items with no photograph. 57 of 126 menu thumbnails are still placeholders. The kids quesadilla picture is also wrong. | Daniela, Tomas 3, Alejandro |
-| R15 | **Happy hour:** a real happy hour photograph for the page, real pictures of the happy hour items for the menu, and real pictures for the Deals section. The note says these already exist. | Roberto 2, Daniela |
+| R15 (part) | ~~A real happy hour photograph for the page~~ and ~~real pictures for the Deals section~~ **done 23 September**, entry 82: the hero, the Bar card and the Bites card all carry supplied happy hour photography now. Still outstanding: real pictures of the happy hour items for the happy hour menu itself. | Roberto 2, Daniela |
 | R16 | **Private events rooms:** new pictures for the Mexican Room, the International Room and Vallarta; the current Vallarta picture moves to Indoor Patio; a Tulum picture; and a full exterior shot of the building. | Roberto 4, Alejandro |
 | R17 | **Private events, the rest:** an empty-room picture for the main image, buffet and catering photographs, and new pictures for the DJ booth, the mariachis and the DJ with party host. Plus Tomas' headshot for Book a Tour. | Roberto 3, 5, 6, Daniela |
 | R18 | **People:** replace the women-biting-tacos picture on /our-story and the Faty and Paty picture, which has a poor background. Missing portraits of Roberto and Alejandro. Our History should show Alex and Rob rather than unrelated guests. The 2002 photograph is promised later, to be captioned "Circa 2002, somewhere in Wisconsin." | Steven, Alejandro, Daniela, Roberto 15 |
