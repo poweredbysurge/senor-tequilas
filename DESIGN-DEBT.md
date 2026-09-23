@@ -2415,3 +2415,22 @@ white and red. 2000x1333 at 363KB, from a 2400x1600 original.
 
 The alt text went with it. It still described the previous photograph, "Three guests pulling
 apart quesabirria tacos", which would have been read aloud over a picture of a bar.
+
+## 87. The Culture, The Food and The Bar, 23 September
+
+Roberto's note 16 copy, applied to the three cards in the "Come for Dinner. Stay for the
+Night." row on /our-story. This closes most of R21: the sections already existed, so no
+layout was needed, only the words. What is still outstanding from that note is "The
+Tortillas", which has no card, and the opening line.
+
+**The supplied copy used em dashes and the site does not.** CLAUDE.md has carried the rule
+since the port: no em dashes, use a comma, a period or a colon. Two places needed it, and
+both took commas, which is the reading the sentence already had:
+
+- "Mexico as it is, with its whole folklore."
+- "our desserts, you guessed right, also made in-house."
+
+Nothing else about the copy changed. Zero em dashes in the file afterwards, checked.
+
+The new lines are two to three times longer than the ones they replace, so all three cards
+were measured rather than assumed: no clipping on any of them at 1440 or at 420.
