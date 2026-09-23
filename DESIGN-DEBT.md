@@ -2339,3 +2339,22 @@ makes about the main Private Events image.
 Rooms now stand at four of six: Mexican Room, International Room, Bar Area and Indoor Patio
 have photographs; Vallarta and Tulum still show the placeholder. R16 is down to Vallarta,
 Tulum, the International Room replacement and the exterior shot.
+
+## 84. The chef placeholder comes off /our-story, 23 September
+
+"[PENDING: head chef name, credentials and bio; dessert chef name and bio]", a gold caption
+in the "Come for Dinner. Stay for the Night." block, removed. It was the only element on the
+whole site carrying `data-pending`.
+
+Taken out of the markup rather than hidden, and note that this is a different placeholder
+from the one `dropChefPlaceholder()` in Base.astro handles, which matches "placeholder: swap
+for the new chef" and is still live for its own case.
+
+The block still reads without it. The two paragraphs end on "Meet the kitchen behind it, on
+the floor most nights alongside the family", followed by See the Menu and Reserve a Table,
+so nothing dangles where the caption was.
+
+Two "pending" strings remain on that page and are deliberate: the alt text on the Roberto and
+Alex portrait placeholders, `alt="Photograph pending: Roberto Rivas"`. Those are the two
+portraits still outstanding under C5 and R18, and the alt is doing its job until the
+photographs arrive. No visible "[PENDING" text is left anywhere on the page.
