@@ -2288,5 +2288,8 @@ so every visit sent from here will be attributed to Google in Uber's reporting.
 It carries an `rwg_token`, which is a Reserve-with-Google attribution token from the session
 the link was copied in. Those are not meant to be redistributed and may stop meaning anything.
 
-The clean link, if the tracking is not deliberate, is
-`https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA`.
+**Swapped to the clean link the same day**, on the client's call. The live URL is now
+`https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA`,
+with no query string at all. The storefront is identical, so nothing about where the link
+goes has changed; what is gone is a dining mode the visitor did not choose and attribution
+that credited Google for a click from this site.
