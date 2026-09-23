@@ -587,68 +587,39 @@ const jsonLd = {
         var CHEVRON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
         var uid = 0;
 
-        function signatureDishes() {
-          var chips = [].slice.call(document.querySelectorAll('button[data-dc-tpl="123"]'));
-          var tacoGrid = document.querySelector('[data-dc-tpl="124"]');
-          if (!chips.length || !tacoGrid) return;
+        /* ---- 6c. the signature dishes rail ---------------------------------------------------
+           Rebuilt 23 September. It used to be four category chips over a grid, with a panel built
+           per category. The client replaced it with one flat list of twelve actual top sellers, so
+           the chips, the panels and the per-category DISHES data are all gone and this is a single
+           rail. The cards are the same shape makeExpandable reads, so they still open the dialog.
 
-          var tabList = chips[0].parentElement;
-          tabList.setAttribute('role', 'tablist');
-          tabList.setAttribute('aria-label', 'Dish categories');
+           Each card carries data-full, the long menu description, so the card stays short and the
+           dialog shows the real menu copy rather than the summary. */
+        function signatureRail() {
+          var rail = document.querySelector('[data-signature-rail]');
+          if (!rail) return;
+          [].slice.call(rail.children).forEach(makeExpandable);
 
-          /* Build a panel per category. Tacos reuses the grid the design already drew. */
-          var panels = [];
-          chips.forEach(function (chip, i) {
-            var name = (chip.textContent || '').trim();
-            var panel;
-            if (i === 0) {
-              panel = tacoGrid;
-            } else {
-              panel = document.createElement('div');
-              panel.setAttribute('style', tacoGrid.getAttribute('style'));
-              (DISHES[name] || []).forEach(function (d) { panel.appendChild(buildCard(d)); });
-              tacoGrid.parentNode.insertBefore(panel, tacoGrid.nextSibling);
-            }
-            panel.id = panel.id || 'dish-panel-' + (++uid);
-            panel.setAttribute('role', 'tabpanel');
-            panel.setAttribute('aria-labelledby', chip.id || (chip.id = 'dish-tab-' + uid));
-            panel.hidden = i !== 0;
+          var prev = document.querySelector('[data-signature-prev]');
+          var next = document.querySelector('[data-signature-next]');
+          if (!prev || !next) return;
 
-            chip.setAttribute('role', 'tab');
-            chip.setAttribute('type', 'button');
-            chip.setAttribute('aria-controls', panel.id);
-            chip.setAttribute('aria-selected', String(i === 0));
-            chip.tabIndex = i === 0 ? 0 : -1;
-            panels.push(panel);
-          });
-
-          function select(i) {
-            chips.forEach(function (chip, j) {
-              var on = i === j;
-              chip.setAttribute('aria-selected', String(on));
-              chip.tabIndex = on ? 0 : -1;
-              chip.style.background = on ? 'rgb(56, 176, 73)' : 'transparent';
-              chip.style.color = on ? 'rgb(12, 18, 13)' : 'rgba(234, 226, 214, 0.85)';
-              panels[j].hidden = !on;
-            });
+          function step() {
+            var first = rail.firstElementChild;
+            if (!first) return 240;
+            var gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap) || 12;
+            return first.getBoundingClientRect().width + gap;
           }
-          chips.forEach(function (chip, i) {
-            chip.addEventListener('click', function () { select(i); });
-            chip.addEventListener('keydown', function (e) {
-              var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : e.key === 'Home' ? -i : e.key === 'End' ? chips.length - 1 - i : 0;
-              if (!d) return;
-              e.preventDefault();
-              var n = (i + d + chips.length) % chips.length;
-              select(n);
-              chips[n].focus();
-            });
-          });
-          select(0);
-
-          /* Every card, drawn and generated alike, becomes a real disclosure. */
-          panels.forEach(function (panel) {
-            [].slice.call(panel.querySelectorAll('button')).forEach(makeExpandable);
-          });
+          function sync() {
+            var max = rail.scrollWidth - rail.clientWidth - 1;
+            prev.disabled = rail.scrollLeft <= 0;
+            next.disabled = rail.scrollLeft >= max;
+          }
+          prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+          next.addEventListener('click', function () { rail.scrollBy({ left: step(), behavior: 'smooth' }); });
+          rail.addEventListener('scroll', sync, { passive: true });
+          window.addEventListener('resize', sync);
+          sync();
         }
 
         function buildCard(d) {
@@ -1398,8 +1369,8 @@ const jsonLd = {
            map is applied natively this becomes a no-op. */
         var DELIVERY = {
           'doordash': 'https://www.doordash.com/store/tequilas-germantown-1382099/87487565/',
-          'uber eats': 'https://www.ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA',
-          'ubereats': 'https://www.ubereats.com/store/senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA',
+          'uber eats': 'https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA?diningMode=PICKUP&utm_campaign=CM2508147-search-free-nonbrand-google-pas_e_all_acq_Global&utm_medium=search-free-nonbrand&utm_source=google-pas&rwg_token=AE37R_h5E4CALtPACqs6K9ZidMeWC8kot4T9VpMfLPQbc3Kdg-4thyYsfg17SRn3B4nvTIFijalAjOfVPrp1MVjp5vWIanY__w%3D%3D',
+          'ubereats': 'https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA?diningMode=PICKUP&utm_campaign=CM2508147-search-free-nonbrand-google-pas_e_all_acq_Global&utm_medium=search-free-nonbrand&utm_source=google-pas&rwg_token=AE37R_h5E4CALtPACqs6K9ZidMeWC8kot4T9VpMfLPQbc3Kdg-4thyYsfg17SRn3B4nvTIFijalAjOfVPrp1MVjp5vWIanY__w%3D%3D',
           'grubhub': 'https://www.grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303'
         };
         function deliveryLinks() {
@@ -1468,7 +1439,7 @@ const jsonLd = {
           // 15 September, and the function already returns early when the rail is absent.
           try { tonightCarousel(); } catch (e) {}
           try { if (isHome) reviewsCarousel(); } catch (e) {}
-          try { if (isHome) signatureDishes(); } catch (e) {}
+          try { if (isHome) signatureRail(); } catch (e) {}
           try { if (document.body.getAttribute('data-route') === '/menu') menuDishes(); } catch (e) {}
           try { swapImages(); } catch (e) {}
           try { textSwaps(); } catch (e) {}

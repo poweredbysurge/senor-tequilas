@@ -2229,3 +2229,64 @@ client's call. It carries `utm_source=undefined`, which will report as the liter
 "undefined" in their analytics. And it redirects to
 `order.toasttab.com/egiftcards/senortequilastogo`, which is the canonical destination and
 would work on its own.
+
+## 80. Signature Dishes rebuilt as a rail of twelve, 23 September
+
+The section was four category chips over a grid of six, all of them tacos. The client supplied
+the actual top sellers, twelve of them across the whole menu, so the chips, the per-category
+panels and the DISHES data that fed them are gone and it is one rail.
+
+**What changed.** `signatureDishes()` is replaced by `signatureRail()`, which is a third of
+the size: no chips to build, no panels to create, no tab roles to manage, no `select()`. It
+tags the twelve cards with `makeExpandable` and wires two arrows, modelled on
+`reviewsCarousel()`. The "#N seller" badges are gone as asked, and so is the tab machinery
+that entries 51 and 60 had to work around.
+
+**The dishes, and where the copy came from.** Ten of the twelve already exist on `/menu`, so
+their descriptions are the real menu copy rather than anything invented. Each card carries
+`data-full` with the long menu description and shows a short line, so the card stays the size
+it was and the dialog shows the full text. Names follow the menu's spelling, not the note's
+shorthand: "Asada Fries" is "Carne Asada Fries", "Al pastor Tacos" is "Tacos al Pastor",
+"Molcajete Mexicano" is "Mexicano Molcajete", "QuesaBirrias" is "Quesabirria Tacos".
+
+Two were not on the menu. "Carnaval Fajita" exists on `/fajitas-molcajetes`, so that copy was
+used. **"Pork Belly Guacamole" is nowhere on the site at all**, only the photograph, so its
+description is written from the picture: crisp pork belly over guacamole in a stone
+molcajete, with chips. That is the one line here nobody at the restaurant has approved.
+
+"Flautitas" was ambiguous: the menu has Flautitas de la Casa and Flautitas de Pollo. Took de
+la Casa. Worth confirming.
+
+**The fade** is entry 60 of tweaks.css, the same treatment the Tonight rail gets in entry 49,
+including the `padding-right` that stops the last card sitting under the faded zone at full
+scroll. Verified: at maximum scroll the last card's right edge is 1238 and the fade begins at
+1238.
+
+Verified: 12 cards, all expandable, no badges, no broken images, arrows scroll and disable at
+the ends, the dialog opens with the long copy, no JavaScript errors.
+
+## 81. The Uber Eats storefront, 23 September
+
+Entry 4 recorded three duplicate Uber Eats storefronts with nobody able to say which was
+live. The client supplied the live one, so R12 is closed and the `DELIVERY` map in
+`Base.astro` now points at it. Both keys, "uber eats" and "ubereats", were updated.
+
+It is a **different storefront**, not a corrected link: the old one was
+`senor-tequilas-century-blvd/ZGx2EdyySQeppjs96fcLkA` and the new one is
+`senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA`. Different slug, different id.
+
+**Three things about the supplied URL, applied as given and flagged rather than edited.**
+
+It carries `diningMode=PICKUP`. That is not a tracking parameter, it changes what the visitor
+sees: a link labelled Uber Eats, sitting in the Delivery section, that opens in pickup mode.
+Probably not intended.
+
+It carries `utm_source=google-pas`, `utm_medium=search-free-nonbrand` and a campaign id. Those
+describe a click from a Google search result, not a click from the restaurant's own website,
+so every visit sent from here will be attributed to Google in Uber's reporting.
+
+It carries an `rwg_token`, which is a Reserve-with-Google attribution token from the session
+the link was copied in. Those are not meant to be redistributed and may stop meaning anything.
+
+The clean link, if the tracking is not deliberate, is
+`https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA`.

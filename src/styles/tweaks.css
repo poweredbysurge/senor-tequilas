@@ -1623,3 +1623,19 @@ body[data-route="/"] [data-dc-tpl="230"] > span:nth-child(even) {
 body[data-route="/"] a[data-dc-tpl="228"] {
   color: var(--st-green) !important;
 }
+
+/* ---- 60. the signature dishes rail ------------------------------------------------------
+   Entry 80 rebuilt the section as one rail of twelve. This is the same fade the Tonight rail
+   gets in entry 49, for the same reason: a horizontally scrolling row that stops dead at its
+   container edge reads as clipped rather than scrollable.
+
+   This rail sits inside the 1180 container rather than bleeding, so the fade is a short one
+   at the right edge instead of being offset by --st-edge. `padding-right` matches the fade
+   width, which is the part entry 49 records as easy to forget: without it the last card
+   stops underneath the faded zone at full scroll and can never be read. */
+[data-signature-rail] {
+  --st-railfade: clamp(40px, 5vw, 72px);
+  padding-right: var(--st-railfade) !important;
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--st-railfade)), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--st-railfade)), transparent 100%);
+}
