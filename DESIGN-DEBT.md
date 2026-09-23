@@ -2151,3 +2151,27 @@ footer, the homepage hero and the JSON-LD all say 2015. Both can be true, the br
 one block" struck through beside "24 years, one mission". The 2002 copy is applied as
 written, and nothing else was changed to match, because "since 2015" appears in schema and
 in meta descriptions. Logged as R1.
+
+## 77. "3 PM to 10" becomes "3 PM to 10 PM", 23 September
+
+The Monday to Wednesday row was the only one of the five missing its closing meridiem: the
+other four read "3 PM to midnight", "3 PM to 1 AM", "11 AM to 1 AM" and "11 AM to 10 PM".
+
+Reported on the homepage Find Us card and in the footer. It was in **six files**, because
+the hours are static markup in each place rather than generated: `Footer2.astro`, which puts
+it on all 22 pages, plus `index.astro`, `contact.astro`, `takeout-delivery.astro`,
+`tequila-bar.astro` and `mexican-restaurant-gaithersburg-md.astro`. Fixing only the two that
+were reported would have left four pages disagreeing with the footer directly above them,
+which is the inconsistency the change exists to remove. All six done.
+
+**Worth knowing for the hours work still open.** `Footer2.astro`'s own header comment says
+"every fact comes from src/data/business.json: the address, the phone number, the five
+distinct opening-hour rows". That is no longer true of the hours. They are hard-coded spans,
+and so are the five page copies. `business.json` still drives the JSON-LD and the open-now
+pill, so there are two sources for the same fact and they can drift. This is why the same
+row was wrong in six places and right in none.
+
+Relevant to R4, R5 and R6 in TASKS.md, which are all hours questions. If the answers change
+any opening time, the change has to be made in business.json *and* in six markup locations,
+or the schema and the visible hours will disagree. Consolidating the visible hours onto
+business.json is the obvious fix and is worth doing at the same time.
