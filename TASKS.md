@@ -87,13 +87,13 @@ done without something from the client. Numbering is ours; the source note is in
 | R6 | **Takeout hours are different from restaurant hours.** The note gives Thursday 3-10, Friday 3-12, Saturday 11-12 for pickup, which is earlier than the dining room on all three. Daniela's note suggests why: after 10pm it is the late-night menu only. Confirm takeout closes earlier, and whether the late-night menu should be said out loud. | Roberto 19, Daniela |
 | ~~R7~~ | ~~Which menu section is misnamed.~~ **Answered 23 September**, entry 78. The section is now "Birria" in the pill and the heading; the dish names keep "Quesabirria". | done | Steven |
 | R8 | **Best sellers should not all be tacos.** Agreed in principle, but which dishes replace which, and in what order? The row currently holds the six top sellers. | Alejandro |
-| R9 | **Birria Pizza.** Copy is clear that it is to-go only, but it needs a price, a section to live in, and a photograph before it can go on the menu or into Most Ordered To-Go. | Roberto 9, 17, 18 |
+| R9 (part) | **Birria Pizza.** Copy is clear that it is to-go only, but it is **on the menu now**, entry 79, in the Birria section with a Takeout only pill and a placeholder thumbnail. Still needed: the photograph, a decision on whether the $36 price shows (no menu card shows a price today), whether "Feeds 4+" should appear, and whether it also goes into Most Ordered To-Go. | Roberto 9, 17, 18 |
 
 ### Links, feeds and credentials
 
 | # | Item | Source |
 |---|---|---|
-| R10 | **Gift card purchase link.** Should point at the restaurant's Toast gift card page. Need the exact URL. The button text is already changed to "Call to Purchase Card Now". | Roberto 12 |
+| ~~R10~~ | ~~**Gift card purchase link.**~~ **Done 23 September**, entry 79. Points at the supplied Toast gift card page. Note the URL carries `utm_source=undefined` and redirects to `order.toasttab.com/egiftcards/senortequilastogo`. Original note: Should point at the restaurant's Toast gift card page. Need the exact URL. The button text is already changed to "Call to Purchase Card Now". | Roberto 12 |
 | R11 | **Facebook link.** Set to `facebook.com/SenorTequilasDMV`, the ASCII spelling, since the note wrote it with an n-tilde and Facebook vanity URLs do not use one. Facebook returns 200 for any path, so this could not be verified from here. Please open it once and confirm. | Roberto 14 |
 | R12 | **Broken Uber Eats link.** Confirmed still unresolved from entry 4: there are three duplicate Uber Eats storefronts and nobody has said which is live. Need the correct one. | Roberto 20, entry 4 |
 | R13 | **Live Instagram feed.** Replacing the static rail with the real feed needs a third-party embed or the Instagram Basic Display API, which needs an app, a token and a refresh job. It is a build, not a copy change. Worth deciding whether it is worth it, or whether refreshing the static images periodically is enough. | Roberto 11 |

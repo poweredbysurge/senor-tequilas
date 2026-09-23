@@ -2191,3 +2191,41 @@ section carries that id. Renaming it would break any link anyone has already sha
 indexed, and it is not visible to a reader. Pill and section still match, and clicking the
 pill was verified to still land on the section, 124px from the top, which is the
 scroll-margin the sticky bar needs.
+
+## 79. Birria Pizza on the menu, and the gift card link, 23 September
+
+**Birria Pizza** added to the Birria section, which now holds four items. Structure copied
+from the existing cards verbatim, verified equal on padding, radius, min-height and
+background, and `menuDishes()` picked it up on its own, so it expands into the dish dialog
+like every other item without any wiring.
+
+The thumbnail is the site's own placeholder, `url("")` with the PHOTO label, which is what
+keeps the dashed frame from entry 73 while the real photograph is outstanding.
+
+A "Takeout only" pill sits on the right of the name row. That row is already
+`justify-content: space-between`, so the pill needed no layout change. Styled as a gold
+outline rather than a fill, because a filled badge in that row would compete with the dish
+name beside it.
+
+**Two things from the supplied menu image were deliberately left out.**
+
+The price, $36, because **no menu item card on this site shows a price**. The dollar amounts
+on that page are happy hour deals in a different component. Adding a price to one item of
+126 would read as a mistake. Say the word and prices go on all of them, or on none.
+
+"Feeds 4+", because the only marker slot in the card, `data-dc-tpl="93"`, currently carries
+one character, "V" for vegetarian or a dot, and a three-word phrase in it would not fit the
+pattern. It belongs in the description or in a second pill if it is wanted.
+
+**The gift card link** was pointing at `https://senortequilas.com`, the bare old domain,
+which is what Roberto's note meant. It now points at the Toast gift card page supplied.
+Ampersands are escaped, `rel="noopener"` added to match the other external Toast links.
+Nothing else on the site pointed at that bare domain; the two remaining `/#gift` links are
+navigation to the homepage section, which is where the button lives, so they are correct as
+they are. R10 closed.
+
+Two notes on the URL, neither changed because it is a tracking link and altering one is the
+client's call. It carries `utm_source=undefined`, which will report as the literal string
+"undefined" in their analytics. And it redirects to
+`order.toasttab.com/egiftcards/senortequilastogo`, which is the canonical destination and
+would work on its own.
