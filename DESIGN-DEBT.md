@@ -2323,3 +2323,19 @@ This is exactly what Roberto's note 4 asked for, "change the Vallarta picture, m
 current Vallarta picture to the Indoor Patio section", and it means the remaining gap is
 smaller than R16 records: Indoor Patio is now covered, and what is still missing is
 Vallarta, Tulum, the Mexican Room and International Room replacements, and the exterior.
+
+## 83. The Mexican Room photograph, 23 September
+
+`Mexican-Room.jpg`, supplied. The room empty, with the painted chairs, the Cantinflas and
+Frida posters, the star lanterns and the calavera. Web copy at
+`public/images/site/mexican-room.webp`, 1400x933 at 260KB, from a 5964x3976 original at
+4982KB.
+
+It replaces `d8219db4b8a2f6cf.jpg`, which is a night shot of a full dining room. That image
+stays in use on six other pages, so nothing is orphaned by the swap; it was simply the wrong
+picture for a page about booking an empty room, which is the same point Roberto's note 3
+makes about the main Private Events image.
+
+Rooms now stand at four of six: Mexican Room, International Room, Bar Area and Indoor Patio
+have photographs; Vallarta and Tulum still show the placeholder. R16 is down to Vallarta,
+Tulum, the International Room replacement and the exterior shot.
