@@ -2101,3 +2101,53 @@ all for a desktop visitor, on a page that sells them. Gift Cards is now in the f
 before Contact, so it is reachable from all 22 pages. That nav is a wrapping flex, so the
 tenth item costs nothing: one line at 1440, two at 768, three at 390, no overflow at any of
 them.
+
+## 76. Owner and management revision notes, first pass, 23 September
+
+Five sets of notes, from Daniela, Tomas, Steven, Alejandro and Roberto. This entry covers
+what was applied. What is blocked, and why, is in TASKS.md as R1 to R20.
+
+**Applied, copy only, 23 changes across 9 pages.** Roberto's numbering in brackets.
+
+- [3] Private events subhead "The kitchen is the point" to "The flavor is the why."
+- [6] Cake and décor answer replaced, now naming the $20 cake fee and asking guests to check
+  décor with management. "Every other night is open" to "All other nights are open."
+  Booking lead time replaced with "The sooner, the better. Rooms book fast."
+- [7] The gold rule before "the hitters" removed.
+- [8] "Mangoneada" to "Mangonada", 3 places.
+- [9] "oaxaca cheese" to "cheese" in the 4 short quesabirria descriptions.
+- [10] Brand introduction updated, including "(please don't get confused)" and "have owned
+  the brand since 2002".
+- [11] The Instagram handle and the "on Instagram" wording both enlarged, 1.5em and 1.15em.
+- [12] Gift card button "Ask About Bulk" to "Call to Purchase Card Now".
+- [14] Facebook link changed to `facebook.com/SenorTequilasDMV`.
+- [2] Happy hour wording on its own page, hero and eyebrow, now carries the all-areas and
+  bar-area-only distinction.
+- [17] "Full menu on Toast" to "Full menu online", twice. "We text you when it's packed" to
+  "We get the order and prepare it with love and care." Curbside removed from the host stand
+  step.
+- [20] "Order online through Toast" to "Order online on our website".
+- [21] "Tortillas pressed this morning" to "Tortillas pressed daily", and the same on the
+  menu page's own line.
+- [22] "What shows up" rewritten in full, including full service and the cantina licence.
+  Catering step 2 now reads "Every quote is custom. Twelve-person minimum head count."
+- [23] Fight nights rewritten. Bar area capacity detail simplified: "108 Seated, 150
+  Capacity" to "Room for a Crowd", and the sixteen-tables sentence replaced.
+- [15] "Eleven years, one block" now struck through with "24 years, one mission" beside it.
+
+**Two things deliberately not touched.**
+
+`menu.astro`'s meta description still says "pressed this morning". Meta descriptions are
+Mario's, per TASKS, so the body copy changed and the description did not. Same reason the
+happy hour page's description still carries the old wording.
+
+Three pages still say "Order on Toast" in body copy: birria-tacos, quesabirria-tacos and
+contact. Roberto's note [20] named one specific line, so only that one changed. Recommended
+as a follow-up, since it is the same reasoning as entry 60.
+
+**And one factual tension to settle.** [10] and [15] both put the brand at 2002, while the
+footer, the homepage hero and the JSON-LD all say 2015. Both can be true, the brand since
+2002 and this location since 2015, and [15] implies exactly that by keeping "eleven years,
+one block" struck through beside "24 years, one mission". The 2002 copy is applied as
+written, and nothing else was changed to match, because "since 2015" appears in schema and
+in meta descriptions. Logged as R1.
