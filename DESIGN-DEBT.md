@@ -2358,3 +2358,60 @@ Two "pending" strings remain on that page and are deliberate: the alt text on th
 Alex portrait placeholders, `alt="Photograph pending: Roberto Rivas"`. Those are the two
 portraits still outstanding under C5 and R18, and the alt is doing its job until the
 photographs arrive. No visible "[PENDING" text is left anywhere on the page.
+
+## 85. The Wisconsin press clippings, and a date that now contradicts itself, 23 September
+
+Three photographs of framed Post-Crescent clippings, supplied.
+
+**Rotation: two needed it, one did not, and EXIF said nothing.** All three carry
+`orientation=1`, "normal", so nothing in the file declares a problem, the same trap as entry
+59. IMG_1206 and IMG_1207 are rotated 90 degrees inside an upright frame and are turned
+counter-clockwise. IMG_1210 is already correct and turning it made it worse. Checked by
+reading each one, not by trusting the metadata.
+
+Web copies at `site/press-post-crescent-2005.webp`, `-2006` and `-2008`, 219 to 258KB.
+
+**What they actually say**, which is why they are worth putting on the page:
+
+- **March 14 2005**, Inc. Innovators, "Beyond burritos". The fact box is the useful part:
+  majority owner of Senor Tequila's Fine Mexican Grill & Bar, 531 W. College Ave., Appleton,
+  **opened September 2003**, eleven staff including his mother and father.
+- **January 20 2006**, "Latin restaurant mambos into town". CasaBlanca opens next door to
+  Senor Tequila, both at the same address, both owned by the same family.
+- **July 11 2008**, "Tapas reopens with a few tweaks". Three restaurants on College Avenue
+  by then, Senor Tequila among them.
+
+**The layered stack** is a second card in the existing 2015 timeline grid, so it sits beside
+the brothers photograph without any layout being rebuilt: the grid is
+`auto-fit, minmax(230px, 1fr)` and a second child simply makes two columns. Three clippings,
+fanned with slight rotations and z-order. On a phone the grid drops to one column and the
+card falls below, which is correct. Each clipping carries its own `aria-label` naming the
+paper, the date and the story, so the stack is not three decorative rectangles to a screen
+reader.
+
+**The date now contradicts itself on the same page, and this needs settling.** The clipping
+says the restaurant opened **September 2003**. Roberto's note 10 said 2002 and that copy is
+live on the homepage, "have owned the brand since 2002". Note 15 said "24 years, one
+mission", which is live on this page, and 24 years from 2026 is 2002, not 2003. The new card
+says 2003 because that is what the newspaper says. So /our-story currently carries "24
+years, one mission" a few hundred pixels above a clipping that dates the opening to 2003,
+which is 23. R1 was already open on this; it is now visible to a reader rather than only in
+the data.
+
+**And a surname worth checking.** Every clipping names the owner as **Alejandro Lopez**. The
+site says the **Rivas** brothers throughout. Both can be true, Spanish naming carries two
+surnames and press often uses one, but the copy avoids asserting either: it says "the
+family" rather than naming anyone, so nothing on the page can be wrong about it. Worth
+confirming before any version names a founder.
+
+**One competitive claim.** "Every other Senor Tequila's came after this one" is a statement
+about other businesses, the same kind as the Montgomery County line in entry 72. Written as
+asked, recorded here rather than left to be discovered.
+
+## 86. The /our-story hero, 23 September
+
+Swapped for the wide bar photograph, the lit heart backed by walls of tequila in green,
+white and red. 2000x1333 at 363KB, from a 2400x1600 original.
+
+The alt text went with it. It still described the previous photograph, "Three guests pulling
+apart quesabirria tacos", which would have been read aloud over a picture of a bar.
