@@ -2479,3 +2479,29 @@ card's ordinary border.
 **51 empty thumbnails remain elsewhere on `/menu`.** The other menu sections draw the same
 PHOTO placeholder and no photographs were supplied for them. Only the tequila section was
 asked for, and only it was changed.
+
+## 90. Happy hour thumbnails, crisp dialogs, and arrows on the category rail, 23 September
+
+**Four happy hour thumbnails.** House Red Sangria, House Margarita, Draft Beer and Green Tea
+Shooters, matched by name inside the Happy Hour section so the similarly named cards in
+Margaritas & Cocktails, "Red Sangria" and "Margarita on the Rocks or Frozen", were not touched.
+Supplied as 1254x1254 PNGs, 5,332KB total, out at 50KB.
+
+**The dialog was showing upscaled thumbnails, and that was my doing.** Entry 89 sized the menu
+thumbnails at 320px for a box that renders at 76px, which is right for the grid. The expand
+dialog reuses the card's photograph at up to 720px wide, so every one of the eleven was being
+blown up 2.2x and looked it. Each thumbnail now carries `data-photo-full` pointing at a
+full-size twin re-encoded from the 1254px original, and the dialog prefers it. Measured after:
+the dialog draws a 1254px image into 720px, a 0.57x downscale instead of a 2.2x upscale.
+
+The twins total 1,100KB and none of them is on the page: verified that nothing matching
+`-lg.webp` is requested during a full scroll of `/menu`, and that the file arrives only when a
+card is opened. The grid still loads the 320px thumbnails.
+
+**Arrows on the sticky category rail.** The bar scrolled sideways and advertised it nowhere; a
+phone discovers it by swiping, a mouse had nothing to aim at. `railArrows()` attaches a pair
+only where `(hover: hover) and (pointer: fine)` matches and the rail actually overflows, and
+re-checks on resize, so a touch device keeps the clean bar and a window wide enough to fit
+every category gets no furniture. Each press moves three quarters of a view; the ends disable.
+Verified: arrows present at 1440 and 1024, scrolling and disabling correctly at both ends, and
+absent on an iPhone 13.

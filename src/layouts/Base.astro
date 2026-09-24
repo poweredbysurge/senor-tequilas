@@ -703,9 +703,13 @@ const jsonLd = {
           }
 
           // The photograph is a background on the media block; pull the URL back out of it.
+          // data-photo-full wins where it exists: the menu thumbnails are 320px squares drawn
+          // into a 76px box, and the dialog draws them at up to 720px, so reusing the thumbnail
+          // upscaled it 2.2x and it showed. The full-size twin is only fetched when a card is
+          // actually opened. See DESIGN-DEBT.md entry 90.
           var bg = media ? getComputedStyle(media).backgroundImage : '';
           var m = bg && bg.match(/url\(["']?([^"')]+)/);
-          var src = m ? m[1] : '';
+          var src = (media && media.getAttribute('data-photo-full')) || (m ? m[1] : '');
           var alt = (media && media.getAttribute('aria-label')) || name;
 
           card.setAttribute('aria-haspopup', 'dialog');
@@ -1434,6 +1438,62 @@ const jsonLd = {
           if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
         }
 
+        /* ---- 22. arrows on the menu's category rail ------------------------------------------
+           Requested 23 September. The sticky category bar scrolls sideways and said so nowhere:
+           on a phone you discover it by swiping, but with a mouse there was nothing to aim at.
+
+           Pointer-fine only, so a touch device keeps the clean bar and just swipes. The arrows
+           are only attached when the rail actually overflows, and they re-check on resize,
+           because at a wide enough window every category fits and arrows would be furniture.
+           Each press moves about three quarters of a view, which keeps a chip or two on screen
+           as an anchor. */
+        function railArrows() {
+          var rail = document.querySelector('[data-screen-label="Sticky category bar"] [data-rail]');
+          if (!rail) return;
+          var host = rail.parentElement;
+          var fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+          function make(dir) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'st-rail-arrow';
+            b.setAttribute('data-dir', dir);
+            b.setAttribute('aria-label', dir === 'prev' ? 'Scroll categories left' : 'Scroll categories right');
+            b.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" ' +
+              'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' +
+              (dir === 'prev' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>';
+            b.addEventListener('click', function () {
+              rail.scrollBy({ left: (dir === 'prev' ? -1 : 1) * rail.clientWidth * 0.75, behavior: 'smooth' });
+            });
+            return b;
+          }
+
+          var prev = null, next = null;
+          function sync() {
+            if (!prev) return;
+            var max = rail.scrollWidth - rail.clientWidth - 1;
+            prev.disabled = rail.scrollLeft <= 0;
+            next.disabled = rail.scrollLeft >= max;
+          }
+          function fit() {
+            var overflows = rail.scrollWidth > rail.clientWidth + 1;
+            var want = fine.matches && overflows;
+            if (want && !prev) {
+              prev = make('prev'); next = make('next');
+              host.setAttribute('data-has-arrows', '');
+              host.appendChild(prev); host.appendChild(next);
+              rail.addEventListener('scroll', sync, { passive: true });
+            } else if (!want && prev) {
+              prev.remove(); next.remove(); prev = next = null;
+              host.removeAttribute('data-has-arrows');
+            }
+            sync();
+          }
+          fit();
+          window.addEventListener('resize', fit);
+          if (fine.addEventListener) fine.addEventListener('change', fit);
+        }
+
         function start() {
           // Not gated on the homepage any more: the same carousel is on /taco-tuesday as of
           // 15 September, and the function already returns early when the rail is absent.
@@ -1459,6 +1519,7 @@ const jsonLd = {
           try { eyebrowRules(); } catch (e) {}
           try { dropChefPlaceholder(); } catch (e) {}
           try { carouselControls(); } catch (e) {}
+          try { railArrows(); } catch (e) {}
         }
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
         else start();

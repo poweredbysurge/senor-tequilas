@@ -1639,3 +1639,38 @@ body[data-route="/"] a[data-dc-tpl="228"] {
   -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--st-railfade)), transparent 100%);
   mask-image: linear-gradient(to right, #000 0, #000 calc(100% - var(--st-railfade)), transparent 100%);
 }
+
+/* ---- 90. arrows on the menu's category rail -----------------------------------------------
+   Requested 23 September. The bar is sticky and the arrows sit inside it, pinned to its ends
+   over a short fade so a chip scrolling underneath does not collide with them. They are only
+   in the DOM on a pointer-fine device where the rail actually overflows, see railArrows() in
+   Base.astro, so a phone is untouched and nothing appears when every category already fits. */
+[data-screen-label="Sticky category bar"][data-has-arrows] { position: sticky; }
+[data-screen-label="Sticky category bar"] { position: relative; }
+.st-rail-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  cursor: pointer;
+  color: rgb(234, 226, 214);
+  background: rgba(18, 18, 16, 0.92);
+  border: 1px solid rgba(185, 156, 102, 0.45);
+  backdrop-filter: blur(6px);
+  padding: 0;
+}
+.st-rail-arrow[data-dir="prev"] { left: 6px; }
+.st-rail-arrow[data-dir="next"] { right: 6px; }
+.st-rail-arrow:hover { background: rgb(28, 27, 24); border-color: rgba(185, 156, 102, 0.8); }
+.st-rail-arrow[disabled] { opacity: 0.3; cursor: default; }
+/* the chips must clear the arrows rather than slide under them */
+[data-screen-label="Sticky category bar"][data-has-arrows] [data-rail] {
+  padding-left: 48px !important;
+  padding-right: 48px !important;
+}
