@@ -2453,3 +2453,29 @@ client, with the family surname kept from the sibling card.
 Either the brief is out of date, or there is a third family member, or the file was named
 wrongly. Worth one sentence of confirmation before launch, since it is a real person's name on
 a public page.
+
+## 89. The tequila and mezcal thumbnails, 23 September
+
+The seven cards in "Tequila & Mezcal" on `/menu` had empty thumbnails: a dashed frame reading
+PHOTO, which is how the design draws a pending image. All seven are filled.
+
+| card | supplied as | before | after |
+|---|---|---|---|
+| Blancos | `blanco.png` | 1,453KB | 13KB |
+| Reposados | `clase.png` | 856KB | 8KB |
+| Añejos | `anejo.png` | 747KB | 6KB |
+| Extra Añejos | `extra anejo.png` | 1,129KB | 11KB |
+| Mezcal | `el sil.png` | 1,237KB | 8KB |
+| Tequila Flights | `fleet.png` | 1,572KB | 15KB |
+| Shooters | `bana split.png` | 1,150KB | 11KB |
+| **total** | | **8,145KB** | **71KB** |
+
+Every file arrived as a 1254x1254 PNG for a thumbnail that renders at 76x76, so 8MB would have
+gone to the browser to fill 532 square pixels. Resized to 320 square, WebP quality 82, which is
+still 4x the rendered size. Originals parked in `design/library/originals/`. Each thumbnail
+takes `role="img"` and its card's name as a label, the dashed pending frame becoming the
+card's ordinary border.
+
+**51 empty thumbnails remain elsewhere on `/menu`.** The other menu sections draw the same
+PHOTO placeholder and no photographs were supplied for them. Only the tequila section was
+asked for, and only it was changed.
