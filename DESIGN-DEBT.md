@@ -2434,3 +2434,22 @@ Nothing else about the copy changed. Zero em dashes in the file afterwards, chec
 
 The new lines are two to three times longer than the ones they replace, so all three cards
 were measured rather than assumed: no clipping on any of them at 1440 or at 420.
+
+## 88. The two brothers' portraits, 23 September
+
+The last two placeholders on `/our-story` are filled. Supplied as `Alex.png` and `Ricardo.png`,
+920x1446 portraits, fully opaque despite being RGBA, so they convert cleanly:
+2,393KB to 110KB and 1,912KB to 66KB as WebP at quality 82. Originals parked in
+`design/library/originals/`. Both cards are `object-fit: cover` now instead of the `contain`
+the placeholders used, so the photographs fill their 3:4 cards edge to edge.
+
+**A name was changed, and it needs confirming.** The two cards read "Roberto Rivas / The room"
+and "Alex Rivas / The kitchen", from
+`design/brief/facts-consolidated-2026-09-09.md` Q11, which states the brothers are Roberto and
+Alex. The client supplied the photographs on 23 September as Alex and Ricardo, and "Ricardo"
+appears nowhere else in the project. The room card now reads **Ricardo Rivas**, following the
+client, with the family surname kept from the sibling card.
+
+Either the brief is out of date, or there is a third family member, or the file was named
+wrongly. Worth one sentence of confirmation before launch, since it is a real person's name on
+a public page.
