@@ -2505,3 +2505,14 @@ re-checks on resize, so a touch device keeps the clean bar and a window wide eno
 every category gets no furniture. Each press moves three quarters of a view; the ends disable.
 Verified: arrows present at 1440 and 1024, scrolling and disabling correctly at both ends, and
 absent on an iPhone 13.
+
+## 91. Four cocktail thumbnails, 23 September
+
+Red Sangria, Mezcal Mule, Espresso Martini and Frozen Piña Colada in Margaritas & Cocktails,
+matched by name inside that section. Three new photographs, 4,474KB of PNG in, 44KB of
+thumbnails out, each with the full-size twin entry 90 established.
+
+Red Sangria is the same photograph as the Happy Hour card, so it reuses that file rather than
+shipping a second copy: `hh-sangria` is renamed `drink-sangria`, since it no longer belongs to
+one section, and both cards point at it. That saves the 1.1MB the duplicate full-size twin
+would have cost.
