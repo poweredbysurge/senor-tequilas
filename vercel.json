@@ -1,0 +1,132 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "senor-tequilas.vercel.app"
+        }
+      ],
+      "destination": "https://www.senortequilas.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/drinks{/}?",
+      "destination": "/margaritas",
+      "permanent": true
+    },
+    {
+      "source": "/entree{/}?",
+      "destination": "/menu",
+      "permanent": true
+    },
+    {
+      "source": "/lunch{/}?",
+      "destination": "/menu",
+      "permanent": true
+    },
+    {
+      "source": "/full-menu{/}?",
+      "destination": "/menu",
+      "permanent": true
+    },
+    {
+      "source": "/birthdays{/}?",
+      "destination": "/private-parties/quinceaneras-celebrations",
+      "permanent": true
+    },
+    {
+      "source": "/chef{/}?",
+      "destination": "/our-story",
+      "permanent": true
+    },
+    {
+      "source": "/nye{/}?",
+      "destination": "/private-parties",
+      "permanent": true
+    },
+    {
+      "source": "/free-tacos{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/happy{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dinner-test{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/piano-evening{/}?",
+      "destination": "/private-parties",
+      "permanent": true
+    },
+    {
+      "source": "/tappas-night{/}?",
+      "destination": "/private-parties",
+      "permanent": true
+    },
+    {
+      "source": "/cooking-lessons-with-our-chef{/}?",
+      "destination": "/our-story",
+      "permanent": true
+    },
+    {
+      "source": "/dedicated-attentive-staff{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dedicated-attentive-staff-2{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/dedicated-attentive-staff-3{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/new-outdoor-area-2{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/new-outdoor-area-3{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/hello-world{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/gift-cards{/}?",
+      "destination": "https://www.toasttab.com/senortequilastogo/giftcards",
+      "permanent": false
+    },
+    {
+      "source": "/cinco-de-mayo{/}?",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/sitemap_index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/wp-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    }
+  ]
+}

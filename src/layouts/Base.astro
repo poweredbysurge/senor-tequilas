@@ -6,19 +6,14 @@ import MobileMenu from '../components/MobileMenu.astro';
 import business from '../data/business.json';
 
 const { title, description, canonical, ogImage, extraTypes = [], route } = Astro.props;
-// The site does not own its domain yet. senortequilas.com still serves the old WordPress
-// site, so every absolute URL here pointed at a host that does not have these pages: shared
-// links previewed a 404 image, and the canonical sent scrapers to the old site entirely.
-// Everything is rebased onto the host actually serving this build.
-//
-// AT LAUNCH: set LIVE to LAUNCH. That one line turns this back into canonical and preview
-// URLs on the real domain, and nothing else needs touching.
-const LAUNCH = "https://senortequilas.com";
-const LIVE = "https://senor-tequilas.vercel.app";
-const rebase = (u) => (u && u.startsWith(LAUNCH) ? LIVE + u.slice(LAUNCH.length) : u);
-const site = LIVE;
-const absolute = (u) => (u.startsWith('http') ? rebase(u) : site + u);
-const pageUrl = rebase(canonical);
+// Every absolute URL on the page is built on business.siteUrl, the one host that serves the
+// site. Vercel serves www.senortequilas.com and 308s the apex to it, so www is canonical.
+// Pages pass their canonical as a full URL; only its path is used, so the host can never
+// disagree with the sitemap or robots.txt, which read the same field. See DESIGN-DEBT.md 93.
+const site = business.siteUrl;
+const onSite = (u) => site + new URL(u, site).pathname;
+const absolute = (u) => (u.startsWith('http') ? onSite(u) : site + u);
+const pageUrl = onSite(canonical);
 
 // The LCP element per route. See the preload in the head below.
 const LCP_IMAGE = {

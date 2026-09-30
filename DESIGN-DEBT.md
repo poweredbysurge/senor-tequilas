@@ -2568,3 +2568,38 @@ DPR 1.75, 1.6Mbit and 4x CPU throttling reports **CLS 0.0012**, all of it the he
 settling as the fonts swap. Whatever Lighthouse is catching happens under its own simulated
 throttling. Worth a dedicated session: an intermittent 0.17 is a real ten-point swing, and the
 homepage is the page most likely to be audited at launch.
+
+
+## 93. Post-launch SEO fixes: one canonical host, redirects wired, 30 September
+
+The site went live without the cutover steps in CLAUDE.md. Checked against production:
+
+- **Canonicals pointed at the review host.** Every page on www.senortequilas.com declared
+  `https://senor-tequilas.vercel.app/...` as canonical, and og:image, twitter:image and the
+  JSON-LD `url` did too. `LIVE` in `Base.astro` was never flipped.
+- **The sitemap and robots.txt used a host that redirects.** They advertised
+  `https://senortequilas.com/...`, but Vercel serves www and 308s the apex to it. So there were
+  three hosts in play: vercel.app in canonicals, apex in the sitemap, www actually serving.
+- **No `vercel.json`.** None of the 19 old WordPress URLs redirected; `/full-menu`, `/drinks` and
+  the rest returned 404. `/menu` and `/menu/` both returned 200, a duplicate pair on every page.
+- **The review host was still public** and serving a full duplicate of the site.
+
+Fixed:
+
+- `siteUrl` in `business.json` is `https://www.senortequilas.com`, and `astro.config.mjs` `site`
+  matches. `Base.astro` drops `LAUNCH`, `LIVE` and `rebase()` and builds every absolute URL from
+  `siteUrl`, keeping only the path of the `canonical` a page passes. The host now has one source.
+- `vercel.json` created: `trailingSlash: false`; the 19 redirects from `deploy/redirects.json`,
+  each matching with or without the WordPress trailing slash (`/full-menu{/}?`) so an old URL
+  lands in one hop; `senor-tequilas.vercel.app/*` 301s to the same path on www.
+- Two URLs the brief listed as "keep their URL" had no page and were 404ing. `/gift-cards` now
+  302s to the Toast gift card page (the same destination as the homepage button) and
+  `/cinco-de-mayo` 302s home. Temporary on purpose, so either can become a real page later
+  without a cached 301 in the way. `/sitemap_index.xml` and `/wp-sitemap.xml`, the old
+  WordPress sitemap paths, 301 to `/sitemap.xml`.
+
+Checked: all 22 canonicals in `dist/` equal the 22 `<loc>` entries in the sitemap, and no
+`vercel.app` or apex URL is left in the build.
+
+Not touched: `scripts/build-site.mjs` still carries its own `LIVE` constant. It is the one-off
+port assembler, not part of `npm run build`, so it does not reach the site.

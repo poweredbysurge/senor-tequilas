@@ -70,26 +70,22 @@ Invariants worth protecting:
 
 ## Launch state
 
-**The site has not cut over.** `senortequilas.com` still serves the old WordPress site.
-`senor-tequilas.vercel.app` is the client review URL, public and freely promotable.
+**Live since the cutover the week of 22 September.** Production is `https://www.senortequilas.com`.
+The apex `senortequilas.com` 308s to www (a Vercel domain setting), and `senor-tequilas.vercel.app`
+301s to www with the path kept (a host redirect in `vercel.json`). Preview deployments are behind
+Vercel SSO. Production deploys from GitHub `main` on push.
 
-`Base.astro` has `LAUNCH` and `LIVE` constants at the top. While `LIVE` points at the Vercel
-host, canonicals point there while the sitemap and robots.txt point at the production domain.
-They disagree on purpose, and it is the main SEO exposure until cutover.
+One host everywhere: `business.json` `siteUrl` is the single source for canonicals, og/twitter
+URLs, JSON-LD, the sitemap and robots.txt. Pages still pass `canonical` as a full URL; `Base.astro`
+keeps only its path. Never hardcode a host.
 
-### Cutover checklist
+`vercel.json` holds the redirects and `trailingSlash: false`, so `/menu/` 308s to `/menu`, matching
+the canonicals. Old WordPress URLs are matched with or without their trailing slash in one hop
+(`{/}?` in the source), so there are no redirect chains. `deploy/redirects.json` is the original
+map, kept for reference only. See DESIGN-DEBT.md entry 93.
 
-1. Set `LIVE = LAUNCH` in `src/layouts/Base.astro`. Canonicals and share URLs move to the
-   real domain.
-2. Create `vercel.json`. Wire the 301 map from `deploy/redirects.json` (currently marked
-   `doNotDeployYet`) and settle `trailingSlash` against `build.format: 'directory'`. The old
-   WordPress URLs carry trailing slashes; the new canonicals do not. Decide once, then make
-   redirects, canonicals and sitemap all agree.
-3. Rebuild so the generated sitemap and robots.txt pick up the production domain.
-4. Verify in Search Console: canonical matches sitemap, no redirect chains on the 301s.
-
-Until step 1, consider gating `robots.txt.js` to emit `Disallow: /` off the production host,
-so the review URL cannot be indexed as a duplicate.
+After anything touching URLs: build, then confirm every canonical in `dist/` matches a `<loc>` in
+`dist/sitemap.xml`.
 
 ## Performance
 

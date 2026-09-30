@@ -1,6 +1,5 @@
 {
-  "note": "The 301 map from design/brief/seo-migration-kit-and-page-spec.md, Part 1 sections B, C and D. NOT wired into vercel.json and NOT deployed. Paste the redirects array into vercel.json when the migration is cleared to go live.",
-  "doNotDeployYet": true,
+  "note": "Wired into vercel.json on 30 September, which is now the source of truth for redirects. This file is the original 301 map from design/brief/seo-migration-kit-and-page-spec.md, kept for its keepReturning404 and keepTheirUrl lists. See DESIGN-DEBT.md entry 93.",
   "keepReturning404": [
     "/collections/products/*",
     "/shop/*",
