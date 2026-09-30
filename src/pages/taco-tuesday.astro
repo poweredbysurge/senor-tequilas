@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Header5 from '../components/Header5.astro';
 import Footer2 from '../components/Footer2.astro';
+import business from '../data/business.json';
+import { roundedTotal } from '../lib/reviews.js';
 ---
 <Base title="Tacos in Germantown, MD | Every Day Is Taco Tuesday | Señor Tequila's" description="Handmade corn and flour tortillas pressed every morning, al pastor off the trompo, and salsas made the same day. Plus free bingo Tuesdays, 8 to 10." canonical="https://senortequilas.com/taco-tuesday" ogImage="/images/eca8597506381a36.jpg" route="/taco-tuesday">
 <!--
@@ -31,7 +33,7 @@ import Footer2 from '../components/Footer2.astro';
         </div>
         <div style="display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 13px; color: rgba(234, 226, 214, 0.85);">
           <span style="color: rgb(185, 156, 102); letter-spacing: 2px;">★★★★★</span>
-          <span>4.6 · over 5,600 Google reviews</span>
+          <span>{business.reviews.rating} · {roundedTotal(business.reviews.total)} Google reviews</span>
         </div>
       </div>
       <div style="position: relative; min-height: clamp(300px, 46vh, 720px); overflow: hidden; background: url(/images/eca8597506381a36.jpg) center center / cover no-repeat rgb(28, 27, 24);"></div>

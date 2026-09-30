@@ -1674,3 +1674,14 @@ body[data-route="/"] a[data-dc-tpl="228"] {
   padding-left: 48px !important;
   padding-right: 48px !important;
 }
+
+/* ---- 92. the Google review cards clamp their text -----------------------------------------
+   Real reviews run to a thousand characters and the cards are a fixed 340px. The full text
+   stays in the DOM, verbatim and readable to a crawler or a screen reader; only the display is
+   clamped, so nothing is truncated at the data level. See DESIGN-DEBT.md entry 92. */
+[data-review-text] {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

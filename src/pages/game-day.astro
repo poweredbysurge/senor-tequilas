@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Header5 from '../components/Header5.astro';
 import Footer2 from '../components/Footer2.astro';
+import business from '../data/business.json';
+import { roundedTotal } from '../lib/reviews.js';
 ---
 <Base title="Where to Watch the Commanders, Eagles, Steelers & Every NFL Game in Germantown, MD | Señor Tequila's" description="Every NFL game on: Commanders, Ravens, Eagles, Steelers. World Cup and Champions League watch parties, all day Sunday happy hour, bar area seats 108. Germantown, MD." canonical="https://senortequilas.com/game-day" ogImage="/images/site/game-day-hero.jpg" extraTypes={['SportsActivityLocation', 'BarOrPub']} route="/game-day">
 <!--
@@ -268,7 +270,7 @@ import Footer2 from '../components/Footer2.astro';
   <section data-screen-label="Proof strip" style="background: rgb(20, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(24px, 4vw, 44px) 0px;">
     <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;">
       <span style="color: rgb(185, 156, 102); letter-spacing: 2px; font-size: 18px;">★★★★★</span>
-      <span style="font-family: 'Archivo Black', sans-serif; font-size: clamp(18px, 2.4vw, 24px); text-transform: uppercase; color: rgb(246, 239, 228);">4.6 · Over 5,600 Reviews</span>
+      <span style="font-family: 'Archivo Black', sans-serif; font-size: clamp(18px, 2.4vw, 24px); text-transform: uppercase; color: rgb(246, 239, 228);">{business.reviews.rating} · {roundedTotal(business.reviews.total).replace("over", "Over")} Reviews</span>
       <span style="font-size: 14px; color: rgba(234, 226, 214, 0.75);">Family owned in Germantown since 2015.</span>
     </div>
   </section>

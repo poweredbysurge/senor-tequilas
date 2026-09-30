@@ -64,5 +64,12 @@
       "www.senortequilas.com"
     ],
     "debugParam": "ga_debug"
+  },
+  "reviews": {
+    "placeId": "ChIJfQWUP2wstokR0hf-aq2yO5Y",
+    "rating": 4.6,
+    "total": 5717,
+    "asOf": "2026-09-30",
+    "writeUrl": "https://search.google.com/local/writereview?placeid=ChIJfQWUP2wstokR0hf-aq2yO5Y"
   }
 }
