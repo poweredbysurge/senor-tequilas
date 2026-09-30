@@ -2516,3 +2516,55 @@ Red Sangria is the same photograph as the Happy Hour card, so it reuses that fil
 shipping a second copy: `hh-sangria` is renamed `drink-sangria`, since it no longer belongs to
 one section, and both cards point at it. That saves the 1.1MB the duplicate full-size twin
 would have cost.
+
+## 92. The Google reviews rail carries real reviews, 30 September
+
+The rail was three placeholder cards, `[Reviewer pending]` over a `?` avatar, and the counts
+were hard-coded. It is six real reviews now, looped from `src/data/reviews.json`, with the
+figures in a `reviews` block in `business.json`: rating 4.6, 5,717 reviews, verified against the
+Google Business Profile on 30 September.
+
+**Counts round down to the nearest hundred, in a helper rather than by hand.** 5,717 renders as
+"over 5,700", which stays true as the count climbs at roughly forty a week, so the next refresh
+is a data edit and not a code edit. `src/lib/reviews.js` holds that, the month formatter, the
+initials and the star row.
+
+**The figures were hard-coded on four pages, not one.** The brief named `index.astro`.
+`/taco-tuesday`, `/mexican-restaurant-gaithersburg-md` and `/game-day` carried the same
+"5,600" and now read the same data. Nothing in `src/` says 5,600.
+
+**No `Review` or `aggregateRating` JSON-LD**, by policy: self-serving review markup wins no rich
+result and can draw a manual action. The rail is presentational.
+
+Avatars hotlink rather than being re-hosted, with `loading="lazy"`, explicit 40x40,
+`referrerpolicy="no-referrer"` and an empty alt, falling back to initials on error. All six
+rows currently have an empty photo, so all six render initials; the branch was tested by
+pointing one row at a real image and another at a 404, which fell back correctly.
+
+Review text is stored verbatim and clamped to six lines in CSS, so the full text stays in the
+DOM for a crawler or a screen reader. Star rows come from each review's own rating.
+
+`scripts/fetch-reviews.mjs` refreshes from Places API (New) behind `GOOGLE_PLACES_API_KEY`.
+Without the key it logs and exits 0; with a bad key it fails loudly. Both paths tested, neither
+changes a file. It tops up rather than replacing, since the API returns only a handful of
+reviews, and it never overwrites stored text. Not wired into the build.
+
+**An empty `reviews.json` removes the section rather than breaking the page**, verified by
+building with `[]`: no section, no rail, page intact, and the hero trust line still correct.
+
+### A pre-existing CLS problem, found here but not caused here
+
+Mobile Lighthouse on the homepage now medians **93**, against the 96 the brief expected, and the
+runs swing from 85 to 96. The cause is not the reviews: **CLS alternates between 0 and about
+0.17 run to run**, and CLS is a quarter of the score.
+
+It is not a regression. Built the previous commit in a worktree and measured both against the
+same local server: the old build shows CLS 0.172 to 0.176 on three of four runs, the same as the
+new one. The avatars, the brief's suspect, cannot be responsible: no row has a photo, so no
+avatar image is requested.
+
+It also does not reproduce outside Lighthouse. A `layout-shift` PerformanceObserver at 412x823,
+DPR 1.75, 1.6Mbit and 4x CPU throttling reports **CLS 0.0012**, all of it the header and hero
+settling as the fonts swap. Whatever Lighthouse is catching happens under its own simulated
+throttling. Worth a dedicated session: an intermittent 0.17 is a real ten-point swing, and the
+homepage is the page most likely to be audited at launch.

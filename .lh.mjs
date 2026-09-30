@@ -6,7 +6,10 @@ const r = await lighthouse(url, { port: chrome.port, output: 'json', logLevel: '
   onlyCategories: ['performance'], formFactor: 'mobile', screenEmulation: { mobile: true, width: 412, height: 823, deviceScaleFactor: 1.75, disabled: false } });
 const a = r.lhr.audits;
 const kb = n => (n/1024).toFixed(0) + 'KB';
-console.log(`score=${Math.round(r.lhr.categories.performance.score*100)} FCP=${a['first-contentful-paint'].displayValue} LCP=${a['largest-contentful-paint'].displayValue} TBT=${a['total-blocking-time'].displayValue} SI=${a['speed-index'].displayValue}`);
+console.log(`score=${Math.round(r.lhr.categories.performance.score*100)} FCP=${a['first-contentful-paint'].displayValue} LCP=${a['largest-contentful-paint'].displayValue} TBT=${a['total-blocking-time'].displayValue} CLS=${a['cumulative-layout-shift'].displayValue} SI=${a['speed-index'].displayValue}`);
+const shifts = (a['layout-shift-elements']?.details?.items || []).slice(0,4)
+  .map(i => (i.node?.selector || i.node?.snippet || '?').slice(0,70) + ' ' + (i.score?.toFixed?.(4) ?? ''));
+if (shifts.length) console.log('  shifting: ' + shifts.join(' | '));
 console.log('total bytes=', kb(a['total-byte-weight'].numericValue));
 for (const id of ['render-blocking-resources', 'render-blocking-insight']) {
   const rb = a[id];
