@@ -2603,3 +2603,26 @@ Checked: all 22 canonicals in `dist/` equal the 22 `<loc>` entries in the sitema
 
 Not touched: `scripts/build-site.mjs` still carries its own `LIVE` constant. It is the one-off
 port assembler, not part of `npm run build`, so it does not reach the site.
+
+## 94. Conversion tracking, and the pending labels come off, 2 October
+
+GA4 had no key events, so the site could not show a single call, order or booking.
+
+- **Conversion clicks are tracked.** One delegated click listener in the GA4 block in
+  `Base.astro` sends an event for every matching link on every page: `click_to_call` (any
+  `tel:` link), `order_online` (Toast online ordering), `reserve_table` (Toast Tables),
+  `gift_card_click` (the Toast gift card page) and `delivery_click` (Uber Eats, DoorDash,
+  Grubhub). Each carries `link_url` and `page_path`. It lives inside the hostname gate, so
+  previews and localhost still send nothing. The five names are marked as key events in GA4.
+- **The inquiry forms are not tracked, because they do not send.** The forms on `/catering`,
+  `/private-parties`, `/private-parties/quinceaneras-celebrations` and
+  `/private-parties/weddings-receptions` have no `action`, no submit handler and no `name` on
+  any field. Submitting reloads the page and nothing goes anywhere. This has been true since
+  launch. They need a destination decided and wired, and a `generate_lead` event added at the
+  same time. Open item, highest priority.
+- **The visible `[PENDING]` labels are gone.** The nine Tomas coordinator cards (seven on the
+  private events hub, one each on the quinceañera and weddings pages) lose the dashed photo
+  box and the gold "[PENDING: Tomas headshot]" line, and read as a text card: name, title,
+  line. When the headshot arrives, the photo box goes back in front of the name. The Game Day
+  screens card drops "[PENDING: TV count, 20 or 25]" and keeps "TVs in the bar area, the
+  International Room and the patio." The HTML comments marking the open questions stay.
