@@ -4,6 +4,11 @@ import Header5 from '../components/Header5.astro';
 import Footer2 from '../components/Footer2.astro';
 import business from '../data/business.json';
 import { roundedTotal } from '../lib/reviews.js';
+
+// The map query is built from business.json, the same address the JSON-LD carries, so the
+// two cannot disagree. Same iframe pattern as /contact.
+const mapAddress = `${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion} ${business.postalCode}`;
+const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(mapAddress)}&z=15&output=embed`;
 ---
 <Base title="Mexican Restaurant Near Gaithersburg, MD" description="Ten minutes from Gaithersburg up 270, with free parking. Handmade tortillas, slow-braised birria and a real tequila bar." canonical="https://senortequilas.com/mexican-restaurant-gaithersburg-md" ogImage="/images/24e322da4fd1060e.jpg" route="/mexican-restaurant-gaithersburg-md">
 <div class="sc-host" data-sc-name="Concept 1 Pages" data-dc-tpl="180"><div data-dc-tpl="6" data-c1p-root="" data-uid="c1p7twgww" style="color: rgb(234, 226, 214); font-family: Barlow, system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16); min-height: 100%;"><Header5 /><section data-dc-tpl="962" data-screen-label="Gaithersburg hero" style="position: relative; background: rgb(10, 10, 9); overflow: hidden;">
@@ -19,7 +24,7 @@ import { roundedTotal } from '../lib/reviews.js';
       <div data-dc-tpl="973" style="display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 13px; color: rgba(234, 226, 214, 0.85);"><span data-dc-tpl="974" style="color: rgb(185, 156, 102); letter-spacing: 2px;">★★★★★</span><span data-dc-tpl="975">{business.reviews.rating} · {roundedTotal(business.reviews.total)} Google reviews</span></div>
     </div>
     <div data-dc-tpl="976" style="display: grid; grid-template-columns: 1fr; gap: 10px;">
-      <div data-dc-tpl="977" style="position: relative; aspect-ratio: 16 / 10; border-radius: 18px; overflow: hidden; border: 1px solid rgba(185, 156, 102, 0.3); background: repeating-linear-gradient(45deg, rgb(28, 27, 24) 0px, rgb(28, 27, 24) 14px, rgb(32, 30, 25) 14px, rgb(32, 30, 25) 28px); display: flex; align-items: center; justify-content: center;"><div data-dc-tpl="978" style="text-align: center; padding: 20px;"><div data-dc-tpl="979" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 14px; text-transform: uppercase; color: rgb(246, 239, 228);">Map placeholder</div><div data-dc-tpl="980" style="font-size: 12px; color: rgb(185, 156, 102); margin-top: 4px;">Gaithersburg to I-270 N to Century Blvd</div></div></div>
+      <div data-dc-tpl="977" style="position: relative; aspect-ratio: 16 / 10; border-radius: 18px; overflow: hidden; border: 1px solid rgba(185, 156, 102, 0.3); background: rgb(28, 27, 24);"><iframe data-real-map src={mapSrc} title={`Map to ${business.name}, ${mapAddress}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen=""></iframe></div>
       <div data-dc-tpl="981" style="position: relative; aspect-ratio: 16 / 7; border-radius: 18px; overflow: hidden; border: 1px solid rgba(185, 156, 102, 0.3); background: rgb(28, 27, 24);"><img data-dc-tpl="982" loading="lazy" decoding="async" src="/images/24e322da4fd1060e.jpg" alt="Interior, the bar" referrerpolicy="no-referrer" style="position: absolute; inset: 0px; width: 100%; height: 100%; object-fit: cover;"></div>
     </div>
   </div></section><section data-dc-tpl="983" data-screen-label="Drive times" style="background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(36px, 6vw, 72px) 0px;">

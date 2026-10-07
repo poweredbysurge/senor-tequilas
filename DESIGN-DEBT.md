@@ -2626,3 +2626,131 @@ GA4 had no key events, so the site could not show a single call, order or bookin
   line. When the headshot arrives, the photo box goes back in front of the name. The Game Day
   screens card drops "[PENDING: TV count, 20 or 25]" and keeps "TVs in the bar area, the
   International Room and the patio." The HTML comments marking the open questions stay.
+
+## 95. Post-launch client corrections, round 1, 7 October
+
+The client's first corrections after launch, limited to what copy, code and the images already
+in the repo could do. Branch `post-launch-corrections-1`. No title, meta description, canonical,
+URL, redirect or sitemap entry was touched; the ones that now contradict their page are listed
+in TASKS.md for Mario.
+
+**Sunday is no longer a happy hour day.** Removed everywhere it was said:
+
+- `/happy-hour`: the `#sunday` section and its video are gone, with an HTML comment where a
+  replacement video goes. `public/videos/sunday-happy-hour.mp4` and its poster are still on disk,
+  unreferenced. The hero eyebrow, the hero line, the Deals eyebrow and the Sunday card in the
+  mobile rail lose the Sunday and bar-area wording. "Bar and patio seating only" comes off the
+  fine print.
+- `/game-day`: the hero button was "Sunday Happy Hour" to `/happy-hour#sunday`, an anchor that no
+  longer exists. It is "Happy Hour" to `/happy-hour`. The gold card under the NFL teams was headed
+  "Sunday Happy Hour, All Day in the Bar Area"; it is "Sunday Game Day Specials", its line "Game
+  day specials every Sunday, open to close." is kept as written, and its button is "Weekday happy
+  hour" to `/happy-hour`. Whether Sunday game day specials still exist is the client's to confirm.
+- `/menu`: the Happy Hour section eyebrow and line, and the strip at the foot of the page.
+- `/`: the happy hour card reads "Happy hour · Weekdays" and "Happy hour runs Monday to Friday,
+  3 PM to 6 PM."
+- The Sunday card in the weekly carousel keeps Live Mariachi and "NFL on." and loses the happy
+  hour sentence. It had other content, so the card stays.
+
+**The weekly carousel is four copies of one component**, on `/`, `/taco-tuesday`, `/happy-hour`
+and `/game-day`, identical before and after. The brief named the homepage; all four were changed
+together, since three stale copies would have contradicted the first:
+
+- Monday: "On the rocks. Lime, strawberry, or mango."
+- Tuesday and Wednesday: hours read "8 PM to 10 PM", and the line ends "WIN prizes." with WIN in
+  Barlow 800, brand green.
+- Friday and Saturday: "21+ in the bar area after 9 PM." in Barlow 800, gold.
+
+**Time ranges follow the site, not the brief's examples.** The brief wrote "3 p.m. to 6 p.m.".
+Every visible range on the site is "3 PM to 6 PM" style, settled in entry 77, so that is what
+was used. Only one meta description uses the dotted form.
+
+**Homepage hero line** is "Family-owned Mexican in Germantown, Maryland, since 2015. Fresh food
+made to order." Sentence case kept on "Family-owned", as the site had it. The footer's "Family-owned
+in Germantown since 2015" and the `/game-day` line are different sentences and were left.
+
+**`/takeout-delivery`.** Both curbside mentions removed. Tacos al Pastor loses "Tortillas wrapped
+hot" and now has no caption. The fajita caption and the family-pack paragraph say "All components
+are packaged separately and carefully." The family-pack card is Birria Pizza, "Available to-go
+only. Feeds four to six people.", in place of Cinco Mamalones.
+
+**Quinceañeras.** The intro heading is "You've Already Called the Ballrooms. Make the Right Call.
+Contact Us Now.", the last three words a link to `/contact`. Step 2 carries the client's sentence
+whole; its title became "Book your visit", taken from that sentence, because the card needs one.
+
+**`/taco-tuesday`, the Fatima and Patricia photograph.** The cloths hang in the top eighth of the
+frame, so the photograph is drawn 15% oversize on an inner layer and anchored so that the crop
+line holds at 13% from the top at any box shape. A plain `background-size` in percent was tried on
+paper and rejected: the box runs from 0.73 to 1.87 wide-to-tall across viewports, and a fixed
+percentage leaves bare gutters at the wide end. Checked at 390, 768, 1024 and 1440: cloths out,
+both faces in. The same file is also on `/our-story`, untouched.
+
+**The two birria pages.**
+
+- The card grid is the same four on both: Quesabirria Tacos, Birria Ramen, Birria Pizza, Tacos
+  Dorados. That replaces three cards on each page, including the "To go" card, so "Order on Toast"
+  no longer appears on either. On `/contact` it reads "Order online".
+- The client's origin paragraph is on both, as written, capitalization only.
+- "griddled with oaxaca cheese" is gone. No birria description on `/menu` said Oaxaca; the only
+  remaining hit in `src/` is the Oaxaca Old Fashioned, a cocktail.
+- The pull quote stays, its attribution ("The kitchen", "The bar, every Friday") removed.
+- `quesabirrias-card.jpg` is a close-up of a vegetable quesadilla, not quesabirria. Both pages and
+  `/late-night` now use `quesabirrias-2026.jpg`. It is still used in four other places, listed in
+  TASKS.md.
+
+**Emptied image slots.** No stock, nothing generated, no visible "pending" wording. Each slot has
+an HTML comment naming the photograph it needs.
+
+- Birria Pizza and Tacos Dorados have no photograph. In a row of photo cards a card with no media
+  block reads as broken, so each keeps the 4:3 block and states its one fact in it, "To-go only"
+  and "Made with birria meat", in Archivo Black on the red texture the site already uses. This is
+  a new treatment and it is a judgement call; the fallback is the entry 94 text card.
+- `/takeout-delivery` Birria Pizza: the 72px thumbnail is removed, text card, as entry 94.
+- `/fajitas-molcajetes` "Big plate, Big Mami": the cocktail photograph is removed and the copy
+  runs alone.
+- `/menu` Frozen Piña Colada: back to the menu's own PHOTO frame, the same as its 43 siblings,
+  rather than a second kind of empty thumbnail in one grid. `drink-pina-colada*.webp` are still
+  on disk.
+
+**`/street-tacos`.** The hero carried `tacos-de-arrachera-hero.jpg` under a label reading Tacos al
+Pastor. It carries `tacos-al-pastor.jpg` now, which is al pastor, and the `LCP_IMAGE` map follows.
+The trompo photograph or video the client wants there is still outstanding. The card labelled
+Tacos de Arrachera showed pork belly tacos; it is "Pork Belly Tacos", "Coming soon", on
+`pork-belly-tacos.jpg`. That leaves no arrachera card on the page. The unrelated pull quote is
+removed here and on `/fajitas-molcajetes`; the copy column that shared the row with it takes
+`max-width: 72ch` so it does not run 1084px wide. The pairing reads "Tacos and a House Margarita."
+with the client's line, and "Or make it a Tamarindo." kept without "pulp we cook in house".
+
+**`/catering`.** "Three ways to do it" moved from the six-card "Good for" section to the three
+packages, whose eyebrow was empty.
+
+**`/our-story`.**
+
+- Ricardo Rivas is Roberto Rivas, name and alt text. The file is still `brother-ricardo.webp`.
+  This reverses entry 88 and agrees with the brief it had contradicted.
+- The 2003 card carries the client's two paragraphs. Their draft read "as features by the
+  Post-Crescent showcased in 2005" and used an em dash; it now reads "as the Post-Crescent
+  showcased in 2005" with commas.
+- The three clippings are a justified row, 2005, 2006, 2008, each whole and uncropped, widths in
+  proportion to their own aspect ratios so the three share a height at any width.
+- **The 2008 clipping was on its side.** The file is stored rotated a quarter turn, so its
+  headline read bottom to top in the old fan. It is turned upright in CSS rather than re-encoded.
+  Entry 85 recorded this one as already correct.
+- "La cocina · 2026" takes the timeline's treatment: the year in green Archivo Black, the title
+  in bold under it. The brief said "La Cocina, 2006"; the page says 2026 and that was left.
+
+**`/margaritas`.** The eyebrow, in both places, reads "Germantown, Maryland · Pulps Made From
+Scratch In-House". Chiles is out of the flavour cards and the hero list. Watermelon, Lychee and
+Coconut are in, each marked Seasonal twice, with "Available in season." because no tasting note
+was supplied. The grid minimum went from 220px to 250px: at 220 "Pomegranate" was already clipped
+by its card, and "Watermelon" would have been too. Measured at four widths, no name overruns.
+
+**`/mexican-restaurant-gaithersburg-md`.** The striped "Map placeholder" box is a real map, the
+`/contact` iframe pattern with the query built from `business.json`, lazy-loaded, titled.
+
+**Checks.** `npm run build` 22 pages. `npm run check-build` passes: no console errors, no 404s,
+every internal link resolves. 22 canonicals equal the 22 sitemap entries. One `<h1>` per page,
+"Germantown" in an H1 only on `/happy-hour` and nowhere new. No em dash added. `npm run verify`
+could not run: `design/reference/` holds only its manifest, so the screenshot diff has nothing to
+compare against (TASKS D2). Changed sections were photographed at 390 and 1440 and looked at
+instead.

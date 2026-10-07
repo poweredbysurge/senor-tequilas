@@ -81,7 +81,7 @@ done without something from the client. Numbering is ours; the source note is in
 |---|---|---|
 | R1 | **2002 or 2015.** The new brand copy says the Rivas brothers have owned the brand since 2002, and /our-story now reads "24 years, one mission". The footer, the homepage hero, the JSON-LD and several meta descriptions all say 2015. Both can be true, brand since 2002 and this location since 2015, but somebody has to say which number goes where, because it is in structured data Google reads. | Roberto 10, 15 |
 | R2 | **Private party capacity.** The note says "It is 100, not 200", but the site says 12 to 400 and nothing says 200. Which is the real maximum, and is it per room or for the building? | Tomas 4 |
-| R3 | **Sunday happy hour.** Roberto specifies all day Sunday, bar area only. Daniela queries it and Tomas is "not really convinced". Applied as Roberto wrote it; three people should agree before it stays. | Roberto 2, Daniela, Tomas 5 |
+| ~~R3~~ | ~~**Sunday happy hour.**~~ **Settled 7 October**, entry 95: Sunday is not a happy hour day. Removed site wide. | Roberto 2, Daniela, Tomas 5 |
 | R4 | **Which hours block survives.** The instruction is to show hours in one place only. They currently appear in the Find Us card on the homepage and in the footer on all 22 pages. Recommend keeping the footer, since it is on every page, and dropping the Find Us copy. Confirm. | Roberto 13 |
 | R5 | **"Make sure the displayed hours say 3 p.m.-10 p.m."** That is Monday to Wednesday today. Thursday is 3 to midnight, Friday 3 to 1am, Saturday 11 to 1am, Sunday 11 to 10. Which days is this meant to change, if any? | Roberto 13 |
 | R6 | **Takeout hours are different from restaurant hours.** The note gives Thursday 3-10, Friday 3-12, Saturday 11-12 for pickup, which is earlier than the dining room on all three. Daniela's note suggests why: after 10pm it is the late-night menu only. Confirm takeout closes earlier, and whether the late-night menu should be said out loud. | Roberto 19, Daniela |
@@ -118,4 +118,37 @@ Nothing below can be done without files. Grouped by where they go.
 |---|---|---|
 | R21 | **La Cocina subsections.** The copy for The Culture, The Food, The Bar and The Tortillas is written and ready, and so is the opening line "Join us for Happy Hour. Stay for dinner and continue the night with us." But the section currently holds a heading and two paragraphs, so four new subsections is a layout change rather than a copy change. Needs a decision on how it should look. | Roberto 16 |
 | R22 | **A dedicated happy hour page.** One already exists at /happy-hour. The note asks for days and times, the all-areas distinction, menu items with prices, real pictures, current deals, a call to action and directions. Most of that is there; the menu items with prices are not, and need the actual list. | Roberto 2 |
+
+## Post-launch corrections, round 1: what is open
+
+Raised 7 October. Applied changes are DESIGN-DEBT entry 95, on branch `post-launch-corrections-1`,
+not merged.
+
+### For Mario (SEO, not actioned)
+
+| # | Item |
+|---|---|
+| P1 | `/happy-hour` title: "Happy Hour in Germantown, MD: Weekdays 3 to 6 and All Day Sunday \| Señor Tequila's". Suggested: "Happy Hour in Germantown, MD: Weekdays 3 PM to 6 PM \| Señor Tequila's". |
+| P2 | `/happy-hour` description still says "All day Sunday (in the bar area only)." Suggested: drop that sentence, keep the rest. |
+| P3 | `/game-day` description says "all day Sunday happy hour". Suggested: replace with "game day specials every Sunday", if the client confirms those. |
+| P4 | `/margaritas` description says "pulps we cook in house" and lists "jalapeno" without the chiles flavour the page no longer has; the page now says "made from scratch in-house". |
+| P5 | `/takeout-delivery` `ogImage` is `quesabirrias-card.jpg`, which is not quesabirria. `quesabirrias-2026.jpg` is. Also still S9. |
+| P6 | `/street-tacos` `ogImage` is `tacos-de-arrachera-hero.jpg`; the hero is now `tacos-al-pastor.jpg`. Not wrong, just no longer the hero. |
+| P7 | `/` description leads with "Handmade tortillas"; the hero line now says "Fresh food made to order." Not a contradiction, worth a look. |
+| P8 | Birria Tacos and Quesabirria Tacos: merge or keep. The two pages now share a card grid and an origin paragraph. See the round 1 report. |
+
+### Client and Sam
+
+| # | Item |
+|---|---|
+| P9 | `/mexican-restaurant-gaithersburg-md` shows three identical review cards, each "The birria alone is worth the drive." over "[Reviewer pending] · [replace with real review]". Live. `src/data/reviews.json` holds six real reviews that could fill them. |
+| P10 | Confirm "Game day specials every Sunday" is still true. |
+| P11 | Is weekday happy hour in all areas? `/menu` and `/margaritas` still say "In the bar area" under the weekday hours. The homepage and `/happy-hour` no longer do. |
+| P12 | The Wednesday flyer art says "Wednesday · 7:30 PM". The card under it says 8 PM to 10 PM. |
+| P13 | Confirm the Our Story line "as the Post-Crescent showcased in 2005". |
+| P14 | `quesabirrias-card.jpg`, the vegetable close-up, is still labelled quesabirria on `/takeout-delivery` (Most ordered to go), `/menu` (Happy Hour, 1 Quesabirria Taco) and the homepage Instagram rail. |
+| P15 | `tacos-de-arrachera-card.jpg` is pork belly tacos. Still the Tacos de Arrachera and Arrachera thumbnails on `/menu`, and the Street Tacos link cards on `/taco-tuesday` and `/game-day`. `tacos-de-arrachera-hero.jpg` looks like the real dish and is now unused on a page. |
+| P16 | The mobile rails on `/happy-hour` and `/late-night` are separate components from the weekly carousel and still read "8 to 10, with prizes" and "21 and over in the bar area after 9". |
+| P17 | Photographs for the slots emptied in entry 95: Birria Pizza (three places), Tacos Dorados (two), the fajitas pairing, a restaurant-owned piña colada, and trompo footage for the `/street-tacos` hero. |
+| P18 | `npm run verify` cannot run: `design/reference/` has no screenshots. Same root as D2. |
 

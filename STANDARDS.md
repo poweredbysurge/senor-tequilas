@@ -584,6 +584,21 @@ no nav item represents at all, and a header whose nav differs from every other p
 are content decisions rather than bugs, but neither was visible from the page that was
 reported.
 
+## 30. A schedule fact repeated in markup has to be found by search, not by page
+
+**Date:** 2026-10-07 · **Origin:** DESIGN-DEBT 95 · **Status:** candidate
+
+"Sunday is no longer a happy hour day" was one sentence from the client and twenty-odd edits
+across six files: four copies of one weekly carousel, two mobile rails, a hero, two eyebrows, a
+menu strip, a promo card and two buttons pointing at an anchor that was about to be deleted. The
+brief named the page the client had been looking at.
+
+**Template:** a recurring offer, its day, its hours and its conditions live in the business data
+file and are rendered from it, like the address. Until they do, treat any change to one as a
+site-wide search for the day name and the offer name, and check for links to an anchor before
+removing the section that owns it. Three metadata strings said the same thing and belong to
+whoever owns SEO, so the same search produces their list too.
+
 ---
 
 ## Not yet logged
