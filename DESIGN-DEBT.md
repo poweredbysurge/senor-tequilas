@@ -2754,3 +2754,54 @@ every internal link resolves. 22 canonicals equal the 22 sitemap entries. One `<
 could not run: `design/reference/` holds only its manifest, so the screenshot diff has nothing to
 compare against (TASKS D2). Changed sections were photographed at 390 and 1440 and looked at
 instead.
+
+## 96. Post-launch corrections, round 2, 7 October
+
+The round 1 items that needed nothing new from the client. Same branch, same rules.
+
+**The Gaithersburg review cards are real.** `/mexican-restaurant-gaithersburg-md` had three copies
+of one placeholder, "The birria alone is worth the drive." over "[Reviewer pending] · [replace
+with real review]", and it had been live since launch. The three cards now read from
+`src/data/reviews.json`, the file the homepage rail uses: Juan Majano, Dee Williams and Erick
+Cruz, all three about the food. Names and text are as stored; the star row comes from each
+review's own rating and the caption carries the source and the month.
+
+- Picked by name rather than by position, so a refresh that reorders the file cannot change
+  which three show. A name no longer in the file drops its card rather than breaking the page.
+- The long one is clamped to six lines by the existing `[data-review-text]` rule from entry 92,
+  so the full text is still in the DOM.
+- **Roger Thomas was passed over on purpose.** His is the only review that mentions driving
+  through, which is what this page is about, but it says "The Happy Hour menu (opening through
+  5:00pm)". The site says 3 to 6. A stored review cannot be edited, so it was not put on a second
+  page. It is still on the homepage rail, which is worth a look.
+- No "pending]" or "replace with real" string is left in `src/` or in the built pages.
+
+**`quesabirrias-card.jpg` is no longer referenced.** `quesabirrias-2026.jpg` replaces it on the
+`/takeout-delivery` card and `ogImage`, the `/menu` Happy Hour taco, and both copies of the
+homepage Instagram tile, whose alt text now describes the photograph. The file stays on disk.
+
+**`tacos-de-arrachera-card.jpg` is no longer referenced either.** `tacos-de-arrachera-hero.jpg` was
+looked at before it was used: three tacos with a browned cheese crust, grilled steak and
+caramelized onions, which is the menu's own description of Tacos de Arrachera. It is now that
+item's thumbnail and the Street Tacos link card on `/taco-tuesday` and `/game-day`.
+
+- Three more Street Tacos link cards carried the pork belly photograph, in the "Keep eating" rail
+  on `/birria-tacos`, `/quesabirria-tacos` and `/fajitas-molcajetes`. Not in the brief, same fault,
+  same fix.
+- The second "arrachera thumbnail" on `/menu`, the Arrachera plate, was never wrong. It uses
+  `arrachera.jpg`, a skillet of skirt steak with nopales and a chile toreado, and was left alone.
+- Pork belly appears only as `pork-belly-tacos.jpg` on `/street-tacos`.
+
+**"In the bar area" is off the weekday happy hour strips** on `/menu` and `/margaritas`.
+
+**The other rails match the carousel.** `/late-night`: Friday and Saturday read "21+ in the bar
+area after 9 PM." in the same gold 800. `/happy-hour`: Tuesday and Wednesday read "8 PM to 10 PM.
+WIN prizes." and Friday and Saturday carry the 21+ line.
+
+**The `/happy-hour` rail does not render.** It is `display: none` at 360, 390, 600, 768 and 1440,
+measured. Its copy is corrected so it is right if it is ever switched on, but nobody sees it today
+and it could not be photographed.
+
+**Checks.** Build 22 pages, `check-build` passes, 22 canonicals equal 22 sitemap entries, one
+`<h1>` per page, no em dash added. The only `<Base>` change is the one `ogImage` path. Changed
+sections photographed at 390 and 1440.

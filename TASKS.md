@@ -132,7 +132,7 @@ not merged.
 | P2 | `/happy-hour` description still says "All day Sunday (in the bar area only)." Suggested: drop that sentence, keep the rest. |
 | P3 | `/game-day` description says "all day Sunday happy hour". Suggested: replace with "game day specials every Sunday", if the client confirms those. |
 | P4 | `/margaritas` description says "pulps we cook in house" and lists "jalapeno" without the chiles flavour the page no longer has; the page now says "made from scratch in-house". |
-| P5 | `/takeout-delivery` `ogImage` is `quesabirrias-card.jpg`, which is not quesabirria. `quesabirrias-2026.jpg` is. Also still S9. |
+| ~~P5~~ | **Done 7 October**, entry 96, on request: `/takeout-delivery` `ogImage` is `quesabirrias-2026.jpg`. S9 is still open. |
 | P6 | `/street-tacos` `ogImage` is `tacos-de-arrachera-hero.jpg`; the hero is now `tacos-al-pastor.jpg`. Not wrong, just no longer the hero. |
 | P7 | `/` description leads with "Handmade tortillas"; the hero line now says "Fresh food made to order." Not a contradiction, worth a look. |
 | P8 | Birria Tacos and Quesabirria Tacos: merge or keep. The two pages now share a card grid and an origin paragraph. See the round 1 report. |
@@ -141,14 +141,17 @@ not merged.
 
 | # | Item |
 |---|---|
-| P9 | `/mexican-restaurant-gaithersburg-md` shows three identical review cards, each "The birria alone is worth the drive." over "[Reviewer pending] · [replace with real review]". Live. `src/data/reviews.json` holds six real reviews that could fill them. |
+| ~~P9~~ | **Done 7 October**, entry 96. Three real reviews from `reviews.json`. |
 | P10 | Confirm "Game day specials every Sunday" is still true. |
-| P11 | Is weekday happy hour in all areas? `/menu` and `/margaritas` still say "In the bar area" under the weekday hours. The homepage and `/happy-hour` no longer do. |
+| ~~P11~~ | **Done 7 October**, entry 96. "In the bar area" removed from `/menu` and `/margaritas`. |
 | P12 | The Wednesday flyer art says "Wednesday · 7:30 PM". The card under it says 8 PM to 10 PM. |
 | P13 | Confirm the Our Story line "as the Post-Crescent showcased in 2005". |
-| P14 | `quesabirrias-card.jpg`, the vegetable close-up, is still labelled quesabirria on `/takeout-delivery` (Most ordered to go), `/menu` (Happy Hour, 1 Quesabirria Taco) and the homepage Instagram rail. |
-| P15 | `tacos-de-arrachera-card.jpg` is pork belly tacos. Still the Tacos de Arrachera and Arrachera thumbnails on `/menu`, and the Street Tacos link cards on `/taco-tuesday` and `/game-day`. `tacos-de-arrachera-hero.jpg` looks like the real dish and is now unused on a page. |
-| P16 | The mobile rails on `/happy-hour` and `/late-night` are separate components from the weekly carousel and still read "8 to 10, with prizes" and "21 and over in the bar area after 9". |
+| ~~P14~~ | **Done 7 October**, entry 96. `quesabirrias-card.jpg` is no longer referenced. |
+| ~~P15~~ | **Done 7 October**, entry 96. `tacos-de-arrachera-card.jpg` is no longer referenced. |
+| ~~P16~~ | **Done 7 October**, entry 96. Both rails match the carousel. |
 | P17 | Photographs for the slots emptied in entry 95: Birria Pizza (three places), Tacos Dorados (two), the fajitas pairing, a restaurant-owned piña colada, and trompo footage for the `/street-tacos` hero. |
 | P18 | `npm run verify` cannot run: `design/reference/` has no screenshots. Same root as D2. |
+| P19 | Roger Thomas' review on the homepage rail says the Happy Hour menu runs "opening through 5:00pm". The site says 3 to 6. Either the hours or the choice of review needs a look. The happy hour flyer file, `happy-hour-flier.jpg`, also says "Open - 5PM". |
+| P20 | The mobile rail on `/happy-hour` is hidden at every width. Decide whether it should show on phones or come out of the markup. |
+| P21 | Waiting on answers, not to be touched: the Wednesday flyer time (P12), the La Cocina year, the birria braise time (six hours on the birria pages, "12+ hours" on `/late-night`), and the time format. |
 

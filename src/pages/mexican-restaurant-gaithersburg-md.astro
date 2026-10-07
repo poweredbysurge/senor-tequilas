@@ -3,7 +3,15 @@ import Base from '../layouts/Base.astro';
 import Header5 from '../components/Header5.astro';
 import Footer2 from '../components/Footer2.astro';
 import business from '../data/business.json';
-import { roundedTotal } from '../lib/reviews.js';
+import reviews from '../data/reviews.json';
+import { roundedTotal, reviewMonth, stars } from '../lib/reviews.js';
+
+// Three real reviews for the cards beside the visit box, picked by name from the same file the
+// homepage rail reads, so a refresh that reorders it cannot change which three show. A name that
+// is no longer in the file simply drops its card. See DESIGN-DEBT.md entry 96.
+const featured = ['Juan Majano', 'Dee Williams', 'Erick Cruz']
+  .map((name) => reviews.find((r) => r.author === name))
+  .filter(Boolean);
 
 // The map query is built from business.json, the same address the JSON-LD carries, so the
 // two cannot disagree. Same iframe pattern as /contact.
@@ -49,7 +57,9 @@ const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(mapAddress)}
   </div></section><section data-dc-tpl="1002" data-screen-label="Reviews + visit" style="background: linear-gradient(rgba(70, 8, 14, 0.7), rgba(40, 4, 8, 0.86)), url(/images/ecf6382a259b5884.webp) center center / cover no-repeat; border-top: 1px solid rgba(191, 30, 46, 0.3); padding: clamp(44px, 7vw, 88px) 0px;">
   <div data-dc-tpl="1003" style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.6vw, 48px); display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: clamp(24px, 4vw, 56px); align-items: start;">
     <div data-dc-tpl="1004" style="display: grid; gap: 10px;">
-      <div data-dc-tpl="1006" style="background: rgba(18, 18, 16, 0.72); border: 1px solid rgba(185, 156, 102, 0.3); border-radius: 14px; padding: 18px;"><div data-dc-tpl="1007" style="color: rgb(185, 156, 102); letter-spacing: 2px; font-size: 13px;">★★★★★</div><div data-dc-tpl="1008" style="font-size: 15px; line-height: 1.6; color: rgb(234, 226, 214); margin-top: 8px;">"<span class="sc-interp">"The birria alone is worth the drive."</span>"</div><div data-dc-tpl="1009" style="font-size: 12px; color: rgba(234, 226, 214, 0.7); margin-top: 8px;"><span class="sc-interp">[Reviewer pending]</span> · <span data-dc-tpl="1010" style="color: rgb(185, 156, 102);">[replace with real review]</span></div></div><div data-dc-tpl="1006" style="background: rgba(18, 18, 16, 0.72); border: 1px solid rgba(185, 156, 102, 0.3); border-radius: 14px; padding: 18px;"><div data-dc-tpl="1007" style="color: rgb(185, 156, 102); letter-spacing: 2px; font-size: 13px;">★★★★★</div><div data-dc-tpl="1008" style="font-size: 15px; line-height: 1.6; color: rgb(234, 226, 214); margin-top: 8px;">"<span class="sc-interp">"The birria alone is worth the drive."</span>"</div><div data-dc-tpl="1009" style="font-size: 12px; color: rgba(234, 226, 214, 0.7); margin-top: 8px;"><span class="sc-interp">[Reviewer pending]</span> · <span data-dc-tpl="1010" style="color: rgb(185, 156, 102);">[replace with real review]</span></div></div><div data-dc-tpl="1006" style="background: rgba(18, 18, 16, 0.72); border: 1px solid rgba(185, 156, 102, 0.3); border-radius: 14px; padding: 18px;"><div data-dc-tpl="1007" style="color: rgb(185, 156, 102); letter-spacing: 2px; font-size: 13px;">★★★★★</div><div data-dc-tpl="1008" style="font-size: 15px; line-height: 1.6; color: rgb(234, 226, 214); margin-top: 8px;">"<span class="sc-interp">"The birria alone is worth the drive."</span>"</div><div data-dc-tpl="1009" style="font-size: 12px; color: rgba(234, 226, 214, 0.7); margin-top: 8px;"><span class="sc-interp">[Reviewer pending]</span> · <span data-dc-tpl="1010" style="color: rgb(185, 156, 102);">[replace with real review]</span></div></div>
+      {featured.map((r) => (
+      <figure data-dc-tpl="1006" style="margin: 0px; background: rgba(18, 18, 16, 0.72); border: 1px solid rgba(185, 156, 102, 0.3); border-radius: 14px; padding: 18px;"><div data-dc-tpl="1007" style="color: rgb(185, 156, 102); letter-spacing: 2px; font-size: 13px;">{stars(r.rating)}</div><blockquote data-dc-tpl="1008" data-review-text style="font-size: 15px; line-height: 1.6; color: rgb(234, 226, 214); margin: 8px 0px 0px;"><span class="sc-interp">{r.text}</span></blockquote><figcaption data-dc-tpl="1009" style="font-size: 12px; color: rgba(234, 226, 214, 0.7); margin-top: 8px;"><span class="sc-interp">{r.author}</span> · <span data-dc-tpl="1010" style="color: rgb(185, 156, 102);">{r.source} review, {reviewMonth(r.date)}</span></figcaption></figure>
+      ))}
     </div>
     <div data-dc-tpl="1011" style="background: rgb(28, 27, 24); border: 1px solid rgba(185, 156, 102, 0.35); border-radius: 18px; padding: 22px;">
       <div data-dc-tpl="1012" style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: 20px; text-transform: uppercase; color: rgb(246, 239, 228);">Señor Tequila's</div>
