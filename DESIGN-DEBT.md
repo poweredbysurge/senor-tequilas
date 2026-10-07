@@ -2805,3 +2805,52 @@ and it could not be photographed.
 **Checks.** Build 22 pages, `check-build` passes, 22 canonicals equal 22 sitemap entries, one
 `<h1>` per page, no em dash added. The only `<Base>` change is the one `ogImage` path. Changed
 sections photographed at 390 and 1440.
+
+## 97. Post-launch corrections, round 3: the client's answers, 7 October
+
+The open questions from rounds 1 and 2 came back answered.
+
+**Happy hour is 3 PM to 6 PM**, which the site already said. Roger Thomas' review said the happy
+hour menu ran "opening through 5:00pm", so it is off the homepage rail. The row stays in
+`reviews.json` with `"hidden": true` and `index.astro` filters on it. Deleting the row would not
+have lasted: `scripts/fetch-reviews.mjs` tops the file up by author and date, so the next refresh
+would have fetched him straight back. The rail shows five. `happy-hour-flier.jpg`, which says
+"Open - 5PM", is not used on any page and was left alone.
+
+**Tuesday and Wednesday start at 8 PM.** Checked, nothing to change: the four carousels and the
+`/happy-hour` rail read "8 PM to 10 PM", the Gaithersburg page says "free bingo at 8", and no
+other page gives a time. The Wednesday flyer image still says 7:30 PM; new art is coming.
+
+**Birria is braised 12 hours.** Fourteen places said six, and two said "12+":
+
+- `/birria-tacos`: the hero tag, the eyebrow and the "Braised 12 hours, daily" chip.
+- `/quesabirria-tacos`: the eyebrow, the hero line, which now opens "Twelve hours of braising", and
+  the chip.
+- The "12-hour braise" link cards on `/fajitas-molcajetes`, `/street-tacos` and `/taco-tuesday`,
+  and "Birria braised 12 hours" in the `/taco-tuesday` copy.
+- `/menu`: the hero card and the Birria section eyebrow. `/late-night`: the quesabirria card.
+- The homepage signature dish card, and "12-Hour Birria" on the Gaithersburg page.
+
+Numerals throughout, as the two existing "12+" mentions had it, spelled out only where it starts
+a sentence. `/birria-tacos` still says the beef is "submerged overnight, then braised", which
+does not contradict it.
+
+**La Cocina reads "Since 2003"** in place of 2026, in the timeline year styling from round 1.
+
+**There are no game day specials.** The claim was in two places, both on `/game-day`, in the gold
+card under the NFL teams. That card is now "From the First Kickoff to the Last Whistle" over
+"Every NFL game on, every Sunday, with TVs in the bar area, the International Room and the
+patio.", both lines the site already had, and its button goes to the bar area section of the same
+page rather than to happy hour. The Sunday card in the weekly carousel said only "NFL on."; it now
+says "Every NFL game on, from the first kickoff to the last whistle." and links to `/game-day` on
+the three pages that are not `/game-day`. The cards themselves are still not links, as tweaks.css
+entry at line 805 decided; this is one inline link inside the copy.
+
+"Must be 21+ for drink specials" in the `/happy-hour` fine print is about happy hour prices, not
+game day, and was left.
+
+**Time format stays "PM".** No change.
+
+**Checks.** Build 22 pages, `check-build` passes, 22 canonicals equal 22 sitemap entries, one
+`<h1>` per page, no em dash added, no `<Base>` line changed. Changed sections photographed at 390
+and 1440.

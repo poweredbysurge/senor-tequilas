@@ -130,7 +130,7 @@ not merged.
 |---|---|
 | P1 | `/happy-hour` title: "Happy Hour in Germantown, MD: Weekdays 3 to 6 and All Day Sunday \| Señor Tequila's". Suggested: "Happy Hour in Germantown, MD: Weekdays 3 PM to 6 PM \| Señor Tequila's". |
 | P2 | `/happy-hour` description still says "All day Sunday (in the bar area only)." Suggested: drop that sentence, keep the rest. |
-| P3 | `/game-day` description says "all day Sunday happy hour". Suggested: replace with "game day specials every Sunday", if the client confirms those. |
+| P3 | `/game-day` description still says "all day Sunday happy hour". Suggested: replace with "every NFL game on, every Sunday". There are no game day specials, entry 97. |
 | P4 | `/margaritas` description says "pulps we cook in house" and lists "jalapeno" without the chiles flavour the page no longer has; the page now says "made from scratch in-house". |
 | ~~P5~~ | **Done 7 October**, entry 96, on request: `/takeout-delivery` `ogImage` is `quesabirrias-2026.jpg`. S9 is still open. |
 | P6 | `/street-tacos` `ogImage` is `tacos-de-arrachera-hero.jpg`; the hero is now `tacos-al-pastor.jpg`. Not wrong, just no longer the hero. |
@@ -142,16 +142,17 @@ not merged.
 | # | Item |
 |---|---|
 | ~~P9~~ | **Done 7 October**, entry 96. Three real reviews from `reviews.json`. |
-| P10 | Confirm "Game day specials every Sunday" is still true. |
+| ~~P10~~ | **Answered 7 October**, entry 97: no game day specials. Claim removed. |
 | ~~P11~~ | **Done 7 October**, entry 96. "In the bar area" removed from `/menu` and `/margaritas`. |
-| P12 | The Wednesday flyer art says "Wednesday · 7:30 PM". The card under it says 8 PM to 10 PM. |
+| P12 | The Wednesday flyer art says "Wednesday · 7:30 PM". The correct time is 8 PM, confirmed 7 October. New art is coming from the client; replace `day-wednesday.webp` when it arrives. |
 | P13 | Confirm the Our Story line "as the Post-Crescent showcased in 2005". |
 | ~~P14~~ | **Done 7 October**, entry 96. `quesabirrias-card.jpg` is no longer referenced. |
 | ~~P15~~ | **Done 7 October**, entry 96. `tacos-de-arrachera-card.jpg` is no longer referenced. |
 | ~~P16~~ | **Done 7 October**, entry 96. Both rails match the carousel. |
 | P17 | Photographs for the slots emptied in entry 95: Birria Pizza (three places), Tacos Dorados (two), the fajitas pairing, a restaurant-owned piña colada, and trompo footage for the `/street-tacos` hero. |
 | P18 | `npm run verify` cannot run: `design/reference/` has no screenshots. Same root as D2. |
-| P19 | Roger Thomas' review on the homepage rail says the Happy Hour menu runs "opening through 5:00pm". The site says 3 to 6. Either the hours or the choice of review needs a look. The happy hour flyer file, `happy-hour-flier.jpg`, also says "Open - 5PM". |
+| ~~P19~~ | **Done 7 October**, entry 97. Happy hour is 3 PM to 6 PM; the review is hidden from the rail. |
 | P20 | The mobile rail on `/happy-hour` is hidden at every width. Decide whether it should show on phones or come out of the markup. |
-| P21 | Waiting on answers, not to be touched: the Wednesday flyer time (P12), the La Cocina year, the birria braise time (six hours on the birria pages, "12+ hours" on `/late-night`), and the time format. |
+| ~~P21~~ | **Answered 7 October**, entry 97: Tue and Wed start at 8 PM, birria is 12 hours, La Cocina is "Since 2003", time format stays PM. |
+| P22 | For Mario: three descriptions still say six hours, now that birria is 12. `/birria-tacos` "six hours in the pot", `/quesabirria-tacos` "Six hours of braising", `/our-story` "six-hour birria". |
 
