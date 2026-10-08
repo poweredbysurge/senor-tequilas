@@ -127,6 +127,11 @@
       "source": "/wp-sitemap.xml",
       "destination": "/sitemap.xml",
       "permanent": true
+    },
+    {
+      "source": "/quesabirria-tacos{/}?",
+      "destination": "/birria-tacos",
+      "permanent": true
     }
   ]
 }
