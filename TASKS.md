@@ -176,6 +176,8 @@ Raised 9 October. Applied changes are DESIGN-DEBT entry 98, on branch `media-pla
 | M10 | `/private-parties` still has one `need-image.svg` placeholder. Not in this round's brief. |
 | M11 | **`/happy-hour` layout shift, 0.141**, the hero photograph pair moving, present on `main`. Likely D7, the font swap. Worth 6 Lighthouse points on that page. |
 
+| M17 | **Favicon done 9 October**, entry 101. `public/icon-192.png` is unlinked: it wants a web manifest, and the site has none. Add one if an installable icon or an Android home screen icon is wanted. |
+
 ### For Mario (SEO, not actioned)
 
 | # | Item |

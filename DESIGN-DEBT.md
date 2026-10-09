@@ -3003,3 +3003,20 @@ above was measured before the merge; nothing in the merge touches those four pag
 still names the deleted route; in production that URL redirects. Everything else passes, zero
 console errors and zero unresolved links on the 20 remaining pages. `design/SEO.json` is Mario's,
 so the list was left alone. TASKS M14. `CLAUDE.md` also still lists the page and says 22.
+
+## 101. The favicon, 9 October
+
+The site had no favicon; a browser tab showed the default. Branch `favicon`, cut from `main`, so
+it does not carry entries 99 and 100, which are on `fix-weddings-pulps` and not yet merged.
+
+Four files in `public/`, as supplied: `favicon.ico` (16, 32 and 48 in one file), `favicon-32.png`,
+`apple-touch-icon.png` at 180 and `icon-192.png`. The mark is the green palm from the logo on
+black. Three links in `Base.astro`, straight after the viewport tag: the `.ico` with
+`sizes="any"`, the 32px PNG, and the apple touch icon. Nothing else in the head changed.
+
+`icon-192.png` is on disk and not linked. It is for a web manifest, the site has none, and one
+was not to be created. TASKS M17.
+
+**Checks.** Build 21 pages. `dist/favicon.ico` is there, and all three links are in the head of
+all 21 pages. 21 canonicals equal 21 sitemap entries, one `<h1>` per page.
+
