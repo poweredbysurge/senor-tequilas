@@ -178,6 +178,8 @@ Raised 9 October. Applied changes are DESIGN-DEBT entry 98, on branch `media-pla
 | M15 | Homepage dish data in `Base.astro`, Tamarindo: "Pulp cooked in our kitchen" and "tamarind pulp we cook in our own kitchen, not a syrup". Not the phrase entry 99 was asked to change; confirm whether it should also say "made from scratch in-house". |
 | M16 | Two placeholder pills still in the markup but not visible: the quinceañeras hero (`display: none`) and the homepage chef caption (removed by script). Delete from the markup when convenient. |
 
+| M17 | **Favicon done 9 October**, entry 101. `public/icon-192.png` is unlinked: it wants a web manifest, and the site has none. Add one if an installable icon or an Android home screen icon is wanted. |
+
 ### For Mario (SEO, not actioned)
 
 | # | Item |

@@ -3048,3 +3048,20 @@ from the 755x944 portrait around the face, metadata stripped. The original is in
 `incoming-media/`, not committed. Build 21 pages, canonicals and H1s unchanged; the card
 photographed at 390 and 1440 on two of the three pages.
 
+## 101. The favicon, 9 October
+
+The site had no favicon; a browser tab showed the default. Branch `favicon`, cut from `main`, so
+it did not carry entries 99 and 100 from `fix-weddings-pulps`. Both branches were merged the same
+day, that one first.
+
+Four files in `public/`, as supplied: `favicon.ico` (16, 32 and 48 in one file), `favicon-32.png`,
+`apple-touch-icon.png` at 180 and `icon-192.png`. The mark is the green palm from the logo on
+black. Three links in `Base.astro`, straight after the viewport tag: the `.ico` with
+`sizes="any"`, the 32px PNG, and the apple touch icon. Nothing else in the head changed.
+
+`icon-192.png` is on disk and not linked. It is for a web manifest, the site has none, and one
+was not to be created. TASKS M17.
+
+**Checks.** Build 21 pages. `dist/favicon.ico` is there, and all three links are in the head of
+all 21 pages. 21 canonicals equal 21 sitemap entries, one `<h1>` per page.
+
