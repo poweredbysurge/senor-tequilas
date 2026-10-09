@@ -3065,3 +3065,25 @@ was not to be created. TASKS M17.
 **Checks.** Build 21 pages. `dist/favicon.ico` is there, and all three links are in the head of
 all 21 pages. 21 canonicals equal 21 sitemap entries, one `<h1>` per page.
 
+## 102. The two patios, 9 October
+
+Sam supplied two photographs, named as "the Cancun and the Vallarta patios". The site's Spaces
+section on `/private-parties` has two outdoor patios and calls them Vallarta and Tulum; Cancun
+appears nowhere. Asked, and answered: the Cancun photograph goes on the Tulum card and the card
+keeps its name. Branch `patio-photos`.
+
+- Vallarta: the straight-on view down the centre aisle, `patio-vallarta.webp`.
+- Tulum: the angled view with the building on the left, `patio-tulum.webp`.
+
+Both arrived as phone screenshots, 1320x2868 with black bars above and below, not camera files.
+Each is cut to the card's 16:9 around the umbrellas, the string lights and the tables, 1200x675,
+about 68KB. That is enough for a 393px card and would not hold up much larger. Originals are in
+`incoming-media/`, not committed.
+
+**One `need-image.svg` is left on the site,** The Whole House on the same page. It is still
+visible to visitors. Whether the patio the site calls Tulum should be renamed Cancun is open,
+TASKS M18.
+
+**Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The
+Spaces section photographed at 390 and 1440.
+

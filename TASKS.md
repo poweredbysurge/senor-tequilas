@@ -173,12 +173,13 @@ Raised 9 October. Applied changes are DESIGN-DEBT entry 98, on branch `media-pla
 | ~~M7~~ | **Done 9 October**, entry 99. The hero pill is removed and the heading reads "Long Tables, International Room". |
 | M8 | **`/margaritas`:** Watermelon, Lychee and Coconut cards have no photograph, so the flavour grid has four tall cards and three short ones. |
 | M9 | Still not supplied: Big Mami, the agua fresca station, malteadas, birria with a cantarito, the new Wednesday flyer (P12). Tomas' headshot arrived and is placed, entry 100. |
-| M10 | **Visible to visitors:** `/private-parties`, Spaces section. Vallarta, Tulum and The Whole House show `need-image.svg`, which reads "PHOTOGRAPH PENDING / NEED IMAGE / Replace before launch". Needs photographs (R16) or a neutral treatment in the meantime. Entry 99. |
+| M10 | **Still visible to visitors:** `/private-parties`, Spaces section, The Whole House shows `need-image.svg` ("PHOTOGRAPH PENDING / NEED IMAGE / Replace before launch"). Vallarta and Tulum were done 9 October, entry 102. Needs a photograph, the exterior shot in R16 would suit, or a neutral treatment. |
 | M11 | **`/happy-hour` layout shift, 0.141**, the hero photograph pair moving, present on `main`. Likely D7, the font swap. Worth 6 Lighthouse points on that page. |
 | M15 | Homepage dish data in `Base.astro`, Tamarindo: "Pulp cooked in our kitchen" and "tamarind pulp we cook in our own kitchen, not a syrup". Not the phrase entry 99 was asked to change; confirm whether it should also say "made from scratch in-house". |
 | M16 | Two placeholder pills still in the markup but not visible: the quinceañeras hero (`display: none`) and the homepage chef caption (removed by script). Delete from the markup when convenient. |
 
 | M17 | **Favicon done 9 October**, entry 101. `public/icon-192.png` is unlinked: it wants a web manifest, and the site has none. Add one if an installable icon or an Android home screen icon is wanted. |
+| M18 | **Tulum or Cancun.** Sam called the patio photographs "Cancun and Vallarta"; the site says Vallarta and Tulum. The Cancun photograph is on the Tulum card, name unchanged, on Sam's instruction. Confirm the patio's real name with the client. Better originals would also help: both are phone screenshots. |
 
 ### For Mario (SEO, not actioned)
 
