@@ -104,7 +104,7 @@ Nothing below can be done without files. Grouped by where they go.
 
 | # | Needed | Source |
 |---|---|---|
-| R14 | **Menu:** the remaining items with no photograph. 57 of 126 menu thumbnails are still placeholders. The kids quesadilla picture is also wrong. | Daniela, Tomas 3, Alejandro |
+| R14 | **Menu:** the remaining items with no photograph. **9 of 126 menu thumbnails are still placeholders after entry 98**, listed under Media placement below. The kids quesadilla picture is also wrong. | Daniela, Tomas 3, Alejandro |
 | R15 (part) | ~~A real happy hour photograph for the page~~ and ~~real pictures for the Deals section~~ **done 23 September**, entry 82: the hero, the Bar card and the Bites card all carry supplied happy hour photography now. Still outstanding: real pictures of the happy hour items for the happy hour menu itself. | Roberto 2, Daniela |
 | R16 | **Private events rooms:** new pictures for the Mexican Room, the International Room and Vallarta; the current Vallarta picture moves to Indoor Patio; a Tulum picture; and a full exterior shot of the building. | Roberto 4, Alejandro |
 | R17 | **Private events, the rest:** an empty-room picture for the main image, buffet and catering photographs, and new pictures for the DJ booth, the mariachis and the DJ with party host. Plus Tomas' headshot for Book a Tour. | Roberto 3, 5, 6, Daniela |
@@ -149,10 +149,37 @@ not merged.
 | ~~P14~~ | **Done 7 October**, entry 96. `quesabirrias-card.jpg` is no longer referenced. |
 | ~~P15~~ | **Done 7 October**, entry 96. `tacos-de-arrachera-card.jpg` is no longer referenced. |
 | ~~P16~~ | **Done 7 October**, entry 96. Both rails match the carousel. |
-| P17 | Photographs for the slots emptied in entry 95: Birria Pizza (three places), Tacos Dorados (two), the fajitas pairing, a restaurant-owned piña colada, and trompo footage for the `/street-tacos` hero. |
+| P17 | **Mostly done 9 October**, entry 98: Birria Pizza, Tacos Dorados, the fajitas pairing (with tacos and margaritas, not the briefed molcajete shot), the piña colada and the trompo hero are placed. Still open: a molcajete, fajita and Big Mami photograph for the pairing. Original note: Photographs for the slots emptied in entry 95: Birria Pizza (three places), Tacos Dorados (two), the fajitas pairing, a restaurant-owned piña colada, and trompo footage for the `/street-tacos` hero. |
 | P18 | `npm run verify` cannot run: `design/reference/` has no screenshots. Same root as D2. |
 | ~~P19~~ | **Done 7 October**, entry 97. Happy hour is 3 PM to 6 PM; the review is hidden from the rail. |
 | P20 | The mobile rail on `/happy-hour` is hidden at every width. Decide whether it should show on phones or come out of the markup. |
 | ~~P21~~ | **Answered 7 October**, entry 97: Tue and Wed start at 8 PM, birria is 12 hours, La Cocina is "Since 2003", time format stays PM. |
 | P22 | For Mario: three descriptions still say six hours, now that birria is 12. `/birria-tacos` "six hours in the pot", `/quesabirria-tacos` "Six hours of braising", `/our-story` "six-hour birria". |
 
+## Media placement, round 1: what is open
+
+Raised 9 October. Applied changes are DESIGN-DEBT entry 98, on branch `media-placement-1`.
+
+### Client and Sam
+
+| # | Item |
+|---|---|
+| M1 | **Nine PHOTO frames left on `/menu`:** 6" Single Tacos, Enchiladas de Camarón (two cards), Fajita Burrito, Arroz con Pollo, Tequila's Chicken Platter, Cheeseburger, Chicken Nuggets, 2 Tacos Mañaneros. None of these is in the client's folder. |
+| M2 | **House Margarita shows a frozen margarita.** The happy hour menu says "12 oz. on the rocks". Either a rocks photograph, or confirm frozen is fine. On `/menu` and `/happy-hour`. |
+| M3 | **Frozen Piña Colada shows the virgin piña colada**, in a mug, a phone photograph on a plain background. Fine as a stand-in; a photograph of the cocktail itself would be better. |
+| M4 | **Cut-out drinks are on slate, the older drink thumbnails are on black.** Nine cards in Margaritas & Cocktails and the Jamaica and Jalapeño cards on `/margaritas`. Pick one ground. |
+| M5 | **The item photo row on `/happy-hour` is new**, added because the page had no per-item photo slots. Keep it or drop it. |
+| M6 | **`/fajitas-molcajetes` "Big plate, Big Mami."** now sits beside tacos and margaritas. The molcajete, fajita and Big Mamis photograph is still wanted, or the heading changes. |
+| M7 | **Weddings:** the heading over the International Room photograph still says "Candlelight, Not Fluorescent", and the hero has a visible pill reading "Placeholder: long table, candles, sparklers". |
+| M8 | **`/margaritas`:** Watermelon, Lychee and Coconut cards have no photograph, so the flavour grid has four tall cards and three short ones. |
+| M9 | Still not supplied: Big Mami, Tomás, the agua fresca station, malteadas, birria with a cantarito, the new Wednesday flyer (P12). |
+| M10 | `/private-parties` still has one `need-image.svg` placeholder. Not in this round's brief. |
+| M11 | **`/happy-hour` layout shift, 0.141**, the hero photograph pair moving, present on `main`. Likely D7, the font swap. Worth 6 Lighthouse points on that page. |
+
+### For Mario (SEO, not actioned)
+
+| # | Item |
+|---|---|
+| M12 | `/street-tacos` `ogImage` is still `tacos-de-arrachera-hero.jpg` (P6). The hero is now the trompo; `/videos/street-tacos-trompo.jpg` is its still. |
+| M13 | `/margaritas` `ogImage`: check it still suits the page now the hero is the handcrafted margaritas. |
+| M14 | `npm run check-build` fails since `8ad1d75`: it still walks `/quesabirria-tacos`, which is deleted and redirected. Remove the route from the `design/` JSON the checker reads, `design/SEO.json` and its siblings, and from the page table in `CLAUDE.md`. |

@@ -2854,3 +2854,152 @@ game day, and was left.
 **Checks.** Build 22 pages, `check-build` passes, 22 canonicals equal 22 sitemap entries, one
 `<h1>` per page, no em dash added, no `<Base>` line changed. Changed sections photographed at 390
 and 1440.
+
+## 98. Media placement, round 1, 9 October
+
+The client's Dropbox photographs and clips, placed. Branch `media-placement-1`. Originals stay in
+`incoming-media/`, which is ignored by git; only web versions are in `public/`. Every file was
+looked at before it was used, and every output is upright with its metadata stripped. No title,
+description, canonical or URL was touched, and no `<Base>` line changed.
+
+**Formats, following what each slot already used.**
+
+- Menu thumbnails: the entry 89 and 90 pair, a 320px square WebP for the grid and a `-lg` twin up
+  to 1254px that only the dialog fetches, `role="img"`, a label that describes the photograph, a
+  solid border. One pair per photograph, so the two Garden Fajita cards share a pair and so do
+  the two Margarita Flight cards.
+- Dish cards: one JPEG at 1600 wide in `public/images/dishes/`, as its siblings.
+- Page photographs: WebP in `public/images/site/`, sized to about twice the box.
+- Clips: H.264 MP4, no audio track, with a poster JPEG, in `public/videos/`.
+
+**The cut-out drinks sit on slate, `rgb(76, 105, 113)`.** The nine PNGs arrived transparent, with
+that colour stored under the alpha, so that is the ground they were given. The brief called
+slate the menu's existing drink style; the eleven drink thumbnails from entries 89 to 91 are in
+fact on black, so the Margaritas section now mixes the two. It reads as two shoots, which it is.
+Black is a one-constant change in `scripts/encode-media-placement-1.mjs` if it is wanted.
+
+**`/`.** The happy hour card carries the overhead happy hour spread (`happy-hour-spread.webp`,
+already on disk from entry 82) in place of the cocktail board. It crops cleanly in the slot, so
+the group shot fallback was not needed.
+
+**`/happy-hour`.**
+
+- Three of its four photographs were already these same client files, from entry 82: the guests
+  at the table, the drinks board and the spread. The fourth, a general photograph of the bar, is
+  now the four guests toasting (`happy-hour-group.webp`).
+- The video is back where entry 95 left the comment: `happy-hour-drinks.mp4`, 11 seconds of
+  cocktails along the bar, 720x1280, 2.0MB, silent, with controls, `preload="none"` so only the
+  49KB poster loads until someone plays it. The source was 4K HDR; it is tone-mapped to SDR. The
+  section needed words beside it and no Sunday copy came back: the eyebrow, the heading "Same
+  Kitchen, Same Bar, Smaller Bill" and the hours line are all sentences the site already had.
+- **New: a row of four item photographs under the two deal cards**, Handcrafted Margaritas,
+  Margarita Flight, House Margarita and Platanitos, each captioned with its menu item. The page
+  had no per-item photo slots, only the price lists, so this row is an addition and a judgement
+  call. It is one `<div data-hh-photos>` and comes out cleanly.
+- **The House Margarita photograph is a frozen lime margarita.** The happy hour menu says "12 oz.
+  on the rocks". The brief assigned this file to the item; it is flagged, here and on `/menu`.
+- 2 Tacos Mañaneros has no photograph and keeps its treatment.
+
+**`/menu`.** 35 PHOTO frames filled, and two existing thumbnails replaced.
+
+- Appetizers: Un Chile Relleno, Tacos Dorados, Plátanos Fritos, Pozole, Fajita Taco Salad.
+- Birria: Birria Pizza. Fajitas and Vegetarian: Garden Fajita, both cards, and Dos Chiles Rellenos.
+- Enchiladas & Classics: Enchiladas de Carnitas, Jambalaya Burrito, Carne Asada, Pollo Asado. The
+  Pollo Asado photograph has a printed label card along its bottom edge; the crop stops above it.
+- Kids: Mac & Cheese, Kid Drinks. La Dulcería: Aguas Frescas, Virgin Mangonada, and the Virgin
+  Piña Colada, Daiquiri, Mojito card, which takes the virgin mojito.
+- Margaritas & Cocktails: Jamaica, Jalapeño, Pomegranate, Top-Shelf Reposado, Fresca, Blue
+  Diamond, Margarita on the Rocks or Frozen, Miami Vice, Mangonada, Bulldog, Margarita Flight,
+  Mezcalita, Mexican Mojito, Frozen Piña Colada.
+- Happy Hour: Handcrafted Margaritas, Margarita Flight, Platanitos. House Margarita changes from
+  `hh-margarita.webp` to the frozen lime photograph, as above.
+- Tequila & Mezcal: Shooters is the black airplane tray with yellow and blue shooters. The source
+  is 1024px, so its twin is 1024, the whole plane on black, and the thumbnail is a tighter crop
+  of the same frame. It is used nowhere else.
+- **The piña colada is one photograph and it is the virgin one, in a mug.** It is on Frozen Piña
+  Colada, as briefed. To avoid the same picture on two cards the virgin card took the mojito.
+- Pomegranate had no `menu-*` file; it uses the `/margaritas` photograph, which is that drink.
+- **Nine PHOTO frames remain:** 6" Single Tacos, Enchiladas de Camarón (two cards), Fajita
+  Burrito, Arroz con Pollo, Tequila's Chicken Platter, Cheeseburger, Chicken Nuggets and 2 Tacos
+  Mañaneros.
+- `hh-margarita*.webp`, `tequila-shooters*.webp`, `drink-pina-colada*.webp` and
+  `happy-hour-drinks.webp` are still on disk and no longer referenced.
+
+**`/margaritas`.** The hero was a party photograph under a pill reading "The Big Mami · 54 oz".
+It is the handcrafted margaritas on the wood board, and the pill says "Handcrafted margaritas",
+since the picture is not a Big Mami. `LCP_IMAGE` follows. Tamarindo, Pomegranate, Jamaica and
+Jalapeño each gain a 4:3 photograph at the top of their card, under the colour bar. Watermelon,
+Lychee and Coconut are untouched, so that grid now has four tall cards and three short ones. The
+classics list is text rows with no photo slots, and its one photograph was already the client's.
+
+**The birria pages and `/takeout-delivery`.** Birria Pizza and Tacos Dorados have photographs on
+both birria pages. The fact each stand-in carried is still on the card twice: as a red pill on
+the photograph, "To-go only" and "Made with birria meat", and in the description, which already
+said it. The red-texture blocks and their comments are gone. The takeout Birria Pizza row has its
+72px thumbnail back, and still reads "Available to-go only. Feeds four to six people."
+
+**`/street-tacos`.** The hero is the al pastor trompo: the first 10.5 seconds of the client's
+reel, the trompo, the knife, the tortillas and the plate. The man eating to camera starts at
+11.5 seconds and is not in it. Centre-cropped from 9:16 to 4:5, 720x900, 3.1MB, silent.
+
+- It uses the homepage hero swap, now a two-row table in `Base.astro` (`HERO_VIDEO`) rather than
+  a second copy: muted, looping, inline, `preload="none"`, attached after load, skipped on
+  save-data and 2g.
+- The still in the markup is the clip's first frame, so it is the poster and the LCP image at
+  once, and `LCP_IMAGE` points at it. `trompo-1.mov` was not needed.
+- One selector added to the existing `.st-herovideo` rule in tweaks.css. No other CSS changed.
+
+**`/fajitas-molcajetes`.** The "Pair it" block is back with the overhead tacos and margaritas.
+The heading beside it still says "Big plate, Big Mami." and the photograph shows neither a
+molcajete nor a Big Mami; that shot is on the not-yet list. There is no second slot, so
+`tacos-margaritas-2.jpg` is unused.
+
+**`/karaoke`.** The fourth tile in the strip, "Placeholder: the host", is three guests singing
+at the bar, captioned "On the mic at the bar". The source is landscape and the tile is 4:5; the
+crop keeps three whole faces and leaves the two men on the right out rather than cutting them.
+
+**Weddings.** The 16:9 placeholder is the International Room set with long tables, captioned
+"Long tables in the International Room". The section heading above it still reads "Candlelight,
+Not Fluorescent" and the hero still carries a pill reading "Placeholder: long table, candles,
+sparklers". Neither was in the brief; both are in TASKS.md.
+
+**Lighthouse, mobile, local preview, `main` against this branch, median of three.**
+
+| page | score | LCP | CLS | total bytes |
+|---|---|---|---|---|
+| `/` | 85 → 82 | 3.5s → 3.5s | 0.154 → 0.197 | 12.2MB → 12.3MB |
+| `/menu` | 74 → 73 | 4.5s → 4.7s | 0.203 → 0.203 | 9.6MB → 10.0MB |
+| `/street-tacos` | 75 → 83 | 7.7s → 4.7s | 0.038 → 0.038 | 2.5MB → 5.7MB |
+| `/happy-hour` | 69 → 69 | 8.9s → 9.2s | 0.141 → 0.141 | 3.3MB → 3.5MB |
+
+- These are the first recorded numbers for three of the four. The log held only a homepage median
+  of 93, from entry 92, so `main` was built in a scratch worktree and measured alongside the
+  branch, same machine, same hour. `/happy-hour` is the median of eight runs a side, not three.
+- `/street-tacos` is the real change: the old hero still was 305KB and the new poster is 153KB,
+  which is the three seconds of LCP. The clip adds 3.1MB after load.
+- `/menu` pays 0.4MB for 35 thumbnails that were empty boxes. They are CSS backgrounds, so they
+  all load with the page, as the other 82 already did.
+- The homepage moved by one image swap. Its score follows its CLS, which is TASKS D7, the font
+  swap, and ranged from 0.002 to 0.207 on `main` alone.
+- **`/happy-hour` has a 0.141 shift that is not from this round.** It is the hero photograph pair
+  moving, it appears on `main` in six runs of eight, and when it does not, `main` scores 75. It
+  looks like the same font swap. Logged in TASKS.md.
+
+**Checks.** Build 22 pages. `check-build` passes. 22 canonicals equal 22 sitemap entries. One
+`<h1>` per page. No em dash added. Every changed section photographed at 390 and 1440 and looked
+at: no cut-off faces, glasses or plates.
+
+**Merged with `origin/main` after the fact.** The branch was cut from a local `main` one commit
+behind: Mario's `8ad1d75`, 7 October, had already merged `/quesabirria-tacos` into `/birria-tacos`
+with a redirect in `vercel.json`, and corrected several titles and descriptions. `origin/main` is
+merged into this branch. Two conflicts: the deleted page, where the deletion stands and the two
+photographs placed on it go with it, and one `LCP_IMAGE` row, where the trompo poster stands.
+After the merge: 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page, and the
+Birria Pizza and Tacos Dorados photographs and pills are on `/birria-tacos`. The Lighthouse table
+above was measured before the merge; nothing in the merge touches those four pages' media.
+
+**`check-build` now fails, and it fails on `origin/main` too.** Its one complaint is
+`/quesabirria-tacos`: HTTP 404. The page list it walks comes from the `design/` JSON, which
+still names the deleted route; in production that URL redirects. Everything else passes, zero
+console errors and zero unresolved links on the 20 remaining pages. `design/SEO.json` is Mario's,
+so the list was left alone. TASKS M14. `CLAUDE.md` also still lists the page and says 22.
