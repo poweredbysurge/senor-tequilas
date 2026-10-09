@@ -3038,3 +3038,13 @@ checked against the live site at 390 and 1440:
 **Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page, no em
 dash added. `check-build` skipped, TASKS M14. Both changed sections photographed at 390 and 1440.
 
+## 100. Tomas' headshot, 9 October
+
+Supplied by Sam, on the same branch as entry 99. Entry 94 took the pending photo box off the
+nine coordinator cards and said it goes back in front of the name when the headshot arrives. It
+is back: a 72px box on all nine, seven on `/private-parties` and one each on the quinceañeras and
+weddings pages, since they are one card repeated. `tomas-headshot.webp`, 288px square, 8KB, cut
+from the 755x944 portrait around the face, metadata stripped. The original is in
+`incoming-media/`, not committed. Build 21 pages, canonicals and H1s unchanged; the card
+photographed at 390 and 1440 on two of the three pages.
+
