@@ -460,7 +460,8 @@ body[data-route="/"] [data-dc-tpl="60"] {
   min-height: 0 !important;
 }
 /* Same box the still occupied: absolutely filling the panel it sits in. */
-body[data-route="/"] .st-herovideo {
+body[data-route="/"] .st-herovideo,
+body[data-route="/street-tacos"] .st-herovideo {
   position: absolute;
   inset: 0;
   display: block;

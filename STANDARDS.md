@@ -601,6 +601,25 @@ whoever owns SEO, so the same search produces their list too.
 
 ---
 
+## 31. Client media arrives as originals, and three things about it are invisible
+
+**Date:** 2026-10-09 · **Origin:** DESIGN-DEBT 98 · **Status:** candidate
+
+A client folder of 59 photographs and five clips went onto eleven pages. The originals ran to
+27MB a photograph and 125MB a clip, and three properties of them could not be seen from a file
+listing: phone clips were HDR (HLG, 10-bit) and came out grey and flat until tone-mapped; one
+photograph had a printed label card in frame; and the transparent PNGs carried their intended
+background colour under the alpha, which is the only place it was written down.
+
+**Template:** originals live in a git-ignored folder with a manifest that says what each file
+shows. Before encoding, make a labelled contact sheet and look at every file; after encoding,
+make another of the outputs. Probe every clip for its transfer characteristic and tone-map
+anything that is not bt709. Sample a transparent PNG's hidden RGB before choosing its ground.
+A hero clip's poster is its own first frame, so the still, the poster and the LCP image are one
+file. Measure `main` and the branch side by side when the log has no number for a page.
+
+---
+
 ## Not yet logged
 
 Changes made from 2026-09-18 onward get appended here as they happen.

@@ -22,7 +22,7 @@ const LCP_IMAGE = {
   '/takeout-delivery': '/images/86475be0134bfc90.webp',
   '/birria-tacos': '/images/4e4e97cc03520928.jpg',
   '/quesabirria-tacos': '/images/dishes/quesabirrias-hero.jpg',
-  '/street-tacos': '/images/dishes/tacos-al-pastor.jpg',
+  '/street-tacos': '/videos/street-tacos-trompo.jpg',
   '/fajitas-molcajetes': '/images/dishes/triple-a-molcajete-hero.jpg',
   '/la-dulceria': '/images/dishes/churros-hero.jpg',
   '/our-story': '/images/site/our-story-hero.webp',
@@ -30,7 +30,7 @@ const LCP_IMAGE = {
   '/private-parties/quinceaneras-celebrations': '/images/site/celebration-cake.jpg',
   '/private-parties/weddings-receptions': '/images/site/weddings-hero.jpg',
   '/catering': '/images/site/catering-hero.jpg',
-  '/margaritas': '/images/20d856a9f66a9c4c.jpg',
+  '/margaritas': '/images/site/margaritas-hero.webp',
   '/tequila-bar': '/images/0fcbe6ef39392a93.jpg',
   '/happy-hour': '/images/9cf29efa1cbf0c3e.webp',
   '/late-night': '/images/24e322da4fd1060e.jpg',
@@ -1119,11 +1119,21 @@ const jsonLd = {
            Muted, looping, no controls, and it starts on its own: this is hero furniture, not
            something anyone chose to watch. The muted property is set as well as the attribute
            because Safari reads the property when deciding whether autoplay is allowed. */
+        // The same swap serves /street-tacos, whose hero is the al pastor trompo. There the
+        // still in the markup is already the clip's first frame, so it is the LCP image and
+        // the poster at once. See DESIGN-DEBT.md entry 98.
+        var HERO_VIDEO = {
+          '/': { panel: '[data-dc-tpl="60"]', img: '[data-dc-tpl="62"]', clip: 'home-hero',
+            label: 'The dining room and bar at Senor Tequila\'s during service' },
+          '/street-tacos': { panel: '[data-dc-tpl="280"]', img: '[data-dc-tpl="281"]', clip: 'street-tacos-trompo',
+            label: 'Al pastor shaved off the trompo onto tortillas' }
+        };
         function heroVideo() {
-          if (document.body.getAttribute('data-route') !== '/') return;
-          var panel = document.querySelector('[data-dc-tpl="60"]');
+          var hero = HERO_VIDEO[document.body.getAttribute('data-route')];
+          if (!hero) return;
+          var panel = document.querySelector(hero.panel);
           if (!panel || panel.querySelector('video')) return;
-          var img = panel.querySelector('[data-dc-tpl="62"]');
+          var img = panel.querySelector(hero.img);
           if (!img) return;
 
           var v = document.createElement('video');
@@ -1142,8 +1152,8 @@ const jsonLd = {
           // No source and preload none, so nothing is fetched while the page is painting. The
           // poster is the hero until the sources are attached below.
           v.setAttribute('preload', 'none');
-          v.setAttribute('poster', '/videos/home-hero.jpg');
-          v.setAttribute('aria-label', 'The dining room and bar at Senor Tequila\'s during service');
+          v.setAttribute('poster', '/videos/' + hero.clip + '.jpg');
+          v.setAttribute('aria-label', hero.label);
 
           img.parentNode.replaceChild(v, img);
 
@@ -1169,7 +1179,7 @@ const jsonLd = {
           // until play() asks for it, so there is no load() call here at all.
           function attach() {
             if (v.getAttribute('src')) return;
-            v.setAttribute('src', '/videos/home-hero.mp4');
+            v.setAttribute('src', '/videos/' + hero.clip + '.mp4');
             // If a browser refuses the autoplay, the poster stays rather than a dead black box.
             var pr = v.play();
             if (pr && pr.catch) pr.catch(function () {});
