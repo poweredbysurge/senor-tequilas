@@ -2988,3 +2988,18 @@ sparklers". Neither was in the brief; both are in TASKS.md.
 **Checks.** Build 22 pages. `check-build` passes. 22 canonicals equal 22 sitemap entries. One
 `<h1>` per page. No em dash added. Every changed section photographed at 390 and 1440 and looked
 at: no cut-off faces, glasses or plates.
+
+**Merged with `origin/main` after the fact.** The branch was cut from a local `main` one commit
+behind: Mario's `8ad1d75`, 7 October, had already merged `/quesabirria-tacos` into `/birria-tacos`
+with a redirect in `vercel.json`, and corrected several titles and descriptions. `origin/main` is
+merged into this branch. Two conflicts: the deleted page, where the deletion stands and the two
+photographs placed on it go with it, and one `LCP_IMAGE` row, where the trompo poster stands.
+After the merge: 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page, and the
+Birria Pizza and Tacos Dorados photographs and pills are on `/birria-tacos`. The Lighthouse table
+above was measured before the merge; nothing in the merge touches those four pages' media.
+
+**`check-build` now fails, and it fails on `origin/main` too.** Its one complaint is
+`/quesabirria-tacos`: HTTP 404. The page list it walks comes from the `design/` JSON, which
+still names the deleted route; in production that URL redirects. Everything else passes, zero
+console errors and zero unresolved links on the 20 remaining pages. `design/SEO.json` is Mario's,
+so the list was left alone. TASKS M14. `CLAUDE.md` also still lists the page and says 22.

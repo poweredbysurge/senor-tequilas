@@ -182,3 +182,4 @@ Raised 9 October. Applied changes are DESIGN-DEBT entry 98, on branch `media-pla
 |---|---|
 | M12 | `/street-tacos` `ogImage` is still `tacos-de-arrachera-hero.jpg` (P6). The hero is now the trompo; `/videos/street-tacos-trompo.jpg` is its still. |
 | M13 | `/margaritas` `ogImage`: check it still suits the page now the hero is the handcrafted margaritas. |
+| M14 | `npm run check-build` fails since `8ad1d75`: it still walks `/quesabirria-tacos`, which is deleted and redirected. Remove the route from the `design/` JSON the checker reads, `design/SEO.json` and its siblings, and from the page table in `CLAUDE.md`. |
