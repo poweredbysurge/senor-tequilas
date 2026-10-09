@@ -170,11 +170,13 @@ Raised 9 October. Applied changes are DESIGN-DEBT entry 98, on branch `media-pla
 | M4 | **Cut-out drinks are on slate, the older drink thumbnails are on black.** Nine cards in Margaritas & Cocktails and the Jamaica and Jalapeño cards on `/margaritas`. Pick one ground. |
 | M5 | **The item photo row on `/happy-hour` is new**, added because the page had no per-item photo slots. Keep it or drop it. |
 | M6 | **`/fajitas-molcajetes` "Big plate, Big Mami."** now sits beside tacos and margaritas. The molcajete, fajita and Big Mamis photograph is still wanted, or the heading changes. |
-| M7 | **Weddings:** the heading over the International Room photograph still says "Candlelight, Not Fluorescent", and the hero has a visible pill reading "Placeholder: long table, candles, sparklers". |
+| ~~M7~~ | **Done 9 October**, entry 99. The hero pill is removed and the heading reads "Long Tables, International Room". |
 | M8 | **`/margaritas`:** Watermelon, Lychee and Coconut cards have no photograph, so the flavour grid has four tall cards and three short ones. |
 | M9 | Still not supplied: Big Mami, Tomás, the agua fresca station, malteadas, birria with a cantarito, the new Wednesday flyer (P12). |
-| M10 | `/private-parties` still has one `need-image.svg` placeholder. Not in this round's brief. |
+| M10 | **Visible to visitors:** `/private-parties`, Spaces section. Vallarta, Tulum and The Whole House show `need-image.svg`, which reads "PHOTOGRAPH PENDING / NEED IMAGE / Replace before launch". Needs photographs (R16) or a neutral treatment in the meantime. Entry 99. |
 | M11 | **`/happy-hour` layout shift, 0.141**, the hero photograph pair moving, present on `main`. Likely D7, the font swap. Worth 6 Lighthouse points on that page. |
+| M15 | Homepage dish data in `Base.astro`, Tamarindo: "Pulp cooked in our kitchen" and "tamarind pulp we cook in our own kitchen, not a syrup". Not the phrase entry 99 was asked to change; confirm whether it should also say "made from scratch in-house". |
+| M16 | Two placeholder pills still in the markup but not visible: the quinceañeras hero (`display: none`) and the homepage chef caption (removed by script). Delete from the markup when convenient. |
 
 ### For Mario (SEO, not actioned)
 

@@ -3003,3 +3003,38 @@ above was measured before the merge; nothing in the merge touches those four pag
 still names the deleted route; in production that URL redirects. Everything else passes, zero
 console errors and zero unresolved links on the 20 remaining pages. `design/SEO.json` is Mario's,
 so the list was left alone. TASKS M14. `CLAUDE.md` also still lists the page and says 22.
+
+## 99. The weddings placeholder pill, and the pulps wording, 9 October
+
+Two small fixes on branch `fix-weddings-pulps`. No title, description, canonical, URL or CSS
+touched.
+
+**Weddings.** The hero carried a visible pill, "Placeholder: long table, candles, sparklers",
+at every width. It is removed; the hero photograph is unchanged. The heading over the
+International Room photograph was "Candlelight, Not Fluorescent" and the photograph is a
+daylight room. It reads "Long Tables, International Room", in the same element and styling.
+The paragraph under it does not mention candles ("Dimmable lighting, a long-table layout for up
+to 60 or rounds for 120...") and was left as written.
+
+**`/margaritas`.** The hero line opens "Pulps made from scratch in-house:" with the flavour list
+kept. The four house flavour cards said "Cooked in house" as their eyebrow; they say "Made from
+scratch in-house". That now matches the section eyebrows from entry 95.
+
+**Found and not changed.** A search of `src/` for visible "Placeholder" and "[PENDING" text,
+checked against the live site at 390 and 1440:
+
+- `/private-parties`, the Spaces section: Vallarta, Tulum and The Whole House each use
+  `need-image.svg`, which reads "PHOTOGRAPH PENDING / NEED IMAGE / Replace before launch". One
+  is on screen at a time. **This is visible to visitors.** TASKS M10.
+- `/private-parties/quinceaneras-celebrations`: the same kind of hero pill, "Placeholder: the
+  quince court dancing", is in the markup but `display: none`. Not visible.
+- `/`: "Placeholder: swap for the new chef at the pass" is in the markup and removed by
+  `dropChefPlaceholder()` in `Base.astro` on load. Not visible with scripts on.
+- The two `[PENDING` strings, on `/game-day` and `/takeout-delivery`, are HTML comments.
+- One more pulp sentence, not an exact match so left alone: the Tamarindo entry in the homepage
+  dish data in `Base.astro` says "Pulp cooked in our kitchen" and "tamarind pulp we cook in our
+  own kitchen, not a syrup". TASKS M15.
+
+**Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page, no em
+dash added. `check-build` skipped, TASKS M14. Both changed sections photographed at 390 and 1440.
+
