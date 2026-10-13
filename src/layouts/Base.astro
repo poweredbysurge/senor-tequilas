@@ -1112,6 +1112,92 @@ const jsonLd = {
           grid.insertBefore(fig, grid.firstChild);
         }
 
+        /* ---- 17b. the inquiry forms -----------------------------------------------------------
+           Five forms, on /catering, the three private party pages and /contact, post to /api/inquiry,
+           which emails the managers. Until 13 October they had no destination at all: a submit
+           reloaded the page and the request went nowhere. See DESIGN-DEBT.md entry 107.
+
+           The form never fails silently. If the send is refused for any reason, including the
+           endpoint not being configured yet, the guest is told so and given the phone number,
+           and what they typed stays in the fields. The number comes from a tel: link already on
+           the page, so it is still business.json's. */
+        function inquiryForms() {
+          var forms = document.querySelectorAll('form[data-inquiry]');
+          [].forEach.call(forms, function (form) {
+            var button = form.querySelector('button[type="submit"]');
+            if (!button) return;
+            var label = button.querySelector('.sc-interp') || button;
+            var idle = label.textContent;
+            var status = document.createElement('div');
+            status.setAttribute('role', 'status');
+            status.setAttribute('aria-live', 'polite');
+            status.setAttribute('data-inquiry-status', '');
+            status.style.cssText = 'grid-column: 1 / -1; font-size: 14px; line-height: 1.55; display: none;';
+            button.parentNode.insertBefore(status, button.nextSibling);
+            var busy = false;
+
+            function say(kind, nodes) {
+              status.textContent = '';
+              nodes.forEach(function (n) { status.appendChild(typeof n === 'string' ? document.createTextNode(n) : n); });
+              status.style.color = kind === 'ok' ? 'rgb(246, 239, 228)' : 'rgb(214, 188, 133)';
+              status.style.display = 'block';
+            }
+            function callLink() {
+              var tel = document.querySelector('a[href^="tel:"]');
+              var a = document.createElement('a');
+              a.href = tel ? tel.getAttribute('href') : '/contact';
+              var d = tel ? tel.getAttribute('href').replace(/\D/g, '').slice(-10) : '';
+              a.textContent = d.length === 10 ? d.slice(0, 3) + '-' + d.slice(3, 6) + '-' + d.slice(6) : 'the contact page';
+              a.style.cssText = 'color: rgb(56, 176, 73); font-weight: 800; white-space: nowrap;';
+              return a;
+            }
+
+            form.addEventListener('submit', function (e) {
+              e.preventDefault();
+              if (busy) return;
+              var data = { form: form.getAttribute('data-inquiry'), page: location.pathname };
+              ['name', 'phone', 'email', 'date', 'guests', 'details', 'company'].forEach(function (k) {
+                var el = form.elements[k];
+                data[k] = el ? el.value : '';
+              });
+              busy = true;
+              button.disabled = true;
+              button.style.opacity = '0.7';
+              label.textContent = 'Sending';
+              status.style.display = 'none';
+
+              fetch('/api/inquiry', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+                .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok && j.ok === true, j: j }; }); })
+                .catch(function () { return { ok: false, j: {} }; })
+                .then(function (out) {
+                  busy = false;
+                  if (out.ok) {
+                    var first = String(data.name).trim().split(/\s+/)[0];
+                    var strong = document.createElement('strong');
+                    strong.textContent = 'Thanks, ' + first + '. Your request is in.';
+                    strong.style.cssText = 'display: block; font-weight: 800; color: rgb(56, 176, 73); margin-bottom: 2px;';
+                    say('ok', [strong, data.phone ? 'We will call you at ' + data.phone + '.' : 'We will write back to ' + data.email + '.']);
+                    label.textContent = 'Sent';
+                    [].forEach.call(form.querySelectorAll('input, textarea'), function (el) { el.disabled = true; });
+                    try { if (window.gtag) window.gtag('event', 'generate_lead', { form_name: data.form, page_path: location.pathname }); } catch (err) {}
+                    return;
+                  }
+                  button.disabled = false;
+                  button.style.opacity = '';
+                  label.textContent = idle;
+                  var errs = out.j && out.j.errors;
+                  if (errs) {
+                    var key = Object.keys(errs)[0];
+                    say('bad', [errs[key]]);
+                    if (form.elements[key] && form.elements[key].focus) form.elements[key].focus();
+                    return;
+                  }
+                  say('bad', ['That did not send. Your details are still here, so nothing is lost. Please call ', callLink(), ' and we will take it from there.']);
+                });
+            });
+          });
+        }
+
         /* ---- 18. the homepage hero video ------------------------------------------------------
            The right half of the split hero was a still. It now carries a 4:5 clip. Below 680,
            where the hero is stacked, the panel keeps that ratio and the footage fills it exactly;
@@ -1542,6 +1628,7 @@ const jsonLd = {
           try { videoStrip(); } catch (e) {}
           try { introVideo(); } catch (e) {}
           try { heroVideo(); } catch (e) {}
+          try { inquiryForms(); } catch (e) {}
           try { heroFold(); } catch (e) {}
           try { mobileCtas(); } catch (e) {}
           try { eyebrowRules(); } catch (e) {}
