@@ -60,6 +60,10 @@ stub(); r = await call(body({ email: 'maria@example.com' }), { ...ENV, INQUIRY_C
 // a watcher is blind copied on the managers' email only, and is never a reply-to
 stub(); r = await call(body({ email: 'maria@example.com' }), { ...ENV, INQUIRY_BCC: 'watch@example.com' }); assert.deepEqual(all[0].body.bcc, ['watch@example.com']);
 assert.equal(all[1].body.bcc, undefined); assert.deepEqual(all[1].body.reply_to, ['a@example.com', 'b@example.com']); assert.deepEqual(all[0].body.to, ['a@example.com', 'b@example.com']);
+// settings pasted with invisible characters still work: the first live send failed on a
+// line separator after the key
+stub(); r = await call({}, { RESEND_API_KEY: 're_test\u2028', INQUIRY_FROM: '\uFEFFSite <inquiries@example.com>\u2028', INQUIRY_TO: 'a@example.com,\u200B b@example.com\u2028\nc@example.com' }); assert.equal(r.status, 200);
+assert.equal(sent.init.headers.Authorization, 'Bearer re_test'); assert.equal(sent.body.from, 'Site <inquiries@example.com>'); assert.deepEqual(sent.body.to, ['a@example.com', 'b@example.com', 'c@example.com']);
 // the contact form: email and message required, phone optional, no date or head count
 const contact = (o) => ({ body: { form: 'contact', name: 'Ana Ruiz', email: 'ana@example.com', details: 'Did I leave a blue scarf on Friday?', page: '/contact', ...o } });
 stub(); r = await call(contact({}), ENV); assert.equal(r.status, 200); assert.equal(all[0].body.subject, 'New contact message: Ana Ruiz'); assert.ok(!all[0].body.html.includes('Headcount') && !all[0].body.html.includes('>Date<'));
@@ -71,7 +75,7 @@ stub(); r = await call(contact({ phone: '12' }), ENV); assert.equal(r.status, 42
 let nth = 0; globalThis.fetch = async () => { nth++; return { ok: nth === 1, status: nth === 1 ? 200 : 500, text: async () => 'x' }; };
 r = await call(body({ email: 'maria@example.com' }), ENV); assert.equal(r.status, 200); assert.equal(nth, 2);
 globalThis.fetch = realFetch;
-console.log('api/inquiry.js: 35 checks pass');
+console.log('api/inquiry.js: 39 checks pass');
 
 const when = new Date('2026-10-13T18:41:00Z');
 const samples = {

@@ -18,7 +18,11 @@
 import business from '../src/data/business.json' with { type: 'json' };
 import { buildInquiryEmail, buildConfirmationEmail, FORMS } from './_lib/inquiry-email.js';
 
-const list = (v) => String(v || '').split(',').map((s) => s.trim()).filter(Boolean);
+// A value pasted into a dashboard can carry characters nobody can see: a line separator, a
+// zero-width space, a byte order mark. One on the end of the API key made every send throw on
+// the first live test. Settings are cleaned before use. See DESIGN-DEBT.md entry 110.
+const env = (name) => String(process.env[name] || '').replace(/[\u0000-\u001F\u007F\u00A0\u200B-\u200F\u2028\u2029\u2060\uFEFF]/g, ' ').trim();
+const list = (v) => String(v || '').split(/[,;\s]+/).map((s) => s.trim()).filter(Boolean);
 const clean = (v, max) => String(v ?? '').replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g, '').trim().slice(0, max);
 
 export function validate(body) {
@@ -98,11 +102,11 @@ export default async function handler(req, res) {
   const { inq, errors } = validate(body);
   if (Object.keys(errors).length) return res.status(422).json({ ok: false, code: 'invalid', errors });
 
-  const key = process.env.RESEND_API_KEY;
-  const from = process.env.INQUIRY_FROM;
-  const perForm = process.env['INQUIRY_TO_' + inq.form.toUpperCase().replace(/-/g, '_')];
-  const to = list(perForm || process.env.INQUIRY_TO);
-  const bcc = list(process.env.INQUIRY_BCC);
+  const key = env('RESEND_API_KEY').replace(/\s/g, '');
+  const from = env('INQUIRY_FROM');
+  const perForm = env('INQUIRY_TO_' + inq.form.toUpperCase().replace(/-/g, '_'));
+  const to = list(perForm || env('INQUIRY_TO'));
+  const bcc = list(env('INQUIRY_BCC'));
   if (!key || !from || !to.length) {
     console.error('inquiry: not configured', { key: !!key, from: !!from, to: to.length });
     return res.status(503).json({ ok: false, code: 'not_configured' });
@@ -123,7 +127,7 @@ export default async function handler(req, res) {
     // The guest's copy. A reply to it goes to every manager, the same group that got the
     // inquiry. It is a courtesy: the managers already have the inquiry, so a failure
     // here is logged and the guest is still told it went through.
-    if (inq.email && String(process.env.INQUIRY_CONFIRM || '').toLowerCase() !== 'off') {
+    if (inq.email && env('INQUIRY_CONFIRM').toLowerCase() !== 'off') {
       try {
         const c = buildConfirmationEmail(inq, { business });
         const cr = await fetch('https://api.resend.com/emails', {
