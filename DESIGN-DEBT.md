@@ -3105,3 +3105,29 @@ exterior shot" R16 asked for, at card size only.
 **Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The card
 photographed at 390 and 1440.
 
+## 104. The homepage hero video, new edit, 13 October
+
+Sam supplied a new edit for the homepage hero, `SenorTequilasWebsiteHero.mp4`: 48.8 seconds,
+1080x1920 at 60fps with a music track, 18MB. It opens on the menu cover, "From Mexico With
+Love", and runs through the kitchen, the bar, the dining room and the neon sign.
+
+- The original is moved out of Downloads into `design/source-video/`, which is git-ignored.
+- The web copy is `public/videos/home-hero-2.mp4`: the centre 4:5 of the frame, which is the
+  shape the hero panel is locked to, 864x1080, 30fps, H.264 CRF 30, no audio track, 9.9MB. Every
+  shot was checked against the 4:5 crop lines first; nothing that matters sits in the trimmed
+  top and bottom. 864 wide is the size entry 30 suggested, and the panel is 720 at most.
+- The poster, `home-hero-2.jpg`, is the first frame, 138KB.
+- **A new file name, not an overwrite,** so a browser or the CDN holding the old clip cannot
+  keep serving it. The wiring is one word in the `HERO_VIDEO` table in `Base.astro`, plus the
+  clip's label. The swap itself is unchanged: muted, looping, inline, attached after load,
+  skipped on save-data and 2g.
+- `home-hero.mp4` and `home-hero.jpg` are still on disk and no longer referenced.
+
+**It is 19 seconds longer and 1.1MB lighter** than the clip it replaces (30 seconds, 11.0MB).
+Homepage Lighthouse, mobile, local preview, three runs: 83, 83, 85, LCP 4.6s, 4.6s, 3.5s, total
+10.7MB. Entry 98 measured 82 to 85 and 12.2MB on the old clip, so the score is where it was and
+the page is 1.5MB lighter.
+
+**Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The clip
+plays at 390 and 1440, muted and looping, no console errors; the hero photographed at both.
+
