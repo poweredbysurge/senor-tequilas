@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import { writeFileSync } from 'fs';
 const out = process.argv[2];
-const pages = ['/','/menu','/our-story','/takeout-delivery','/birria-tacos','/quesabirria-tacos','/street-tacos',
+const pages = ['/','/menu','/our-story','/takeout-delivery','/birria-tacos','/street-tacos',
   '/fajitas-molcajetes','/la-dulceria','/private-parties','/private-parties/quinceaneras-celebrations',
   '/private-parties/weddings-receptions','/catering','/margaritas','/tequila-bar','/happy-hour','/late-night',
   '/karaoke','/taco-tuesday','/mexican-restaurant-gaithersburg-md','/contact','/game-day'];

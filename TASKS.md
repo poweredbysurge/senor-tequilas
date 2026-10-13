@@ -13,7 +13,7 @@ Status: `open` / `blocked` / `client` (waiting on the client) / `decided` (agree
 
 ## SEO and launch — Mario
 
-1 through 4 were the cutover and are done. What is open here is S4, S5, S6, S8 and S9.
+1 through 4 were the cutover and are done. What is open here is S4 and S8.
 
 | # | Task | Status | Debt |
 |---|---|---|---|
@@ -21,11 +21,11 @@ Status: `open` / `blocked` / `client` (waiting on the client) / `decided` (agree
 | ~~S2~~ | **Done at the cutover**, the week of 22 September, entry 93. Struck 13 October: the site is live on `www.senortequilas.com` with `vercel.json` redirects, and canonicals, sitemap and robots.txt on the production host. | done | — |
 | ~~S3~~ | **Done at the cutover**, the week of 22 September, entry 93. Struck 13 October: the site is live on `www.senortequilas.com` with `vercel.json` redirects, and canonicals, sitemap and robots.txt on the production host. | done | 55 |
 | S4 | Verify in Search Console: canonical matches sitemap, no redirect chains on the 301s, no orphaned old URLs. The cutover it waited on is done; whether this check was run is not recorded here. | open, Mario to confirm | 93 |
-| S5 | Gate `src/pages/robots.txt.js` to emit `Disallow: /` when not on the production host. Today the review URL serves `Allow: /` while its canonicals point elsewhere, so a crawl before cutover feeds contradictory host signals. | open, may be moot: previews are behind Vercel SSO and `vercel.app` redirects to www. Mario to close or keep | 55 |
-| S6 | Decide whether to reinstate `lastmod` in the sitemap. Dropped in entry 55 because every page carried the same hand-set date, which was worse than absent. | open | 55 |
+| ~~S5~~ | **Closed by Mario 13 October**, entry 112: robots.txt, no change. | done | 55 |
+| ~~S6~~ | **Done 13 October**, entry 112. `lastmod` is each page's own last commit, from git. Needs `VERCEL_DEEP_CLONE=true` in Vercel, which is set. | done | 55 |
 | ~~S7~~ | **Done.** `/contact` is linked from the header and footer. Struck 13 October. | done | 18, 20 |
 | S8 | Google Business Profile, not a repo change: add "Sports bar" as a secondary category and post three World Cup watch party photographs. "Sports bar near me" is 105,000/mo and is answered by the local pack, not by `/game-day`. | open | 37 |
-| S9 | `/takeout-delivery` meta description still reads "Order online from Toast and skip the dishes." Customer-facing, in search results, and a diner does not know what Toast is. The on-page reference was removed in entry 60; this one was left because meta descriptions are Mario's. | open | 60 |
+| ~~S9~~ | **Done 13 October**, entry 112. New `/takeout-delivery` description, no mention of Toast. | done | 60 |
 
 ### Not a task, recorded so it is not rediscovered
 
@@ -54,7 +54,7 @@ page files so it cannot drift. The only Astro-attributable risk is URL format, w
 |---|---|---|---|
 | D1 | Header overflows by 29px at 320px, down from 49px. Knowingly left. | open | 45 |
 | D2 | Reference set at `design/reference/` predates the September changes, so the visual baseline cannot validate nine pages. Regenerate or retire it. | open | 22, 38 |
-| D3 | The brothers photograph is still the `/our-story` `ogImage` and still fills its slot. | open | 40 |
+| ~~D3~~ | **Decided 13 October**, entry 112: `/our-story` keeps the brothers photograph as its `ogImage`, deliberately. | done | 40 |
 | D4 | `/private-parties` is 13,666px tall at 390 with no in-page navigation. | open | 9 |
 | ~~D5~~ | ~~Current-page nav highlight is hand-applied, so 12 pages have none.~~ **Done 21 September**, entry 69. Marked from the path by `navCurrent()`, with `aria-current="page"`. 3 routes to 9. | done | 10, 69 |
 | ~~D9~~ | ~~Game Day has no desktop nav entry.~~ **Done 21 September**, entry 75. Swapped for Gift Cards, which moved to the footer nav. Eight items kept, no overflow. | done | 74, 75 |
@@ -133,7 +133,7 @@ Raised 7 October. Applied changes are DESIGN-DEBT entries 95 to 97, merged and l
 | ~~P4~~ | **Done by Mario**, `8ad1d75`: the description says "pulps made from scratch in-house". It still spells "jalapeno" without the ñ. |
 | ~~P5~~ | **Done 7 October**, entry 96, on request: `/takeout-delivery` `ogImage` is `quesabirrias-2026.jpg`. S9 is still open. |
 | ~~P6~~ | Superseded by M12: the hero is now the trompo video. |
-| P7 | `/` description leads with "Handmade tortillas"; the hero line now says "Fresh food made to order." Not a contradiction, worth a look. |
+| ~~P7~~ | **Deferred to November by Mario**, entry 112. The homepage description is not to be touched until then. |
 | ~~P8~~ | **Done by Mario**, commit `8ad1d75`, 7 October. Struck 13 October. |
 
 ### Client and Sam
@@ -189,6 +189,8 @@ Raised 9 October. Applied changes are DESIGN-DEBT entries 98 to 106, merged and 
 
 | # | Item |
 |---|---|
-| M12 | `/street-tacos` `ogImage` is still `tacos-de-arrachera-hero.jpg` (P6). The hero is now the trompo; `/videos/street-tacos-trompo.jpg` is its still. |
-| M13 | `/margaritas` `ogImage`: check it still suits the page now the hero is the handcrafted margaritas. |
-| M14 | `npm run check-build` fails since `8ad1d75`: it still walks `/quesabirria-tacos`, which is deleted and redirected. Remove the route from the `design/` JSON the checker reads, `design/SEO.json` and its siblings, and from the page table in `CLAUDE.md`. |
+| ~~M12~~ | **Done 13 October**, entry 112. `/street-tacos` `ogImage` is the trompo still. |
+| ~~M13~~ | **Done 13 October**, entry 112. `/margaritas` `ogImage` is the page hero. |
+| ~~M14~~ | **Done 13 October**, entry 112. `check-build` passes. |
+| M24 | `design/SEO.json` has drifted from the page files. Brought back in line 13 October only where Mario's brief named a field. Known leftovers: `/margaritas` description ("pulps we cook in house") and `/takeout-delivery` `ogImage`. Either reconcile the whole file against `src/pages/` or retire it; the pages are what ship. |
+| M25 | The old route `/quesabirria-tacos` is still named in the design port's archive files (`design/LINK-MAP.json` and others), left on purpose, entry 112. Mario to say if they should be cleaned. |

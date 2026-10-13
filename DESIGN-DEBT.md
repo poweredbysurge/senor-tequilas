@@ -3346,3 +3346,63 @@ and no more. The original is in `incoming-media/`, not committed.
 `addon-mariachi.jpg` stays where it is: the homepage rail still uses it, and that was not part
 of this request. Build 21 pages, canonicals and H1s unchanged.
 
+## 112. Mario's SEO brief: the build check, two ogImages, two descriptions, sitemap lastmod, 13 October
+
+Run from Mario's written brief, on branch `seo/build-fix-and-meta-2026-10-13`. Nothing outside
+the brief's list of titles, descriptions, canonicals and URLs was touched; the homepage
+description and the eight deferred pages are as they were, and so are robots.txt and the
+redirect in `vercel.json`.
+
+**`npm run check-build` passes again.** It had failed since `8ad1d75` because it walks
+`design/pages/manifest.json`, which still listed `/quesabirria-tacos`. The route is out of the
+manifest, out of `design/SEO.json`, and out of the page table in `CLAUDE.md`, whose count now
+says 21. `design/pages/_mobile-reference/quesabirria-tacos.html` is deleted: the manifest entry
+was the thing reaching for it. The same dead route is also out of four Lighthouse helper
+scripts at the repo root, which would otherwise have measured a redirect.
+
+**The grep is not down to `vercel.json` alone, and was left that way on purpose.** What remains
+is the record of the original design port: `design/LINK-MAP.json`, `IMAGE-MAP.json`,
+`ALT-TEXT.json`, `reference/MANIFEST.json`, the briefs, the overlay files, the two port scripts
+that generated them, and this log. None of it is read by the build or by `check-build`, and
+`src/` and `api/` have no hits. Rewriting generated port data by hand to satisfy a grep seemed
+worse than leaving it. Say so if it should go.
+
+**The redirect answers 308, not 301.** `"permanent": true` in `vercel.json` is a 308 on Vercel,
+and has been since `8ad1d75`. It is permanent and search engines treat it as a 301. Unchanged.
+
+**ogImage, two pages,** in the page file and `design/SEO.json` together: `/street-tacos` is
+`/videos/street-tacos-trompo.jpg` and `/margaritas` is `/images/site/margaritas-hero.webp`. Both
+files exist in `public/`, and both show in the built JSON-LD `image`. `/our-story` is left on the
+brothers photograph, deliberately.
+
+**Two descriptions.** `/takeout-delivery` carries the brief's sentence exactly, which also
+retires "Order online from Toast". `/margaritas` changes one character, "jalapeno" to
+"jalapeño".
+
+**`design/SEO.json` had already drifted from the pages**, and only the fields the brief named
+were brought back in line. Its `/margaritas` description still reads "pulps we cook in house"
+where the page says "made from scratch in-house", and its `/takeout-delivery` `ogImage` is still
+`quesabirrias-card.jpg` where the page uses `quesabirrias-2026.jpg`. The pages are what ship.
+TASKS M24.
+
+**Sitemap `lastmod`, from git, per page.** `src/pages/sitemap.xml.js` asks git for each page
+file's last commit while the site builds and writes that date. Never the build date.
+
+- **Vercel clones ten commits deep, and that would have lied.** In a shallow clone the oldest
+  commit looks as if it created every file, so a page last edited before it reports that
+  commit's date. Tested in a depth 10 clone: `/tequila-bar`, last changed 23 September, came
+  back as 12 October. The generator reads the clone's shallow boundary and leaves `lastmod` off
+  any page whose answer is a boundary commit: 8 of 21 dated in that clone, the other 13 with no
+  tag, none wrong.
+- So that all 21 are dated in production, `VERCEL_DEEP_CLONE=true` is set in Vercel for
+  Production and Preview, which makes the build fetch full history. If that setting ever goes
+  away the sitemap degrades to fewer dates, not false ones.
+- No git at all: no `lastmod` anywhere, 21 URLs still listed. Tested.
+- The build prints one line, `sitemap: lastmod from git on N of 21 pages`, so the build log
+  says which case it was.
+- A page's date moves when its own file changes. A change to the shared layout or a header
+  component does not move it.
+
+**Checks.** `check-build` passes: zero console errors, zero 404s, every internal link resolves.
+Build 21 pages, 21 sitemap entries, 21 canonicals, one `<h1>` per page, 21 `lastmod` locally.
+

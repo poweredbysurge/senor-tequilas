@@ -65,17 +65,6 @@
       "mobileReference": null
     },
     {
-      "slug": "quesabirria-tacos",
-      "path": "/quesabirria-tacos",
-      "h1": "Quesabirria Tacos",
-      "sourceWidth": 1440,
-      "sourceHeight": 3277,
-      "surface": "rgb(18, 18, 16)",
-      "scName": "Concept 1 Pages",
-      "c1p": true,
-      "mobileReference": "_mobile-reference/quesabirria-tacos.html"
-    },
-    {
       "slug": "street-tacos",
       "path": "/street-tacos",
       "h1": "Street Tacos",
