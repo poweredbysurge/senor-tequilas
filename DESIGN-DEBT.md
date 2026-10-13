@@ -3087,3 +3087,21 @@ TASKS M18.
 **Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The
 Spaces section photographed at 390 and 1440.
 
+## 103. The Whole House card, 13 October
+
+Sam supplied a photograph of the front of the building at dusk: the lit sign, the mariachi
+statues at the door and both patios under their lights. It is on The Whole House card in the
+Spaces section of `/private-parties`, which was the last `need-image.svg` on the site. Branch
+`whole-house-photo`.
+
+`exterior-dusk.webp`, 1058x595, 111KB. The source is a 1058x721 WebP, a wide-angle or panorama
+frame with some curve in the kerb, cut to the card's 16:9 by trimming sky and tarmac. It is not
+resized up; at 1058px it suits the 393px card and would not hold as a hero. The original is in
+`incoming-media/`, not committed.
+
+**No page references `need-image.svg` any more.** The file stays on disk. This is also the "full
+exterior shot" R16 asked for, at card size only.
+
+**Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The card
+photographed at 390 and 1440.
+
