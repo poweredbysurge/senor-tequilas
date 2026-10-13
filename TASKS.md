@@ -181,6 +181,7 @@ Raised 9 October. Applied changes are DESIGN-DEBT entries 98 to 106, merged and 
 
 | M19 | **Inquiry forms: one variable left, then merge `inquiry-forms`**, entries 107 and 108. Set in Vercel, Production, 13 October: `INQUIRY_FROM` (`forms@alerts.senortequilas.com`) and `INQUIRY_TO` (six managers; contact messages go to the same six). Still needed: `RESEND_API_KEY`, and `alerts.senortequilas.com` verified in Resend, which means DNS records on that subdomain. Both stored values are write-only in Vercel, so the sender name's ñ and apostrophe get checked on the first real send. Then send one real test from each of the five forms and look at both emails in Gmail and Outlook. |
 | M22 | **Client to read two things before the forms go live:** the confirmation email guests receive, and the `/contact` promise "We reply within one business day." Samples in `design/gate-a/email/`. |
+| M23 | **Remove `INQUIRY_BCC` from Vercel around 13 November.** Surge's manager address is blind copied on every form notification for the first month, entry 109. Delete the variable and redeploy. |
 | ~~M20~~ | **Done 13 October**, entry 108. Every form has an email field, `/contact` has a form, and a guest who gives an address gets a branded confirmation. |
 | M21 | Mark `generate_lead` as a key event in GA4 once the forms are live. |
 

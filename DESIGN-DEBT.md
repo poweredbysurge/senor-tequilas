@@ -3290,3 +3290,18 @@ guest's confirmation replies to the first address on the list. `RESEND_API_KEY` 
 variable still missing, and the `alerts` subdomain has to be verified in Resend before anything
 sends.
 
+## 109. The forms go live: replies to the whole group, and a watcher, 13 October
+
+Resend is set up: `alerts.senortequilas.com` is verified and `RESEND_API_KEY` is in Vercel.
+Two changes before the merge.
+
+- **A reply to the guest's confirmation goes to every manager,** not the first one on the list.
+  Its `reply_to` is the same group that received the inquiry.
+- **`INQUIRY_BCC`,** a new optional variable: addresses blind copied on the managers'
+  notification. It is set to Surge's manager address so the forms can be watched for the first
+  month. A blind copy, so the managers do not see it, it is not copied on the guest's
+  confirmation, and it is in no reply-to. **Remove it around 13 November,** TASKS M23; deleting
+  the variable is all it takes, no deploy of code.
+
+`node scripts/test-inquiry.mjs` is 35 checks. `inquiry-forms` merged into `main`.
+

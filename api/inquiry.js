@@ -10,6 +10,9 @@
 //   INQUIRY_TO_CATERING, INQUIRY_TO_PRIVATE_PARTY, INQUIRY_TO_QUINCEANERA, INQUIRY_TO_WEDDING,
 //   INQUIRY_TO_CONTACT
 //                    optional. Recipients for one form only, replacing INQUIRY_TO for it.
+//   INQUIRY_BCC      optional. Addresses blind copied on the managers' notification, for
+//                    someone watching the forms. Not shown to the managers, not copied on the
+//                    guest's confirmation, and not part of any reply-to.
 //   INQUIRY_CONFIRM  optional. Set to "off" to stop the confirmation sent to a guest who
 //                    gave an email address.
 import business from '../src/data/business.json' with { type: 'json' };
@@ -99,6 +102,7 @@ export default async function handler(req, res) {
   const from = process.env.INQUIRY_FROM;
   const perForm = process.env['INQUIRY_TO_' + inq.form.toUpperCase().replace(/-/g, '_')];
   const to = list(perForm || process.env.INQUIRY_TO);
+  const bcc = list(process.env.INQUIRY_BCC);
   if (!key || !from || !to.length) {
     console.error('inquiry: not configured', { key: !!key, from: !!from, to: to.length });
     return res.status(503).json({ ok: false, code: 'not_configured' });
@@ -109,14 +113,15 @@ export default async function handler(req, res) {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to, subject, html, text, ...(inq.email ? { reply_to: inq.email } : {}), tags: [{ name: 'form', value: inq.form.replace(/-/g, '_') }] }),
+      body: JSON.stringify({ from, to, ...(bcc.length ? { bcc } : {}), subject, html, text, ...(inq.email ? { reply_to: inq.email } : {}), tags: [{ name: 'form', value: inq.form.replace(/-/g, '_') }] }),
     });
     if (!r.ok) {
       console.error('inquiry: resend refused', r.status, (await r.text()).slice(0, 300));
       return res.status(502).json({ ok: false, code: 'send_failed' });
     }
     console.log('inquiry: sent', inq.form, inq.page);
-    // The guest's copy. It is a courtesy: the managers already have the inquiry, so a failure
+    // The guest's copy. A reply to it goes to every manager, the same group that got the
+    // inquiry. It is a courtesy: the managers already have the inquiry, so a failure
     // here is logged and the guest is still told it went through.
     if (inq.email && String(process.env.INQUIRY_CONFIRM || '').toLowerCase() !== 'off') {
       try {
@@ -124,7 +129,7 @@ export default async function handler(req, res) {
         const cr = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ from, to: [inq.email], subject: c.subject, html: c.html, text: c.text, reply_to: to[0], tags: [{ name: 'form', value: 'confirmation' }] }),
+          body: JSON.stringify({ from, to: [inq.email], subject: c.subject, html: c.html, text: c.text, reply_to: to, tags: [{ name: 'form', value: 'confirmation' }] }),
         });
         if (!cr.ok) console.error('inquiry: confirmation refused', cr.status);
       } catch (e) { console.error('inquiry: confirmation unreachable', e && e.message); }

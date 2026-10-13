@@ -11,7 +11,7 @@ let sent = null, all = [];
 const call = async (over = {}, env = {}) => {
   sent = null; all = [];
   const saved = { ...process.env };
-  for (const k of ['RESEND_API_KEY', 'INQUIRY_FROM', 'INQUIRY_TO', 'INQUIRY_TO_CATERING', 'INQUIRY_CONFIRM']) delete process.env[k];
+  for (const k of ['RESEND_API_KEY', 'INQUIRY_FROM', 'INQUIRY_TO', 'INQUIRY_TO_CATERING', 'INQUIRY_CONFIRM', 'INQUIRY_BCC']) delete process.env[k];
   Object.assign(process.env, env);
   const req = { method: 'POST', headers: { host: 'www.senortequilas.com', origin: 'https://www.senortequilas.com', 'content-type': 'application/json' }, body: { form: 'catering', name: 'Maria Lopez', phone: '(301) 555-0142', date: '2026-11-14', guests: '30', details: 'Office lunch.', page: '/catering' }, ...over };
   const out = { headers: {} };
@@ -53,10 +53,13 @@ r = await call(formPost, {}); assert.equal(r.status, 503); assert.ok(r.html.incl
 // the email field: optional on an event form, sets reply_to, and sends the guest a copy
 stub(); r = await call(body({ email: 'not-an-email' }), ENV); assert.equal(r.status, 422); assert.ok(r.json.errors.email);
 stub(); r = await call(body({ email: 'maria@example.com' }), ENV); assert.equal(r.status, 200); assert.equal(all.length, 2);
-assert.equal(all[0].body.reply_to, 'maria@example.com'); assert.deepEqual(all[1].body.to, ['maria@example.com']); assert.equal(all[1].body.reply_to, 'a@example.com');
+assert.equal(all[0].body.reply_to, 'maria@example.com'); assert.deepEqual(all[1].body.to, ['maria@example.com']); assert.deepEqual(all[1].body.reply_to, ['a@example.com', 'b@example.com']); assert.equal(all[0].body.bcc, undefined);
 assert.equal(all[1].body.subject, 'We got your catering request, Maria'); assert.ok(all[0].body.html.includes('mailto:maria%40example.com'));
 stub(); r = await call(body({}), ENV); assert.equal(all.length, 1, 'no email, no confirmation'); assert.equal(all[0].body.reply_to, undefined);
 stub(); r = await call(body({ email: 'maria@example.com' }), { ...ENV, INQUIRY_CONFIRM: 'off' }); assert.equal(all.length, 1);
+// a watcher is blind copied on the managers' email only, and is never a reply-to
+stub(); r = await call(body({ email: 'maria@example.com' }), { ...ENV, INQUIRY_BCC: 'watch@example.com' }); assert.deepEqual(all[0].body.bcc, ['watch@example.com']);
+assert.equal(all[1].body.bcc, undefined); assert.deepEqual(all[1].body.reply_to, ['a@example.com', 'b@example.com']); assert.deepEqual(all[0].body.to, ['a@example.com', 'b@example.com']);
 // the contact form: email and message required, phone optional, no date or head count
 const contact = (o) => ({ body: { form: 'contact', name: 'Ana Ruiz', email: 'ana@example.com', details: 'Did I leave a blue scarf on Friday?', page: '/contact', ...o } });
 stub(); r = await call(contact({}), ENV); assert.equal(r.status, 200); assert.equal(all[0].body.subject, 'New contact message: Ana Ruiz'); assert.ok(!all[0].body.html.includes('Headcount') && !all[0].body.html.includes('>Date<'));
@@ -68,7 +71,7 @@ stub(); r = await call(contact({ phone: '12' }), ENV); assert.equal(r.status, 42
 let nth = 0; globalThis.fetch = async () => { nth++; return { ok: nth === 1, status: nth === 1 ? 200 : 500, text: async () => 'x' }; };
 r = await call(body({ email: 'maria@example.com' }), ENV); assert.equal(r.status, 200); assert.equal(nth, 2);
 globalThis.fetch = realFetch;
-console.log('api/inquiry.js: 31 checks pass');
+console.log('api/inquiry.js: 35 checks pass');
 
 const when = new Date('2026-10-13T18:41:00Z');
 const samples = {
