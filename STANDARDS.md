@@ -620,6 +620,25 @@ file. Measure `main` and the branch side by side when the log has no number for 
 
 ---
 
+## 32. A form that cannot send has to say so, and settings from a dashboard are dirty
+
+**Date:** 2026-10-13 · **Origin:** DESIGN-DEBT 107, 110 · **Status:** candidate
+
+Four inquiry forms shipped with no destination and reloaded the page on submit for three weeks.
+Nobody saw an error, so nobody reported one. When they were wired, the first live send failed
+anyway: the API key pasted into the host's dashboard had an invisible line separator on the
+end. That failure cost nothing, because the form told the guest to call and kept what they had
+typed, and the function log named the character.
+
+**Template:** a form is not done until a real submit on production has been watched arriving.
+Build the failure path first: on any refusal the visitor is told, keeps their input and gets
+another way through. Read every secret and address through a cleaner that strips control,
+zero-width and separator characters. Keep previews unable to email real people by setting
+recipients for production only. Give the client's team a blind-copy variable for the first
+month instead of adding the agency to the visible recipients.
+
+---
+
 ## Not yet logged
 
 Changes made from 2026-09-18 onward get appended here as they happen.

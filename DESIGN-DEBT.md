@@ -3305,3 +3305,30 @@ Two changes before the merge.
 
 `node scripts/test-inquiry.mjs` is 35 checks. `inquiry-forms` merged into `main`.
 
+## 110. The first live sends, and the invisible character on the key, 13 October
+
+**The first real submit failed, and failed the way it was built to.** The catering form on
+production answered 502 and told the guest "That did not send... please call 301-569-4574",
+with the fields kept. The function log gave the cause: `Cannot convert argument to a ByteString
+because the character at index 43 has a value of 8232`. The `RESEND_API_KEY` stored in Vercel
+ends in U+2028, a line separator, which came along with the paste and cannot go in an HTTP
+header.
+
+Fixed in the endpoint rather than by asking for the key again: every setting is read through
+`env()`, which drops control characters, line and paragraph separators, zero-width characters,
+non-breaking spaces and byte order marks, and the recipient lists split on commas, semicolons
+or white space. Four more checks, 39 in all. The key in Vercel still has the character on it;
+it no longer matters, and re-entering it cleanly is optional.
+
+**All five forms then sent, on production, through a real browser.** One test each from
+`/catering`, `/private-parties`, the quinceañeras page, the weddings page and `/contact`, named
+"Website Test (Surge Agency)" and marked to be ignored. Each got `{"ok":true}` and the success
+message on the page, and the log shows `inquiry: sent` five times with no confirmation refused.
+That is Resend accepting ten emails: five notifications to the six managers with Surge blind
+copied, and five confirmations to Surge's address.
+
+**Not confirmed from here: that they arrived, and how they look.** Acceptance by Resend is not
+delivery, and the sender's ñ, the spam folder, Gmail and Outlook rendering and the blind copy
+can only be checked in an inbox. TASKS M19 is down to that. Each test also fired a
+`generate_lead` event in GA4, five in all.
+
