@@ -179,6 +179,10 @@ Raised 9 October. Applied changes are DESIGN-DEBT entries 98 to 106, merged and 
 | M17 | **Favicon done 9 October**, entry 101. `public/icon-192.png` is unlinked: it wants a web manifest, and the site has none. Add one if an installable icon or an Android home screen icon is wanted. |
 | M18 | **Tulum or Cancun.** Sam called the patio photographs "Cancun and Vallarta"; the site says Vallarta and Tulum. The Cancun photograph is on the Tulum card, name unchanged, on Sam's instruction. Confirm the patio's real name with the client. Better originals would also help: both are phone screenshots. |
 
+| M19 | **Inquiry forms: set the three Vercel variables**, entry 107. `RESEND_API_KEY`, `INQUIRY_FROM` (needs the sending domain verified in Resend, which means DNS records on `senortequilas.com`) and `INQUIRY_TO` (the managers' addresses, awaited from the client). Until then all four forms show "That did not send, please call". Then send one real test from each form and look at it in Gmail and Outlook. |
+| M20 | **The forms do not ask for an email address**, so a manager can only phone back and the guest gets no confirmation. Adding an optional email field would allow a reply-to and a branded confirmation to the guest. Decide. |
+| M21 | Mark `generate_lead` as a key event in GA4 once the forms are live. |
+
 ### For Mario (SEO, not actioned)
 
 | # | Item |

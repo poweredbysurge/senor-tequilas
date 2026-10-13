@@ -3182,3 +3182,64 @@ is actually left.
 
 **Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page.
 
+## 107. The inquiry forms send, 13 October
+
+Entry 94 recorded it as the highest priority open item: the four inquiry forms had no `action`,
+no handler and no `name` on any field, so a submit reloaded the page and the request went
+nowhere. That had been true since launch. Branch `inquiry-forms`.
+
+**The four forms.** `/catering` (Request a Quote), `/private-parties`,
+`/private-parties/quinceaneras-celebrations` and `/private-parties/weddings-receptions` (Book a
+Tour). The hub has seven copies in its source and one in the DOM, as entry 21 left it; all seven
+are wired. `/contact` has no form. Each asks for name, phone, date, a head count and a free text
+box. None asks for an email address.
+
+**What was built.**
+
+- `api/inquiry.js`, a Vercel function and the site's only server code. It validates the post,
+  builds the email and sends it through Resend's HTTP API with `fetch`, so there is no new
+  dependency. The Astro build is unchanged and still static.
+- `api/_lib/inquiry-email.js`, one template for all four forms, in the site's tokens: the
+  near-black ground, the panel and line colours, cream text, gold eyebrows in Barlow Condensed,
+  Archivo Black headings, the green button. Table layout and inline styles, with Arial
+  fallbacks where a mail client will not load the web fonts. It leads with the one thing a
+  manager does next, a green "Call Maria at (301) 555-0142" button that dials on a phone, then
+  the date, the head count, what the guest wrote, and the reply promise that form made ("We
+  reply within one business day." or "Same day, usually within the hour."). A plain text part
+  goes with it.
+- `public/images/site/logo-email.png`, because Outlook does not draw WebP.
+- The forms: a `name` on every field, name and phone required, a hidden form type, and a
+  honeypot field. No visible change to the markup and no CSS.
+- `inquiryForms()` in `Base.astro`: posts JSON, shows "Sending", then either "Thanks, Maria.
+  Your request is in. We will call you at..." with the fields locked, or the reason it failed.
+  It sends a `generate_lead` event to GA4 on success, which entry 94 asked for; mark it as a key
+  event there.
+
+**It never fails silently.** If the send is refused for any reason the guest is told, keeps
+what they typed, and is given the phone number, read from a `tel:` link on the page. With
+scripts off the form posts the ordinary way and gets a small page back saying the same.
+
+**Not live until three environment variables are set in Vercel** (Production, and Preview if
+wanted). Until then the endpoint answers 503 and every form shows the "please call" message,
+which is still better than the silent reload it replaces.
+
+| variable | what |
+|---|---|
+| `RESEND_API_KEY` | a Resend API key |
+| `INQUIRY_FROM` | the sender, on a domain verified in Resend, for example `Señor Tequila's Website <inquiries@senortequilas.com>` |
+| `INQUIRY_TO` | the managers, comma separated |
+| `INQUIRY_TO_CATERING`, `_PRIVATE_PARTY`, `_QUINCEANERA`, `_WEDDING` | optional, to send one form somewhere else |
+
+**Spam.** A honeypot, an origin check, length caps and escaping of everything the guest types.
+No CAPTCHA and no rate limit. If junk gets through, Vercel's firewall rate limit on
+`/api/inquiry` is the next step.
+
+**Checks.** `node scripts/test-inquiry.mjs`: 19 checks on the endpoint with the network stubbed,
+covering every refusal, the unconfigured case, the honeypot, escaping, per-form recipients and
+the exact payload Resend receives. All four forms driven in a browser at 390 and 1440 against a
+mocked endpoint: an empty submit is stopped, a failure keeps the details and shows the number, a
+success locks the form, and each sends its own form type and page. Sample emails are written to
+`design/gate-a/email/` and were looked at at 700 and 390. Build 21 pages, canonicals and H1s
+unchanged. **Not yet tested: a real send**, which needs the key, and rendering in Gmail and
+Outlook themselves.
+
