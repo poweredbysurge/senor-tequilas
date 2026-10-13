@@ -3131,3 +3131,28 @@ the page is 1.5MB lighter.
 **Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The clip
 plays at 390 and 1440, muted and looping, no console errors; the hero photographed at both.
 
+## 105. Three decisions from Sam: black cut-outs, the item row stays, Tamarindo wording, 13 October
+
+Answers to the open list. Branch `decisions-oct-13`.
+
+**The cut-out drinks are on black (TASKS M4).** Entry 98 put the nine transparent PNGs on the
+slate stored under their alpha, which left the Margaritas section with two grounds. All of them
+are re-encoded on black, the ground the eleven older drink thumbnails use: the nine menu pairs,
+the Margarita Flight in the `/happy-hour` item row, and the Jamaica and Jalapeño photographs on
+`/margaritas`. Same file names, same sizes, 21 files. `scripts/encode-media-placement-1.mjs`
+now encodes them that way. Looked at on `/menu`, `/margaritas` and `/happy-hour`: the dark
+glass stems still read against black.
+
+**The `/happy-hour` item photo row stays (M5).** No change.
+
+**Tamarindo, in the homepage dish data in `Base.astro` (M15).** "Pulp cooked in our kitchen" is
+"Pulp made from scratch in-house", and "Made with tamarind pulp we cook in our own kitchen, not
+a syrup." is "Tamarind pulp made from scratch in-house, not a syrup." No pulp on the site is
+described as cooked any more.
+
+**The hidden mobile rail on `/happy-hour` (P20) is closed.** Sam sees everything wanted on a
+phone. The rail stays in the markup, hidden, with its copy correct.
+
+**Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The
+three sections photographed at 390 and 1440.
+

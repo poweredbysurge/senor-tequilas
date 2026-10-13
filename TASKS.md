@@ -152,7 +152,7 @@ not merged.
 | P17 | **Mostly done 9 October**, entry 98: Birria Pizza, Tacos Dorados, the fajitas pairing (with tacos and margaritas, not the briefed molcajete shot), the piña colada and the trompo hero are placed. Still open: a molcajete, fajita and Big Mami photograph for the pairing. Original note: Photographs for the slots emptied in entry 95: Birria Pizza (three places), Tacos Dorados (two), the fajitas pairing, a restaurant-owned piña colada, and trompo footage for the `/street-tacos` hero. |
 | P18 | `npm run verify` cannot run: `design/reference/` has no screenshots. Same root as D2. |
 | ~~P19~~ | **Done 7 October**, entry 97. Happy hour is 3 PM to 6 PM; the review is hidden from the rail. |
-| P20 | The mobile rail on `/happy-hour` is hidden at every width. Decide whether it should show on phones or come out of the markup. |
+| ~~P20~~ | **Closed 13 October**, entry 105. Sam is happy with `/happy-hour` on a phone; the hidden rail stays in the markup. |
 | ~~P21~~ | **Answered 7 October**, entry 97: Tue and Wed start at 8 PM, birria is 12 hours, La Cocina is "Since 2003", time format stays PM. |
 | P22 | For Mario: three descriptions still say six hours, now that birria is 12. `/birria-tacos` "six hours in the pot", `/quesabirria-tacos` "Six hours of braising", `/our-story` "six-hour birria". |
 
@@ -167,15 +167,15 @@ Raised 9 October. Applied changes are DESIGN-DEBT entry 98, on branch `media-pla
 | M1 | **Nine PHOTO frames left on `/menu`:** 6" Single Tacos, Enchiladas de Camarón (two cards), Fajita Burrito, Arroz con Pollo, Tequila's Chicken Platter, Cheeseburger, Chicken Nuggets, 2 Tacos Mañaneros. None of these is in the client's folder. |
 | M2 | **House Margarita shows a frozen margarita.** The happy hour menu says "12 oz. on the rocks". Either a rocks photograph, or confirm frozen is fine. On `/menu` and `/happy-hour`. |
 | M3 | **Frozen Piña Colada shows the virgin piña colada**, in a mug, a phone photograph on a plain background. Fine as a stand-in; a photograph of the cocktail itself would be better. |
-| M4 | **Cut-out drinks are on slate, the older drink thumbnails are on black.** Nine cards in Margaritas & Cocktails and the Jamaica and Jalapeño cards on `/margaritas`. Pick one ground. |
-| M5 | **The item photo row on `/happy-hour` is new**, added because the page had no per-item photo slots. Keep it or drop it. |
+| ~~M4~~ | **Done 13 October**, entry 105. All cut-outs are on black. |
+| ~~M5~~ | **Decided 13 October**, entry 105: the item photo row on `/happy-hour` stays. |
 | M6 | **`/fajitas-molcajetes` "Big plate, Big Mami."** now sits beside tacos and margaritas. The molcajete, fajita and Big Mamis photograph is still wanted, or the heading changes. |
 | ~~M7~~ | **Done 9 October**, entry 99. The hero pill is removed and the heading reads "Long Tables, International Room". |
 | M8 | **`/margaritas`:** Watermelon, Lychee and Coconut cards have no photograph, so the flavour grid has four tall cards and three short ones. |
 | M9 | Still not supplied: Big Mami, the agua fresca station, malteadas, birria with a cantarito, the new Wednesday flyer (P12). Tomas' headshot arrived and is placed, entry 100. |
 | ~~M10~~ | **Done 13 October**, entry 103. The Whole House has the exterior photograph, and no page uses `need-image.svg` any more. |
 | M11 | **`/happy-hour` layout shift, 0.141**, the hero photograph pair moving, present on `main`. Likely D7, the font swap. Worth 6 Lighthouse points on that page. |
-| M15 | Homepage dish data in `Base.astro`, Tamarindo: "Pulp cooked in our kitchen" and "tamarind pulp we cook in our own kitchen, not a syrup". Not the phrase entry 99 was asked to change; confirm whether it should also say "made from scratch in-house". |
+| ~~M15~~ | **Done 13 October**, entry 105. Tamarindo reads "made from scratch in-house". |
 | M16 | Two placeholder pills still in the markup but not visible: the quinceañeras hero (`display: none`) and the homepage chef caption (removed by script). Delete from the markup when convenient. |
 
 | M17 | **Favicon done 9 October**, entry 101. `public/icon-192.png` is unlinked: it wants a web manifest, and the site has none. Add one if an installable icon or an Android home screen icon is wanted. |

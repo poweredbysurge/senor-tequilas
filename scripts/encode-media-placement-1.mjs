@@ -3,7 +3,8 @@
 import sharp from 'sharp';
 import fs from 'fs';
 const IN = 'incoming-media/', SITE = 'public/images/site/', DISH = 'public/images/dishes/';
-const SLATE = { r: 76, g: 105, b: 113 }, BLACK = { r: 0, g: 0, b: 0 };
+// The cut-outs went onto black on 13 October (DESIGN-DEBT 105); SLATE is the colour stored under their alpha.
+const BLACK = { r: 0, g: 0, b: 0 }, SLATE = BLACK;
 const out = [];
 // Upright, metadata-free pixels. sharp drops EXIF/ICC on output unless asked to keep them.
 async function load(file) {
