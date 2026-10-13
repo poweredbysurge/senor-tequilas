@@ -3243,3 +3243,42 @@ success locks the form, and each sends its own form type and page. Sample emails
 unchanged. **Not yet tested: a real send**, which needs the key, and rendering in Gmail and
 Outlook themselves.
 
+## 108. An email field on every form, a contact form, and a copy for the guest, 13 October
+
+Sam's two answers to entry 107, on the same branch, `inquiry-forms`. Still not merged: Resend
+gets set up first.
+
+**An email field on the four event forms.** Optional, full width, under Name and Phone, with the
+placeholder "Optional, for a written reply". The phone stays required, because those forms are
+answered by phone. When a guest gives one, the manager's notification carries it as `reply_to`,
+so hitting reply goes to the guest, and shows a second button, "Email daniel@...", beside the
+green call button.
+
+**A contact form on `/contact`,** which had none. A new section, "Send Us a Message", between
+the hours and the questions, in the catering inquiry section's layout: copy and the phone number
+on the left, the form on the right. Name, phone, email and message. Here the email and the
+message are required and the phone is optional, the reverse of the event forms, because a
+contact message is answered in writing. The copy points parties and office orders at the forms
+on `/private-parties` and `/catering`. Its note says "We reply within one business day.", the
+promise the catering form already makes; **confirm the restaurant will keep it for general
+messages.** The page still has one `<h1>`.
+
+- The endpoint knows a fifth form, `contact`, with its own optional recipient,
+  `INQUIRY_TO_CONTACT`. Its email reads "New contact message", has no date or head count rows,
+  and leads with "Email Ana" where the others lead with the call button.
+
+**A copy for the guest.** Anyone who gives an email address gets a confirmation in the same
+design: "Got it, Ana", the reply promise, whether to expect a call or a written reply, a button
+with the restaurant's number, and what they sent. It replies to the first manager address. It
+is sent after the manager's email and is a courtesy: if it fails, the failure is logged and the
+guest is still told the inquiry went through, because it did. `INQUIRY_CONFIRM=off` in Vercel
+switches it off without a deploy. **This is an email to customers that nobody at the restaurant
+has read yet;** the samples are in `design/gate-a/email/`.
+
+**Checks.** `node scripts/test-inquiry.mjs`, now 31 checks: the email field's validation,
+`reply_to`, the confirmation and its off switch, a failed confirmation not failing the inquiry,
+and the contact form's own rules. All five forms driven in a browser at 390 and 1440 against a
+mocked endpoint, empty, failing and succeeding; no console errors, no horizontal scroll. Build 21
+pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. Still not tested: a real
+send, and the emails in Gmail and Outlook themselves.
+

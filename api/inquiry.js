@@ -7,10 +7,13 @@
 //   INQUIRY_FROM     required. A sender on a domain verified in Resend, for example
 //                    "Señor Tequila's Website <inquiries@senortequilas.com>".
 //   INQUIRY_TO       required. One or more manager addresses, comma separated.
-//   INQUIRY_TO_CATERING, INQUIRY_TO_PRIVATE_PARTY, INQUIRY_TO_QUINCEANERA, INQUIRY_TO_WEDDING
+//   INQUIRY_TO_CATERING, INQUIRY_TO_PRIVATE_PARTY, INQUIRY_TO_QUINCEANERA, INQUIRY_TO_WEDDING,
+//   INQUIRY_TO_CONTACT
 //                    optional. Recipients for one form only, replacing INQUIRY_TO for it.
+//   INQUIRY_CONFIRM  optional. Set to "off" to stop the confirmation sent to a guest who
+//                    gave an email address.
 import business from '../src/data/business.json' with { type: 'json' };
-import { buildInquiryEmail, FORMS } from './_lib/inquiry-email.js';
+import { buildInquiryEmail, buildConfirmationEmail, FORMS } from './_lib/inquiry-email.js';
 
 const list = (v) => String(v || '').split(',').map((s) => s.trim()).filter(Boolean);
 const clean = (v, max) => String(v ?? '').replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g, '').trim().slice(0, max);
@@ -21,6 +24,7 @@ export function validate(body) {
     form: clean(b.form, 40),
     name: clean(b.name, 120).replace(/\n/g, ' '),
     phone: clean(b.phone, 40).replace(/\n/g, ' '),
+    email: clean(b.email, 160).replace(/\s/g, ''),
     date: clean(b.date, 10),
     guests: clean(b.guests, 6),
     details: clean(b.details, 4000),
@@ -29,8 +33,18 @@ export function validate(body) {
   const errors = {};
   if (!FORMS[inq.form]) errors.form = 'Unknown form.';
   if (inq.name.length < 2) errors.name = 'Please enter your name.';
+  // An event form is answered by phone, so the phone is required and the email is a courtesy.
+  // The contact form is answered in writing, so it is the other way round.
+  const event = FORMS[inq.form] ? FORMS[inq.form].event : true;
   const digits = inq.phone.replace(/\D/g, '');
-  if (digits.length < 10 || digits.length > 15) errors.phone = 'Please enter a phone number with its area code.';
+  if (inq.phone || event) {
+    if (digits.length < 10 || digits.length > 15) errors.phone = 'Please enter a phone number with its area code.';
+  }
+  if (inq.email || !event) {
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(inq.email)) errors.email = 'Please enter an email address we can reply to.';
+  }
+  if (!event && inq.details.length < 2) errors.details = 'Please write your message.';
+  if (!event) { inq.date = ''; inq.guests = ''; }
   if (inq.date && !/^\d{4}-\d{2}-\d{2}$/.test(inq.date)) errors.date = 'Please pick a date.';
   if (inq.guests) {
     const n = Number(inq.guests);
@@ -95,13 +109,26 @@ export default async function handler(req, res) {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to, subject, html, text, tags: [{ name: 'form', value: inq.form.replace(/-/g, '_') }] }),
+      body: JSON.stringify({ from, to, subject, html, text, ...(inq.email ? { reply_to: inq.email } : {}), tags: [{ name: 'form', value: inq.form.replace(/-/g, '_') }] }),
     });
     if (!r.ok) {
       console.error('inquiry: resend refused', r.status, (await r.text()).slice(0, 300));
       return res.status(502).json({ ok: false, code: 'send_failed' });
     }
     console.log('inquiry: sent', inq.form, inq.page);
+    // The guest's copy. It is a courtesy: the managers already have the inquiry, so a failure
+    // here is logged and the guest is still told it went through.
+    if (inq.email && String(process.env.INQUIRY_CONFIRM || '').toLowerCase() !== 'off') {
+      try {
+        const c = buildConfirmationEmail(inq, { business });
+        const cr = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ from, to: [inq.email], subject: c.subject, html: c.html, text: c.text, reply_to: to[0], tags: [{ name: 'form', value: 'confirmation' }] }),
+        });
+        if (!cr.ok) console.error('inquiry: confirmation refused', cr.status);
+      } catch (e) { console.error('inquiry: confirmation unreachable', e && e.message); }
+    }
     return res.status(200).json({ ok: true });
   } catch (e) {
     console.error('inquiry: resend unreachable', e && e.message);

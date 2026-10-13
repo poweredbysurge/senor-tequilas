@@ -1113,7 +1113,7 @@ const jsonLd = {
         }
 
         /* ---- 17b. the inquiry forms -----------------------------------------------------------
-           Four forms, on /catering and the three private party pages, post to /api/inquiry,
+           Five forms, on /catering, the three private party pages and /contact, post to /api/inquiry,
            which emails the managers. Until 13 October they had no destination at all: a submit
            reloaded the page and the request went nowhere. See DESIGN-DEBT.md entry 107.
 
@@ -1156,7 +1156,7 @@ const jsonLd = {
               e.preventDefault();
               if (busy) return;
               var data = { form: form.getAttribute('data-inquiry'), page: location.pathname };
-              ['name', 'phone', 'date', 'guests', 'details', 'company'].forEach(function (k) {
+              ['name', 'phone', 'email', 'date', 'guests', 'details', 'company'].forEach(function (k) {
                 var el = form.elements[k];
                 data[k] = el ? el.value : '';
               });
@@ -1176,7 +1176,7 @@ const jsonLd = {
                     var strong = document.createElement('strong');
                     strong.textContent = 'Thanks, ' + first + '. Your request is in.';
                     strong.style.cssText = 'display: block; font-weight: 800; color: rgb(56, 176, 73); margin-bottom: 2px;';
-                    say('ok', [strong, 'We will call you at ' + data.phone + '.']);
+                    say('ok', [strong, data.phone ? 'We will call you at ' + data.phone + '.' : 'We will write back to ' + data.email + '.']);
                     label.textContent = 'Sent';
                     [].forEach.call(form.querySelectorAll('input, textarea'), function (el) { el.disabled = true; });
                     try { if (window.gtag) window.gtag('event', 'generate_lead', { form_name: data.form, page_path: location.pathname }); } catch (err) {}
