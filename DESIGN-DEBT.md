@@ -3282,3 +3282,11 @@ mocked endpoint, empty, failing and succeeding; no console errors, no horizontal
 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. Still not tested: a real
 send, and the emails in Gmail and Outlook themselves.
 
+**Later the same day: the sender and the recipients are set.** `INQUIRY_FROM` is `Señor
+Tequila's Website <forms@alerts.senortequilas.com>` and `INQUIRY_TO` is the six managers Sam
+supplied, both in Vercel for Production only, so a preview deployment cannot email them. Contact
+messages go to the same six, which is the default, so `INQUIRY_TO_CONTACT` is not set. The
+guest's confirmation replies to the first address on the list. `RESEND_API_KEY` is the one
+variable still missing, and the `alerts` subdomain has to be verified in Resend before anything
+sends.
+
