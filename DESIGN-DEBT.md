@@ -3156,3 +3156,29 @@ phone. The rail stays in the markup, hidden, with its copy correct.
 **Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page. The
 three sections photographed at 390 and 1440.
 
+## 106. One nav on every page, nine items, 13 October
+
+TASKS D8, open since entry 69: the homepage nav showed Happy Hour where the other pages showed
+Takeout, so the nav changed under a visitor leaving the homepage and `/happy-hour` could not mark
+itself as current. Sam's decision: both stay. Same branch as entry 105.
+
+- Takeout is added to `Header1`, the homepage, and Happy Hour to `Header2` to `Header7`. All
+  seven now carry the same nine links in the same order: Our Story, Menu, Takeout, Tacos, Happy
+  Hour, Private Events, Catering, Game Day, Contact. The mobile menu already had both.
+- **Nine did not fit at the old spacing.** With the 22px gap the row was 760px wide and ran 22px
+  under the buttons at 1200 on the four pages whose green button is the wider "Book a Tour",
+  and sat 8px from them at every width above. The gap on the `<nav>` is now
+  `clamp(12px, calc(7.5vw - 78px), 18px)`: 12px at 1200, where the nav first appears, rising to
+  18px by 1280. No breakpoint added and no stylesheet rule changed; it is the one inline value on
+  each of the seven headers.
+- Measured on eight pages at 1200, 1240, 1280, 1440 and 1920: one line everywhere, at least 18px
+  to the buttons and 72px to the logo, no horizontal scroll. Below 1200 the nav is the hamburger,
+  as before.
+- `/happy-hour` and `/takeout-delivery` now mark themselves current in the nav.
+
+**TASKS.md tidied the same day.** Struck as already done: S1 to S4 and S7, C2, P1 to P4, P6, P8
+and P22, with the commit or entry that did each. R9, R15, R20, R21 and R13 are amended to what
+is actually left.
+
+**Checks.** Build 21 pages, 21 canonicals equal 21 sitemap entries, one `<h1>` per page.
+
