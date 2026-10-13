@@ -3176,7 +3176,7 @@ itself as current. Sam's decision: both stay. Same branch as entry 105.
   as before.
 - `/happy-hour` and `/takeout-delivery` now mark themselves current in the nav.
 
-**TASKS.md tidied the same day.** Struck as already done: S1 to S4 and S7, C2, P1 to P4, P6, P8
+**TASKS.md tidied the same day.** Struck as already done: S1 to S3 and S7, C2, P1 to P4, P6, P8
 and P22, with the commit or entry that did each. R9, R15, R20, R21 and R13 are amended to what
 is actually left.
 

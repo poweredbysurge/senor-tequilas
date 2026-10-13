@@ -13,14 +13,14 @@ Status: `open` / `blocked` / `client` (waiting on the client) / `decided` (agree
 
 ## SEO and launch — Mario
 
-1 through 4 were the cutover and are done. What is open here is S5, S6, S8 and S9.
+1 through 4 were the cutover and are done. What is open here is S4, S5, S6, S8 and S9.
 
 | # | Task | Status | Debt |
 |---|---|---|---|
 | ~~S1~~ | **Done at the cutover**, the week of 22 September, entry 93. Struck 13 October: the site is live on `www.senortequilas.com` with `vercel.json` redirects, and canonicals, sitemap and robots.txt on the production host. | done | 32, 55 |
 | ~~S2~~ | **Done at the cutover**, the week of 22 September, entry 93. Struck 13 October: the site is live on `www.senortequilas.com` with `vercel.json` redirects, and canonicals, sitemap and robots.txt on the production host. | done | — |
 | ~~S3~~ | **Done at the cutover**, the week of 22 September, entry 93. Struck 13 October: the site is live on `www.senortequilas.com` with `vercel.json` redirects, and canonicals, sitemap and robots.txt on the production host. | done | 55 |
-| ~~S4~~ | **Done at the cutover**, the week of 22 September, entry 93. Struck 13 October: the site is live on `www.senortequilas.com` with `vercel.json` redirects, and canonicals, sitemap and robots.txt on the production host. | done | — |
+| S4 | Verify in Search Console: canonical matches sitemap, no redirect chains on the 301s, no orphaned old URLs. The cutover it waited on is done; whether this check was run is not recorded here. | open, Mario to confirm | 93 |
 | S5 | Gate `src/pages/robots.txt.js` to emit `Disallow: /` when not on the production host. Today the review URL serves `Allow: /` while its canonicals point elsewhere, so a crawl before cutover feeds contradictory host signals. | open, may be moot: previews are behind Vercel SSO and `vercel.app` redirects to www. Mario to close or keep | 55 |
 | S6 | Decide whether to reinstate `lastmod` in the sitemap. Dropped in entry 55 because every page carried the same hand-set date, which was worse than absent. | open | 55 |
 | ~~S7~~ | **Done.** `/contact` is linked from the header and footer. Struck 13 October. | done | 18, 20 |
