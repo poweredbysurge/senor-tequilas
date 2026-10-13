@@ -3332,3 +3332,17 @@ delivery, and the sender's ñ, the spam folder, Gmail and Outlook rendering and 
 can only be checked in an inbox. TASKS M19 is down to that. Each test also fired a
 `generate_lead` event in GA4, five in all.
 
+## 111. The mariachi add-on photograph, 13 October
+
+Sam supplied a posed photograph of a mariachi quartet in charro suits, trumpet, guitarrón, a
+singer in a teal dress and vihuela, to replace the picture on the Mariachi card in "Entertainment
+Add-ons" on `/private-parties`. That card had shown a trumpeter in a football shirt behind a
+Mexican flag on a World Cup night. Branch `mariachi-photo`.
+
+`addon-mariachi-quartet.jpg`, 793x446, 70KB, cut to the card's 16:9 from a 793x533 PNG by
+trimming floor; all four faces are in at 390 and 1440. The source is small, enough for this card
+and no more. The original is in `incoming-media/`, not committed.
+
+`addon-mariachi.jpg` stays where it is: the homepage rail still uses it, and that was not part
+of this request. Build 21 pages, canonicals and H1s unchanged.
+
