@@ -3346,3 +3346,40 @@ and no more. The original is in `incoming-media/`, not committed.
 `addon-mariachi.jpg` stays where it is: the homepage rail still uses it, and that was not part
 of this request. Build 21 pages, canonicals and H1s unchanged.
 
+## 114. The homepage hero is a Día de Muertos photograph for the season, 14 October
+
+Sam asked for the homepage hero video to be replaced with a seasonal photograph: pan de muerto
+on a wooden cake stand at the restaurant's Día de Muertos altar, marigolds, sugar skull candles,
+papel picado, and the "From Mexico With Love" neon, which is also the homepage's H1. Branch
+`home-hero-dia-de-muertos`.
+
+**The clip is switched off, not removed.** The `'/'` row in `HERO_VIDEO` in `Base.astro` is
+commented out with a note, so the panel keeps its `<img>` and no video is fetched.
+`home-hero-2.mp4` and its poster stay in `public/videos/`. **To bring the clip back after the
+season:** restore that row, put the old `src` and alt back on `[data-dc-tpl="62"]` in
+`index.astro`, and point the `'/'` `LCP_IMAGE` entry back at `/images/d8219db4b8a2f6cf.jpg`.
+TASKS M26.
+
+**The crop.** `home-hero-dia-de-muertos.webp`, 864x1080, 113KB, the 4:5 the panel is locked to
+below 680, cut from the 3918x5730 original by trimming marigolds above the neon and a little of
+the table. Above 680 the panel is a half-screen column whose shape runs from 0.86 to 0.97 wide
+to tall, so `object-position: center 20%` keeps the neon in when `cover` trims the height.
+Photographed at 390, 1280x720, 1440x900 and 1920x1080: the whole sign and the bread are in at
+all four. **At 768 the panel is 384x961, a tall strip,** and the sign is cut at both ends.
+That is the hero's layout at that width; the clip was cut the same way.
+
+**The first measurement was worse, and why.** Mobile Lighthouse fell from 83 to 70, LCP 5.6s,
+although the page was 5MB lighter. The hero's left half paints `d8219db4b8a2f6cf.jpg` behind the
+copy at 28% opacity with `fetchpriority="high"`; while the right panel showed the same file it
+was one fetch, and now it was a second high-priority image racing the LCP. It is
+`fetchpriority="low"` now, and the photograph was cut from 1080 to 864 wide.
+
+| | score | LCP | total bytes |
+|---|---|---|---|
+| with the clip, entry 104 | 83, 83, 85 | 4.6s, 4.6s, 3.5s | 10.7MB |
+| this photo, first pass | 71, 70, 69 | 5.6s | 5.7MB |
+| this photo, as shipped | 81, 81, 81 | 3.8s | 5.6MB |
+
+Mobile, local preview, three runs each. Build 21 pages, canonicals and H1s unchanged. The
+original is in `incoming-media/`, not committed.
+

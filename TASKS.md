@@ -182,6 +182,7 @@ Raised 9 October. Applied changes are DESIGN-DEBT entries 98 to 106, merged and 
 | M19 | **Inquiry forms are live**, entries 107 to 110. All five sent a real test on production on 13 October and Resend accepted every email. Left to confirm in an inbox: the ten test emails arrived and are not in spam, the sender reads "Señor Tequila's Website", the design holds in Gmail and Outlook, and Surge's blind copy came through. Optional: re-enter `RESEND_API_KEY` in Vercel without the stray character on the end. |
 | M22 | **Client to read two things before the forms go live:** the confirmation email guests receive, and the `/contact` promise "We reply within one business day." Samples in `design/gate-a/email/`. |
 | M23 | **Remove `INQUIRY_BCC` from Vercel around 13 November.** Surge's manager address is blind copied on every form notification for the first month, entry 109. Delete the variable and redeploy. |
+| M26 | **Homepage hero back to the video after Día de Muertos**, early November. Steps in entry 114: restore the `'/'` row in `HERO_VIDEO`, the old `src` and alt on the hero `<img>`, and the `'/'` `LCP_IMAGE`. Keep the left half's background at `fetchpriority="low"`. |
 | ~~M20~~ | **Done 13 October**, entry 108. Every form has an email field, `/contact` has a form, and a guest who gives an address gets a branded confirmation. |
 | M21 | Mark `generate_lead` as a key event in GA4 once the forms are live. |
 
