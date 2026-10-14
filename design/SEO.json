@@ -83,7 +83,7 @@
     },
     "/takeout-delivery": {
       "title": "Mexican Food Delivery & Takeout | Germantown, MD",
-      "description": "Real Mexican food, delivered or ready for pickup in Germantown. Order online from Toast and skip the dishes.",
+      "description": "Real Mexican food, delivered or ready for pickup in Germantown, MD. Birria, street tacos and fajitas to go. Order online or call 301-569-4574.",
       "canonical": "https://senortequilas.com/takeout-delivery",
       "ogImage": "/images/dishes/quesabirrias-card.jpg",
       "extraTypes": []
@@ -95,18 +95,11 @@
       "ogImage": "/images/4e4e97cc03520928.jpg",
       "extraTypes": []
     },
-    "/quesabirria-tacos": {
-      "title": "Quesabirria Tacos in Germantown, MD | Señor Tequilas",
-      "description": "Six hours of braising, then a griddle, then cheese, with consomme on the side. Quesabirria tacos in Germantown, MD.",
-      "canonical": "https://senortequilas.com/quesabirria-tacos",
-      "ogImage": "/images/dishes/quesabirrias-hero.jpg",
-      "extraTypes": []
-    },
     "/street-tacos": {
       "title": "Street Tacos in Germantown, MD | Señor Tequilas",
       "description": "Small, simple street tacos on tortillas we press ourselves, the way they are made in Mexico. Germantown, MD.",
       "canonical": "https://senortequilas.com/street-tacos",
-      "ogImage": "/images/dishes/tacos-de-arrachera-hero.jpg",
+      "ogImage": "/videos/street-tacos-trompo.jpg",
       "extraTypes": []
     },
     "/fajitas-molcajetes": {
@@ -162,9 +155,9 @@
     },
     "/margaritas": {
       "title": "Best Margaritas in Germantown, MD | Big Mami 54oz",
-      "description": "Margaritas made with pulps we cook in house: tamarindo, pomegranate, Jamaica, jalapeno. Not a mix. Big Mami is 54 ounces.",
+      "description": "Margaritas made with pulps we cook in house: tamarindo, pomegranate, Jamaica, jalapeño. Not a mix. Big Mami is 54 ounces.",
       "canonical": "https://senortequilas.com/margaritas",
-      "ogImage": "/images/20d856a9f66a9c4c.jpg",
+      "ogImage": "/images/site/margaritas-hero.webp",
       "extraTypes": []
     },
     "/tequila-bar": {

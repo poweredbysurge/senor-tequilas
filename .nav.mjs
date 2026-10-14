@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 const routes=['/','/menu','/our-story','/takeout-delivery','/taco-tuesday','/private-parties',
   '/private-parties/weddings-receptions','/private-parties/quinceaneras-celebrations','/catering','/contact',
-  '/happy-hour','/birria-tacos','/quesabirria-tacos','/street-tacos','/fajitas-molcajetes','/la-dulceria',
+  '/happy-hour','/birria-tacos','/street-tacos','/fajitas-molcajetes','/la-dulceria',
   '/margaritas','/tequila-bar','/karaoke','/late-night','/game-day','/mexican-restaurant-gaithersburg-md'];
 const b=await chromium.launch({channel:'chrome'});
 const p=await b.newPage({viewport:{width:1440,height:900}});

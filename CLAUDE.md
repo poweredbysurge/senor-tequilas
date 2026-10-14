@@ -1,7 +1,7 @@
 # Señor Tequila's
 
 Production site for Señor Tequila's, Germantown MD. Astro as a shell and a build step only:
-no client framework, no CSS framework. 22 pages, static output.
+no client framework, no CSS framework. 21 pages, static output.
 
 Originally ported from a Claude Design board. That port is finished. This is now the live
 project and the code in `src/` is the source of truth, not the board.
@@ -30,7 +30,6 @@ project and the code in `src/` is the source of truth, not the board.
 | We're Not a Chain. We're a Family. | `/our-story` |
 | Don't Do the Dishes | `/takeout-delivery` |
 | Birria Tacos | `/birria-tacos` |
-| Quesabirria Tacos | `/quesabirria-tacos` |
 | Street Tacos | `/street-tacos` |
 | Fajitas & Molcajetes | `/fajitas-molcajetes` |
 | La Dulcería | `/la-dulceria` |
