@@ -17,7 +17,7 @@ const pageUrl = onSite(canonical);
 
 // The LCP element per route. See the preload in the head below.
 const LCP_IMAGE = {
-  '/': '/images/d8219db4b8a2f6cf.jpg',
+  '/': '/images/site/home-hero-dia-de-muertos.webp',
   '/menu': '/images/86475be0134bfc90.webp',
   '/takeout-delivery': '/images/86475be0134bfc90.webp',
   '/birria-tacos': '/images/4e4e97cc03520928.jpg',
@@ -1211,8 +1211,12 @@ const jsonLd = {
         // still in the markup is already the clip's first frame, so it is the LCP image and
         // the poster at once. See DESIGN-DEBT.md entry 98.
         var HERO_VIDEO = {
-          '/': { panel: '[data-dc-tpl="60"]', img: '[data-dc-tpl="62"]', clip: 'home-hero-2',
-            label: 'Scenes from Senor Tequila\'s: the menu, the kitchen, the bar and a full dining room' },
+          // The homepage is on a seasonal still for Día de Muertos, so it has no row here and
+          // keeps its <img>. To bring the clip back, restore this row and the old src and alt on
+          // [data-dc-tpl="62"] in index.astro, and the '/' LCP_IMAGE entry. See DESIGN-DEBT.md
+          // entry 114.
+          // '/': { panel: '[data-dc-tpl="60"]', img: '[data-dc-tpl="62"]', clip: 'home-hero-2',
+          //   label: 'Scenes from Senor Tequila\'s: the menu, the kitchen, the bar and a full dining room' },
           '/street-tacos': { panel: '[data-dc-tpl="280"]', img: '[data-dc-tpl="281"]', clip: 'street-tacos-trompo',
             label: 'Al pastor shaved off the trompo onto tortillas' }
         };
