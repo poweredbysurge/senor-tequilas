@@ -3346,3 +3346,25 @@ and no more. The original is in `incoming-media/`, not committed.
 `addon-mariachi.jpg` stays where it is: the homepage rail still uses it, and that was not part
 of this request. Build 21 pages, canonicals and H1s unchanged.
 
+## 113. The mariachi add-on photograph, again, 14 October
+
+Sam supplied a better one: a seven-piece mariachi in burgundy charro suits in front of the
+flower wall, violin, trumpets, guitar and vihuela. It replaces entry 111's quartet on the
+Mariachi card in "Entertainment Add-ons" on `/private-parties`. Branch `mariachi-photo-2`.
+
+**The file arrived sideways.** A 4032x3024 PNG with an orientation flag of 8, so it reads
+correctly in some viewers and on its side in others. Turned upright before anything else, and
+written without the flag.
+
+**The crop.** The card's photo box is 16:9 at every width, measured at 390, 768, 1024 and 1440,
+so the file is cut to 16:9 exactly rather than left to `cover`. A portrait group shot cannot
+keep both the neon sign above and the instruments below in that shape. Three bands were
+compared: the sign with the seated faces cut at the chin, the middle with the sign cut through,
+and the band from the standing row's heads to the instruments. The last was chosen: all seven
+faces whole, every instrument in frame, the sign reduced to a strip of pink at the top. A card
+headed Mariachi should show the musicians and what they play.
+
+`addon-mariachi-ensemble.jpg`, 1600x900, 318KB. The original is in `incoming-media/`, not
+committed. `addon-mariachi-quartet.jpg` stays on disk, unreferenced. Build 21 pages, canonicals
+and H1s unchanged. The card photographed at 390 and 1440.
+
