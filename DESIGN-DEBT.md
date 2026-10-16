@@ -3464,3 +3464,56 @@ was one fetch, and now it was a second high-priority image racing the LCP. It is
 
 Mobile, local preview, three runs each. Build 21 pages, canonicals and H1s unchanged. The
 original is in `incoming-media/`, not committed.
+
+## 115. The Halloween and Friendsgiving block, 16 October
+
+A homepage section between the Tonight carousel and the happy hour cards: two cards on the
+site's orange Día artwork, the Friendsgiving flyer playing beside its copy. `id="seasonal"`,
+`data-screen-label="Halloween + Friendsgiving"`, the Tonight section's padding and heading
+clamps, Archivo Black headings, Barlow body, Barlow Condensed eyebrows, 48px buttons.
+
+**The eyebrow is dark, not cream, and that was measured rather than guessed.** Cream
+`rgb(246, 239, 228)` on the orange `#E8641B` computes to **2.92:1**, which fails the 4.5:1 the
+14px eyebrow needs, so it takes `rgb(40, 14, 2)` as the brief directed: **5.49:1**, a pass.
+
+**The H2 is a borderline the brief did not cover.** It stays cream with the specified
+text-shadow, but at that same 2.92:1 it is just under the 3:1 large-text bar. The shadow helps
+the eye and counts for nothing in WCAG. Darkening it to match the eyebrow would pass; it would
+also lose the cream-on-orange look the brief asked for, so it is left as specified and raised
+here instead.
+
+**Both the flyer and the background are deferred, and that is what kept LCP flat.** Measured
+locally, three runs each, same preview server:
+
+| | median score | LCP |
+|---|---|---|
+| without the section | 82 | 3.8s |
+| with it, flyer autoplaying on load | 77 | 4.2s |
+| with it, flyer deferred | 79 | **3.8s** |
+
+`autoplay` plus `preload="metadata"` made the browser pull the clip and its poster during
+initial load, 345KB competing with the hero image for bandwidth on a phone. The clip now starts
+on an IntersectionObserver with a 200px margin, and the poster is handed over at the same
+moment, so nothing of the flyer is fetched until it is nearly on screen. Only the 36KB
+background loads with the page. The LCP element is unchanged, still the hero photograph.
+
+**The WebM is larger than the MP4**, 448KB against 239KB, so the MP4 is listed first and the
+WebM never gets chosen. It is kept because it was asked for and costs a visitor nothing. Same
+finding as entry 48, on different footage.
+
+**The artwork is 1672px, not the 1920px the brief specified.** That is the native size of the
+file supplied; upscaling would have added bytes and no detail. 36KB at quality 80, well under
+the 200KB cap. If a larger original turns up in the Drive folder it can be re-exported.
+
+The block retires itself. Each card carries `data-until`, the first day it stops being
+relevant; past that the card goes, and when both are gone the section removes itself, so the
+homepage can never advertise a party that has happened. Verified by simulating the clock at
+five dates: both cards today, both on Halloween night, Friendsgiving alone and full width from
+1 November, and no section at all from 26 November. Under `prefers-reduced-motion` the flyer
+keeps its poster, gains controls and never autoplays.
+
+**Two things still open.** The Save the date button points at Toast Tables, with a TODO to
+switch it to `/friendsgiving` once that page ships. And the supplied flyer and artwork were
+dropped into `public/images/`, which ships verbatim: both were moved out, the artwork to
+`design/library/originals/` and the clip to `design/source-video/`, or 4.4MB of originals would
+have gone to every visitor.
