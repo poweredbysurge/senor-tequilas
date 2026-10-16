@@ -1,0 +1,72 @@
+diff --git a/CLAUDE.md b/CLAUDE.md
+index 25120bb..430695e 100644
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -78,9 +78,12 @@ One host everywhere: `business.json` `siteUrl` is the single source for canonica
+ URLs, JSON-LD, the sitemap and robots.txt. Pages still pass `canonical` as a full URL; `Base.astro`
+ keeps only its path. Never hardcode a host.
+ 
+-`vercel.json` holds the redirects and `trailingSlash: false`, so `/menu/` 308s to `/menu`, matching
+-the canonicals. Old WordPress URLs are matched with or without their trailing slash in one hop
+-(`{/}?` in the source), so there are no redirect chains. `deploy/redirects.json` is the original
++`vercel.json` holds the redirects. There is no `trailingSlash` setting on purpose: Vercel applies
++it before the redirect list, which turned every old WordPress URL (they all end in a slash) into a
++two-hop chain. Instead, the old URLs match with or without the slash (`{/}?` in the source) and the
++last rule, `/:path+/` to `/:path+`, strips the slash from everything else, so `/menu/` 308s to
++`/menu` and an old URL lands in one hop. Keep that catch-all last; rules are first match wins.
++`deploy/redirects.json` is the original
+ map, kept for reference only. See DESIGN-DEBT.md entry 93.
+ 
+ After anything touching URLs: build, then confirm every canonical in `dist/` matches a `<loc>` in
+diff --git a/DESIGN-DEBT.md b/DESIGN-DEBT.md
+index 36cc1c2..ea317d4 100644
+--- a/DESIGN-DEBT.md
++++ b/DESIGN-DEBT.md
+@@ -3464,3 +3464,24 @@ was one fetch, and now it was a second high-priority image racing the LCP. It is
+ 
+ Mobile, local preview, three runs each. Build 21 pages, canonicals and H1s unchanged. The
+ original is in `incoming-media/`, not committed.
++
++
++## 115. Old WordPress URLs land in one hop, 15 October
++
++Entry 93 claimed the `{/}?` sources sent an old URL to its new page in one hop. On production it
++was two: `trailingSlash: false` runs before the redirect list, so `/full-menu/` first 308ed to
++`/full-menu` and only then to `/menu`. Every old WordPress URL ends in a slash, so every indexed
++one was a chain. The versions without a slash were fine, which is why a spot check passed.
++
++`trailingSlash` is gone from `vercel.json`. A last redirect, `/:path+/` to `/:path+`, strips the
++slash from anything the specific rules did not match. Redirects are first match wins, so
++`/full-menu/` hits its own rule and goes straight to `/menu`, while `/menu/` still 308s to
++`/menu` and the canonicals are unchanged.
++
++Checked the order against path-to-regexp 6, the matcher Vercel uses: `/full-menu/` and
++`/full-menu` both to `/menu`, `/menu/` to `/menu`, `/menu`, `/`, `/sitemap.xml` and image paths
++untouched. Confirm on production after deploy with
++`curl -sIL https://www.senortequilas.com/full-menu/`, which should show one 308 then a 200.
++
++The apex adds one hop in front of all of this (`senortequilas.com` to www is a Vercel domain
++setting), so an old apex URL with a slash is two hops, down from three.
+diff --git a/vercel.json b/vercel.json
+index f2287bc..ec4ece3 100644
+--- a/vercel.json
++++ b/vercel.json
+@@ -1,6 +1,5 @@
+ {
+   "$schema": "https://openapi.vercel.sh/vercel.json",
+-  "trailingSlash": false,
+   "redirects": [
+     {
+       "source": "/:path*",
+@@ -132,6 +131,11 @@
+       "source": "/quesabirria-tacos{/}?",
+       "destination": "/birria-tacos",
+       "permanent": true
++    },
++    {
++      "source": "/:path+/",
++      "destination": "/:path+",
++      "permanent": true
+     }
+   ]
+ }
