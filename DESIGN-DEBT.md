@@ -3517,3 +3517,112 @@ switch it to `/friendsgiving` once that page ships. And the supplied flyer and a
 dropped into `public/images/`, which ships verbatim: both were moved out, the artwork to
 `design/library/originals/` and the clip to `design/source-video/`, or 4.4MB of originals would
 have gone to every visitor.
+
+## 116. The Halloween and Friendsgiving block became an auto-advancing carousel, 19 October
+
+Entry 115 built the two events as one stacked block. This replaces it with a single component,
+`src/components/UpcomingEvents.astro`, that holds both as slides and advances every 3 seconds (2 at first, slowed on 19 October).
+The old `#seasonal` section and its inline script are gone from `src/pages/index.astro`, which
+lost 98 lines and gained the import plus one tag. The id is `upcoming`, not `events`: there is
+already an unrelated `<section id="events" data-screen-label="Visit">` further down the page.
+
+Each event carries a `hideAfter` date and retires itself twice. The build filters the array on
+the New York date, so a deploy after the event never ships the slide. The browser runs the same
+comparison again on load, because a tab left open overnight or a cached copy served the next
+morning would otherwise still be selling last night. One event left means the arrows and the dot
+row are removed rather than hidden; no events left means the whole section is removed. Verified
+by faking the clock: 2 November leaves Friendsgiving alone with no arrows, no dots and no photo
+button, and 27 November leaves no section at all.
+
+Autoplay stops on hover, on focus, when the photo modal is open, when the tab is hidden, and for
+anyone with `prefers-reduced-motion`. Arrow keys drive the carousel when it has focus.
+
+The photographs open in a native `<dialog>` under two tabs, The party and Pan de Muerto: 14 from
+last year's party and 7 of the dessert. Thumbnails ship with `data-src` and a tab's panel only
+fetches the first time it is opened, so the homepage carries none of that weight and opening the
+modal does not pay for the tab you did not look at. Confirmed: zero gallery requests until the
+button is clicked, zero dessert requests until its tab is. Clicking a thumbnail hides the grid,
+which dropped focus onto the body and silently killed the dialog's key handler, so the lightbox
+arrow keys did nothing. Focus is now handed to the next-photo button on the way in and back to
+the thumbnail on the way out.
+
+The dessert photographs and their copy come from `Halloween Offerings for Website.docx` in the
+source folder, so the prices are the restaurant's own: plain or sugar dusted $5, vanilla or
+chocolate cream $7, 8 October to 8 November. The Halloween slide gained a line saying so. Their
+alt text was written from the photographs themselves rather than the file names. One of the two
+HEIC originals is stored landscape and displays portrait through EXIF orientation 8, which PIL
+ignores, so it would have shipped on its side: every source is run through `exif_transpose` now.
+Two of the seven needed quality 52 to stay under 200KB, checked at 1:1 before accepting.
+
+**No play control on the flyers, and nothing runs until you get there.** The flyer had a play
+button that appeared whenever autoplay was refused. It is gone, markup, CSS and handler: the clip
+plays itself or the poster frame stands in silently, and there are no controls either way.
+
+Removing it did not change what the page fetched, and what the page fetched was bad. The section
+sits well below the fold but was pulling its video and poster frames at load: **8,638KB against a
+5,403KB baseline, LCP 4.5s to 4.9s against 3.8s to 4.0s.** The videos are `preload="none"`, the
+posters are held in `data-poster`, and an IntersectionObserver with a 200px margin starts the
+timer, loads the posters and plays the clip only when the section is approached, pausing
+everything when it leaves.
+
+| homepage, mobile, local preview, 3 runs | score | LCP | total bytes |
+|---|---|---|---|
+| baseline, entry 115 | 75, 78, 77 | 4.0s, 4.0s, 4.0s | 5,403KB |
+| carousel, before deferral | 73, 76, 76 | 4.9s, 4.5s, 4.5s | 8,638KB |
+| carousel, as it stands | 75, 81, 76 | 4.0s, 4.0s, 3.9s | 5,409KB |
+
+Interleaved against the same local server, baseline built from `a2cf8d5` in a worktree. The
+section now costs the homepage 6KB and nothing measurable in time. One earlier reading of
+TBT 3,540ms was an outlier from a build running against the same machine, not the carousel: it
+is 0ms on every clean run.
+
+Media: the 603MB source folder Mario dropped in `public/images/` was moved to
+`design/source-art/halloween-campaign/` first, which is gitignored, because `public/` ships
+verbatim. Everything web-facing is generated from it. The flyer went to
+`halloween-flyer.mp4` (4.05MB) and `.webm` (2.96MB) at 720px wide, two-pass VBR at 1300k. The
+brief asked for CRF 26 under 5MB, which are not compatible here: single-pass CRF 26 gave 8.03MB
+and a WebM larger than the MP4. Two-pass hits both the size cap and the right ordering. The 14
+photographs are WebP at 161KB at the largest, with thumbnails at 31KB.
+
+`dist` went from 122MB to 132MB, all of it the flyer and the gallery. Had the source folder
+stayed in `public/`, it would have been roughly 730MB.
+
+Still open: `friendsgiving-flyer.webm` (459KB) is larger than its own mp4 (244KB), inherited from
+entry 115. The `<source>` order puts webm first, so a browser that picks it downloads twice what
+it needs. Re-encoding that clip two-pass would fix it.
+
+## 117. The Pan de Muerto promo above the reviews, 19 October
+
+A seasonal section, `src/components/PanDeMuerto.astro`, between the Hitters block and the Google
+reviews on the homepage: the cutout of the loaves on the wood board on the left, the offer on
+the right, two price cards, Call to Order and Order Online. It is placed before the
+`{reviews.length > 0 && (` guard so it shows whether or not there are reviews to show. The phone,
+address and ordering link are read from `business.json`; the copy, prices and dates come from
+`Halloween Offerings for Website.docx` in the source folder, see entry 116.
+
+It exists only while the bread is on sale, 8 October through 8 November inclusive, New York
+time, with the two-layer retirement from the carousel: the build drops it after the 8th, and an
+inline script removes it from a cached copy. The dates are two consts at the top of the file.
+Verified by pinning the build date to 9 November (no section, no JSON-LD, reviews unaffected)
+and by faking the browser clock: present at 23:00 on the 8th, gone at 00:30 on the 9th. The
+component repeats the carousel's two-line New York date helper rather than sharing it, because
+`UpcomingEvents.astro` was out of bounds for this change; worth folding into `src/lib/` next time
+either is touched.
+
+Structured data is an `ItemList` of two `MenuItem`s with `Offer`s at 5 and 7 USD, carrying
+`availabilityStarts` and `availabilityEnds`, emitted only while the section renders.
+
+Media: the two PNGs Mario dropped into `public/images/` (1.0MB wallpaper, 2.5MB RGBA cutout) were
+converted and moved to `design/source-art/pan-de-muerto/`, which is gitignored, because `public/`
+ships verbatim. The wallpaper is mostly black so it compresses to 38KB at 1777 wide and 15KB at
+900 for phones; the board keeps its alpha channel at 123KB (1200 wide) and 43KB (640), served by
+`srcset`. The glow behind the board is a blurred radial gradient on a pseudo-element; it reached
+8% past the photo on each side, which at 375px was 9px of horizontal page scroll, so the section
+clips its own overflow. The address note under the buttons reads as hidden in a screenshot taken
+the moment the section scrolls in: that is the site-wide scroll reveal in `Base.astro`, not the
+component, and it fades in as it crosses the 8% margin. The buttons go full width on phones for
+the same reason the Hitters buttons do, the `[data-mcta]` rule.
+
+Mobile Lighthouse on the homepage, local preview, three runs: 76, 63, 78, LCP 4.0s, 4.1s, 4.0s,
+5,426KB, against 75, 81, 76 and 5,409KB with the carousel alone (entry 116). The 63 carried
+580ms of TBT that the other two runs did not; the section adds 17KB and no measurable time.

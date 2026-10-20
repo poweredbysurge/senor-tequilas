@@ -1,0 +1,667 @@
+---
+// The upcoming events carousel on the homepage. Replaces the single Halloween and
+// Friendsgiving block. See DESIGN-DEBT.md entry 116.
+//
+// Slides retire themselves twice over: once here at build time, so a stale deploy cannot
+// advertise a finished party, and again in the browser, so a page left open overnight or a
+// CDN copy served the next morning corrects itself. Both use America/New_York, the only
+// timezone the restaurant exists in.
+import fs from 'node:fs';
+import path from 'node:path';
+
+const AUTOPLAY_MS = 3000;
+
+const EVENTS = [
+  {
+    id: 'halloween',
+    dates: 'Fri Oct 30 & Sat Oct 31',
+    title: 'Halloween Weekend',
+    details: [
+      'Two nights, four contests: a costume contest and a Catrina contest each night',
+      '$150 gift card to every winner, contests at 11 PM',
+      '9 PM to 1 AM, 21+ only',
+      'Bring your best costume. Bring your crew.',
+      'Pan de Muerto is back: plain or sugar dusted $5, cream filled $7',
+    ],
+    video: { mp4: '/videos/halloween-flyer.mp4', webm: '/videos/halloween-flyer.webm', poster: '/videos/halloween-flyer-poster.jpg' },
+    hideAfter: '2026-11-01',
+    startDate: '2026-10-30T21:00:00-04:00',
+    endDate: '2026-11-01T01:00:00-04:00',
+    gallery: {
+      title: "Halloween at Señor Tequila's",
+      categories: [
+        {
+          id: 'party',
+          label: 'The party',
+          basePath: '/images/site/halloween-past/',
+          intro: 'Two nights. Four costume contests. Zero ordinary nights. Costume and Catrina contests both nights, a $150 gift card to each winner, 9 PM to 1 AM, 21+. Here is how last year looked.',
+        },
+        {
+          id: 'pan-de-muerto',
+          label: 'Pan de Muerto',
+          basePath: '/images/site/pan-de-muerto/',
+          intro: 'Soft, sweet and made for the season. Plain or sugar dusted $5, vanilla or chocolate cream $7, available October 8 to November 8. Order one, six or twelve.',
+          // written from the photographs themselves, not from the file names
+          alts: [
+            'Three sugar dusted pan de muerto loaves on a wooden serving board with a small Mexican flag',
+            'A pan de muerto split and filled with chocolate cream, plated with whipped cream, a strawberry and a dusting of cocoa',
+            'Two filled pan de muerto desserts on white plates, one chocolate cream and one vanilla cream',
+            'A tray of freshly baked pan de muerto under a heavy dusting of sugar',
+            'Sugar dusted pan de muerto stacked on a tray, photographed close up',
+            'Pan de muerto on a cake stand at the Día de Muertos altar, beneath the From Mexico With Love neon sign',
+            'Pan de muerto on a cake stand among marigolds and sugar skulls at the Día de Muertos altar',
+          ],
+        },
+      ],
+    },
+  },
+  {
+    id: 'friendsgiving',
+    dates: 'Wed Nov 25',
+    title: 'Friendsgiving Fiesta',
+    details: [
+      'Thanksgiving Eve party with DJ Drastik and DJ Gerra',
+      '8 PM to 1 AM, $5 cover',
+      '21+ after 8 PM',
+      'Closed Thanksgiving Day, Nov 26',
+    ],
+    video: { mp4: '/videos/friendsgiving-flyer.mp4', webm: '/videos/friendsgiving-flyer.webm', poster: '/videos/friendsgiving-flyer-poster.jpg' },
+    hideAfter: '2026-11-26',
+    startDate: '2026-11-25T20:00:00-05:00',
+    endDate: '2026-11-26T01:00:00-05:00',
+    offers: { price: '5', priceCurrency: 'USD' },
+    gallery: null,
+  },
+];
+
+// today's date in New York, as YYYY-MM-DD, so the comparison is a plain string compare
+const todayNY = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
+}).format(new Date());
+
+// the gallery is counted off disk rather than hardcoded, so adding a photo is a file drop
+function countGallery(basePath) {
+  const dir = path.join(process.cwd(), 'public', basePath);
+  if (!fs.existsSync(dir)) return 0;
+  return fs.readdirSync(dir).filter((f) => /^\d+\.webp$/.test(f)).length;
+}
+
+// a category with no files on disk drops out, so a missing folder costs a tab, never a build
+const events = EVENTS
+  .filter((e) => todayNY < e.hideAfter)
+  .map((e) => {
+    if (!e.gallery) return { ...e, gallery: null };
+    const categories = e.gallery.categories
+      .map((c) => ({ ...c, count: countGallery(c.basePath) }))
+      .filter((c) => c.count > 0);
+    return { ...e, gallery: categories.length ? { ...e.gallery, categories } : null };
+  });
+
+const LOCATION = {
+  '@type': 'Place',
+  name: "Señor Tequila's",
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '20021 Century Blvd',
+    addressLocality: 'Germantown',
+    addressRegion: 'MD',
+    postalCode: '20874',
+    addressCountry: 'US',
+  },
+};
+
+const jsonLd = events.map((e) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: e.title,
+  startDate: e.startDate,
+  endDate: e.endDate,
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  location: LOCATION,
+  organizer: { '@type': 'Organization', name: "Señor Tequila's", url: 'https://www.senortequilas.com' },
+  image: [`https://www.senortequilas.com${e.video.poster}`],
+  ...(e.offers ? { offers: { '@type': 'Offer', price: e.offers.price, priceCurrency: e.offers.priceCurrency, availability: 'https://schema.org/InStock', url: 'https://www.senortequilas.com/' } } : {}),
+}));
+
+const RESERVE = 'https://tables.toasttab.com/restaurants/d94fa749-fbd5-4a66-90b6-d7755b8c3af3/findTime';
+const single = events.length === 1;
+---
+{events.length > 0 && (
+<section id="upcoming" data-screen-label="Upcoming events carousel" aria-labelledby="upcoming-title" data-autoplay-ms={AUTOPLAY_MS} data-single={single ? 'true' : 'false'}>
+  <div class="ue-bg" aria-hidden="true"></div>
+  <div class="ue-inner">
+    <div class="ue-eyebrow">Señor Tequila's</div>
+    <h2 id="upcoming-title" class="ue-title">Coming Up Events</h2>
+
+    <div class="ue-carousel" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Upcoming events">
+      <div class="ue-viewport">
+        <div class="ue-track" data-ue-track>
+          {events.map((e, i) => (
+            <div class="ue-slide" data-hide-after={e.hideAfter} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${events.length}: ${e.title}`} data-ue-slide>
+              <div class="ue-flyer">
+                <video class="ue-video" data-ue-video muted loop playsinline preload="none" data-poster={e.video.poster} aria-label={`${e.title} flyer`}>
+                  <source src={e.video.webm} type="video/webm" />
+                  <source src={e.video.mp4} type="video/mp4" />
+                </video>
+              </div>
+              <div class="ue-panelwrap">
+                <div class="ue-panel">
+                  <div class="ue-date">{e.dates}</div>
+                  <h3 class="ue-name">{e.title}</h3>
+                  <ul class="ue-details">
+                    {e.details.map((d) => <li>{d}</li>)}
+                  </ul>
+                  <div class="ue-actions">
+                    <a class="ue-btn ue-btn-primary" href={RESERVE} target="_blank" rel="noopener">Reserve a table</a>
+                    {e.gallery && (
+                      <button type="button" class="ue-btn ue-btn-ghost" data-ue-gallery={e.id}>View photos from past event</button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {!single && (
+        <>
+          <button type="button" class="ue-arrow ue-arrow-prev" data-ue-prev aria-label="Previous event">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="ue-arrow ue-arrow-next" data-ue-next aria-label="Next event">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </>
+      )}
+    </div>
+
+    {!single && (
+      <div class="ue-dots" role="tablist" aria-label="Choose an event">
+        {events.map((e, i) => (
+          <button type="button" class="ue-dot" data-ue-dot={i} role="tab" aria-label={`Go to slide ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'}></button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  {events.filter((e) => e.gallery).map((e) => (
+    <dialog class="ue-modal" data-ue-modal={e.id} aria-label={e.gallery.title}>
+      <button type="button" class="ue-modal-close" data-ue-close aria-label="Close">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="ue-modal-body">
+        <div data-ue-grid-view>
+          <h3 class="ue-modal-title">{e.gallery.title}</h3>
+          {e.gallery.categories.length > 1 && (
+            <div class="ue-tabs" role="tablist" aria-label="Photo categories" data-ue-tabs>
+              {e.gallery.categories.map((c, ci) => (
+                <button type="button" class="ue-tab" role="tab" data-ue-tab={ci} id={`${e.id}-tab-${c.id}`} aria-controls={`${e.id}-panel-${c.id}`} aria-selected={ci === 0 ? 'true' : 'false'} tabindex={ci === 0 ? '0' : '-1'}>{c.label}</button>
+              ))}
+            </div>
+          )}
+          {e.gallery.categories.map((c, ci) => (
+            <div class="ue-panel-photos" role="tabpanel" data-ue-panel={ci} id={`${e.id}-panel-${c.id}`} aria-labelledby={`${e.id}-tab-${c.id}`} hidden={ci !== 0}>
+              <p class="ue-modal-intro">{c.intro}</p>
+              <div class="ue-thumbs">
+                {Array.from({ length: c.count }, (_, i) => (
+                  <button type="button" class="ue-thumb" data-ue-cat={ci} data-ue-thumb={i}>
+                    <img data-src={`${c.basePath}thumbs/${String(i + 1).padStart(2, '0')}.webp`} alt={(c.alts && c.alts[i]) || `${c.label}, photo ${i + 1} of ${c.count}`} loading="lazy" decoding="async" width="480" height="360" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+          <div class="ue-modal-actions">
+            <a class="ue-btn ue-btn-primary" href={RESERVE} target="_blank" rel="noopener">Reserve a table</a>
+          </div>
+        </div>
+
+        <div data-ue-lightbox hidden>
+          <button type="button" class="ue-btn ue-btn-ghost ue-back" data-ue-back>Back to all photos</button>
+          <div class="ue-lightbox-stage">
+            <button type="button" class="ue-arrow ue-arrow-prev" data-ue-lb-prev aria-label="Previous photo">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+            </button>
+            <img data-ue-lb-img alt="" decoding="async" />
+            <button type="button" class="ue-arrow ue-arrow-next" data-ue-lb-next aria-label="Next photo">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          <div class="ue-counter" data-ue-counter aria-live="polite"></div>
+        </div>
+      </div>
+      <script type="application/json" data-ue-gallery-data={e.id} set:html={JSON.stringify({
+        title: e.gallery.title,
+        cats: e.gallery.categories.map((c) => ({ base: c.basePath, count: c.count, label: c.label, alts: c.alts || null })),
+      })}></script>
+    </dialog>
+  ))}
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd.length === 1 ? jsonLd[0] : jsonLd)} />
+</section>
+)}
+
+<style>
+  #upcoming {
+    position: relative;
+    padding: clamp(40px, 7vw, 80px) 0 clamp(32px, 5vw, 56px);
+    scroll-margin-top: 70px;
+    background: #E8641B url(/images/seasonal-dia-bg.webp) center / cover no-repeat;
+  }
+  /* readability over the artwork, which is busiest at the corners */
+  #upcoming .ue-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.45));
+  }
+  #upcoming .ue-inner {
+    position: relative;
+    max-width: 1180px; margin: 0 auto;
+    padding: 0 clamp(18px, 4.5vw, 48px);
+  }
+  #upcoming .ue-eyebrow {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 600; font-size: 14px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgb(246, 239, 228);
+  }
+  #upcoming .ue-title {
+    font-family: "Archivo Black", sans-serif;
+    font-size: clamp(28px, 5.5vw, 46px); line-height: 1.02;
+    margin: 8px 0 clamp(22px, 3.5vw, 32px);
+    text-transform: uppercase; color: rgb(246, 239, 228);
+  }
+
+  #upcoming .ue-carousel { position: relative; }
+  #upcoming .ue-carousel:focus-visible { outline: 2px solid rgb(246, 239, 228); outline-offset: 6px; }
+  #upcoming .ue-viewport { overflow: hidden; }
+  /* a flex row of full-width slides: the track takes the height of the tallest, so the
+     section never changes height as it advances */
+  #upcoming .ue-track {
+    display: flex;
+    align-items: stretch;
+    transition: transform 400ms ease;
+    will-change: transform;
+  }
+  #upcoming .ue-slide {
+    flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  #upcoming .ue-flyer { position: relative; justify-self: center; width: 100%; max-width: 315px; }
+  #upcoming .ue-video {
+    display: block; width: 100%; aspect-ratio: 9 / 16; max-height: 560px;
+    object-fit: cover; border-radius: 16px; background: rgb(20, 12, 8);
+    box-shadow: rgba(0, 0, 0, 0.45) 0 18px 40px -12px;
+  }
+  #upcoming .ue-tabs {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px;
+  }
+  #upcoming .ue-tab {
+    font-family: "Barlow Condensed", sans-serif; font-weight: 600;
+    font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 9px 16px; border-radius: 999px; cursor: pointer;
+    background: transparent; color: rgb(214, 188, 133);
+    border: 1.5px solid rgba(214, 188, 133, 0.55);
+  }
+  #upcoming .ue-tab[aria-selected="true"] {
+    background: rgb(214, 188, 133); color: rgb(20, 12, 8);
+    border-color: rgb(214, 188, 133);
+  }
+  #upcoming .ue-panel {
+    background: rgba(20, 12, 8, 0.72);
+    padding: 24px; border-radius: 16px; color: rgb(246, 239, 228);
+  }
+  #upcoming .ue-date {
+    font-family: "Barlow Condensed", sans-serif; font-weight: 600;
+    font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgb(214, 188, 133);
+  }
+  #upcoming .ue-name {
+    font-family: "Archivo Black", sans-serif; font-size: clamp(22px, 3vw, 32px);
+    line-height: 1.05; margin: 8px 0 14px; text-transform: uppercase; color: rgb(246, 239, 228);
+  }
+  #upcoming .ue-details { margin: 0; padding: 0 0 0 18px; display: grid; gap: 8px; }
+  #upcoming .ue-details li {
+    font-family: Barlow, sans-serif; font-size: 18px; line-height: 1.55;
+    color: rgb(246, 239, 228);
+  }
+  #upcoming .ue-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  #upcoming .ue-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; box-sizing: border-box; padding: 12px 22px; border-radius: 12px;
+    font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 15px;
+    letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+  }
+  #upcoming .ue-btn-primary { background: rgb(56, 176, 73); color: rgb(246, 239, 228); border: 0; }
+  #upcoming .ue-btn-ghost {
+    background: transparent; color: rgb(246, 239, 228);
+    border: 1.5px solid rgba(246, 239, 228, 0.7);
+  }
+
+  #upcoming .ue-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 44px; height: 44px; border-radius: 999px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(20, 12, 8, 0.82); color: rgb(246, 239, 228);
+    border: 1px solid rgba(246, 239, 228, 0.45);
+  }
+  #upcoming .ue-arrow-prev { left: -6px; }
+  #upcoming .ue-arrow-next { right: -6px; }
+  #upcoming .ue-dots { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
+  #upcoming .ue-dot {
+    width: 11px; height: 11px; padding: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(246, 239, 228, 0.4); border: 0;
+  }
+  #upcoming .ue-dot[aria-current="true"] { background: rgb(246, 239, 228); }
+
+  @media (max-width: 767px) {
+    #upcoming .ue-slide { grid-template-columns: 1fr; gap: 20px; }
+    #upcoming .ue-flyer { order: -1; }           /* flyer first when stacked */
+    #upcoming .ue-arrow-prev { left: 2px; }
+    #upcoming .ue-arrow-next { right: 2px; }
+    #upcoming .ue-details li { font-size: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #upcoming .ue-track { transition: none; }
+  }
+
+  /* ---- the photo modal ---- */
+  .ue-modal {
+    width: min(94vw, 1100px); max-width: 1100px; border: 0; padding: 0;
+    background: rgb(20, 12, 8); color: rgb(246, 239, 228); border-radius: 16px;
+    max-height: 90vh; overflow: auto;
+  }
+  .ue-modal::backdrop { background: rgba(0, 0, 0, 0.72); }
+  .ue-modal-close {
+    position: sticky; top: 10px; float: right; margin: 10px 10px 0 0; z-index: 3;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(246, 239, 228, 0.12); color: rgb(246, 239, 228);
+    border: 1px solid rgba(246, 239, 228, 0.4);
+  }
+  .ue-modal-body { padding: clamp(18px, 3vw, 28px); }
+  .ue-modal-title {
+    font-family: "Archivo Black", sans-serif; font-size: clamp(20px, 3vw, 28px);
+    margin: 0 0 10px; text-transform: uppercase;
+  }
+  .ue-modal-intro { font-family: Barlow, sans-serif; font-size: 18px; line-height: 1.6; margin: 0 0 20px; }
+  .ue-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .ue-thumb { padding: 0; border: 0; background: none; cursor: pointer; display: block; }
+  .ue-thumb img {
+    display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+    border-radius: 8px; background: rgb(28, 27, 24);
+  }
+  .ue-modal-actions { display: flex; justify-content: center; margin-top: 22px; }
+  .ue-lightbox-stage { position: relative; display: flex; align-items: center; justify-content: center; margin-top: 14px; }
+  .ue-lightbox-stage img { max-width: 100%; max-height: 70vh; border-radius: 12px; display: block; }
+  .ue-lightbox-stage .ue-arrow { position: absolute; }
+  .ue-lightbox-stage .ue-arrow-prev { left: 6px; }
+  .ue-lightbox-stage .ue-arrow-next { right: 6px; }
+  .ue-counter { text-align: center; font-family: Barlow, sans-serif; margin-top: 12px; }
+  @media (max-width: 767px) { .ue-thumbs { grid-template-columns: repeat(2, 1fr); } }
+</style>
+
+<script is:inline>
+  (function () {
+    var sec = document.getElementById('upcoming');
+    if (!sec) return;
+
+    var AUTOPLAY_MS = Number(sec.dataset.autoplayMs) || 3000;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var track = sec.querySelector('[data-ue-track]');
+    var slides = [].slice.call(sec.querySelectorAll('[data-ue-slide]'));
+    var dots = [].slice.call(sec.querySelectorAll('[data-ue-dot]'));
+    var carousel = sec.querySelector('.ue-carousel');
+    var index = 0;
+    var timer = null;
+    var modalOpen = false;
+    var onScreen = false;
+
+    /* The same retirement that runs at build time runs again here. A tab left open overnight,
+       or a cached copy served the next morning, would otherwise still be selling last night. */
+    (function retire() {
+      var nowNY = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+      var todayNY = nowNY.getFullYear() + '-' + String(nowNY.getMonth() + 1).padStart(2, '0')
+        + '-' + String(nowNY.getDate()).padStart(2, '0');
+      var kept = [];
+      slides.forEach(function (sl, i) {
+        var until = sl.getAttribute('data-hide-after');
+        if (until && todayNY >= until) {
+          sl.remove();
+          if (dots[i]) dots[i].remove();
+        } else kept.push(sl);
+      });
+      slides = kept;
+      dots = [].slice.call(sec.querySelectorAll('[data-ue-dot]'));
+      if (!slides.length) { sec.remove(); return; }
+      if (slides.length === 1) {
+        sec.setAttribute('data-single', 'true');
+        [].slice.call(sec.querySelectorAll('[data-ue-prev],[data-ue-next]')).forEach(function (b) { b.remove(); });
+        var dotRow = sec.querySelector('.ue-dots');
+        if (dotRow) dotRow.remove();
+        dots = [];
+      }
+    })();
+    if (!document.body.contains(sec)) return;
+
+    var single = slides.length < 2;
+
+    function videoAt(i) { return slides[i] ? slides[i].querySelector('[data-ue-video]') : null; }
+
+    // the poster frames are deferred with everything else: eager, they were 204KB racing the
+    // hero image for a throttled connection, and the homepage LCP paid about a second for it
+    function loadPosters() {
+      slides.forEach(function (sl) {
+        var v = sl.querySelector('[data-ue-video][data-poster]');
+        if (!v) return;
+        v.poster = v.getAttribute('data-poster');
+        v.removeAttribute('data-poster');
+      });
+    }
+
+    function syncVideos() {
+      // the flyer plays itself and offers no controls. If a browser refuses autoplay, or the
+      // visitor asked for reduced motion, the poster frame stands in silently.
+      slides.forEach(function (sl, i) {
+        var v = sl.querySelector('[data-ue-video]');
+        if (!v) return;
+        if (reduced || !onScreen) return;
+        if (i === index) {
+          var pr = v.play();
+          if (pr && pr.catch) pr.catch(function () {});
+        } else { try { v.pause(); } catch (e) {} }
+      });
+    }
+
+    function go(i) {
+      if (!slides.length) return;
+      index = (i + slides.length) % slides.length;
+      track.style.transform = 'translateX(' + (-index * 100) + '%)';
+      dots.forEach(function (d, n) { d.setAttribute('aria-current', n === index ? 'true' : 'false'); });
+      slides.forEach(function (sl, n) { sl.setAttribute('aria-hidden', n === index ? 'false' : 'true'); });
+      syncVideos();
+    }
+
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function start() {
+      stop();
+      if (reduced || single || modalOpen || document.hidden || !onScreen) return;
+      timer = setInterval(function () { go(index + 1); }, AUTOPLAY_MS);
+    }
+
+    /* The section sits well below the fold. Running the timer and pulling down a 3MB flyer
+       before anyone has scrolled to it cost the homepage 3.2MB and a second of LCP, so both
+       wait until the section is actually approached. */
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          onScreen = en.isIntersecting;
+          if (onScreen) { loadPosters(); syncVideos(); start(); }
+          else {
+            stop();
+            slides.forEach(function (sl) {
+              var v = sl.querySelector('[data-ue-video]');
+              if (v) { try { v.pause(); } catch (e) {} }
+            });
+          }
+        });
+      }, { rootMargin: '200px 0px' }).observe(sec);
+    } else {
+      onScreen = true;
+      loadPosters();
+    }
+
+    sec.addEventListener('mouseenter', stop);
+    sec.addEventListener('mouseleave', start);
+    sec.addEventListener('focusin', stop);
+    sec.addEventListener('focusout', function (e) {
+      if (!sec.contains(e.relatedTarget)) start();
+    });
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+
+    var prev = sec.querySelector('[data-ue-prev]');
+    var next = sec.querySelector('[data-ue-next]');
+    if (prev) prev.addEventListener('click', function () { go(index - 1); start(); });
+    if (next) next.addEventListener('click', function () { go(index + 1); start(); });
+    dots.forEach(function (d, n) { d.addEventListener('click', function () { go(n); start(); }); });
+
+    if (carousel) {
+      carousel.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); start(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); start(); }
+      });
+    }
+
+    go(0);
+    start();
+
+    /* ---------------- the photo modal ---------------- */
+    [].slice.call(sec.querySelectorAll('[data-ue-gallery]')).forEach(function (opener) {
+      var id = opener.getAttribute('data-ue-gallery');
+      var dlg = sec.querySelector('[data-ue-modal="' + id + '"]');
+      if (!dlg) return;
+      var cfg = JSON.parse(sec.querySelector('[data-ue-gallery-data="' + id + '"]').textContent);
+      var gridView = dlg.querySelector('[data-ue-grid-view]');
+      var lightbox = dlg.querySelector('[data-ue-lightbox]');
+      var lbImg = dlg.querySelector('[data-ue-lb-img]');
+      var counter = dlg.querySelector('[data-ue-counter]');
+      var tabs = [].slice.call(dlg.querySelectorAll('[data-ue-tab]'));
+      var panels = [].slice.call(dlg.querySelectorAll('[data-ue-panel]'));
+      var cat = 0;
+      var at = 0;
+      var scrollY = 0;
+
+      function pad(n) { return String(n).padStart(2, '0'); }
+      function current() { return cfg.cats[cat]; }
+
+      // a panel's thumbnails only fetch the first time its tab is opened
+      function hydrate(ci) {
+        var panel = panels[ci] || dlg;
+        [].slice.call(panel.querySelectorAll('img[data-src]')).forEach(function (img) {
+          img.src = img.getAttribute('data-src');
+          img.removeAttribute('data-src');
+        });
+      }
+
+      function showCat(ci, focusTab) {
+        cat = (ci + cfg.cats.length) % cfg.cats.length;
+        at = 0;
+        hydrate(cat);
+        panels.forEach(function (pn, n) { pn.hidden = n !== cat; });
+        tabs.forEach(function (t, n) {
+          t.setAttribute('aria-selected', n === cat ? 'true' : 'false');
+          t.tabIndex = n === cat ? 0 : -1;
+        });
+        if (focusTab && tabs[cat]) tabs[cat].focus();
+      }
+
+      function showGrid() {
+        lightbox.hidden = true; gridView.hidden = false;
+        // hiding the lightbox would drop focus on the body, which breaks the key handler below
+        var thumb = dlg.querySelector('[data-ue-cat="' + cat + '"][data-ue-thumb="' + at + '"]');
+        (thumb || dlg.querySelector('[data-ue-close]')).focus();
+      }
+      function showPhoto(i) {
+        var c = current();
+        at = (i + c.count) % c.count;
+        lbImg.src = c.base + pad(at + 1) + '.webp';
+        lbImg.alt = (c.alts && c.alts[at]) || (c.label + ', photo ' + (at + 1) + ' of ' + c.count);
+        counter.textContent = c.label + ', ' + (at + 1) + ' / ' + c.count;
+        gridView.hidden = true; lightbox.hidden = false;
+        if (!lightbox.contains(document.activeElement)) dlg.querySelector('[data-ue-lb-next]').focus();
+      }
+
+      tabs.forEach(function (t, n) {
+        t.addEventListener('click', function () { showCat(n, false); });
+      });
+
+      opener.addEventListener('click', function () {
+        showCat(0, false);
+        modalOpen = true; stop();
+        scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = -scrollY + 'px';
+        document.body.style.width = '100%';
+        showGrid();
+        dlg.showModal();
+        var closeBtn = dlg.querySelector('[data-ue-close]');
+        if (closeBtn) closeBtn.focus();
+      });
+
+      function close() { dlg.close(); }
+      dlg.querySelector('[data-ue-close]').addEventListener('click', close);
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) close(); });  // backdrop
+      dlg.addEventListener('close', function () {
+        modalOpen = false;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
+        opener.focus();                       // focus goes back where it came from
+        start();
+      });
+
+      [].slice.call(dlg.querySelectorAll('[data-ue-thumb]')).forEach(function (t) {
+        t.addEventListener('click', function () {
+          cat = Number(t.getAttribute('data-ue-cat')) || 0;
+          showPhoto(Number(t.getAttribute('data-ue-thumb')));
+        });
+      });
+      dlg.querySelector('[data-ue-back]').addEventListener('click', showGrid);
+      dlg.querySelector('[data-ue-lb-prev]').addEventListener('click', function () { showPhoto(at - 1); });
+      dlg.querySelector('[data-ue-lb-next]').addEventListener('click', function () { showPhoto(at + 1); });
+
+      dlg.addEventListener('keydown', function (e) {
+        // on the grid, the arrows belong to the tab row when focus is in it
+        if (lightbox.hidden && tabs.length && tabs.indexOf(document.activeElement) !== -1) {
+          if (e.key === 'ArrowLeft') { e.preventDefault(); showCat(cat - 1, true); return; }
+          if (e.key === 'ArrowRight') { e.preventDefault(); showCat(cat + 1, true); return; }
+        }
+        if (!lightbox.hidden) {
+          if (e.key === 'ArrowLeft') { e.preventDefault(); showPhoto(at - 1); }
+          else if (e.key === 'ArrowRight') { e.preventDefault(); showPhoto(at + 1); }
+        }
+        if (e.key !== 'Tab') return;
+        // keep Tab inside the dialog
+        var f = [].slice.call(dlg.querySelectorAll('button, a[href], img[tabindex], [tabindex]:not([tabindex="-1"])'))
+          .filter(function (el) { return el.offsetParent !== null; });
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
+
+      var x0 = null;
+      lightbox.addEventListener('touchstart', function (e) { x0 = e.changedTouches[0].clientX; }, { passive: true });
+      lightbox.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) showPhoto(at + (dx < 0 ? 1 : -1));
+        x0 = null;
+      }, { passive: true });
+    });
+  })();
+</script>

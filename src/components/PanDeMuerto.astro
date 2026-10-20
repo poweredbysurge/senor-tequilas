@@ -1,0 +1,159 @@
+---
+/* The seasonal Pan de Muerto promo, above the Google reviews on the homepage. On sale from
+   SHOW_FROM through HIDE_AFTER inclusive (New York); the section retires itself at build time
+   and again in the browser, the same two-layer pattern as UpcomingEvents.astro. Next year is a
+   change to the two dates below. DESIGN-DEBT entry 117. */
+import business from '../data/business.json';
+
+const SHOW_FROM = '2026-10-08';
+const HIDE_AFTER = '2026-11-08';
+
+// today's date in New York, as YYYY-MM-DD, so the comparison is a plain string compare.
+// UpcomingEvents.astro keeps the same two lines inline; it was off limits for this change.
+const todayNY = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
+}).format(new Date());
+const live = todayNY >= SHOW_FROM && todayNY <= HIDE_AFTER;
+
+const PHONE_HREF = 'tel:' + business.telephone.replace(/[^+\d]/g, '');
+const PHONE_DISPLAY = business.telephone.replace(/^\+1-/, '').replace(/-/g, ' ');
+const ADDRESS = `${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion}`;
+const BOARD = '/images/site/pan-de-muerto-board.webp';
+const BOARD_640 = '/images/site/pan-de-muerto-board-640.webp';
+const BOARD_ALT = 'Sugar-dusted pan de muerto on a wooden board with a small Mexican flag';
+
+const ITEMS = [
+  { title: 'Plain or Sugar Dusted', price: '5', name: 'Pan de Muerto, plain or sugar dusted' },
+  { title: 'Vanilla or Chocolate Cream', price: '7', name: 'Pan de Muerto, vanilla or chocolate cream' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `Pan de Muerto at ${business.name}`,
+  itemListElement: ITEMS.map((it, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'MenuItem',
+      name: it.name,
+      image: business.siteUrl + BOARD,
+      offers: {
+        '@type': 'Offer',
+        price: it.price,
+        priceCurrency: 'USD',
+        availabilityStarts: SHOW_FROM,
+        availabilityEnds: HIDE_AFTER,
+        availability: 'https://schema.org/InStock',
+      },
+    },
+  })),
+};
+---
+
+{live && (
+<section id="pan-de-muerto" data-screen-label="Pan de Muerto promo" aria-labelledby="pdm-title" data-hide-after={HIDE_AFTER}>
+  <div class="pdm-inner">
+    <div class="pdm-photo">
+      <picture>
+        <source srcset={`${BOARD_640} 640w, ${BOARD} 1200w`} sizes="(max-width: 859px) min(92vw, 560px), min(45vw, 560px)" type="image/webp" />
+        <img src={BOARD} alt={BOARD_ALT} width="1200" height="598" loading="lazy" decoding="async" />
+      </picture>
+    </div>
+    <div class="pdm-copy">
+      <div class="pdm-eyebrow">Seasonal · October 8 to November 8</div>
+      <h2 id="pdm-title" class="pdm-title">Pan de Muerto Is Back.</h2>
+      <p class="pdm-lead">Soft, sweet, and made for the season.</p>
+      <div class="pdm-cards">
+        {ITEMS.map((it) => (
+          <div class="pdm-card">
+            <div class="pdm-card-title">{it.title}</div>
+            <div class="pdm-card-price">${it.price}</div>
+          </div>
+        ))}
+      </div>
+      <p class="pdm-line">Order one, a half dozen or a dozen. Available October 8 to November 8 only.</p>
+      <div class="pdm-actions">
+        <a class="pdm-btn pdm-btn-primary" href={PHONE_HREF}>Call to Order</a>
+        <a class="pdm-btn pdm-btn-ghost" href={business.orderUrl} target="_blank" rel="noopener">Order Online</a>
+      </div>
+      <p class="pdm-note">{business.name} · {ADDRESS} · {PHONE_DISPLAY}</p>
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</section>
+)}
+
+<style>
+  #pan-de-muerto {
+    background: rgb(10, 10, 9) url(/images/site/pan-de-muerto-bg.webp) center center / cover no-repeat;
+    border-top: 1px solid rgba(185, 156, 102, 0.2);
+    padding: clamp(48px, 8vw, 96px) 0;
+    scroll-margin-top: 70px;
+    /* the glow behind the photo reaches 8% past it on each side, which at 375px was 9px of
+       horizontal page scroll; the section clips it at its own edge instead */
+    overflow: hidden;
+  }
+  @media (max-width: 699px) {
+    #pan-de-muerto { background-image: url(/images/site/pan-de-muerto-bg-mobile.webp); }
+  }
+  .pdm-inner {
+    max-width: 1180px; margin: 0 auto; padding: 0 clamp(18px, 4.5vw, 48px);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+  }
+  .pdm-photo { position: relative; justify-self: center; width: 100%; max-width: 560px; }
+  /* a warm glow behind the cutout so the bread lifts off the black */
+  .pdm-photo::before {
+    content: ""; position: absolute; inset: -12% -8%; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(232, 100, 27, 0.28) 0%, rgba(232, 100, 27, 0.12) 40%, rgba(232, 100, 27, 0) 70%);
+    filter: blur(18px);
+  }
+  .pdm-photo picture, .pdm-photo img { position: relative; z-index: 1; display: block; width: 100%; height: auto; }
+  .pdm-eyebrow {
+    font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 14px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133);
+  }
+  .pdm-title {
+    color: rgb(246, 239, 228); font-family: "Archivo Black", sans-serif;
+    font-size: clamp(28px, 5.5vw, 46px); line-height: 1.02; margin: 8px 0 0; text-transform: uppercase;
+  }
+  .pdm-lead { font-family: Barlow, sans-serif; font-size: 20px; line-height: 1.5; color: rgba(246, 239, 228, 0.9); margin: 14px 0 0; }
+  .pdm-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+  .pdm-card {
+    background: rgba(20, 12, 8, 0.72); border: 1px solid rgba(185, 156, 102, 0.35);
+    border-radius: 14px; padding: 18px 20px;
+  }
+  .pdm-card-title { font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 22px; line-height: 1.15; color: rgb(246, 239, 228); }
+  .pdm-card-price { font-family: "Archivo Black", sans-serif; font-size: 32px; line-height: 1; color: rgb(214, 188, 133); margin-top: 10px; }
+  .pdm-line { font-family: Barlow, sans-serif; font-size: 17px; line-height: 1.55; color: rgba(246, 239, 228, 0.85); margin: 18px 0 0; }
+  .pdm-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+  .pdm-btn {
+    font-size: 14px; padding: 14px 24px; border-radius: 12px; min-height: 48px; box-sizing: border-box;
+    display: inline-flex; align-items: center; text-decoration: none;
+  }
+  .pdm-btn-primary { background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; }
+  .pdm-btn-ghost { border: 1.5px solid rgba(185, 156, 102, 0.75); color: rgb(234, 226, 214); font-weight: 700; }
+  .pdm-note { font-family: Barlow, sans-serif; font-size: 14px; color: rgba(246, 239, 228, 0.65); margin: 16px 0 0; }
+
+  @media (max-width: 859px) {
+    .pdm-inner { grid-template-columns: 1fr; gap: 32px; }
+    .pdm-copy { text-align: center; }
+    .pdm-actions { justify-content: center; }
+  }
+  @media (max-width: 419px) {
+    .pdm-cards { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    /* A cached copy served after the sale ends must not keep selling it. */
+    var sec = document.getElementById('pan-de-muerto');
+    if (!sec) return;
+    var until = sec.getAttribute('data-hide-after');
+    var nowNY = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    var todayNY = nowNY.getFullYear() + '-' + String(nowNY.getMonth() + 1).padStart(2, '0')
+      + '-' + String(nowNY.getDate()).padStart(2, '0');
+    if (until && todayNY > until) sec.remove();
+  })();
+</script>

@@ -9,6 +9,8 @@ import { roundedTotal, reviewMonth, initials, stars } from '../lib/reviews.js';
 // A review marked hidden stays in the file, so the refresh script does not fetch it again, and
 // stays off the rail. See DESIGN-DEBT.md entry 97.
 const reviews = allReviews.filter((r) => !r.hidden);
+import UpcomingEvents from '../components/UpcomingEvents.astro';
+import PanDeMuerto from '../components/PanDeMuerto.astro';
 ---
 <Base title="Señor Tequilas | Mexican Restaurant in Germantown, MD" description="Family-owned Mexican in Germantown since 2015. Handmade tortillas, slow-braised birria and a real tequila bar. Order online or reserve a table." canonical="https://senortequilas.com/" ogImage="/images/d8219db4b8a2f6cf.jpg" route="/">
 <div class="sc-host" data-sc-name="Homepage Concept - Modern Dark v2" data-dc-tpl="18"><div data-dc-tpl="6" data-c1-root="" style="color: rgb(234, 226, 214); font-family: Barlow, system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">{/* Announcement bar, removed 21 September at the client's request. Homepage only; no
@@ -126,104 +128,9 @@ const reviews = allReviews.filter((r) => !r.hidden);
         </div>
       </div>
     
-  </div></section>  <section id="seasonal" data-screen-label="Halloween + Friendsgiving" style="padding: clamp(40px, 7vw, 80px) 0px clamp(32px, 5vw, 56px); scroll-margin-top: 70px; background: #E8641B url(/images/seasonal-dia-bg.webp) center / cover no-repeat; position: relative;">
-    <!-- The artwork carries the marigolds, leaves and sugar skull at low opacity already, so
-         the only overlay is the vignette below, which blends the orange into the dark sections
-         above and below. The hex is the fallback while the image loads. -->
-    <div aria-hidden="true" style="position: absolute; inset: 0px; pointer-events: none; background: linear-gradient(rgba(10, 10, 9, 0.35), transparent 18%, transparent 82%, rgba(10, 10, 9, 0.45));"></div>
-    <div style="position: relative; max-width: 1100px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);">
-      <div style="display: flex; align-items: center; gap: 10px; font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(40, 14, 2);"><span style="width: 26px; height: 1px; background: rgba(40, 14, 2, 0.6);"></span>Two nights you don't want to miss</div>
-      <h2 style="color: rgb(246, 239, 228); font-family: &quot;Archivo Black&quot;, sans-serif; font-size: clamp(28px, 5.5vw, 46px); line-height: 1.02; margin: 8px 0px 0px; text-transform: uppercase; text-shadow: rgba(60, 20, 0, 0.35) 0px 1px 2px;">Halloween Weekend, Then Friendsgiving.</h2>
-      <div data-seasonal-grid style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(16px, 2.5vw, 24px); margin-top: clamp(22px, 3.5vw, 32px);">
+  </div></section>
 
-        <div data-seasonal-card data-until="2026-11-01" style="background: rgba(18, 18, 16, 0.92); border: 1px solid rgba(246, 239, 228, 0.18); border-radius: 16px; padding: clamp(18px, 2.4vw, 24px); color: rgb(234, 226, 214); display: flex; flex-direction: column; gap: 10px;">
-          <div style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);">Fri Oct 30 and Sat Oct 31 · 9 PM to 1 AM</div>
-          <div style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.05; text-transform: uppercase; color: rgb(246, 239, 228);">Halloween Weekend</div>
-          <p style="margin: 0px; font-size: 15px; line-height: 1.6; color: rgba(234, 226, 214, 0.88); text-wrap: pretty;">Two nights, four contests. A costume contest and a Catrina contest each night, judged at 11 PM. $150 gift card to every winner. DJ in the bar from 9. 21+ after 9 PM.</p>
-          <a href="https://tables.toasttab.com/restaurants/d94fa749-fbd5-4a66-90b6-d7755b8c3af3/findTime" target="_blank" rel="noopener" style="margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; box-sizing: border-box; padding: 12px 22px; border-radius: 12px; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 14px;">Reserve a table</a>
-        </div>
-
-        <div data-seasonal-card data-until="2026-11-26" style="background: rgba(18, 18, 16, 0.92); border: 1px solid rgba(246, 239, 228, 0.18); border-radius: 16px; padding: clamp(18px, 2.4vw, 24px); color: rgb(234, 226, 214); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: clamp(14px, 2vw, 20px); align-items: stretch;">
-          <div style="display: flex; flex-direction: column; gap: 10px; min-width: 0px;">
-            <div style="font-family: &quot;Barlow Condensed&quot;, sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);">Wed Nov 25 · 8 PM to 1 AM</div>
-            <div style="font-family: &quot;Archivo Black&quot;, sans-serif; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.05; text-transform: uppercase; color: rgb(246, 239, 228);">Friendsgiving Fiesta</div>
-            <p style="margin: 0px; font-size: 15px; line-height: 1.6; color: rgba(234, 226, 214, 0.88); text-wrap: pretty;">The night before Thanksgiving, with DJ Drastik and DJ Gerra. $5 cover. 21+ after 8 PM. We're closed Thanksgiving Day, so this is the night.</p>
-            <!-- TODO(link): /friendsgiving is in progress. Point this at it once the page ships. -->
-            <a href="https://tables.toasttab.com/restaurants/d94fa749-fbd5-4a66-90b6-d7755b8c3af3/findTime" target="_blank" rel="noopener" style="margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; box-sizing: border-box; padding: 12px 22px; border-radius: 12px; border: 1.5px solid rgba(214, 188, 133, 0.75); color: rgb(234, 226, 214); font-weight: 700; font-size: 14px;">Save the date</a>
-          </div>
-          <video data-seasonal-flyer muted loop playsinline preload="none" data-poster="/videos/friendsgiving-flyer-poster.jpg" aria-label="Friendsgiving Fiesta flyer, Wednesday November 25, 8 PM to 1 AM" style="width: 100%; max-width: 236px; justify-self: center; aspect-ratio: 9 / 16; max-height: 420px; border-radius: 16px; display: block; object-fit: cover; background: rgb(28, 27, 24);">
-            <source src="/videos/friendsgiving-flyer.mp4" type="video/mp4">
-            <source src="/videos/friendsgiving-flyer.webm" type="video/webm">
-          </video>
-        </div>
-
-      </div>
-    </div>
-  </section>
-  <script is:inline>
-    /* The seasonal block retires itself. Each card carries data-until, the first day it is no
-       longer relevant; past that the card goes, and when both are gone so does the section, so
-       the homepage never shows a party that has already happened. Dates are compared on the
-       visitor's local day, which is the right frame for "is tonight still a thing".
-
-       Also honours prefers-reduced-motion: the flyer keeps its poster and never autoplays. That
-       cannot be done in CSS, which is why it is here rather than in tweaks.css. */
-    (function () {
-      var sec = document.getElementById('seasonal');
-      if (!sec) return;
-
-      var today = new Date();
-      today.setHours(0, 0, 0, 0);
-      var live = 0;
-      [].slice.call(sec.querySelectorAll('[data-seasonal-card]')).forEach(function (card) {
-        var parts = (card.getAttribute('data-until') || '').split('-');
-        if (parts.length !== 3) { live++; return; }
-        var until = new Date(+parts[0], +parts[1] - 1, +parts[2]);
-        if (today >= until) card.remove();
-        else live++;
-      });
-
-      if (!live) { sec.remove(); return; }
-      // one card left: let it take the full row rather than sitting in half of it
-      if (live === 1) {
-        var only = sec.querySelector('[data-seasonal-card]');
-        if (only) only.style.gridColumn = '1 / -1';
-      }
-
-      /* The flyer is below the fold, so it stays unfetched until it is on screen: with
-         autoplay and preload it pulled 345KB during initial load, competing with the hero
-         image for bandwidth on a phone. The poster holds its box either way, and the box is
-         a fixed 9:16, so nothing shifts when it arrives. */
-      var v = sec.querySelector('[data-seasonal-flyer]');
-      if (!v) return;
-      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced) {
-        v.removeAttribute('loop');
-        v.setAttribute('controls', '');
-        v.setAttribute('poster', v.dataset.poster);
-        v.setAttribute('preload', 'metadata');   // enough for the poster and a play control
-        return;
-      }
-      function start() {
-        if (v.dataset.started) return;
-        v.dataset.started = '1';
-        v.setAttribute('poster', v.dataset.poster);
-        v.setAttribute('preload', 'auto');
-        v.load();
-        var pr = v.play();
-        if (pr && pr.catch) pr.catch(function () { v.setAttribute('controls', ''); });
-      }
-      if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (es) {
-          es.forEach(function (e) { if (e.isIntersecting) { start(); io.disconnect(); } });
-        }, { rootMargin: '200px' });
-        io.observe(v);
-      } else {
-        start();
-      }
-    })();
-  </script>
-
+  <UpcomingEvents />
 
   <section data-dc-tpl="102" id="happy" data-screen-label="Happy hour + cards" style="background: rgb(20, 18, 16); padding: clamp(28px, 5vw, 56px) 0px; scroll-margin-top: 70px;">
   <div data-dc-tpl="103" style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
@@ -245,7 +152,11 @@ const reviews = allReviews.filter((r) => !r.hidden);
     <a data-dc-tpl="137" href="/menu" class="scp1" style="border: 1.5px solid rgba(185, 156, 102, 0.75); color: rgb(234, 226, 214); font-weight: 700; font-size: 14px; padding: 14px 24px; border-radius: 12px; min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center;">See the Full Menu</a>
     <a data-dc-tpl="138" href="https://order.toasttab.com/online/senortequilastogo" target="_blank" class="scp2" style="background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 14px; padding: 14px 24px; border-radius: 12px; min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center;">Order Online</a>
   </div>
-  </div></section>{reviews.length > 0 && (
+  </div></section>
+
+  <PanDeMuerto />
+
+  {reviews.length > 0 && (
 <section data-dc-tpl="139" data-screen-label="Google reviews" style="background: linear-gradient(rgba(14, 14, 13, 0.72), rgba(10, 10, 9, 0.88)), url(/images/86475be0134bfc90.webp) center center / cover no-repeat; border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(48px, 8vw, 96px) 0px clamp(40px, 6vw, 72px);">
   <div data-dc-tpl="140" style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);">
   <h2 data-dc-tpl="141" style="color: rgb(246, 239, 228); font-family: &quot;Archivo Black&quot;, sans-serif; font-size: clamp(26px, 4.4vw, 44px); line-height: 1.02; margin: 0px 0px 22px; text-transform: uppercase;">{roundedTotal(business.reviews.total).replace("over", "Over")} Reviews. {business.reviews.rating} Stars.</h2>
