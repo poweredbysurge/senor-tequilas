@@ -36,6 +36,7 @@ const LCP_IMAGE = {
   '/karaoke': '/images/3468c5be0b3897f2.jpg',
   '/taco-tuesday': '/images/eca8597506381a36.jpg',
   '/game-day': '/images/site/game-day-hero.jpg',
+  '/friendsgiving': '/videos/friendsgiving-flyer-poster.jpg',   // the hero video's poster, confirmed by PerformanceObserver 21 Oct
 };
 const lcpImage = LCP_IMAGE[route];
 
@@ -70,6 +71,17 @@ const jsonLd = {
     opens: h.opens,
     closes: h.closes,
   })),
+  // Dated exceptions from business.json specialHours: one spec per date, valid that day only.
+  // A closed day is opens and closes both 00:00, which is how schema.org spells it.
+  ...((business.specialHours || []).length ? {
+    specialOpeningHoursSpecification: business.specialHours.map((h) => ({
+      '@type': 'OpeningHoursSpecification',
+      validFrom: h.date,
+      validThrough: h.date,
+      opens: h.closed ? '00:00' : h.opens,
+      closes: h.closed ? '00:00' : h.closes,
+    })),
+  } : {}),
   sameAs: business.sameAs,
   acceptsReservations: business.reserveUrl,
   potentialAction: {
@@ -190,7 +202,8 @@ const jsonLd = {
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         var fold = window.innerHeight;
-        var SKIP = '#mobile-menu, header, [data-autoscroll], [data-rail], [data-anim]';
+        // [data-own-motion]: a component that runs its own entrance (the /friendsgiving timeline)
+        var SKIP = '#mobile-menu, header, [data-autoscroll], [data-rail], [data-anim], [data-own-motion]';
 
         function tag(el, kind, delay) {
           if (!el || el.closest(SKIP) || el.hasAttribute('data-anim')) return;
@@ -253,7 +266,7 @@ const jsonLd = {
         });
       })();
     </script>
-    <script is:inline define:vars={{ hours: business.hours }}>
+    <script is:inline define:vars={{ hours: business.hours, special: business.specialHours || [] }}>
       /* The open-now pill. See DESIGN-DEBT.md entry 57.
 
          The pill used to be hardcoded, "Open now, until 12am" on all eight pages that carry
@@ -275,6 +288,19 @@ const jsonLd = {
         var byDay = {};
         hours.forEach(function (h) { h.days.forEach(function (d) { byDay[d] = h; }); });
 
+        /* Dated exceptions from business.json specialHours win over the weekly row for that one
+           date: a holiday's own hours, or closed: true. Keyed by YYYY-MM-DD in New York. */
+        var byDate = {};
+        special.forEach(function (h) { byDate[h.date] = h; });
+        function shift(dayName, iso) {
+          if (byDate[iso]) return byDate[iso].closed ? null : byDate[iso];
+          return byDay[dayName];
+        }
+        function addDays(iso, n) {
+          var p = iso.split('-');
+          return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2] + n)).toISOString().slice(0, 10);
+        }
+
         function mins(hhmm) { return parseInt(hhmm.slice(0,2),10) * 60 + parseInt(hhmm.slice(3,5),10); }
 
         function label(hhmm) {
@@ -289,19 +315,21 @@ const jsonLd = {
           var parts = new Intl.DateTimeFormat('en-US', {
             timeZone: 'America/New_York',
             weekday: 'long', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+            year: 'numeric', month: '2-digit', day: '2-digit',
           }).formatToParts(new Date());
           var g = function (t) {
             for (var i = 0; i < parts.length; i++) if (parts[i].type === t) return parts[i].value;
             return '';
           };
-          return { day: g('weekday'), mins: parseInt(g('hour'),10) * 60 + parseInt(g('minute'),10) };
+          return { day: g('weekday'), iso: g('year') + '-' + g('month') + '-' + g('day'),
+                   mins: parseInt(g('hour'),10) * 60 + parseInt(g('minute'),10) };
         }
 
         function status() {
           var now = nowET();
           var i = DAYS.indexOf(now.day);
-          var today = byDay[now.day];
-          var yday = byDay[DAYS[(i + 6) % 7]];
+          var today = shift(now.day, now.iso);
+          var yday = shift(DAYS[(i + 6) % 7], addDays(now.iso, -1));
 
           /* Yesterday's shift can still be running. Thursday closes at 00:00 exactly, so its
              closes value is 0 and it never spills into Friday, which is correct. */
@@ -319,7 +347,7 @@ const jsonLd = {
           }
           /* Shut for the night. Walk forward to the next day that opens. */
           for (var n = 1; n <= 7; n++) {
-            var d = DAYS[(i + n) % 7], r = byDay[d];
+            var d = DAYS[(i + n) % 7], r = shift(d, addDays(now.iso, n));
             if (r) return { open: false, next: r.opens, day: n === 1 ? 'tomorrow' : d };
           }
           return null;

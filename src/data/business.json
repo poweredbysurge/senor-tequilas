@@ -47,6 +47,12 @@
       "closes": "22:00"
     }
   ],
+  "_specialHours_note": "Dated exceptions to the weekly hours, newest last. Each entry overrides that one date: opens/closes as usual (a close at or before the open runs past midnight), or closed: true. Rendered as specialOpeningHoursSpecification in Base.astro and read by the open-now pill. Add Dec 24/25 etc. here.",
+  "specialHours": [
+    { "date": "2026-11-25", "opens": "15:00", "closes": "01:00", "note": "Thanksgiving Eve" },
+    { "date": "2026-11-26", "closed": true, "note": "Thanksgiving Day" },
+    { "date": "2026-11-27", "opens": "15:00", "closes": "01:00", "note": "Black Friday" }
+  ],
   "sameAs": [
     "https://www.instagram.com/senortequilas_/",
     "https://www.facebook.com/senortequilasgermantown/",

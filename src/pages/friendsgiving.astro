@@ -1,0 +1,529 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+import business from '../data/business.json';
+import allReviews from '../data/reviews.json';
+import { roundedTotal, reviewMonth, initials, stars } from '../lib/reviews.js';
+
+const PAGE = '/friendsgiving';
+const PAGE_URL = business.siteUrl + PAGE;
+const PHONE_DISPLAY = business.telephone.replace(/^\+1-/, '');
+const PHONE_HREF = 'tel:' + business.telephone.replace(/[^+\d]/g, '');
+const ADDRESS = `${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion} ${business.postalCode}`;
+const POSTER = '/videos/friendsgiving-flyer-poster.jpg';
+const INQUIRE = '/private-parties#inquire';
+
+// One real review, chosen for the party it describes: a 20+ group event with music. If it is
+// ever removed from reviews.json the card is simply not rendered; it is never rewritten.
+const review = allReviews.find((r) => !r.hidden && r.author === 'George Ju' && r.rating === 5);
+
+// Photographs from the client's Drive folder, originals in design/source-art/friendsgiving/.
+// Nights in the bar area from October and November 2025. Alt text written from the photos.
+const PH = (name, w, h, alt) => ({ name, w, h, alt, src: `/images/site/friendsgiving/${name}.webp`, small: `/images/site/friendsgiving/${name}-640.webp` });
+const STRIP = [
+  PH('friendsgiving-dance-floor', 1600, 1069, 'A guest dancing in the bar area with a drink in her hand, friends raising cups around her'),
+  PH('friendsgiving-hands-up-at-the-bar', 1600, 1069, 'A crowd with hands in the air in front of the golden heart behind the bar'),
+  PH('friendsgiving-dancing-friends', 974, 1457, 'Two friends dancing in the bar area, one smiling and throwing a peace sign'),
+];
+const PROOF = [
+  PH('friendsgiving-drinks-raised', 1462, 1080, 'Four friends in the packed bar area raising their drinks under the flower ceiling'),
+  PH('friendsgiving-friends-at-the-bar', 1080, 1616, 'Two friends with drinks posing together at the bar under the pink shelf lights'),
+  PH('friendsgiving-bar-table', 1063, 1591, 'Three friends smiling together at a high table in the bar area'),
+  PH('friendsgiving-shooters-at-the-table', 1600, 995, 'Four friends at a table holding up shooters in front of the bar'),
+];
+const DRINKS = { src: '/images/site/hh-handcrafted-margaritas-lg.webp', small: '/images/site/hh-handcrafted-margaritas.webp', w: 1254, h: 1254, alt: 'Eight handcrafted cocktails on a wooden board: a berry-topped spritz, chile-rimmed margaritas, a blue drink and a jamaica margarita' };
+const ROOM = PH('friendsgiving-full-bar-area', 1600, 1069, 'The bar area full from end to end on a busy night, the flower ceiling and lanterns overhead');
+
+const TIMELINE = [
+  ['3 PM', 'Doors open, happy hour starts'],
+  ['6 PM', 'Happy hour ends'],
+  ['8 PM', 'DJs start, bar area 21+, $5 cover'],
+  ['10 PM', 'Late night menu'],
+  ['12:45 AM', 'Last call'],
+  ['1 AM', 'Close'],
+];
+
+const ROOMS = [
+  ['Mexican Room', 'Seats 112'],
+  ['International Room', 'Seats 96'],
+  ['Indoor Patio', 'Seats 48'],
+];
+
+// The FAQ is one list. It renders the accordion and the FAQPage schema, so the two cannot
+// drift. A `link` wraps one phrase of the answer in an anchor on the page only; the schema
+// carries the same words as plain text.
+const FAQ = [
+  {
+    q: "What is happening at Señor Tequila's on Thanksgiving Eve 2026?",
+    a: "Our Friendsgiving Party and Thanksgiving Eve, on Wednesday, November 25. Happy hour runs 3 to 6, DJ Drastik and DJ Gerra play 8 PM to 1 AM, there is no lotería that night, and the turkey mascot makes an appearance. We are at 20021 Century Blvd in Germantown, next to Topgolf, with free parking.",
+  },
+  {
+    q: 'Is there a cover charge on Thanksgiving Eve?',
+    a: 'Yes, $5 after 8 PM, in the bar area only, paid at the door by credit or debit card. There is no cover before 8 and no cover in the dining rooms, so come for happy hour and stay.',
+  },
+  {
+    q: 'Is the Friendsgiving party 21 and over?',
+    a: 'The bar area is 21 and over after 8 PM. The dining rooms stay all ages all night, so if your group is mixed, come early and take a dining room table.',
+  },
+  {
+    q: 'Can I make a reservation for Thanksgiving Eve?',
+    a: 'Dining room reservations are open on Toast Tables until Tuesday, November 24. On the 25th it is first come, first served for groups of 1 to 22. Bigger groups can book a private room at the holiday rate by Sunday, November 22: call 301-569-4574.',
+  },
+  {
+    q: 'Does happy hour run on the Wednesday before Thanksgiving?',
+    a: 'Yes, 3 to 6 in the bar area, like any other Wednesday. After that the only special is the Fall Carajillo, $15.',
+  },
+  {
+    q: 'Are you open on Thanksgiving Day?',
+    a: 'No. We are closed every Thanksgiving Day. We reopen on Black Friday, November 27, from 3 PM to 1 AM, with a DJ from 9 PM to 1 AM.',
+  },
+  {
+    q: 'Can I order food for Thanksgiving dinner at home?',
+    a: 'Yes. Order catering trays by Monday, November 23 at 10 PM and pick them up Wednesday, November 25 by 10 PM. Tamales, pozole, birria and handmade tortillas are also available to take home. Our catering page has the trays and the terms.',
+    link: { text: 'catering page', href: '/catering' },
+  },
+];
+const faqHtml = (f) => {
+  if (!f.link) return f.a;
+  const i = f.a.indexOf(f.link.text);
+  if (i < 0) throw new Error(`friendsgiving FAQ: link text "${f.link.text}" is not in the answer`);
+  return `${f.a.slice(0, i)}<a href="${f.link.href}" style="color: rgb(214, 188, 133); font-weight: 700;">${f.link.text}</a>${f.a.slice(i + f.link.text.length)}`;
+};
+
+const eventLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: 'Friendsgiving Party and Thanksgiving Eve',
+  description: "Thanksgiving Eve at Señor Tequila's: happy hour 3 to 6, DJ Drastik and DJ Gerra 8 PM to 1 AM in the bar area, $5 cover in the bar area after 8 PM.",
+  startDate: '2026-11-25T20:00:00-05:00',
+  endDate: '2026-11-26T01:00:00-05:00',
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: {
+    '@type': 'Restaurant',
+    name: business.name,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: business.streetAddress,
+      addressLocality: business.addressLocality,
+      addressRegion: business.addressRegion,
+      postalCode: business.postalCode,
+      addressCountry: business.addressCountry,
+    },
+  },
+  organizer: { '@type': 'Organization', name: business.name, url: business.siteUrl },
+  performer: { '@type': 'PerformingGroup', name: 'DJ Drastik and DJ Gerra' },
+  image: [business.siteUrl + POSTER],
+  url: PAGE_URL,
+  offers: {
+    '@type': 'Offer',
+    price: '5',
+    priceCurrency: 'USD',
+    url: PAGE_URL,
+    validFrom: '2026-10-21',
+    availability: 'https://schema.org/InStock',
+    description: 'Cover for the bar area after 8 PM; dining rooms no cover',
+  },
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+
+// the site's own treatments, as on /game-day, held once here rather than pasted per section
+const EYEBROW = "display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);";
+const RULE = 'width: 26px; height: 1px; background: rgba(214, 188, 133, 0.7);';
+const H2 = "color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(26px, 4.6vw, 42px); line-height: 1.04; margin: 10px 0px 0px; text-transform: uppercase; text-wrap: balance;";
+const P = 'font-size: 15px; line-height: 1.7; color: rgba(234, 226, 214, 0.85); margin: 14px 0px 0px; max-width: 62ch; text-wrap: pretty;';
+const LINK = 'color: rgb(214, 188, 133); font-weight: 700;';
+const WRAP = 'max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);';
+const SECTION = (bg) => `background: ${bg}; border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0px; scroll-margin-top: 70px;`;
+const CARD = 'background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px 20px;';
+const CARD_EYEBROW = "font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(214, 188, 133);";
+const CARD_TITLE = "font-family: 'Archivo Black', sans-serif; font-size: 16px; text-transform: uppercase; color: rgb(246, 239, 228); margin-top: 5px; line-height: 1.15;";
+const CARD_P = 'font-size: 13px; line-height: 1.55; color: rgba(234, 226, 214, 0.8); margin: 8px 0px 0px;';
+const BTN_PRIMARY = 'display: inline-flex; align-items: center; justify-content: center; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; box-shadow: rgba(56, 176, 73, 0.35) 0px 0px 30px;';
+const BTN_GHOST = 'display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(185, 156, 102, 0.75); color: rgb(234, 226, 214); font-weight: 700; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; background: rgba(18, 18, 16, 0.4);';
+const CHIP = 'display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(185, 156, 102, 0.5); color: rgb(234, 226, 214); font-weight: 700; font-size: 13px; padding: 0px 14px; min-height: 44px; border-radius: 999px; box-sizing: border-box;';
+const FRAME = 'border-radius: 16px; overflow: hidden; border: 1px solid rgb(42, 40, 32); background: rgb(28, 27, 24);';
+const IMG = 'display: block; width: 100%; height: 100%; object-fit: cover;';
+---
+<Base title="Friendsgiving & Thanksgiving Eve Party | Germantown, MD" description="Thanksgiving Eve, Wed Nov 25: DJ 8 PM to 1 AM, $5 cover in the bar area after 8, happy hour 3 to 6, private rooms for groups. Germantown, MD." canonical={PAGE_URL} ogImage={POSTER} extraTypes={['BarOrPub']} route={PAGE}>
+<!--
+  /friendsgiving. Authored, not extracted, on the /game-day pattern: same tokens, type, section
+  rhythm, card and button treatments. Facts confirmed by Roberto on 21 October 2026.
+
+  PRICES ARE ALLOWED ON THIS PAGE. A client decision for holiday pages: the $5 cover, the $15 Fall
+  Carajillo and the $30 catering delivery fee stay, despite the site-wide no-prices rule. Do not
+  strip them in a sweep.
+
+  Indexed normally, with no date-based hiding: the page is updated for next year rather than
+  retired. Business facts come from business.json; the review count from roundedTotal().
+-->
+<div class="sc-host" data-sc-name="Friendsgiving" style="color: rgb(234, 226, 214); font-family: Barlow, system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
+  <Header5 />
+
+  <section data-screen-label="Friendsgiving hero" style="background: rgb(18, 18, 16); border-bottom: 1px solid rgba(185, 156, 102, 0.2);">
+    <div class="fg-hero" style="max-width: 1180px; margin: 0px auto; display: grid; align-items: center; gap: clamp(24px, 4vw, 56px);">
+      <div class="fg-hero-copy" style="padding: clamp(36px, 6vw, 76px) clamp(18px, 4.5vw, 48px);">
+        <div style={EYEBROW}><span style={RULE}></span>Wednesday, November 25 · Germantown, MD · 3 PM to 1 AM</div>
+        <h1 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(24px, 2.9vw, 38px); line-height: 1.06; margin: 10px 0px 0px; text-transform: uppercase; text-wrap: balance;"><span class="fg-keep">Friendsgiving and</span> Thanksgiving Eve Party in <span style="white-space: nowrap;">Germantown, MD</span></h1>
+        <p style="font-size: 16px; line-height: 1.7; color: rgba(234, 226, 214, 0.85); margin: 16px 0px 0px; max-width: 54ch; text-wrap: pretty;">Everybody is back in town and nobody has to be up early. DJ Drastik and DJ Gerra run 8 PM to 1 AM, happy hour runs 3 to 6 like any other Wednesday, and at some point a turkey walks through the bar. Get here before 8: that is when the bar area goes 21 and over and the $5 cover starts.</p>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px;">
+          <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
+          <a href={INQUIRE} style={BTN_GHOST}>Book a Private Room</a>
+        </div>
+      </div>
+      <div class="fg-hero-media" style="display: flex; justify-content: center; padding: clamp(0px, 3vw, 36px) clamp(18px, 4.5vw, 48px) clamp(36px, 6vw, 76px);">
+        <div style="width: min(100%, 340px); aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden; border: 1px solid rgba(185, 156, 102, 0.3); background: rgb(28, 27, 24); box-shadow: rgba(0, 0, 0, 0.45) 0px 18px 40px -12px;">
+          <video autoplay loop muted playsinline preload="metadata" poster={POSTER} aria-label="The Friendsgiving Fiesta flyer: DJ Drastik and DJ Gerra, 8 PM to 1 AM, November 25, $5 cover, 21+ after 8 PM" style="display: block; width: 100%; height: 100%; object-fit: cover;">
+            <source src="/videos/friendsgiving-flyer.webm" type="video/webm" />
+            <source src="/videos/friendsgiving-flyer.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="night" data-screen-label="The night" style={SECTION('rgb(20, 18, 16)')}>
+    <div style={WRAP}>
+      <div style={EYEBROW}><span style={RULE}></span>No lotería this week. Something louder.</div>
+      <h2 style={H2}>What Happens on Thanksgiving Eve</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 0px clamp(20px, 3vw, 40px); margin-top: 8px;">
+        <div>
+          <p style={P}>People call it the biggest bar night of the year. Around here it is also the one night the whole graduating class is back on the same side of 270.</p>
+          <p style={P}>Doors open at 3 and happy hour runs 3 to 6 in the bar area, like any other Wednesday. Lotería takes the week off: the bingo and lotería remix moves to Tuesday, November 24. From 8 PM to 1 AM, DJ Drastik and DJ Gerra play Spanish and English hits.</p>
+        </div>
+        <div>
+          <p style={P}>After 8 the bar area is 21 and over with a $5 cover, paid at the door by credit or debit card only, no cash. The dining rooms stay all ages with no cover, so the cousins who are not 21 yet can still eat with you.</p>
+          <p style={P}>Somewhere around the second margarita, the turkey shows up. He does not explain himself. People take photos with him anyway.</p>
+          <p style={P}>The full menu runs until 10 PM and the late night menu from 10 PM to 1 AM. Last call is 12:45 AM.</p>
+        </div>
+      </div>
+
+      <div class="fg-tl" data-own-motion data-fg-tl>
+        <span class="fg-tl-track" aria-hidden="true"></span>
+        <span class="fg-tl-fill" aria-hidden="true"></span>
+        <ol aria-label="Thanksgiving Eve timeline">
+          {TIMELINE.map(([t, what], i) => (
+            <li class="is-lit" data-peak={t === '8 PM' ? '' : undefined}>
+              <span class="fg-tl-dot" aria-hidden="true"></span>
+              <span class="fg-tl-time">{t}</span>
+              <span class="fg-tl-what">{what}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="fg-photo-rail" data-rail aria-label="Photos from last year" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; margin-top: 30px;">
+        {STRIP.map((p) => (
+          <div style={`${FRAME} aspect-ratio: 4 / 5;`}>
+            <img src={p.src} srcset={`${p.small} 640w, ${p.src} ${p.w}w`} sizes="(max-width: 767px) 92vw, 360px" width={p.w} height={p.h} alt={p.alt} loading="lazy" decoding="async" style={IMG} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="drinks" data-screen-label="The drinks" style={SECTION('rgb(18, 18, 16)')}>
+    <div style={WRAP}>
+      <div class="fg-split" style="align-items: center;">
+        <div style={`${FRAME} aspect-ratio: 1 / 1;`}>
+          <img src={DRINKS.src} srcset={`${DRINKS.small} 320w, ${DRINKS.src} ${DRINKS.w}w`} sizes="(max-width: 767px) 92vw, 540px" width={DRINKS.w} height={DRINKS.h} alt={DRINKS.alt} loading="lazy" decoding="async" style={IMG} />
+        </div>
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>One seasonal pour. No gimmicks.</div>
+          <h2 style={H2}>The Fall Carajillo, Happy Hour, and That's It</h2>
+          <p style={P}>Happy hour runs as normal, 3 to 6 in the bar area. <a href="/happy-hour" style={LINK}>Happy hour</a>.</p>
+          <div style="margin-top: 20px; background: linear-gradient(rgba(60, 44, 18, 0.5), rgba(28, 20, 8, 0.72)); border: 1px solid rgba(185, 156, 102, 0.4); border-radius: 18px; padding: 22px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+            <div>
+              <div style={CARD_EYEBROW}>After 6, the one special</div>
+              <h3 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(20px, 3vw, 28px); text-transform: uppercase; line-height: 1.05; margin: 6px 0px 0px;">The Fall Carajillo</h3>
+              <p style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.85); margin: 8px 0px 0px; max-width: 40ch;">Café de olla, Licor 43 and spices, finished with a mini pan de muerto.</p>
+            </div>
+            <div style="font-family: 'Archivo Black', sans-serif; font-size: clamp(28px, 4vw, 40px); color: rgb(214, 188, 133); line-height: 1;">$15</div>
+          </div>
+          <p style={P}>No pitcher deals. No two-for-ones; that is Monday. Margaritas come in 14 oz, 18 oz and the 54 oz Big Mami. <a href="/margaritas" style={LINK}>The margaritas</a> · <a href="/tequila-bar" style={LINK}>The tequila bar</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="groups" data-screen-label="Groups" style={SECTION('rgb(20, 18, 16)')}>
+    <div style={WRAP}>
+      <div class="fg-split" style="align-items: stretch;">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>1 to 22, walk in. 23 and up, get a room.</div>
+          <h2 style={H2}>Bringing Everyone You Went to High School With</h2>
+          <p style={P}>Dining room reservations are on <a href={business.reserveUrl} target="_blank" rel="noopener" style={LINK}>Toast Tables</a> until Tuesday, November 24. On the 25th it is first come, first served for groups of 1 to 22, so come at happy hour, eat, and hold the table through the DJ.</p>
+          <p style={P}>Bigger than 22, or want a door that closes? Book a private room at the holiday rate: contact us for a private room, and book by Sunday, November 22. Only the private rooms take a deposit. Call {PHONE_DISPLAY}, use the <a href={INQUIRE} style={LINK}>inquiry form</a>, or ask for Tomas in person.</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: 10px; margin-top: 18px;">
+            {ROOMS.map(([name, seats]) => (
+              <div style={CARD}>
+                <div style={CARD_EYEBROW}>{seats}</div>
+                <div style={CARD_TITLE}>{name}</div>
+              </div>
+            ))}
+          </div>
+          <p style={P}>Each room gets its own sound and lighting from the DJ booth. Photos of every room are on <a href="/private-parties" style={LINK}>private parties</a>.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px;">
+            <a href={INQUIRE} style={BTN_PRIMARY}>Book a Private Room</a>
+            <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+          </div>
+        </div>
+        <div class="fg-fill-media" style={FRAME}>
+          <img src={ROOM.src} srcset={`${ROOM.small} 640w, ${ROOM.src} ${ROOM.w}w`} sizes="(max-width: 767px) 92vw, 560px" width={ROOM.w} height={ROOM.h} alt={ROOM.alt} loading="lazy" decoding="async" style={IMG} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="thanksgiving" data-screen-label="Thanksgiving at home" style={SECTION('rgb(18, 18, 16)')}>
+    <div style={`${WRAP} text-align: center;`}>
+      <div style={`${EYEBROW} justify-content: center;`}><span style={RULE}></span>We are closed Thursday. You are still eating well.<span style={RULE}></span></div>
+      <h2 style={`${H2} margin-left: auto; margin-right: auto; max-width: 22ch;`}>Closed Thanksgiving Day. Your Thursday Is Covered Anyway.</h2>
+      <p style={`${P} margin-left: auto; margin-right: auto;`}>We close on Thanksgiving Day, every year, so the whole staff gets the one dinner that matters.</p>
+      <div class="fg-strip">
+        <div>
+          <div style={CARD_EYEBROW}>Order trays by</div>
+          <div class="fg-strip-big">Mon, Nov 23</div>
+          <div class="fg-strip-sub">by 10 PM</div>
+          <p style={CARD_P}>Pick up Wednesday, November 25 by 10 PM.</p>
+        </div>
+        <div>
+          <div style={CARD_EYEBROW}>To take home</div>
+          <div class="fg-strip-big">Tamales, Pozole, Birria</div>
+          <div class="fg-strip-sub">and handmade tortillas</div>
+          <p style={CARD_P}>Ready to take home for Thursday.</p>
+        </div>
+        <div>
+          <div style={CARD_EYEBROW}>Takeout and delivery</div>
+          <div class="fg-strip-big">Wednesday</div>
+          <div class="fg-strip-sub">until 10 PM</div>
+          <p style={CARD_P}><a href="/takeout-delivery" style={LINK}>Takeout and delivery</a>.</p>
+        </div>
+      </div>
+      <p style={`${P} margin-left: auto; margin-right: auto; margin-top: 26px;`}>Catering needs 48 hours notice, and we deliver within 20 miles for $30. <a href="/catering" style={LINK}>Catering</a>.</p>
+    </div>
+  </section>
+
+  <section id="black-friday" data-screen-label="Black Friday" style="background: linear-gradient(rgba(60, 44, 18, 0.42), rgba(18, 18, 16, 0.96)); border-top: 1px solid rgba(185, 156, 102, 0.35); padding: clamp(40px, 6.4vw, 84px) 0px; scroll-margin-top: 70px;">
+    <div style={`${WRAP} text-align: center;`}>
+      <div style={`${EYEBROW} justify-content: center;`}><span style={RULE}></span>Friday, November 27<span style={RULE}></span></div>
+      <h2 style={`${H2} margin-left: auto; margin-right: auto;`}>Black Friday, 3 PM to 1 AM</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px;">
+        <span style={`${CHIP} cursor: default;`}>Open at 3 PM</span>
+        <span style={`${CHIP} cursor: default;`}>DJ 9 PM to 1 AM</span>
+        <span style={`${CHIP} cursor: default;`}>Bar area 21+ after 9</span>
+      </div>
+      <p style={`${P} margin-left: auto; margin-right: auto;`}>Shopping is optional. <a href="/late-night" style={LINK}>Late night</a>.</p>
+      <div class="fg-ticket">
+        <div style={CARD_EYEBROW}>November 27 to December 31</div>
+        <h3 style="font-family: 'Archivo Black', sans-serif; font-size: clamp(20px, 3vw, 28px); text-transform: uppercase; color: rgb(246, 239, 228); margin: 6px 0px 0px; line-height: 1.1;">The Holiday Gift Box</h3>
+        <p style="font-size: 14px; line-height: 1.65; color: rgba(234, 226, 214, 0.85); margin: 12px auto 0px; max-width: 56ch;">Every visit from November 27 through December 31 gets a sealed gift box. Bring it back unopened between January 1 and February 13 and open it at the table. Prizes include free margaritas, entrees, appetizers, an Avion shooter, dessert, and one $500 gift certificate.</p>
+        <p style="font-size: 12px; line-height: 1.55; color: rgba(234, 226, 214, 0.65); margin: 14px auto 0px; max-width: 60ch;">One box redeemed per table, per check, parties of 1 to 50. Cannot be combined with other offers. No cash value. Señor Tequila's may cancel, void or change the offer at any time.</p>
+        <!-- TODO link /holiday-parties when it ships -->
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Proof" style={SECTION('rgb(18, 18, 16)')}>
+    <div style={WRAP}>
+      <div style={EYEBROW}><span style={RULE}></span>Last year</div>
+      <h2 style={H2}>In Roberto's Words</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(20px, 3vw, 40px); align-items: start; margin-top: 20px;">
+        <div>
+          <figure style="margin: 0px;">
+            <blockquote style="margin: 0px; font-family: 'Archivo Black', sans-serif; font-size: clamp(20px, 2.8vw, 28px); line-height: 1.2; text-transform: uppercase; color: rgb(246, 239, 228); text-wrap: balance;">"The turkey pops up. Lots of laughter, dance moves, fun, and memories that will last a lifetime."</blockquote>
+            <figcaption style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133); margin-top: 14px;">Roberto Rivas, owner</figcaption>
+          </figure>
+          {review && (
+            <figure style="margin: 24px 0px 0px; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 18px;">
+              <div style="display: flex; align-items: center; gap: 10px;"><span style="position: relative; overflow: hidden; width: 40px; height: 40px; flex: 0 0 auto; border-radius: 50%; background: rgb(58, 56, 47); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: rgb(255, 255, 255);"><span>{initials(review.author)}</span>{review.photo && (<img src={review.photo} loading="lazy" decoding="async" width="40" height="40" referrerpolicy="no-referrer" alt="" onerror="this.remove()" style="position: absolute; inset: 0px; width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />)}</span><div><div style="font-weight: 700; font-size: 14px; color: rgb(234, 226, 214);">{review.author}</div><div style="font-size: 12px; color: rgba(234, 226, 214, 0.85);">{review.source}</div></div><svg width="18" height="18" viewBox="0 0 24 24" style="margin-left: auto;" aria-hidden="true"><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.4z"></path><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"></path><path fill="#FBBC05" d="M6.4 14a6 6 0 0 1 0-3.9V7.5H3.1a10 10 0 0 0 0 9z"></path><path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.8-2.8A10 10 0 0 0 3.1 7.5l3.3 2.6C7.2 7.8 9.4 6 12 6z"></path></svg></div>
+              <div style="color: rgb(251, 188, 5); font-size: 13px; letter-spacing: 2px; margin-top: 12px;"><span aria-label={`${review.rating} out of 5 stars`}>{stars(review.rating)}</span> <span style="color: rgba(234, 226, 214, 0.85); font-size: 12px; letter-spacing: 0px; margin-left: 6px;">{reviewMonth(review.date)}</span></div>
+              <blockquote style="margin: 10px 0px 0px; font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.88); white-space: pre-line;">{review.text}</blockquote>
+            </figure>
+          )}
+          <p style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.8); margin: 18px 0px 0px;"><span style="color: rgb(185, 156, 102); letter-spacing: 2px;" aria-hidden="true">★★★★★</span> {business.reviews.rating} stars across {roundedTotal(business.reviews.total)} Google reviews. Family-owned by the Rivas brothers since 2015.</p>
+        </div>
+        <figure style="margin: 0px;">
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+            {PROOF.map((p) => (
+              <div style={`${FRAME} aspect-ratio: 1 / 1;`}>
+                <img src={p.src} srcset={`${p.small} 640w, ${p.src} ${p.w}w`} sizes="(max-width: 767px) 46vw, 270px" width={p.w} height={p.h} alt={p.alt} loading="lazy" decoding="async" style={IMG} />
+              </div>
+            ))}
+          </div>
+          <figcaption style="font-size: 13px; color: rgba(234, 226, 214, 0.7); margin-top: 10px;">Last year</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" data-screen-label="Friendsgiving FAQ" style={SECTION('rgb(20, 18, 16)')}>
+    <div style={WRAP}>
+      <h2 style={`${H2} margin: 0px auto; text-align: center;`}>Thanksgiving Eve, Answered</h2>
+      <div style="display: grid; gap: 10px; margin: 22px auto 0px; max-width: 860px;">
+        {FAQ.map((f, i) => (
+          <div style="background: rgba(18, 18, 16, 0.72); border: 1px solid rgba(185, 156, 102, 0.3); border-radius: 14px; overflow: hidden;">
+            <button type="button" aria-expanded={i === 0 ? 'true' : 'false'} style="width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left; background: none; border: 0px; padding: 16px 18px; min-height: 52px; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; color: rgb(246, 239, 228);"><span>{f.q}</span><span style="flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(185, 156, 102, 0.5); display: inline-flex; align-items: center; justify-content: center; color: rgb(214, 188, 133); font-size: 16px; line-height: 1;">+</span></button>
+            <div style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.82); padding: 0px 18px 16px;" set:html={faqHtml(f)}></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Close" style={SECTION('rgb(18, 18, 16)')}>
+    <div style={`${WRAP} text-align: center;`}>
+      <h2 style={`${H2} margin: 0px auto;`}>Get Here Before 8</h2>
+      <p style={`${P} margin-left: auto; margin-right: auto;`}>After 8 the cover starts and so does the line. Come at happy hour, eat, hold the table, and let the night come to you.</p>
+      <p style={`${P} margin: 10px auto 0px;`}>{ADDRESS}, next to Topgolf with free parking.</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px;">
+        <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
+        <a href={INQUIRE} style={BTN_GHOST}>Book a Private Room</a>
+        <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(eventLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
+  <Footer2 />
+</div>
+
+<style>
+  /* the hero: a 50/50 from 768 up, copy left and the flyer right, stacked on phones. The H1 is
+     sized to its half so it never runs over the flyer column; "Friendsgiving and" is held
+     together where the half is wide enough to carry it. */
+  .fg-hero { grid-template-columns: 1fr; }
+  @media (min-width: 768px) { .fg-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+  .fg-keep { white-space: nowrap; }
+  @media (min-width: 768px) and (max-width: 1023px) { .fg-keep { white-space: normal; } }
+
+  /* ---- phones only ------------------------------------------------------------------------ */
+  @media (max-width: 767px) {
+    /* 100px above and below every section. !important because each section carries its padding
+       inline; the hero's own column padding is zeroed so it does not stack on top. */
+    .sc-host > section { padding-top: 100px !important; padding-bottom: 100px !important; }
+    .fg-hero-copy { padding-top: 0 !important; padding-bottom: 0 !important; }
+    .fg-hero-media { padding-top: 40px !important; padding-bottom: 0 !important; }
+
+    /* the three dance-floor photos become a swipeable rail: edge to edge, the next one peeking */
+    .fg-photo-rail {
+      display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+      margin-left: calc(-1 * clamp(18px, 4.5vw, 48px)); margin-right: calc(-1 * clamp(18px, 4.5vw, 48px));
+      padding: 0 clamp(18px, 4.5vw, 48px);
+      scroll-padding: 0 clamp(18px, 4.5vw, 48px);
+    }
+    .fg-photo-rail > * { flex: 0 0 80%; scroll-snap-align: start; }
+  }
+
+  /* the two-column sections: a true 50/50 from 768 up, stacked below */
+  .fg-split { display: grid; grid-template-columns: 1fr; gap: clamp(24px, 4vw, 56px); }
+  @media (min-width: 768px) { .fg-split { grid-template-columns: 1fr 1fr; } }
+  /* a photo that fills its half at whatever height the copy beside it reaches */
+  .fg-fill-media { min-height: 320px; height: 100%; }
+  @media (max-width: 767px) { .fg-fill-media { height: auto; min-height: 0; aspect-ratio: 3 / 2; } }
+
+  /* ---- the Thanksgiving Eve timeline ------------------------------------------------------
+     A track through six stops, with a gold fill that draws across once when the timeline
+     scrolls into view and lights each stop as it passes. The finished state is the default:
+     the script arms the animation, so with no JavaScript, or with reduced motion, the line is
+     simply drawn and every stop lit. Transform and opacity only. */
+  .fg-tl { position: relative; margin-top: 32px; --fg-dot: 18px; --fg-ms: 1500ms; }
+  .fg-tl ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); position: relative; }
+  .fg-tl li { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 6px; }
+  .fg-tl-track, .fg-tl-fill {
+    position: absolute; height: 2px; top: calc(var(--fg-dot) / 2 - 1px);
+    left: calc(100% / 12); right: calc(100% / 12); border-radius: 2px;
+  }
+  .fg-tl-track { background: rgba(185, 156, 102, 0.22); }
+  .fg-tl-fill { background: rgb(214, 188, 133); transform-origin: left center; transform: scaleX(1); }
+  .fg-tl.is-armed .fg-tl-fill { transform: scaleX(0); transition: transform var(--fg-ms) cubic-bezier(0.16, 0.8, 0.3, 1); }
+  .fg-tl.is-armed.is-playing .fg-tl-fill { transform: scaleX(1); }
+  .fg-tl-dot {
+    position: relative; z-index: 1; width: var(--fg-dot); height: var(--fg-dot); border-radius: 50%; box-sizing: border-box;
+    background: rgb(20, 18, 16); border: 2px solid rgba(185, 156, 102, 0.45);
+    transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+  }
+  .fg-tl-time {
+    font-family: 'Archivo Black', sans-serif; font-size: 18px; line-height: 1.1; margin-top: 14px;
+    color: rgba(214, 188, 133, 0.55); transition: color 300ms ease;
+  }
+  .fg-tl-what { font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.82); margin-top: 6px; max-width: 18ch; }
+  .fg-tl li.is-lit .fg-tl-dot { background: rgb(214, 188, 133); border-color: rgb(214, 188, 133); box-shadow: 0 0 0 5px rgba(214, 188, 133, 0.14); }
+  .fg-tl li.is-lit .fg-tl-time { color: rgb(214, 188, 133); }
+  /* 8 PM is the moment the night turns: it lights green, the site's action colour */
+  .fg-tl li[data-peak].is-lit .fg-tl-dot { background: rgb(56, 176, 73); border-color: rgb(56, 176, 73); box-shadow: 0 0 0 6px rgba(56, 176, 73, 0.18), 0 0 18px rgba(56, 176, 73, 0.45); }
+  .fg-tl li[data-peak] .fg-tl-time { color: rgb(246, 239, 228); }
+  .fg-tl li:hover .fg-tl-dot { transform: scale(1.25); }
+  @media (max-width: 767px) {
+    .fg-tl ol { grid-template-columns: 1fr; row-gap: 18px; }
+    /* !important: the site-wide mobile rule centres section copy (tweaks.css), and these labels
+       belong to a left-hand track */
+    .fg-tl li { display: grid; grid-template-columns: var(--fg-dot) 1fr; column-gap: 14px; align-items: start; text-align: left !important; padding: 0; }
+    .fg-tl-time, .fg-tl-what { text-align: left !important; justify-self: start; margin-left: 0 !important; margin-right: 0 !important; }
+    .fg-tl-dot { grid-row: 1 / span 2; margin-top: 2px; }
+    .fg-tl-time { margin-top: 0; }
+    .fg-tl-what { max-width: none; margin-top: 2px; }
+    .fg-tl-track, .fg-tl-fill { width: 2px; height: auto; left: calc(var(--fg-dot) / 2 - 1px); right: auto; top: 10px; bottom: 10px; }
+    .fg-tl-fill { transform-origin: center top; transform: scaleY(1); }
+    .fg-tl.is-armed .fg-tl-fill { transform: scaleY(0); }
+    .fg-tl.is-armed.is-playing .fg-tl-fill { transform: scaleY(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fg-tl-dot, .fg-tl-time, .fg-tl-fill { transition: none !important; }
+    .fg-tl li:hover .fg-tl-dot { transform: none; }
+  }
+
+  /* Thanksgiving at home: three facts on a ruled strip, not three more cards */
+  .fg-strip { display: grid; grid-template-columns: 1fr; margin-top: 30px; border-top: 1px solid rgba(185, 156, 102, 0.25); border-bottom: 1px solid rgba(185, 156, 102, 0.25); }
+  .fg-strip > div { padding: 22px 18px; }
+  .fg-strip > div + div { border-top: 1px solid rgba(185, 156, 102, 0.18); }
+  @media (min-width: 768px) {
+    .fg-strip { grid-template-columns: repeat(3, 1fr); }
+    .fg-strip > div + div { border-top: 0; border-left: 1px solid rgba(185, 156, 102, 0.18); }
+  }
+  .fg-strip-big { font-family: 'Archivo Black', sans-serif; font-size: clamp(20px, 2.4vw, 26px); text-transform: uppercase; color: rgb(246, 239, 228); line-height: 1.1; margin-top: 8px; text-wrap: balance; }
+  .fg-strip-sub { font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(214, 188, 133); margin-top: 4px; }
+
+  /* Black Friday: the gift box as a ticket */
+  .fg-ticket {
+    max-width: 720px; margin: 28px auto 0; padding: clamp(22px, 3.4vw, 34px);
+    border: 1.5px dashed rgba(214, 188, 133, 0.6); border-radius: 18px; background: rgba(18, 18, 16, 0.55);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var tl = document.querySelector('[data-fg-tl]');
+    if (!tl) return;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) return;   // stays drawn and lit
+    var items = [].slice.call(tl.querySelectorAll('li'));
+    var ms = 1500;
+    // Only arm it if it starts below the fold: a timeline already on screen just shows.
+    if (tl.getBoundingClientRect().top < window.innerHeight) return;
+    tl.classList.add('is-armed');
+    items.forEach(function (li) { li.classList.remove('is-lit'); });
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      tl.classList.add('is-playing');
+      // each stop lights as the fill reaches it, following the fill's ease-out
+      items.forEach(function (li, i) {
+        var t = items.length > 1 ? i / (items.length - 1) : 0;
+        var at = ms * (1 - Math.pow(1 - t, 0.5)) * 0.9;
+        setTimeout(function () { li.classList.add('is-lit'); }, at);
+      });
+    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.2 });
+    io.observe(tl);
+  })();
+</script>
+
+</Base>

@@ -59,10 +59,12 @@ const EVENTS = [
     id: 'friendsgiving',
     dates: 'Wed Nov 25',
     title: 'Friendsgiving Fiesta',
+    // optional: an event with its own page gets a More info button and a clickable flyer
+    page: '/friendsgiving',
     details: [
-      'Thanksgiving Eve party with DJ Drastik and DJ Gerra',
-      '8 PM to 1 AM, $5 cover',
-      '21+ after 8 PM',
+      'DJ Drastik and DJ Gerra, 8 PM to 1 AM',
+      '$5 cover after 8, bar area only',
+      '21+ in the bar area after 8 PM',
       'Closed Thanksgiving Day, Nov 26',
     ],
     video: { mp4: '/videos/friendsgiving-flyer.mp4', webm: '/videos/friendsgiving-flyer.webm', poster: '/videos/friendsgiving-flyer-poster.jpg' },
@@ -121,6 +123,7 @@ const jsonLd = events.map((e) => ({
   location: LOCATION,
   organizer: { '@type': 'Organization', name: "Señor Tequila's", url: 'https://www.senortequilas.com' },
   image: [`https://www.senortequilas.com${e.video.poster}`],
+  ...(e.page ? { url: `https://www.senortequilas.com${e.page}` } : {}),
   ...(e.offers ? { offers: { '@type': 'Offer', price: e.offers.price, priceCurrency: e.offers.priceCurrency, availability: 'https://schema.org/InStock', url: 'https://www.senortequilas.com/' } } : {}),
 }));
 
@@ -140,10 +143,19 @@ const single = events.length === 1;
           {events.map((e, i) => (
             <div class="ue-slide" data-hide-after={e.hideAfter} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${events.length}: ${e.title}`} data-ue-slide>
               <div class="ue-flyer">
-                <video class="ue-video" data-ue-video muted loop playsinline preload="none" data-poster={e.video.poster} aria-label={`${e.title} flyer`}>
-                  <source src={e.video.webm} type="video/webm" />
-                  <source src={e.video.mp4} type="video/mp4" />
-                </video>
+                {e.page ? (
+                  <a class="ue-flyer-link" href={e.page} aria-label={`More about ${e.title}`}>
+                    <video class="ue-video" data-ue-video muted loop playsinline preload="none" data-poster={e.video.poster} aria-hidden="true">
+                      <source src={e.video.webm} type="video/webm" />
+                      <source src={e.video.mp4} type="video/mp4" />
+                    </video>
+                  </a>
+                ) : (
+                  <video class="ue-video" data-ue-video muted loop playsinline preload="none" data-poster={e.video.poster} aria-label={`${e.title} flyer`}>
+                    <source src={e.video.webm} type="video/webm" />
+                    <source src={e.video.mp4} type="video/mp4" />
+                  </video>
+                )}
               </div>
               <div class="ue-panelwrap">
                 <div class="ue-panel">
@@ -154,6 +166,7 @@ const single = events.length === 1;
                   </ul>
                   <div class="ue-actions">
                     <a class="ue-btn ue-btn-primary" href={RESERVE} target="_blank" rel="noopener">Reserve a table</a>
+                    {e.page && <a class="ue-btn ue-btn-ghost" href={e.page}>More info</a>}
                     {e.gallery && (
                       <button type="button" class="ue-btn ue-btn-ghost" data-ue-gallery={e.id}>View photos from past event</button>
                     )}
@@ -339,6 +352,11 @@ const single = events.length === 1;
   #upcoming .ue-btn-ghost {
     background: transparent; color: rgb(246, 239, 228);
     border: 1.5px solid rgba(246, 239, 228, 0.7);
+  }
+  #upcoming .ue-flyer-link { display: block; border-radius: 16px; }
+  #upcoming .ue-btn:focus-visible,
+  #upcoming .ue-flyer-link:focus-visible {
+    outline: 2px solid rgb(214, 188, 133); outline-offset: 3px;
   }
 
   #upcoming .ue-arrow {

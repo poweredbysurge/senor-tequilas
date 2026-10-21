@@ -3626,3 +3626,82 @@ the same reason the Hitters buttons do, the `[data-mcta]` rule.
 Mobile Lighthouse on the homepage, local preview, three runs: 76, 63, 78, LCP 4.0s, 4.1s, 4.0s,
 5,426KB, against 75, 81, 76 and 5,409KB with the carousel alone (entry 116). The 63 carried
 580ms of TBT that the other two runs did not; the section adds 17KB and no measurable time.
+
+## 118. The /friendsgiving page and the carousel's More info button, 21 October
+
+A twenty-second page, `src/pages/friendsgiving.astro`, authored on the /game-day pattern for the
+Thanksgiving Eve party, with the facts Roberto confirmed on 21 October. Prices are allowed on it
+by client decision for holiday pages ($5 cover, $15 Fall Carajillo, $30 catering delivery); the
+comment at the top of the file says so, because the site-wide no-prices rule would otherwise
+invite a sweep to strip them. It is indexed normally and carries no date gate: it is updated for
+next year rather than retired.
+
+The FAQ is one array that renders the accordion and the `FAQPage` block, so the two cannot drift,
+and the build asserts the visible questions and answers equal the schema. The accordion is the
+private-parties markup, which `eventsFaq()` in `Base.astro` upgrades at runtime; confirmed it
+does, with the first question open and the rest toggling. The `Event` block names the DJs as a
+`PerformingGroup` and the $5 cover as an `Offer` scoped to the bar area. One real review sits
+under Roberto's quote, chosen as the only one describing a 20-plus group night with music; it is
+read from `reviews.json` and simply not rendered if that review ever goes. The rating line uses
+`roundedTotal()`.
+
+`business.json` gained `specialHours`, dated exceptions to the weekly row (Thanksgiving Eve 3 PM
+to 1 AM, Thanksgiving Day closed, Black Friday 3 PM to 1 AM). `Base.astro` emits them as
+`specialOpeningHoursSpecification` on every page, and the open-now pill now consults them before
+the weekly hours, including the spill from a special night into the next morning. Verified with a
+faked clock: 10:30 PM on the 25th reads "Open now, until 1am" where an ordinary Wednesday reads
+closed; the 26th reads closed; 12:30 AM on the 27th reads closed, since the 26th had no shift to
+spill. Christmas Eve and Day are one line each in the same array.
+
+The homepage carousel gained an optional `page` on an event. Friendsgiving has one, so its slide
+shows Reserve a table, More info, and the flyer itself is a link with an `aria-label`; Halloween
+has none and is unchanged. The Event JSON-LD for Friendsgiving carries the page URL so it matches
+the page's own block. The Friendsgiving details were rewritten to the confirmed facts.
+
+Photos: the Drive folder Mario dropped into `public/images/Thanksgiving/` (296MB, four .mov and
+an .mp4 among them) was moved to `design/source-art/friendsgiving/` before anything else. Of 26
+photographs, 8 were used after a labelled contact sheet of all of them: the three dance-floor
+shots under the timeline, four in the proof grid, the full bar area in the groups section. Skipped:
+the two Halloween costume shots (#3, the luchador mask; #23 costumes), the Cinco de Mayo and
+mariachi daytime frames (#2, #19, #20), the three-margarita product shot (#1), near-duplicates of
+the same moment (#7, #8, #13, #16, #17), the dark or soft ones (#5, #9, #10, #11, #12 was close
+but #14 was sharper), and the two booth shots that read as dinner rather than a party (#25, #26).
+Each pick ships at 1600 and 640 wide (portraits at native width, never upscaled), WebP quality
+80, 1.3MB in all, every one below the hero and lazy. Alt text written from the photographs.
+
+Links in from /late-night (the hours paragraph) and /happy-hour (the Monday-to-Friday line), one
+sentence each. Not in the nav. The sitemap picked the route up on its own. The hero poster is in
+the `LCP_IMAGE` map, confirmed as the LCP element with a PerformanceObserver. CLS 0.004 after a
+full scroll, zero console errors on / and /friendsgiving, every internal link 200.
+
+Left for next time: `/holiday-parties` and `/new-years-eve` do not exist, so the gift box card
+carries a TODO comment rather than a link. The docx in the Drive folder says "Friday Nov 25th";
+25 November 2026 is a Wednesday and the flyer only says 11/25, so the copy follows the brief.
+
+**Revisions, same day (Mario's review).** The hero is a 50/50 from 768 up, copy left and the
+flyer right, stacked only on phones. The H1 came down from 56px to `clamp(24px, 2.9vw, 38px)`,
+sized so it stays inside its half: measured at 768 to 1920, it never runs into the flyer column
+(100 to 250px clear) and "Friendsgiving and" is held together from 1024 up instead of orphaning
+"and". A first pass split the hero only from 1024, which left Mario's narrower window stacked with
+the H1 running full width; the dev server also kept serving the stale rule until restarted. The six time cards became a
+timeline: a track through six stops with a gold fill that draws across once as it scrolls into
+view, lighting each stop as it passes, 8 PM in green as the turn of the night. Vertical below 768.
+The drawn, lit state is the default and the script only arms it below the fold, so no JavaScript
+or reduced motion just shows it finished. It opts out of the global reveal with a new
+`[data-own-motion]` attribute in the `Base.astro` SKIP list, since two entrances on one element
+fight. The drinks section is a 50/50 with the handcrafted cocktail array on the left; Groups is a
+hard 50/50 with the heading inside the text column and the photo filling the other half.
+Thanksgiving at home and Black Friday are centred and no longer cards: a ruled three-column strip
+for the first, a warm band with the gift box as a dashed ticket for the second. The FAQ and the
+close are centred; the accordion's own questions stay left-aligned inside the centred column,
+since a centred question beside a right-hand toggle reads as misaligned. On phones the timeline
+labels override the site-wide mobile centring with `!important`, because they belong to a
+left-hand track.
+
+**Phones only, same day.** Below 768 every section on /friendsgiving gets 100px top and bottom
+(`!important` over the inline padding; the hero's own column padding is zeroed so it does not
+stack). The three dance-floor photos under the timeline become a swipeable rail: edge to edge,
+scroll-snapped, each photo 80% wide so the next one peeks in. It carries `data-rail`, which hides
+the scrollbar and keeps the global reveal off it, and no rail script targets it. 768 and up are
+unchanged. Worth knowing: the Astro dev server did not pick up new rules added to this page's
+`<style>` block until it was restarted, twice; a hard refresh alone shows the old layout.
