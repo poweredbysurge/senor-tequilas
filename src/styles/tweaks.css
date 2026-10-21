@@ -994,6 +994,16 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
     filter: none !important;
   }
 
+  /* /friendsgiving is a split hero too: the flyer is a panel beside the copy, not behind it, and
+     the darkening only dulled it (Mario, 21 October). Marked for the same reason as above. */
+  body[data-route="/friendsgiving"] section[data-screen-label="Friendsgiving hero"] img,
+  body[data-route="/friendsgiving"] section[data-screen-label="Friendsgiving hero"] video {
+    filter: none !important;
+  }
+  body[data-route="/friendsgiving"] section[data-screen-label="Friendsgiving hero"] {
+    box-shadow: none !important;
+  }
+
   /* /taco-tuesday paints its hero photograph on an inner div rather than an <img>. The other
      inner backgrounds inside heroes are the lucha collage texture, which is already dark. */
   body[data-route="/taco-tuesday"] section[data-screen-label="Taco hero"] [style*="eca8597506381a36"] {

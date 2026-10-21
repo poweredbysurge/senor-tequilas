@@ -3705,3 +3705,12 @@ scroll-snapped, each photo 80% wide so the next one peeks in. It carries `data-r
 the scrollbar and keeps the global reveal off it, and no rail script targets it. 768 and up are
 unchanged. Worth knowing: the Astro dev server did not pick up new rules added to this page's
 `<style>` block until it was restarted, twice; a hard refresh alone shows the old layout.
+
+**The flyer was dimmed on phones, 21 October.** The section-39 rule in `tweaks.css` (15 September)
+darkens every hero image and video to `brightness(0.42)` below 768 and lays an inset scrim on the
+section, so copy sitting on a photograph stays readable. /friendsgiving matched it through its
+"Friendsgiving hero" label, but it is a split hero: the flyer is a panel beside the copy, so the
+darkening only dulled it. Exempted the same way as /happy-hour, with a marked override, since the
+general rule carries two `:not()` arguments and outweighs a plain one. Every other hero keeps it.
+I had seen the dim flyer in a 375 screenshot earlier and put it down to the scroll reveal caught
+mid-fade; it was this filter, and only checking computed `filter` would have told them apart.
