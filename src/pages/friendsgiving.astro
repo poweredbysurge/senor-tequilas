@@ -24,7 +24,14 @@ const PH = (name, w, h, alt) => ({ name, w, h, alt, src: `/images/site/friendsgi
 const STRIP = [
   PH('friendsgiving-dance-floor', 1600, 1069, 'A guest dancing in the bar area with a drink in her hand, friends raising cups around her'),
   PH('friendsgiving-hands-up-at-the-bar', 1600, 1069, 'A crowd with hands in the air in front of the golden heart behind the bar'),
+  PH('friendsgiving-three-friends', 1079, 1615, 'Three friends laughing together under the flower ceiling and lanterns'),
   PH('friendsgiving-dancing-friends', 974, 1457, 'Two friends dancing in the bar area, one smiling and throwing a peace sign'),
+  PH('friendsgiving-couple-at-the-booth', 1075, 1609, 'A couple smiling together at a booth, a drink on the table and the lit bar behind them'),
+  PH('friendsgiving-margaritas-at-the-table', 1600, 1069, 'Four guests at a round table with big margaritas and a basket of chips'),
+  PH('friendsgiving-friends-on-the-floor', 1051, 1573, 'Two friends posing together in the crowded bar area'),
+  PH('friendsgiving-couple-in-the-crowd', 1080, 1616, 'A couple smiling together in the bar area, the screens glowing behind them'),
+  PH('friendsgiving-posing-at-the-bar', 1072, 1604, 'A guest in a black dress smiling over her shoulder in the busy bar area'),
+  PH('friendsgiving-blowing-a-kiss', 1034, 1547, 'A guest in a leather jacket blowing a kiss in the crowded bar area'),
 ];
 const PROOF = [
   PH('friendsgiving-drinks-raised', 1462, 1080, 'Four friends in the packed bar area raising their drinks under the flower ceiling'),
@@ -217,12 +224,18 @@ const IMG = 'display: block; width: 100%; height: 100%; object-fit: cover;';
         </ol>
       </div>
 
-      <div class="fg-photo-rail" data-rail aria-label="Photos from last year" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 12px; margin-top: 30px;">
-        {STRIP.map((p) => (
-          <div style={`${FRAME} aspect-ratio: 4 / 5;`}>
-            <img src={p.src} srcset={`${p.small} 640w, ${p.src} ${p.w}w`} sizes="(max-width: 767px) 92vw, 360px" width={p.w} height={p.h} alt={p.alt} loading="lazy" decoding="async" style={IMG} />
-          </div>
-        ))}
+      <div class="fg-carousel" data-fg-carousel>
+        <div class="fg-photo-rail" data-rail tabindex="0" role="region" aria-label={`Photos from last year, ${STRIP.length} photos, scroll sideways`}>
+          {STRIP.map((p) => (
+            <div style={`${FRAME} aspect-ratio: 4 / 5;`}>
+              <img src={p.src} srcset={`${p.small} 640w, ${p.src} ${p.w}w`} sizes="(max-width: 767px) 80vw, (max-width: 1023px) 45vw, 340px" width={p.w} height={p.h} alt={p.alt} loading="lazy" decoding="async" style={IMG} />
+            </div>
+          ))}
+        </div>
+        <div class="fg-rail-nav">
+          <button type="button" class="fg-rail-btn" data-fg-prev aria-label="Previous photos"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
+          <button type="button" class="fg-rail-btn" data-fg-next aria-label="Next photos"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+        </div>
       </div>
     </div>
   </section>
@@ -404,6 +417,29 @@ const IMG = 'display: block; width: 100%; height: 100%; object-fit: cover;';
   .fg-keep { white-space: nowrap; }
   @media (min-width: 768px) and (max-width: 1023px) { .fg-keep { white-space: normal; } }
 
+  /* ---- the photo carousel under the timeline, every width -------------------------------------
+     A native scroll-snap row: swipe or trackpad anywhere, arrows from 768 up. About three and a
+     third photos show on desktop and two and a bit on a tablet, so the next one always peeks. */
+  .fg-carousel { margin-top: 30px; }
+  .fg-photo-rail {
+    display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain; scroll-behavior: smooth;
+  }
+  .fg-photo-rail:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 4px; border-radius: 16px; }
+  .fg-photo-rail > * { flex: 0 0 calc((100% - 36px) / 3.3); scroll-snap-align: start; }
+  @media (max-width: 1023px) { .fg-photo-rail > * { flex-basis: calc((100% - 12px) / 2.2); } }
+  .fg-rail-nav { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
+  .fg-rail-btn {
+    width: 44px; height: 44px; border-radius: 999px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(185, 156, 102, 0.5); background: rgba(28, 27, 24, 0.85); color: rgb(234, 226, 214);
+    transition: opacity 200ms ease, border-color 200ms ease;
+  }
+  .fg-rail-btn:hover { border-color: rgb(214, 188, 133); }
+  .fg-rail-btn:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 3px; }
+  .fg-rail-btn:disabled { opacity: 0.35; cursor: default; }
+  @media (prefers-reduced-motion: reduce) { .fg-photo-rail { scroll-behavior: auto; } }
+
   /* ---- phones only ------------------------------------------------------------------------ */
   @media (max-width: 767px) {
     /* 80px above and below every section, the site-wide phone rule (tweaks.css), applied here
@@ -413,15 +449,15 @@ const IMG = 'display: block; width: 100%; height: 100%; object-fit: cover;';
     .fg-hero-copy { padding-top: 0 !important; padding-bottom: 0 !important; }
     .fg-hero-media { padding-top: 40px !important; padding-bottom: 0 !important; }
 
-    /* the three dance-floor photos become a swipeable rail: edge to edge, the next one peeking */
+    /* phones: edge to edge, the next photo peeking, swipe only */
     .fg-photo-rail {
-      display: flex !important; overflow-x: auto; scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
       margin-left: calc(-1 * clamp(18px, 4.5vw, 48px)); margin-right: calc(-1 * clamp(18px, 4.5vw, 48px));
       padding: 0 clamp(18px, 4.5vw, 48px);
       scroll-padding: 0 clamp(18px, 4.5vw, 48px);
     }
-    .fg-photo-rail > * { flex: 0 0 80%; scroll-snap-align: start; }
+    .fg-photo-rail > * { flex-basis: 80%; }
+    .fg-rail-nav { display: none; }
 
     /* the Fall Carajillo card stacks on phones, so its price centres under the copy */
     .fg-price { width: 100%; text-align: center; }
@@ -504,6 +540,28 @@ const IMG = 'display: block; width: 100%; height: 100%; object-fit: cover;';
 </style>
 
 <script is:inline>
+  /* the photo carousel's arrows: a page of photos per press, disabled at either end */
+  (function () {
+    var host = document.querySelector('[data-fg-carousel]');
+    if (!host) return;
+    var rail = host.querySelector('.fg-photo-rail');
+    var prev = host.querySelector('[data-fg-prev]'), next = host.querySelector('[data-fg-next]');
+    function step(dir) {
+      var card = rail.children[0];
+      var w = card ? card.getBoundingClientRect().width + 12 : rail.clientWidth;
+      rail.scrollBy({ left: dir * Math.max(w, Math.floor(rail.clientWidth / w) * w) });
+    }
+    function sync() {
+      prev.disabled = rail.scrollLeft <= 2;
+      next.disabled = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 2;
+    }
+    prev.addEventListener('click', function () { step(-1); });
+    next.addEventListener('click', function () { step(1); });
+    rail.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  })();
+
   (function () {
     var tl = document.querySelector('[data-fg-tl]');
     if (!tl) return;

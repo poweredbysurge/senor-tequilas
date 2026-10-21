@@ -382,22 +382,31 @@ const single = events.length === 1;
      contained, never cropped, over a blurred copy of its own poster (set by the script when the
      posters load, so it costs nothing before the section is near). */
   @media (max-width: 767px) {
+    /* the row runs off the right edge of the screen, no gutter there, so the next card slides in
+       from the edge (Mario, 21 October); cards align to the left gutter */
     #upcoming .ue-viewport {
       overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
       -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+      margin-right: calc(-1 * clamp(18px, 4.5vw, 48px));
     }
     #upcoming .ue-viewport::-webkit-scrollbar { display: none; }
     #upcoming .ue-track { transform: none !important; transition: none; gap: 12px; }
+    #upcoming .ue-track::after { content: ""; flex: 0 0 4px; }
     #upcoming .ue-slide {
-      flex: 0 0 88%; scroll-snap-align: center;
+      flex: 0 0 84%; scroll-snap-align: start;
       display: flex; flex-direction: column; gap: 0; align-items: stretch;
       background: rgba(20, 12, 8, 0.82); border: 1px solid rgba(246, 239, 228, 0.16);
       border-radius: 16px; overflow: hidden;
+      /* Safari lets a playing <video> and a filtered layer escape a parent's rounded clip, which
+         left the card's top corners square on iPhone. isolation plus the mask makes the clip hold. */
+      isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black);
     }
     #upcoming[data-single="true"] .ue-slide { flex-basis: 100%; }
     #upcoming .ue-flyer {
       order: -1; max-width: none; width: 100%; height: clamp(190px, 30vh, 280px);
       display: flex; justify-content: center; overflow: hidden; background: rgb(20, 12, 8);
+      border-radius: 15px 15px 0 0;                /* its own corners too, inside the card's border */
+      isolation: isolate; -webkit-mask-image: -webkit-radial-gradient(white, black);
     }
     #upcoming .ue-flyer::before {
       content: ""; position: absolute; inset: -20px; background: var(--ue-bg, none) center / cover no-repeat;
@@ -408,13 +417,16 @@ const single = events.length === 1;
       position: relative; height: 100%; width: auto; max-height: none;
       border-radius: 0; box-shadow: rgba(0, 0, 0, 0.5) 0 0 24px;
     }
-    #upcoming .ue-panelwrap { width: 100%; }
-    #upcoming .ue-panel { background: transparent; border-radius: 0; padding: 14px 16px 18px; }
+    /* the panel fills the rest of the card and the buttons sit at its foot, so a card with fewer
+       details still has its buttons on the same line as its neighbour's */
+    #upcoming .ue-panelwrap { width: 100%; flex: 1 1 auto; display: flex; }
+    #upcoming .ue-panel { background: transparent; border-radius: 0; padding: 14px 16px 18px; flex: 1 1 auto; display: flex; flex-direction: column; }
+    #upcoming .ue-panel .ue-actions { margin-top: auto; padding-top: 14px; }
     #upcoming .ue-name { font-size: 20px; margin: 4px 0 8px; }
     /* left-aligned, over the site-wide phone centring: centred bullets sit ragged against their dots */
     #upcoming .ue-details { gap: 3px; text-align: left !important; }
     #upcoming .ue-details li { font-size: 14px; line-height: 1.4; text-align: left !important; }
-    #upcoming .ue-actions { margin-top: 14px; gap: 8px; }
+    #upcoming .ue-actions { gap: 8px; }
     #upcoming .ue-actions .ue-btn { flex: 1 1 auto; min-height: 44px; padding: 10px 16px; font-size: 14px; }
     #upcoming .ue-arrow { display: none; }
     #upcoming .ue-dots { margin-top: 16px; }
@@ -549,7 +561,7 @@ const single = events.length === 1;
       if (phoneMq.matches) {
         track.style.transform = '';
         var sl = slides[index];
-        viewport.scrollTo({ left: sl.offsetLeft - (viewport.clientWidth - sl.offsetWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
+        viewport.scrollTo({ left: sl.offsetLeft - slides[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
       } else {
         track.style.transform = 'translateX(' + (-index * 100) + '%)';
       }
@@ -561,8 +573,9 @@ const single = events.length === 1;
       if (!phoneMq.matches || raf) return;
       raf = requestAnimationFrame(function () {
         raf = 0;
-        var mid = viewport.scrollLeft + viewport.clientWidth / 2, best = 0, bestD = Infinity;
-        slides.forEach(function (sl, n) { var d = Math.abs(sl.offsetLeft + sl.offsetWidth / 2 - mid); if (d < bestD) { bestD = d; best = n; } });
+        var at = viewport.scrollLeft + slides[0].offsetLeft, best = 0, bestD = Infinity;
+        slides.forEach(function (sl, n) { var d = Math.abs(sl.offsetLeft - at); if (d < bestD) { bestD = d; best = n; } });
+        if (viewport.scrollLeft >= viewport.scrollWidth - viewport.clientWidth - 2) best = slides.length - 1;
         if (best !== index) { index = best; mark(); }
       });
     }, { passive: true });

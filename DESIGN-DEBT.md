@@ -3759,3 +3759,27 @@ Script: one media query decides the mode. `go()` scrolls the row on phones and m
 on desktop; a rAF-throttled scroll listener tracks the centred card and plays only its flyer; no
 card is `aria-hidden` on phones because every one can be swiped to. Crossing the breakpoint
 (rotation, a resized window) resets into the other mode.
+
+**Same day, after Mario's phone review.** Three fixes to the phone cards. The top corners rendered
+square on iPhone while the bottom stayed round: Safari lets a playing `<video>` and the blurred
+`::before` layer escape a parent's rounded clip. Both the card and the flyer panel now carry
+`isolation: isolate` and the `-webkit-mask-image` radial-gradient trick, and the flyer panel has
+its own top radius. Chromium never showed the defect, so it could not be confirmed headless; it is
+the documented WebKit behaviour and the standard cure. The buttons are anchored to the foot of
+each card (the panel fills the card as a flex column, actions `margin-top: auto`), so the shorter
+Friendsgiving card's buttons sit level with Halloween's. And the row bleeds off the right edge of
+the screen with no gutter there; cards align to the left gutter and the last one rests flush
+against the right edge.
+
+## 121. /friendsgiving: the night's photos become a ten-photo carousel, 21 October
+
+The three dance-floor photos under the timeline are now a carousel of ten, on every width: three
+and a third show on desktop, two and a bit on a tablet, one with the next peeking on a phone. It
+is a native scroll-snap row, so trackpad and swipe both work, with arrows from 768 up that move a
+page of photos per press and disable at either end, and the row itself is focusable for keyboard
+scrolling. Phones keep the edge-to-edge treatment from entry 118 and hide the arrows.
+
+Seven more photographs from `design/source-art/friendsgiving/` (contact-sheet numbers #8, #10,
+#11, #13, #16, #17, #25), at 1600 and 640 wide like the first eight. #4 and #7 were left out:
+both are from Halloween night and each has a face behind the subjects that reads as costume
+paint, which the original brief ruled out. Alt text written from each photograph.
