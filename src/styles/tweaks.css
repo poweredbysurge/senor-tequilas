@@ -1696,3 +1696,25 @@ body[data-route="/"] a[data-dc-tpl="228"] {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ---- section rhythm on phones: 80px above and below every section --------------------------
+   Requested by Mario, 21 October, as the rule for every page, existing and future. Below 768,
+   every <section> gets 80px top and bottom padding. It lives here, not on a page, so a new page
+   inherits it by existing; nothing has to be remembered.
+
+   Heroes are left out on purpose. Twenty-one of the twenty-two carry no padding of their own
+   because their photograph or video runs to the section edge (the homepage hero is sized to the
+   viewport), so padding there would open bands of bare background above and below the picture.
+   A hero is any section whose data-screen-label contains "hero". /friendsgiving's hero is the one
+   exception, set on that page, because spacing was asked for there directly.
+
+   !important because sections carry their padding inline, from the design port. The port's own
+   phone rule in site.css (line ~264, [data-c1p-root] pages, was 36px) outranks this one on
+   specificity, so its value was changed to 80 at the source rather than fought from here; this
+   rule covers the pages and the "rail" sections it does not reach. */
+@media (max-width: 767px) {
+  body[data-route] section:not([data-screen-label*="hero" i]) {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+}

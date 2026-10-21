@@ -406,9 +406,10 @@ const IMG = 'display: block; width: 100%; height: 100%; object-fit: cover;';
 
   /* ---- phones only ------------------------------------------------------------------------ */
   @media (max-width: 767px) {
-    /* 100px above and below every section. !important because each section carries its padding
-       inline; the hero's own column padding is zeroed so it does not stack on top. */
-    .sc-host > section { padding-top: 100px !important; padding-bottom: 100px !important; }
+    /* 80px above and below every section, the site-wide phone rule (tweaks.css), applied here
+       to the hero as well, which the site rule skips. The hero's own column padding is zeroed so
+       it does not stack on top. */
+    .sc-host > section { padding-top: 80px !important; padding-bottom: 80px !important; }
     .fg-hero-copy { padding-top: 0 !important; padding-bottom: 0 !important; }
     .fg-hero-media { padding-top: 40px !important; padding-bottom: 0 !important; }
 

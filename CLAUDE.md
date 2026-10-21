@@ -13,6 +13,10 @@ project and the code in `src/` is the source of truth, not the board.
 - **Breakpoints are fixed** at 390, 768, 1024 and 1440, plus `clamp()` and `vw`/`vh` units.
   No container queries. Do not add, remove or convert breakpoints.
 - **Every page is one responsive document.** There are no separate mobile pages.
+- **Phones: 80px above and below every section.** Below 768, every `<section>` gets 80px top
+  and bottom padding from one rule at the end of `src/styles/tweaks.css`, so a new page inherits
+  it. Heroes (a `data-screen-label` containing "hero") are exempt because their media runs to
+  the edge. Give every new section a `data-screen-label`, and include "hero" only on a hero.
 - **Never substitute, generate or fetch a stock image.** A missing image stays a labeled
   placeholder.
 - **No em dashes in any copy.** Use a comma, a period or a colon.

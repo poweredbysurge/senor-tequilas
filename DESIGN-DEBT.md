@@ -3714,3 +3714,29 @@ darkening only dulled it. Exempted the same way as /happy-hour, with a marked ov
 general rule carries two `:not()` arguments and outweighs a plain one. Every other hero keeps it.
 I had seen the dim flyer in a 375 screenshot earlier and put it down to the scroll reveal caught
 mid-fade; it was this filter, and only checking computed `filter` would have told them apart.
+
+## 119. Phones: 80px above and below every section, site-wide, 21 October
+
+Mario's rule for every page, existing and future: below 768, every section has 80px top and
+bottom padding. It replaced a mix of 24 to 48px (36px on most) and the 100px /friendsgiving had
+been given that morning, which now matches at 80.
+
+Two rules carry it, both at 80. The design port already had a phone rule in `site.css`
+(`[data-c1p-root] section`, line ~264) at 36px, and it outranks anything written in `tweaks.css`
+on specificity, so its value was changed at the source rather than fought with a heavier
+selector. A new rule at the end of `tweaks.css` covers what that one does not reach: pages without
+the port's root attribute, and sections labelled "rail", which the port exempted. A new page
+inherits it by existing. CLAUDE.md now states the rule.
+
+Heroes are exempt, any section whose `data-screen-label` contains "hero". Twenty-one of
+twenty-two have no padding of their own because the photograph or video runs to the section edge,
+and the homepage hero is sized to the viewport; padding there would open bare bands above and
+below the picture. /friendsgiving's hero keeps 80px from its own page rule, since spacing was
+asked for there directly.
+
+Verified on all 22 routes: at 375 and 767, all 252 non-hero sections compute 80/80. At 768 and
+1280 nothing changed; six sections read 80/80 at 1280, and production shows the same, because
+their own `clamp(40px, 7vw, 80px)` tops out at 80.
+
+Found, not fixed: the homepage scrolls sideways at 767 and 768 on production as well, from the
+Tonight carousel's cards (`.scp7`) running about 48px past the viewport. Predates this change.
