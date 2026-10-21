@@ -3740,3 +3740,22 @@ their own `clamp(40px, 7vw, 80px)` tops out at 80.
 
 Found, not fixed: the homepage scrolls sideways at 767 and 768 on production as well, from the
 Tonight carousel's cards (`.scp7`) running about 48px past the viewport. Predates this change.
+
+## 120. The homepage events carousel becomes swipeable cards on phones, 21 October
+
+Below 768 only, "Coming Up Events" is no longer a timed slideshow. Each event is one card, the
+flyer joined to its details, in a native scroll-snap row with the next card peeking in; swiping
+moves it, the dots follow the swipe and tapping one scrolls to that card. Auto-advance is off on
+phones, and the arrows are hidden there. 768 and up are unchanged: the transform track, the 3
+second advance, the arrows.
+
+The flyer panel is shorter, `clamp(190px, 30vh, 280px)`, and the flyer is contained rather than
+cropped, over a blurred copy of its own poster. The blur is set by the script when the posters
+load, so it costs nothing before the section is near (entry 116's deferral holds). Details went
+to 14px and left-aligned over the site-wide phone centring, the title to 20px. Measured: the
+whole card fits under the header on 375x812, 390x844, 414x896, 360x740 and 375x667.
+
+Script: one media query decides the mode. `go()` scrolls the row on phones and moves the track
+on desktop; a rAF-throttled scroll listener tracks the centred card and plays only its flyer; no
+card is `aria-hidden` on phones because every one can be swiped to. Crossing the breakpoint
+(rotation, a resized window) resets into the other mode.

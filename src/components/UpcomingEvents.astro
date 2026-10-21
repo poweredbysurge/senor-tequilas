@@ -375,12 +375,49 @@ const single = events.length === 1;
   }
   #upcoming .ue-dot[aria-current="true"] { background: rgb(246, 239, 228); }
 
+  /* ---- phones: one card per event, swiped, never auto-advancing (Mario, 21 October) ----------
+     The viewport becomes a native scroll-snap row and the transform track is switched off, so the
+     swipe is the browser's own. Each slide is a single card: a shorter flyer panel on top, sized
+     so the details below it fit on the same screen, joined to the details panel. The flyer is
+     contained, never cropped, over a blurred copy of its own poster (set by the script when the
+     posters load, so it costs nothing before the section is near). */
   @media (max-width: 767px) {
-    #upcoming .ue-slide { grid-template-columns: 1fr; gap: 20px; }
-    #upcoming .ue-flyer { order: -1; }           /* flyer first when stacked */
-    #upcoming .ue-arrow-prev { left: 2px; }
-    #upcoming .ue-arrow-next { right: 2px; }
-    #upcoming .ue-details li { font-size: 16px; }
+    #upcoming .ue-viewport {
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
+    }
+    #upcoming .ue-viewport::-webkit-scrollbar { display: none; }
+    #upcoming .ue-track { transform: none !important; transition: none; gap: 12px; }
+    #upcoming .ue-slide {
+      flex: 0 0 88%; scroll-snap-align: center;
+      display: flex; flex-direction: column; gap: 0; align-items: stretch;
+      background: rgba(20, 12, 8, 0.82); border: 1px solid rgba(246, 239, 228, 0.16);
+      border-radius: 16px; overflow: hidden;
+    }
+    #upcoming[data-single="true"] .ue-slide { flex-basis: 100%; }
+    #upcoming .ue-flyer {
+      order: -1; max-width: none; width: 100%; height: clamp(190px, 30vh, 280px);
+      display: flex; justify-content: center; overflow: hidden; background: rgb(20, 12, 8);
+    }
+    #upcoming .ue-flyer::before {
+      content: ""; position: absolute; inset: -20px; background: var(--ue-bg, none) center / cover no-repeat;
+      filter: blur(16px) brightness(0.5); pointer-events: none;
+    }
+    #upcoming .ue-flyer-link { position: relative; display: flex; justify-content: center; height: 100%; border-radius: 0; }
+    #upcoming .ue-video {
+      position: relative; height: 100%; width: auto; max-height: none;
+      border-radius: 0; box-shadow: rgba(0, 0, 0, 0.5) 0 0 24px;
+    }
+    #upcoming .ue-panelwrap { width: 100%; }
+    #upcoming .ue-panel { background: transparent; border-radius: 0; padding: 14px 16px 18px; }
+    #upcoming .ue-name { font-size: 20px; margin: 4px 0 8px; }
+    /* left-aligned, over the site-wide phone centring: centred bullets sit ragged against their dots */
+    #upcoming .ue-details { gap: 3px; text-align: left !important; }
+    #upcoming .ue-details li { font-size: 14px; line-height: 1.4; text-align: left !important; }
+    #upcoming .ue-actions { margin-top: 14px; gap: 8px; }
+    #upcoming .ue-actions .ue-btn { flex: 1 1 auto; min-height: 44px; padding: 10px 16px; font-size: 14px; }
+    #upcoming .ue-arrow { display: none; }
+    #upcoming .ue-dots { margin-top: 16px; }
   }
   @media (prefers-reduced-motion: reduce) {
     #upcoming .ue-track { transition: none; }
@@ -429,6 +466,8 @@ const single = events.length === 1;
 
     var AUTOPLAY_MS = Number(sec.dataset.autoplayMs) || 3000;
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // phones swipe a native scroll row and never auto-advance; see the CSS block of the same name
+    var phoneMq = window.matchMedia ? window.matchMedia('(max-width: 767px)') : { matches: false };
     var track = sec.querySelector('[data-ue-track]');
     var slides = [].slice.call(sec.querySelectorAll('[data-ue-slide]'));
     var dots = [].slice.call(sec.querySelectorAll('[data-ue-dot]'));
@@ -476,6 +515,9 @@ const single = events.length === 1;
         var v = sl.querySelector('[data-ue-video][data-poster]');
         if (!v) return;
         v.poster = v.getAttribute('data-poster');
+        // the blurred backdrop behind the contained flyer on phones
+        var box = sl.querySelector('.ue-flyer');
+        if (box) box.style.setProperty('--ue-bg', 'url("' + v.poster + '")');
         v.removeAttribute('data-poster');
       });
     }
@@ -494,19 +536,41 @@ const single = events.length === 1;
       });
     }
 
+    var viewport = sec.querySelector('.ue-viewport');
+    function mark() {
+      dots.forEach(function (d, n) { d.setAttribute('aria-current', n === index ? 'true' : 'false'); });
+      // on phones every card can be swiped to, so none is hidden from assistive tech
+      slides.forEach(function (sl, n) { sl.setAttribute('aria-hidden', phoneMq.matches || n === index ? 'false' : 'true'); });
+      syncVideos();
+    }
     function go(i) {
       if (!slides.length) return;
       index = (i + slides.length) % slides.length;
-      track.style.transform = 'translateX(' + (-index * 100) + '%)';
-      dots.forEach(function (d, n) { d.setAttribute('aria-current', n === index ? 'true' : 'false'); });
-      slides.forEach(function (sl, n) { sl.setAttribute('aria-hidden', n === index ? 'false' : 'true'); });
-      syncVideos();
+      if (phoneMq.matches) {
+        track.style.transform = '';
+        var sl = slides[index];
+        viewport.scrollTo({ left: sl.offsetLeft - (viewport.clientWidth - sl.offsetWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
+      } else {
+        track.style.transform = 'translateX(' + (-index * 100) + '%)';
+      }
+      mark();
     }
+    // on phones the swipe moves the row, and the dots and the playing flyer follow it
+    var raf = 0;
+    viewport.addEventListener('scroll', function () {
+      if (!phoneMq.matches || raf) return;
+      raf = requestAnimationFrame(function () {
+        raf = 0;
+        var mid = viewport.scrollLeft + viewport.clientWidth / 2, best = 0, bestD = Infinity;
+        slides.forEach(function (sl, n) { var d = Math.abs(sl.offsetLeft + sl.offsetWidth / 2 - mid); if (d < bestD) { bestD = d; best = n; } });
+        if (best !== index) { index = best; mark(); }
+      });
+    }, { passive: true });
 
     function stop() { if (timer) { clearInterval(timer); timer = null; } }
     function start() {
       stop();
-      if (reduced || single || modalOpen || document.hidden || !onScreen) return;
+      if (reduced || single || modalOpen || document.hidden || !onScreen || phoneMq.matches) return;
       timer = setInterval(function () { go(index + 1); }, AUTOPLAY_MS);
     }
 
@@ -555,6 +619,10 @@ const single = events.length === 1;
 
     go(0);
     start();
+    // crossing the phone breakpoint (rotation, a resized window) swaps between the two modes
+    if (phoneMq.addEventListener) phoneMq.addEventListener('change', function () {
+      viewport.scrollLeft = 0; go(index); start();
+    });
 
     /* ---------------- the photo modal ---------------- */
     [].slice.call(sec.querySelectorAll('[data-ue-gallery]')).forEach(function (opener) {
