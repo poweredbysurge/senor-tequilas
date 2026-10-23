@@ -21,6 +21,7 @@ const EVENTS = [
       '$150 gift card to every winner, contests at 11 PM',
       '9 PM to 1 AM, 21+ only',
       'Bring your best costume. Bring your crew.',
+      'Halloween cocktails: the Dulce Descanso and the Berry Scary',
       'Pan de Muerto is back: plain or sugar dusted $5, cream filled $7',
     ],
     video: { mp4: '/videos/halloween-flyer.mp4', webm: '/videos/halloween-flyer.webm', poster: '/videos/halloween-flyer-poster.jpg' },
@@ -30,6 +31,19 @@ const EVENTS = [
     gallery: {
       title: "Halloween at Señor Tequila's",
       categories: [
+        {
+          id: 'cocktails',
+          label: 'Halloween Cocktails',
+          basePath: '/images/site/halloween-cocktails/',
+          intro: 'Two cocktails made for Halloween weekend: the Dulce Descanso, finished with a mini pan de muerto, and the Berry Scary, red berries under a white foam with a skewer of fresh berries and fangs. Only here for the season.',
+          // written from the photographs; 4 of the 8 planned arrived, the rest drop in as 05 to 08
+          alts: [
+            'Dulce Descanso cocktail in a stemmed coupe with a sugar-dusted foam top and a mini pan de muerto on the rim, on a black background',
+            'Berry Scary cocktail, deep red with a white foam top, garnished with a skewer of blackberries, raspberries and vampire fangs, on a black background',
+            'The Dulce Descanso from the side: a coffee-colored layer under the sugar-dusted foam, the mini pan de muerto perched on the rim',
+            'The Berry Scary in a tall wine glass, red fading up into white foam, with the berry and fang skewer across the rim',
+          ],
+        },
         {
           id: 'party',
           label: 'The party',
@@ -428,7 +442,8 @@ const single = events.length === 1;
     #upcoming .ue-details li { font-size: 14px; line-height: 1.4; text-align: left !important; }
     #upcoming .ue-actions { gap: 8px; }
     #upcoming .ue-actions .ue-btn { flex: 1 1 auto; min-height: 44px; padding: 10px 16px; font-size: 14px; }
-    #upcoming .ue-arrow { display: none; }
+    /* the carousel's arrows only: the photo lightbox inside this section uses .ue-arrow too */
+    #upcoming .ue-carousel .ue-arrow { display: none; }
     #upcoming .ue-dots { margin-top: 16px; }
   }
   @media (prefers-reduced-motion: reduce) {

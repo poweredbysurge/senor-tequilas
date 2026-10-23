@@ -3783,3 +3783,31 @@ Seven more photographs from `design/source-art/friendsgiving/` (contact-sheet nu
 #11, #13, #16, #17, #25), at 1600 and 640 wide like the first eight. #4 and #7 were left out:
 both are from Halloween night and each has a face behind the subjects that reads as costume
 paint, which the original brief ruled out. Alt text written from each photograph.
+
+## 122. Halloween Cocktails tab in the Halloween gallery, and a bullet on the card, 23 October
+
+The Halloween slide's gallery gains a first tab, Halloween Cocktails, so it is what opens by
+default, for the two cocktails made for the weekend: the Dulce Descanso (with the mini pan de
+muerto) and the Berry Scary (red berries, white foam, a skewer of berries and fangs). The card
+gains one bullet after "Bring your best costume": "Halloween cocktails: the Dulce Descanso and the
+Berry Scary". No prices. Nothing else on the slide changed.
+
+Four of the eight planned photographs arrived: both hero shots and one more of each drink. The
+other four ("Photo Oct 20 2026" 10 03 27 PM, 10 04 19 PM, 9 58 48 PM and 9 58 58 PM) are in the
+Drive folder but were not in the download. The gallery counts files on disk, so they go in as
+05.webp to 08.webp with four more alts, and nothing else changes. The originals came in under
+`public/images/drive-download-*`, which ships verbatim, and were moved to
+`design/source-art/halloween-cocktails/` before anything was built.
+
+Full images are 1600 on the long side at the pan de muerto set's adaptive quality (all four at
+q82, 57 to 85KB). The thumbnails are 480x320 as briefed, but the glasses are tall and the photos
+square, so no 3:2 crop keeps both the foot of the glass and the garnish. Each is the whole photo at
+320 high on a blurred, feathered copy of itself; a flat black pad showed a seam, because the
+backdrops are not pure black at their edges.
+
+Found and fixed while checking: the phone rule from entry 120 hid every `.ue-arrow` in the
+section, which also matched the photo lightbox's arrows, so on phones the lightbox had no next and
+previous buttons from 21 to 23 October; swiping still worked. Scoped to `.ue-carousel .ue-arrow`.
+
+Not yet resolved: with six bullets the Halloween card no longer fits one screen on the two
+smallest phones tested (10px over at 360x740, 21px at 375x667); it still fits at 375x812 and up.
