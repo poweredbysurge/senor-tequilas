@@ -3811,3 +3811,9 @@ previous buttons from 21 to 23 October; swiping still worked. Scoped to `.ue-car
 
 Not yet resolved: with six bullets the Halloween card no longer fits one screen on the two
 smallest phones tested (10px over at 360x740, 21px at 375x667); it still fits at 375x812 and up.
+
+**Same day, Mario's review.** Tab order is now The party, Halloween Cocktails, Pan de Muerto, so the
+gallery opens on the party again. A category can carry `captions`, one per photo; where it does,
+the lightbox shows that line instead of "Label, n / total". The cocktails tab uses it to name the
+drink in each photo (Dulce Descanso, Berry Scary). The other two tabs keep their counter. When
+photos 05 to 08 arrive, they need a caption each as well as an alt.

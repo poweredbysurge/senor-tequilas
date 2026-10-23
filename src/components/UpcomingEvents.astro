@@ -32,10 +32,18 @@ const EVENTS = [
       title: "Halloween at Señor Tequila's",
       categories: [
         {
+          id: 'party',
+          label: 'The party',
+          basePath: '/images/site/halloween-past/',
+          intro: 'Two nights. Four costume contests. Zero ordinary nights. Costume and Catrina contests both nights, a $150 gift card to each winner, 9 PM to 1 AM, 21+. Here is how last year looked.',
+        },
+        {
           id: 'cocktails',
           label: 'Halloween Cocktails',
           basePath: '/images/site/halloween-cocktails/',
           intro: 'Two cocktails made for Halloween weekend: the Dulce Descanso, finished with a mini pan de muerto, and the Berry Scary, red berries under a white foam with a skewer of fresh berries and fangs. Only here for the season.',
+          // the lightbox shows the drink's name in place of "Halloween Cocktails, 1 / 4"
+          captions: ['Dulce Descanso', 'Berry Scary', 'Dulce Descanso', 'Berry Scary'],
           // written from the photographs; 4 of the 8 planned arrived, the rest drop in as 05 to 08
           alts: [
             'Dulce Descanso cocktail in a stemmed coupe with a sugar-dusted foam top and a mini pan de muerto on the rim, on a black background',
@@ -43,12 +51,6 @@ const EVENTS = [
             'The Dulce Descanso from the side: a coffee-colored layer under the sugar-dusted foam, the mini pan de muerto perched on the rim',
             'The Berry Scary in a tall wine glass, red fading up into white foam, with the berry and fang skewer across the rim',
           ],
-        },
-        {
-          id: 'party',
-          label: 'The party',
-          basePath: '/images/site/halloween-past/',
-          intro: 'Two nights. Four costume contests. Zero ordinary nights. Costume and Catrina contests both nights, a $150 gift card to each winner, 9 PM to 1 AM, 21+. Here is how last year looked.',
         },
         {
           id: 'pan-de-muerto',
@@ -261,7 +263,7 @@ const single = events.length === 1;
       </div>
       <script type="application/json" data-ue-gallery-data={e.id} set:html={JSON.stringify({
         title: e.gallery.title,
-        cats: e.gallery.categories.map((c) => ({ base: c.basePath, count: c.count, label: c.label, alts: c.alts || null })),
+        cats: e.gallery.categories.map((c) => ({ base: c.basePath, count: c.count, label: c.label, alts: c.alts || null, captions: c.captions || null })),
       })}></script>
     </dialog>
   ))}
@@ -703,7 +705,7 @@ const single = events.length === 1;
         at = (i + c.count) % c.count;
         lbImg.src = c.base + pad(at + 1) + '.webp';
         lbImg.alt = (c.alts && c.alts[at]) || (c.label + ', photo ' + (at + 1) + ' of ' + c.count);
-        counter.textContent = c.label + ', ' + (at + 1) + ' / ' + c.count;
+        counter.textContent = (c.captions && c.captions[at]) || (c.label + ', ' + (at + 1) + ' / ' + c.count);
         gridView.hidden = true; lightbox.hidden = false;
         if (!lightbox.contains(document.activeElement)) dlg.querySelector('[data-ue-lb-next]').focus();
       }
