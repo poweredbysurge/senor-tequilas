@@ -4142,3 +4142,10 @@ Braise time is eight hours everywhere: 13 mentions on 9 pages (12-hour, twelve h
 **Open.** The CLAUDE.md H1 rule allows "Germantown" only on /happy-hour and the Gaithersburg page;
 /new-years-eve, /birria-ramen and /friendsgiving carry it from the approved copy. No blog in this
 repo, so blog links are for Mario. Search Console indexing is Mario's.
+
+## 137. CLAUDE.md: "Germantown" allowed in seasonal and dish landing page H1s, 26 October
+
+Mario amended the H1 rule. "Germantown" was allowed inside an H1 only on /happy-hour and
+/mexican-restaurant-gaithersburg-md. It is now also allowed on /new-years-eve, /birria-ramen and
+/friendsgiving, whose approved H1s already carry it. This closes the open item in entry 136. Every
+other page still keeps "Germantown" out of its H1. No page changed.
