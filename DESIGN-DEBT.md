@@ -4097,3 +4097,48 @@ order. Web copies are `public/images/site/drinks/{michelada,mexican-coke,negra-m
 so the mug handle and lime are not cropped. The doubled-class placeholder colour rules from entry
 127 are gone with the placeholders, and so is the page's Placeholder import. /birria-ramen now has
 no placeholders.
+
+## 136. Published: /holiday-parties, /new-years-eve, /birria-ramen, 26 October
+
+Approved by Roberto; out of preview and linked into the site.
+
+**Preview off.** `PREVIEW_PAGES` is `[]` (file and comment kept for next time) and the three
+X-Robots-Tag rules are gone from vercel.json, so the sitemap build check still agrees. All three
+now carry a canonical on www, no robots meta, no preview bar, and sit in the sitemap with their
+own git lastmod. The old WordPress `/nye` redirect now lands on /new-years-eve, not /private-parties.
+
+**Navigation.** Footer2: Holiday Parties and New Year's Eve after Private Events. MobileMenu: two
+cards in the design's eyebrow pattern after Private Events ("November and December" / "December
+31"), backgrounds from each page's hero. Header5 has no dropdown, so no header change. Birria Ramen
+has no nav item.
+
+**Homepage.** UpcomingEvents takes `photo` in place of `video`: the slide shows the photo in the
+flyer frame and links it to the page. Holiday Parties (hides 2026-12-24) and NYE Masquerade (hides
+2027-01-01) follow Friendsgiving, text from the HOMEPAGE CARD copy split into the details list.
+Holiday Parties has no startDate, so it emits no Event schema (a season, not an event); NYE emits
+one. The copy doc said NYE's card from December 1; the publish brief said now. Signature dish rail:
+Birria Ramen card after Quesabirria Tacos, HOMEPAGE DISH CARD text, dialog links to the page.
+
+**Contextual links in** (in-content, nav and footer excluded, the three pages not counted):
+- /holiday-parties: /private-parties hero line, /catering ("More on private events"),
+  /friendsgiving (gift box ticket, the TODO), homepage carousel.
+- /new-years-eve: /private-parties FAQ, /late-night closing hours, /contact (holiday hours line,
+  no hours hardcoded), homepage carousel.
+- /birria-ramen: /birria-tacos ramen card (now an `<a>`), /menu item name, /takeout-delivery card
+  (was a Toast link), /late-night "What to order late" line. The homepage dish card links through
+  its dialog, script only.
+
+The /private-parties FAQ "Which dates are unavailable?" keeps Cinco de Mayo, Valentine's Day,
+Thanksgiving and July 4, and its December part is now the brief's line. The child pages carry no
+blackout line. /menu: the dish-card handlers in Base now ignore a click or Enter that starts on a
+link inside the card, so the name link navigates instead of opening the dialog; `hrefForDish`
+sends Birria Ramen to its own page.
+
+**Site facts.** business.json specialHours adds Dec 24 and 25 closed, Dec 31 15:00 to 02:00, Jan 1
+15:00 to 01:00 (Nov 25 to 27 were already there). The open-now pill checked on a fixed clock: 1:30
+AM Jan 1 "Open now, until 2am"; 2:30 AM "Closed, opens 3pm"; Dec 24 "Closed, opens Saturday 11am".
+Braise time is eight hours everywhere: 13 mentions on 9 pages (12-hour, twelve hours) changed.
+
+**Open.** The CLAUDE.md H1 rule allows "Germantown" only on /happy-hour and the Gaithersburg page;
+/new-years-eve, /birria-ramen and /friendsgiving carry it from the approved copy. No blog in this
+repo, so blog links are for Mario. Search Console indexing is Mario's.

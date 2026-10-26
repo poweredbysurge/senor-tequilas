@@ -45,7 +45,7 @@
     },
     {
       "source": "/nye{/}?",
-      "destination": "/private-parties",
+      "destination": "/new-years-eve",
       "permanent": true
     },
     {
@@ -132,35 +132,6 @@
       "source": "/quesabirria-tacos{/}?",
       "destination": "/birria-tacos",
       "permanent": true
-    }
-  ],
-  "headers": [
-    {
-      "source": "/holiday-parties",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
-    },
-    {
-      "source": "/new-years-eve",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
-    },
-    {
-      "source": "/birria-ramen",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
     }
   ]
 }

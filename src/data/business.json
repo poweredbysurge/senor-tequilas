@@ -51,7 +51,11 @@
   "specialHours": [
     { "date": "2026-11-25", "opens": "15:00", "closes": "01:00", "note": "Thanksgiving Eve" },
     { "date": "2026-11-26", "closed": true, "note": "Thanksgiving Day" },
-    { "date": "2026-11-27", "opens": "15:00", "closes": "01:00", "note": "Black Friday" }
+    { "date": "2026-11-27", "opens": "15:00", "closes": "01:00", "note": "Black Friday" },
+    { "date": "2026-12-24", "closed": true, "note": "Christmas Eve" },
+    { "date": "2026-12-25", "closed": true, "note": "Christmas Day" },
+    { "date": "2026-12-31", "opens": "15:00", "closes": "02:00", "note": "New Year's Eve" },
+    { "date": "2027-01-01", "opens": "15:00", "closes": "01:00", "note": "New Year's Day" }
   ],
   "sameAs": [
     "https://www.instagram.com/senortequilas_/",

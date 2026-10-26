@@ -90,6 +90,39 @@ const EVENTS = [
     offers: { price: '5', priceCurrency: 'USD' },
     gallery: null,
   },
+  // the two holiday pages have no flyer video, so their slide shows the page's hero photo
+  // (photo in place of video). Holiday Parties is a season, not one event: no startDate, so it
+  // gets no Event schema. Text is the HOMEPAGE CARD copy in design/copy/holiday-pages-copy-2026-10-24.md.
+  {
+    id: 'holiday-parties',
+    dates: 'November and December · Private rooms',
+    title: 'Holiday Parties',
+    page: '/holiday-parties',
+    details: [
+      'Holiday parties in private rooms for 12 to 134',
+      'Fajita buffet from $26',
+      'December weekends are going fast',
+    ],
+    photo: { src: '/images/site/mexican-room-800.webp', alt: 'The Mexican Room set for dinner: long tables, painted wooden chairs and a star lantern' },
+    hideAfter: '2026-12-24',
+    gallery: null,
+  },
+  {
+    id: 'new-years-eve',
+    dates: 'Thu, Dec 31 · Dinner, then 9 PM to 2 AM',
+    title: 'NYE Masquerade',
+    page: '/new-years-eve',
+    details: [
+      "New Year's Eve masquerade: dinner for the family, DJs, countdown, free champagne toast at midnight",
+      'Bar area 21+ after 9 PM',
+    ],
+    photo: { src: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar-640.webp', alt: 'A crowd with hands in the air in front of the golden heart behind the bar' },
+    hideAfter: '2027-01-01',
+    startDate: '2026-12-31T21:00:00-05:00',
+    endDate: '2027-01-01T02:00:00-05:00',
+    offers: { price: '5', priceCurrency: 'USD' },
+    gallery: null,
+  },
 ];
 
 // today's date in New York, as YYYY-MM-DD, so the comparison is a plain string compare
@@ -128,7 +161,7 @@ const LOCATION = {
   },
 };
 
-const jsonLd = events.map((e) => ({
+const jsonLd = events.filter((e) => e.startDate).map((e) => ({
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: e.title,
@@ -138,7 +171,7 @@ const jsonLd = events.map((e) => ({
   eventStatus: 'https://schema.org/EventScheduled',
   location: LOCATION,
   organizer: { '@type': 'Organization', name: "Señor Tequila's", url: 'https://www.senortequilas.com' },
-  image: [`https://www.senortequilas.com${e.video.poster}`],
+  image: [`https://www.senortequilas.com${e.video ? e.video.poster : e.photo.src}`],
   ...(e.page ? { url: `https://www.senortequilas.com${e.page}` } : {}),
   ...(e.offers ? { offers: { '@type': 'Offer', price: e.offers.price, priceCurrency: e.offers.priceCurrency, availability: 'https://schema.org/InStock', url: 'https://www.senortequilas.com/' } } : {}),
 }));
@@ -158,8 +191,12 @@ const single = events.length === 1;
         <div class="ue-track" data-ue-track>
           {events.map((e, i) => (
             <div class="ue-slide" data-hide-after={e.hideAfter} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${events.length}: ${e.title}`} data-ue-slide>
-              <div class="ue-flyer">
-                {e.page ? (
+              <div class="ue-flyer" style={e.photo ? `--ue-bg: url("${e.photo.src}")` : undefined}>
+                {e.photo ? (
+                  <a class="ue-flyer-link" href={e.page} aria-label={`More about ${e.title}`}>
+                    <img class="ue-video" src={e.photo.src} alt={e.photo.alt} loading="lazy" decoding="async" />
+                  </a>
+                ) : e.page ? (
                   <a class="ue-flyer-link" href={e.page} aria-label={`More about ${e.title}`}>
                     <video class="ue-video" data-ue-video muted loop playsinline preload="none" data-poster={e.video.poster} aria-hidden="true">
                       <source src={e.video.webm} type="video/webm" />

@@ -22,7 +22,8 @@
 //
 // Paths are written without a trailing slash: the site runs trailingSlash: false, so /foo/ 308s
 // to /foo and every canonical and sitemap entry uses the bare form.
-export const PREVIEW_PAGES: string[] = ['/holiday-parties', '/new-years-eve', '/birria-ramen'];
+// Published 26 October: /holiday-parties, /new-years-eve, /birria-ramen (DESIGN-DEBT entry 136).
+export const PREVIEW_PAGES: string[] = [];
 
 export const isPreview = (route: string | undefined): boolean =>
   !!route && PREVIEW_PAGES.includes(route.replace(/\/$/, '') || '/');

@@ -742,6 +742,7 @@ const jsonLd = {
             card.setAttribute('role', 'button');
             if (!card.hasAttribute('tabindex')) card.tabIndex = 0;
             card.addEventListener('keydown', function (e) {
+              if (e.target !== card) return;                    // a link inside the card keeps its own Enter
               if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); card.click(); }
             });
           }
@@ -782,7 +783,9 @@ const jsonLd = {
           var alt = (media && media.getAttribute('aria-label')) || name;
 
           card.setAttribute('aria-haspopup', 'dialog');
-          card.addEventListener('click', function () {
+          card.addEventListener('click', function (e) {
+            // a dish name that is itself a link (/menu's Birria Ramen) goes to its page, not the dialog
+            if (e.target.closest && e.target.closest('a[href]')) return;
             var dlg = dishModal();
             var img = dlg.querySelector('[data-dish-img]');
             // 57 of the menu items are still awaiting a photograph. An empty <img> renders as
@@ -812,7 +815,7 @@ const jsonLd = {
         }
 
         var DISH_PAGES = [
-          [/quesabirria/i, '/birria-tacos'], [/birria/i, '/birria-tacos'],
+          [/birria ramen/i, '/birria-ramen'], [/quesabirria/i, '/birria-tacos'], [/birria/i, '/birria-tacos'],
           [/pastor|perrones|mamalones|carnitas|asada|street/i, '/street-tacos'],
           [/fajita|molcajete/i, '/fajitas-molcajetes'],
           [/margarita|cantarito|tornado|mangon/i, '/margaritas'],
