@@ -4085,3 +4085,15 @@ only and left desktop on the placeholder. Mario: use it everywhere. It is now th
 the phone-only `phonePhoto` field, `.hp-phone-photo` img and its `:has` rules are gone. No room
 renders a placeholder now. Caveat: the source is 573 x 860, so on a wide desktop it is upscaled
 about 2.2x and reads soft; a larger original would sharpen it.
+
+## 135. Birria Ramen: the three drink photos, 26 October
+
+Mario supplied three square product shots on black (1254 x 1254 PNGs, 1.1 to 1.5 MB): a
+chili-rimmed michelada with lime, a Mexican Coca-Cola glass bottle, a Negra Modelo bottle. They
+replace the three drink placeholders under the "What to Drink With It" menu board, in the board's
+order. Web copies are `public/images/site/drinks/{michelada,mexican-coke,negra-modelo}.webp`, 600px,
+28 to 41 KB (the slots render 163px on desktop, 91px on a phone); the originals moved to
+`design/library/` because public/ ships verbatim. Shown square rather than the placeholders' 3:4
+so the mug handle and lime are not cropped. The doubled-class placeholder colour rules from entry
+127 are gone with the placeholders, and so is the page's Placeholder import. /birria-ramen now has
+no placeholders.

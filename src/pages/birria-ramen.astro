@@ -9,7 +9,6 @@ import MobileCenter from '../components/seasonal/MobileCenter.astro';
 import SignFrame from '../components/seasonal/SignFrame.astro';
 import MenuBoard from '../components/seasonal/MenuBoard.astro';
 import CountStat from '../components/seasonal/CountStat.astro';
-import Placeholder from '../components/seasonal/Placeholder.astro';
 import RatingLine from '../components/seasonal/RatingLine.astro';
 import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
 import Faq from '../components/seasonal/Faq.astro';
@@ -212,9 +211,9 @@ const dishLd = [
           <div>
             <MenuBoard items={DRINKS} tone="cream" numbered={false} />
             <div class="br-drink-ph">
-              <Placeholder label="Michelada with a salted rim. Portrait 3:4." ratio="3 / 4" />
-              <Placeholder label="Mexican Coke bottle on ice. Portrait 3:4." ratio="3 / 4" />
-              <Placeholder label="Negra Modelo, poured. Portrait 3:4." ratio="3 / 4" />
+              <img src="/images/site/drinks/michelada.webp" alt="A michelada in a glass mug with a chili-salt rim and a lime wedge, on ice" width="600" height="600" loading="lazy" decoding="async" />
+              <img src="/images/site/drinks/mexican-coke.webp" alt="A cold Mexican Coca-Cola in the glass bottle" width="600" height="600" loading="lazy" decoding="async" />
+              <img src="/images/site/drinks/negra-modelo.webp" alt="A cold bottle of Negra Modelo" width="600" height="600" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
@@ -375,12 +374,9 @@ const dishLd = [
   .br-p-ink { font-size: 15px; line-height: 1.7; color: rgba(18, 18, 16, 0.82); margin: 14px 0 0; max-width: 54ch; text-wrap: pretty; }
   .br-link-ink { color: rgb(18, 18, 16); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
   .br-drink-ph { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
-  /* light placeholders on the cream field. The class is doubled because a single one tied on
-     specificity with Placeholder's own rules, so which won depended on CSS load order and flipped
-     between builds (DESIGN-DEBT entry 127) */
-  .br-drink-ph.br-drink-ph :global(.ph) { background: rgb(232, 224, 210); border-color: rgba(18, 18, 16, 0.35); }
-  .br-drink-ph.br-drink-ph :global(.ph img) { opacity: 0.18; }
-  .br-drink-ph.br-drink-ph :global(.ph-label) { color: rgba(18, 18, 16, 0.75); }
+  /* the three drink photos are square, shot on black; height: auto so the img height attribute
+     does not override the ratio */
+  .br-drink-ph img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 10px; background: rgb(0, 0, 0); }
 
   /* ---- 6. panels ---- */
   .br-panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
