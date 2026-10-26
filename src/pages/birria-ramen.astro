@@ -5,6 +5,7 @@ import Footer2 from '../components/Footer2.astro';
 import business from '../data/business.json';
 import { roundedTotal } from '../lib/reviews.js';
 import SeasonalMotion from '../components/seasonal/SeasonalMotion.astro';
+import MobileCenter from '../components/seasonal/MobileCenter.astro';
 import SignFrame from '../components/seasonal/SignFrame.astro';
 import MenuBoard from '../components/seasonal/MenuBoard.astro';
 import CountStat from '../components/seasonal/CountStat.astro';
@@ -312,6 +313,7 @@ const dishLd = [
   <Footer2 />
 </div>
 <SeasonalMotion />
+<MobileCenter />
 
 <style>
   .br-wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(18px, 4.5vw, 48px); }
@@ -368,10 +370,12 @@ const dishLd = [
   .br-p-ink { font-size: 15px; line-height: 1.7; color: rgba(18, 18, 16, 0.82); margin: 14px 0 0; max-width: 54ch; text-wrap: pretty; }
   .br-link-ink { color: rgb(18, 18, 16); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
   .br-drink-ph { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
-  .br-drink-ph :global(.ph) { background: rgb(232, 224, 210); border-color: rgba(18, 18, 16, 0.35); }
-  .br-drink-ph :global(.ph img) { opacity: 0.18; }
-  .br-drink-ph :global(.ph-label) { color: rgba(18, 18, 16, 0.75); }
-  .br-drink-ph :global(.ph-label span) { color: rgb(18, 18, 16); }
+  /* light placeholders on the cream field. The class is doubled because a single one tied on
+     specificity with Placeholder's own rules, so which won depended on CSS load order and flipped
+     between builds (DESIGN-DEBT entry 127) */
+  .br-drink-ph.br-drink-ph :global(.ph) { background: rgb(232, 224, 210); border-color: rgba(18, 18, 16, 0.35); }
+  .br-drink-ph.br-drink-ph :global(.ph img) { opacity: 0.18; }
+  .br-drink-ph.br-drink-ph :global(.ph-label) { color: rgba(18, 18, 16, 0.75); }
 
   /* ---- 6. panels ---- */
   .br-panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }

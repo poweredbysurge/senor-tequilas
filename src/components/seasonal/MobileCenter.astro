@@ -1,0 +1,54 @@
+---
+/* Phones only (below 768): every text block and component on the three seasonal pages is centred.
+   Mario, 25 October. Desktop is untouched; nothing here applies at 768 and up.
+
+   Scoped to the three pages' roots (.sc-host.hp, .ny, .br), so no other page can pick it up. Many
+   of these override a deliberate `text-align: left !important` in a component (FAQ, flyer cards,
+   menu board, placeholders, count stats), so the rules carry !important and a selector that
+   outranks them. Typed text in form fields stays left-aligned; centred typing is hard to read. */
+---
+<style is:global>
+  @media (max-width: 767px) {
+    /* ---- text, everywhere ---- */
+    .sc-host:is(.hp, .ny, .br) section,
+    .sc-host:is(.hp, .ny, .br) section *:not(input):not(textarea):not(select) { text-align: center !important; }
+    .sc-host:is(.hp, .ny, .br) section :is(p, h2, h3, blockquote, figure, table, form, ul, ol) { margin-left: auto !important; margin-right: auto !important; }
+
+    /* ---- rows of chips, buttons, numbers and bylines ---- */
+    .sc-host:is(.hp, .ny, .br) :is(.hp-chips, .hp-nums, .hp-price-heroes, .hp-prices, .hp-ent-head, .ny-facts, .ny-ctas, .br-ctas, .br-delivery, .rq-c, .rl) { justify-content: center !important; }
+    .sc-host:is(.hp, .ny, .br) .cs { text-align: center !important; justify-items: center; }
+    .sc-host:is(.hp, .ny, .br) .rl { flex-wrap: wrap; }
+
+    /* ---- the December calendar's month and key ---- */
+    .sc-host.hp .cal-head { justify-content: center !important; }
+    .sc-host.hp .cal-key { justify-content: center; }
+
+    /* ---- the chapter index under "The Rooms" ---- */
+    .sc-host.hp .hp-rooms-index .ci-list { justify-content: center !important; }
+
+    /* ---- the drink-ticket stub: the tear-off strip drops below the ticket ---- */
+    .sc-host.hp .hp-stub { grid-template-columns: 1fr !important; margin-left: auto; margin-right: auto; }
+    .sc-host.hp .hp-stub-tear { border-left: 0 !important; border-top: 1.5px dashed rgba(214, 188, 133, 0.6); }
+    .sc-host.hp .hp-stub-tear span { writing-mode: horizontal-tb !important; transform: none !important; }
+
+    /* ---- booking steps: numbers centred over each step; the vertical rail, which ran down the
+       left edge to join them, has no left edge to run down any more ---- */
+    .sc-host.hp .hp-step-n { margin-left: auto; margin-right: auto; }
+    .sc-host.hp .hp-steps-line { display: none; }
+
+    /* ---- the inquiry form's header (Tomas's photo and line) stacks ---- */
+    .sc-host.hp .hp-form-head { flex-direction: column; justify-content: center; }
+    .sc-host:is(.hp, .ny, .br) form label { justify-items: center; }
+
+    /* ---- the menu board: number, name and note stack in one centred column ---- */
+    .sc-host.br .mb-row { display: flex !important; flex-direction: column; align-items: center; gap: 2px; }
+    .sc-host.br .mb-sub { margin-top: 0 !important; }
+
+    /* ---- photo placeholders: the label centres across the frame ---- */
+    .sc-host:is(.hp, .ny, .br) .ph-label { text-align: center !important; }
+
+    /* ---- FAQ: the question centres, the +/− stays at the right edge, and the question is padded
+       on the left by the sign's width so it centres on the row rather than beside the sign ---- */
+    .sc-host:is(.hp, .ny, .br) .fq-item button > span:first-child { flex: 1; padding-left: 40px; }
+  }
+</style>

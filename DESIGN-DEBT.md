@@ -3985,3 +3985,24 @@ rules for it never applied (it was never `overflow: hidden` either); it is reach
 now. Birria Ramen's `.br-close { text-align: center }` has the same problem and was left alone,
 since activating it would change a section already reviewed. The molcajete frame now clips its
 reveal scale, which had pushed the page 8px wide. Lighthouse mobile 92 / 94, CLS 0.001.
+
+## 127. The three preview pages: everything centred on phones, 25 October
+
+Mario asked for all content, text and components centred on /holiday-parties, /new-years-eve and
+/birria-ramen, phones only. One component, `src/components/seasonal/MobileCenter.astro`, included
+on the three pages: a global stylesheet, every rule inside `@media (max-width: 767px)` and scoped to
+`.sc-host:is(.hp, .ny, .br)`. Text is centred throughout (typed text in form fields stays left),
+rows of chips, buttons, numbers, bylines and rating lines centre, the calendar header centres, the
+drink-ticket stub's tear strip drops below it, the menu-board rows stack into one centred column,
+the FAQ question centres with the sign kept at the right (the question is padded by the sign's
+width so it centres on the row), and the booking steps' vertical rail is dropped because with the
+numbers centred it had no edge to run down. Many of these override a deliberate
+`text-align: left !important` in a component, hence the !important.
+
+Verified desktop unchanged by comparing the computed style of every element on all three pages at
+768, 1024, 1440 and 1920 against a build without the change: identical. That comparison found
+one pre-existing fault: the Birria Ramen drink placeholders' light treatment tied on specificity
+with Placeholder's own rules, so which won depended on CSS load order, and adding this component
+flipped it. The page's rules now carry a doubled class and win every time, matching what the
+build without this change rendered; the label colour rule was dropped so "Photo needed" stays gold
+as before. The capacity table still scrolls sideways inside its own box on phones, as it did.
