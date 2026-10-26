@@ -9,11 +9,10 @@ import MobileCenter from '../components/seasonal/MobileCenter.astro';
 import SignFrame from '../components/seasonal/SignFrame.astro';
 import Countdown from '../components/seasonal/Countdown.astro';
 import FlyerCard from '../components/seasonal/FlyerCard.astro';
-import Placeholder from '../components/seasonal/Placeholder.astro';
 import RatingLine from '../components/seasonal/RatingLine.astro';
 import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
 import Faq from '../components/seasonal/Faq.astro';
-import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
+import { EYEBROW, RULE, H2, P, LINK, WRAP, IMG, FRAME, BTN_PRIMARY, BTN_GHOST, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
 
 /*
   /new-years-eve, concept 2a "The Countdown" (design/concepts/2026-10-25-selected). In PREVIEW:
@@ -234,7 +233,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
     <div style={WRAP}>
       <SignFrame tone="dark" class="ny-gift">
         <div class="ny-gift-grid">
-          <Placeholder label="Sealed holiday gift box. Square." ratio="1 / 1" />
+          <div style={`${FRAME} aspect-ratio: 1 / 1;`}><img src="/images/site/holiday-gift-box.webp" srcset="/images/site/holiday-gift-box-640.webp 640w, /images/site/holiday-gift-box.webp 1000w" sizes="(max-width: 767px) 92vw, 440px" alt="A pyramid of 24 numbered holiday gift boxes in kraft paper, each printed with a Christmas design: a tree, stockings, mittens, reindeer, a gingerbread man, a snowman" width="1000" height="1000" loading="lazy" decoding="async" style={IMG} /></div>
           <div>
             <div style={EYEBROW}><span style={RULE}></span>Your NYE visit counts</div>
             <h2 style={H2}>The Holiday Gift Box</h2>

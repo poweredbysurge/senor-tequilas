@@ -4050,3 +4050,14 @@ while desktop keeps the click-to-load stand-in and never requests the embed.
 Desktop verified identical by computed style of every element at 768, 1024 and 1440 on the three
 pages plus /friendsgiving and /happy-hour (which share the edited tweaks.css section), against a
 build of the previous commit. Neither the phone photo nor the phone map is requested at 1440.
+
+## 131. The Holiday Gift Box photo, 26 October
+
+Mario supplied `Festive Christmas Advent Calendar Pyramid.png` (1254 x 1254, 1.9 MB): 24 numbered
+kraft gift boxes stacked in a pyramid on black, each printed with a Christmas design. It replaces
+the gift box placeholder on /holiday-parties (#gift-box) and /new-years-eve, at every width. Web
+copies are `public/images/site/holiday-gift-box.webp` (1000px, 148 KB) and `-640.webp` (76 KB),
+served by srcset; the original moved to `design/library/` because public/ ships verbatim. Lazy,
+square, in the site's standard frame. /birria-ramen has no gift box. Placeholders still waiting on
+photos: Holiday Parties Indoor Patio on desktop (phones show the /private-parties photo, entry
+130), and the three Birria Ramen drinks.
