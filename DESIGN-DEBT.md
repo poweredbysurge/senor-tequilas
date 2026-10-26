@@ -4017,3 +4017,16 @@ panel, close). The local panel's button sat alone in its row, so the row went to
 written into the copy stay, and the footer's number is now the only phone link on each page. The
 New Year's Eve hero has two buttons on phones now, side by side in one row, and still fits the
 screen at every size measured in entry 126.
+
+## 129. /holiday-parties entertainment cards: a phone carousel, 26 October
+
+Mario asked for the three entertainment cards (Mariachi, DJs and hosts, Karaoke and lighting) to
+be 30% smaller and a carousel, phones only. Below 768, `.hp-cards` is a native scroll-snap row:
+each card is 70% of the column it used to fill (250px at 390), it bleeds to the screen edges by
+cancelling WRAP's gutter, and each card snaps to the centre with its neighbours peeking. The side
+padding lets the first and last cards centre too. No script; 768 and up keep the three-up grid.
+
+The photos had never taken their 4:3 crop: the `height` attribute on each img (900, 788, 683)
+becomes a CSS height, and aspect-ratio is ignored when a height is set, so they rendered at full
+portrait height (700 to 920px tall). Fixed on phones with `height: auto`. Desktop and tablet have
+the same fault and are left as they are pending Mario's call, since this change was phones only.

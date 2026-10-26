@@ -486,7 +486,25 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   .hp-card-body { padding: 14px 16px 16px; }
   .hp-card-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); }
   .hp-card-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 18px; color: rgb(246, 239, 228); margin-top: 4px; }
-  @media (max-width: 767px) { .hp-cards { grid-template-columns: 1fr; } .hp-ent-head :global(.cs) { text-align: left !important; } }
+  @media (max-width: 767px) { .hp-ent-head :global(.cs) { text-align: left !important; } }
+  /* phones: the three cards become a swipe carousel, each 30% smaller than the full column it used
+     to fill (Mario, 26 October). The row bleeds to the screen edges (it cancels WRAP's gutter), and
+     each card snaps to the centre with its neighbours peeking; the side padding lets the first and
+     last cards centre too. --g is WRAP's gutter, --c the card width. */
+  @media (max-width: 767px) {
+    .hp-cards {
+      --g: clamp(18px, 4.5vw, 48px); --c: calc((100vw - 2 * var(--g)) * 0.7);
+      display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+      margin-left: calc(-1 * var(--g)); margin-right: calc(-1 * var(--g));
+      padding: 6px calc((100vw - var(--c)) / 2) 10px; scrollbar-width: none;
+    }
+    .hp-cards::-webkit-scrollbar { display: none; }
+    .hp-card { flex: 0 0 var(--c); scroll-snap-align: center; }
+    /* the img's height attribute (900 etc.) becomes a CSS height and beats aspect-ratio, so the 4:3
+       crop never applied; auto lets it. Desktop has the same fault, left for Mario to decide */
+    .hp-card img { height: auto; }
+    .hp-card:hover { transform: none; }
+  }
 
   /* ---- 8. booking line ---- */
   .hp-steps-wrap { position: relative; margin-top: 26px; }
