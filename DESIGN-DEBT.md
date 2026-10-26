@@ -4006,3 +4006,14 @@ with Placeholder's own rules, so which won depended on CSS load order, and addin
 flipped it. The page's rules now carry a doubled class and win every time, matching what the
 build without this change rendered; the label colour rule was dropped so "Photo needed" stays gold
 as before. The capacity table still scrolls sideways inside its own box on phones, as it did.
+
+## 128. The three preview pages: Call buttons removed, 25 October
+
+Mario asked for every Call button out of /holiday-parties, /new-years-eve and /birria-ramen,
+keeping the footer's. Eleven went: Holiday Parties four (hero, dates section, FAQ head, close),
+New Year's Eve four (hero, dinner section, FAQ head, close), Birria Ramen three (hero, the local
+panel, close). The local panel's button sat alone in its row, so the row went too; the now unused
+`.ny-btn-ink` style and the `PHONE_HREF` / `PHONE_DISPLAY` imports went with them. Phone numbers
+written into the copy stay, and the footer's number is now the only phone link on each page. The
+New Year's Eve hero has two buttons on phones now, side by side in one row, and still fits the
+screen at every size measured in entry 126.

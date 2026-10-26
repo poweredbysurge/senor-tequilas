@@ -12,7 +12,7 @@ import Placeholder from '../components/seasonal/Placeholder.astro';
 import RatingLine from '../components/seasonal/RatingLine.astro';
 import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
 import Faq from '../components/seasonal/Faq.astro';
-import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, FRAME, IMG, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, PHONE_HREF, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
+import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, FRAME, IMG, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
 
 /*
   /holiday-parties, concept 1a "The Room Tour" (design/concepts/2026-10-25-selected). In PREVIEW:
@@ -109,7 +109,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <p class="hp-lead">Four private rooms that seat 48 to 112, or hold up to 134 standing. A microphone and a big HDMI screen in every one. The fajita buffet from $26 a person, weekday rooms from $200 an hour, and a coordinator who gets back to you within 24 hours. December Fridays and Saturdays are going fast.</p>
         <div class="hp-hero-ctas" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px;">
           <a href="#inquire" style={BTN_PRIMARY}>Book a Tour</a>
-          <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
         </div>
       </div>
       <div class="hp-hero-index"><ChapterIndex items={ROOMS} /></div>
@@ -128,8 +127,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
           <p style={P}>Weeknights are the smart money. Weekday rooms start from $200 an hour, and a Tuesday party gets the same room, the same lights, the same food as a Saturday. Monday to Friday we open to the public at 3 PM, which means a lunch party can have the entire building to itself. Very large lunch groups are welcome.</p>
           <p style={P}>Hours in the room are set booking by booking, so tell us how long the speeches run. The dates we cannot do: Thanksgiving Day, December 24 and December 25. Every other day in November and December is open, including the week between Christmas and <a href="/new-years-eve" style={LINK}>New Year's</a>.</p>
           <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px;">
-            <a href={PHONE_HREF} style={BTN_PRIMARY}>Call {PHONE_DISPLAY}</a>
-            <a href="#inquire" style={BTN_GHOST}>Book a Tour</a>
+            <a href="#inquire" style={BTN_PRIMARY}>Book a Tour</a>
           </div>
         </div>
         <div><DecemberCalendar /></div>
@@ -338,7 +336,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <div class="hp-faq-head">
           <div style={EYEBROW}><span style={RULE}></span>Seven questions</div>
           <h2 style={H2}>Holiday Party Questions, Answered</h2>
-          <a href={PHONE_HREF} style={`${BTN_GHOST} margin-top: 20px;`}>Call {PHONE_DISPLAY}</a>
         </div>
         <Faq items={FAQ} variant="rule" />
       </div>
@@ -355,7 +352,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <div style={EYEBROW}><span style={RULE}></span>Start here</div>
         <h2 style={H2}>Come See the Room Before the Weekends Go</h2>
         <p style={P}>Most people decide standing in the room. Tours take fifteen minutes, and Tomas replies within 24 hours.</p>
-        <a href={PHONE_HREF} style={`${BTN_GHOST} margin-top: 20px;`}>Call {PHONE_DISPLAY}</a>
       </div>
       <form data-inquiry="private-party" data-ap-company method="post" action="/api/inquiry" class="hp-form" style={FORM}>
         <div class="hp-form-head">

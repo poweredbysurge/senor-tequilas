@@ -13,7 +13,7 @@ import Placeholder from '../components/seasonal/Placeholder.astro';
 import RatingLine from '../components/seasonal/RatingLine.astro';
 import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
 import Faq from '../components/seasonal/Faq.astro';
-import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, FRAME, IMG, PHONE_DISPLAY, PHONE_HREF, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
+import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, FRAME, IMG, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
 
 /*
   /birria-ramen, concept 3c "Painted Sign" (design/concepts/2026-10-25-selected). In PREVIEW:
@@ -133,7 +133,6 @@ const dishLd = [
             <div class="br-ctas">
               <a href={business.orderUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Order Takeout</a>
               <a href="/menu" style={BTN_GHOST}>See the Menu</a>
-              <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
             </div>
           </div>
           <div class="br-hero-media">
@@ -238,7 +237,6 @@ const dishLd = [
           <h2 style={H2}>Birria Ramen in Germantown, Ten Minutes From Gaithersburg</h2>
           <p style={P}>We are at 20021 Century Blvd in Germantown, Maryland, next to Topgolf, with free parking at the door. Gaithersburg and Montgomery Village are about ten minutes away. Clarksburg, Boyds, Urbana and Frederick are the drive people tell us they make for this bowl.</p>
           <p style={P}>Open Monday to Friday from 3 PM, Saturday and Sunday from 11 AM. Sunday to Wednesday until 10 PM, Thursday until midnight, Friday and Saturday until 1 AM. <a href="/late-night" style={LINK}>Late night</a></p>
-          <div class="br-ctas" style="margin-top: 22px;"><a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a></div>
           <div class="br-map" data-map-facade data-map-src={MAP_EMBED}>
             <div class="br-map-art" aria-hidden="true"><span class="br-map-pin"></span><span class="br-map-ring"></span></div>
             <button type="button" data-map-title={`Map of ${business.name}, ${business.streetAddress}`}>Load the map<small>{business.streetAddress}, {business.addressLocality}, {business.addressRegion}</small></button>
@@ -301,7 +299,6 @@ const dishLd = [
         <div class="br-ctas" style="justify-content: center; margin-top: 24px;">
           <a href={business.orderUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Order Takeout</a>
           <a href="/menu" style={BTN_GHOST}>See the Menu</a>
-          <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
         </div>
       </SignFrame>
     </div>

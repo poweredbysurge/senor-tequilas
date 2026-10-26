@@ -13,7 +13,7 @@ import Placeholder from '../components/seasonal/Placeholder.astro';
 import RatingLine from '../components/seasonal/RatingLine.astro';
 import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
 import Faq from '../components/seasonal/Faq.astro';
-import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, PHONE_HREF, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
+import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
 
 /*
   /new-years-eve, concept 2a "The Countdown" (design/concepts/2026-10-25-selected). In PREVIEW:
@@ -139,7 +139,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
           <div class="ny-ctas ny-hero-ctas">
             <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
             <a href="#inquire" style={BTN_GHOST}>Book a Private Room</a>
-            <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
           </div>
         </div>
       </SignFrame>
@@ -180,7 +179,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <p class="ny-p-ink">Reservations are for the dining rooms, through Toast Tables for groups under 20. The bar area does not take reservations on New Year's Eve. It is first come, first served, and it fills before 9. For 20 or more, call {PHONE_DISPLAY} or book a room.</p>
         <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px;">
           <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
-          <a href={PHONE_HREF} class="ny-btn-ink">Call {PHONE_DISPLAY}</a>
         </div>
       </div>
       <div class="ny-cream-media">
@@ -267,7 +265,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
       <div class="ny-faq">
         <div class="ny-faq-head">
           <h2 style={H2}>New Year's Eve, Answered</h2>
-          <a href={PHONE_HREF} style={`${BTN_GHOST} margin-top: 20px;`}>Call {PHONE_DISPLAY}</a>
         </div>
         <Faq items={FAQ} variant="rule" />
       </div>
@@ -283,7 +280,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
       <div class="ny-ctas" style="justify-content: center;">
         <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
         <a href="#inquire" style={BTN_GHOST}>Book a Private Room</a>
-        <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
       </div>
     </div>
   </section>
@@ -331,9 +327,9 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   /* the fact chips restate the lead (they are aria-hidden), so they are what gives way when the
      screen is short: phones, and windows under 960px tall */
   @media (max-width: 767px), (max-height: 960px) { .ny-facts { display: none; } }
-  /* phones: Reserve full width, the other two side by side, so three buttons take two rows. The
-     doubled class outranks tweaks.css's one-column [data-mcta-row] rule, which Base adds on load. */
-  @media (max-width: 767px) { body[data-route] .ny-hero-ctas.ny-hero-ctas { grid-template-columns: 1fr 1fr !important; gap: 8px; } body[data-route] .ny-hero-ctas.ny-hero-ctas a:first-child { grid-column: 1 / -1; } body[data-route] .ny-hero-ctas.ny-hero-ctas a { padding-left: 8px !important; padding-right: 8px !important; font-size: 13px !important; } }
+  /* phones: the two hero buttons side by side, one row. The doubled class outranks tweaks.css's
+     one-column [data-mcta-row] rule, which Base adds on load. */
+  @media (max-width: 767px) { body[data-route] .ny-hero-ctas.ny-hero-ctas { grid-template-columns: 1fr 1fr !important; gap: 8px; } body[data-route] .ny-hero-ctas.ny-hero-ctas a { padding-left: 8px !important; padding-right: 8px !important; font-size: 13px !important; } }
   /* the phone CTA layout Base.astro's mobileCtas() applies at runtime, set up front so nothing moves */
   @media (max-width: 767px) { .ny-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .ny-ctas a { width: 100%; justify-content: center; text-align: center; } }
 
@@ -359,7 +355,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   .ny-h2-ink { color: rgb(18, 18, 16); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(26px, 4.6vw, 42px); line-height: 1.04; margin: 10px 0 0; text-transform: uppercase; text-wrap: balance; }
   .ny-p-ink { font-size: 15px; line-height: 1.7; color: rgba(18, 18, 16, 0.82); margin: 14px 0 0; max-width: 62ch; text-wrap: pretty; }
   .ny-link-ink { color: rgb(18, 18, 16); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-  .ny-btn-ink { display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(18, 18, 16, 0.6); color: rgb(18, 18, 16); font-weight: 700; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; text-decoration: none; }
   @media (max-width: 767px) { .ny-cream-grid { grid-template-columns: 1fr; } .ny-cream-media { aspect-ratio: 4 / 3; min-height: 0; } }
 
   /* ---- 4. private room ---- */
