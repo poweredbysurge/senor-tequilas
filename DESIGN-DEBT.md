@@ -4149,3 +4149,32 @@ Mario amended the H1 rule. "Germantown" was allowed inside an H1 only on /happy-
 /mexican-restaurant-gaithersburg-md. It is now also allowed on /new-years-eve, /birria-ramen and
 /friendsgiving, whose approved H1s already carry it. This closes the open item in entry 136. Every
 other page still keeps "Germantown" out of its H1. No page changed.
+
+## 138. Inquiry forms: Vercel BotID in front of /api/inquiry, 26 October
+
+The same invisible check already shipped on Sunrise. Automated posts to the inquiry endpoint are
+now blocked before any email goes to the managers, and guests see nothing. Commit 77ebd64.
+
+**Client.** One new, non-inline script in the head of Base.astro, so Astro bundles it:
+`initBotId` from `botid/client/core`, protecting `POST /api/inquiry`. Every other script in Base
+stays `is:inline` and untouched. The bundle is about 6 KB and loads on all 25 pages, which covers
+all seven forms: catering, the three private party pages, holiday parties, New Year's Eve and
+contact. No markup changed.
+
+**Server.** `checkBotId` in `api/inquiry.js` runs after the same-site check and before the
+`company` honeypot, and both of those stay. A bot gets `403 {ok:false, code:'bot'}`. The JSON form
+treats that as a failure and shows the phone number. A plain form post gets the "That did not
+send, please call us" page. If BotID itself errors, the inquiry is delivered anyway and the error is
+logged as `[inquiry] BotID check errored`, because a BotID outage must never cost a booking. Deep
+Analysis is on at the project level in the Vercel firewall, so `checkLevel` is not set in code.
+`vercel.json` has no BotID rewrites, because Vercel routes the challenge itself.
+
+**Accepted trade-off.** BotID needs JavaScript. A visitor with scripts turned off can never pass
+it, so their form post always gets the "please call us" page and never reaches the managers.
+Checked live: a plain form post returned 403 and the call-us page with 301-569-4574.
+
+**Verified.** Build and check-build pass. Production deploy is green. The live JSON `curl` with an
+empty body returns 403 `bot`, as expected. Still pending: one real contact form test ("TEST Surge"),
+confirming the managers' email arrives and that Firewall > Traffic shows the test as Human.
+
+**Rollback.** `git revert 77ebd64`, or set BotID back to Basic in the Vercel dashboard.
