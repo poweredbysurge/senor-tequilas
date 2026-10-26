@@ -4061,3 +4061,18 @@ served by srcset; the original moved to `design/library/` because public/ ships 
 square, in the site's standard frame. /birria-ramen has no gift box. Placeholders still waiting on
 photos: Holiday Parties Indoor Patio on desktop (phones show the /private-parties photo, entry
 130), and the three Birria Ramen drinks.
+
+## 132. Holiday Parties: room for the rooms intro, 26 October
+
+The "The Rooms, Dressed for December" intro carried an inline `padding-bottom: 0`, so on tablet and
+desktop its paragraph ran straight into the first room photo. The inline override is gone and the
+section takes the standard `.hp-sec` bottom padding, `clamp(40px, 6.4vw, 84px)`, the same rhythm
+as every other section on the page. Phones were already at 80px from the tweaks.css rule and are
+unchanged.
+
+## 133. Holiday Parties: entertainment photos at half height on desktop, 26 October
+
+On desktop the three entertainment card photos (Mariachi, DJs, Karaoke) ran 680 to 900px tall
+and unequal: the img `height` attribute became a CSS height and defeated the `aspect-ratio`. From
+768 up they are now `height: auto; aspect-ratio: 1 / 1`, 390 x 390 at 1280 wide, about half the
+old height, and all three match. Phones keep the 4:3 carousel from entry 130, unchanged.

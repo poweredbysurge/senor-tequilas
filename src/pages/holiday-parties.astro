@@ -138,7 +138,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   </section>
 
   <!-- 3 + 4. the rooms: the H2 opens the block, each room is an H3 chapter, the cream table closes it -->
-  <section id="rooms" data-screen-label="The rooms" class="hp-sec" style="padding-bottom: 0;">
+  <section id="rooms" data-screen-label="The rooms" class="hp-sec">
     <div style={WRAP}>
       <div class="hp-rooms-index"><ChapterIndex items={ROOMS} /></div>
       <div style={EYEBROW}><span style={RULE}></span>Four rooms, properly decorated</div>
@@ -494,6 +494,9 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   .hp-card:hover, .hp-card:focus-visible { transform: translateY(-4px); border-color: rgba(214, 188, 133, 0.6); }
   .hp-card:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 2px; }
   .hp-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  /* desktop: the img height attribute was overriding aspect-ratio, so the photos ran 680 to 900px tall.
+     height: auto lets the ratio hold; square is about half the old height, and all three now match. */
+  @media (min-width: 768px) { .hp-card img { height: auto; aspect-ratio: 1 / 1; } }
   .hp-card-body { padding: 14px 16px 16px; }
   .hp-card-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); }
   .hp-card-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 18px; color: rgb(246, 239, 228); margin-top: 4px; }
