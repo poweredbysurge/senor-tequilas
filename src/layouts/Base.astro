@@ -193,6 +193,12 @@ const jsonLd = {
         else window.addEventListener('load', load, { once: true });
       })();
     </script>
+    <script>
+      // Vercel BotID, client half. Attaches an invisible challenge result to the
+      // inquiry POST. Must match the path checkBotId() guards in api/inquiry.js.
+      import { initBotId } from 'botid/client/core';
+      initBotId({ protect: [{ path: '/api/inquiry', method: 'POST' }] });
+    </script>
   </head>
   <body data-route={route}>
     {preview && (

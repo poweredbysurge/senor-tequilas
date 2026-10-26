@@ -15,6 +15,7 @@
 //                    guest's confirmation, and not part of any reply-to.
 //   INQUIRY_CONFIRM  optional. Set to "off" to stop the confirmation sent to a guest who
 //                    gave an email address.
+import { checkBotId } from 'botid/server';
 import business from '../src/data/business.json' with { type: 'json' };
 import { buildInquiryEmail, buildConfirmationEmail, FORMS } from './_lib/inquiry-email.js';
 
@@ -91,6 +92,22 @@ export default async function handler(req, res) {
   }
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ ok: false, code: 'method' }); }
   if (!sameSite(req)) return res.status(403).json({ ok: false, code: 'origin' });
+
+  // Vercel BotID: an invisible check that the post came from a real browser on the site. The
+  // client half is in Base.astro. A bot gets a 403, which the form and the no-JS page both turn
+  // into "please call us". A guest with scripts off cannot pass it either, and gets the same.
+  try {
+    const verification = await checkBotId({ advancedOptions: { headers: req.headers } });
+    if (verification.isBot) {
+      console.warn('[inquiry] blocked by BotID', {
+        ua: req.headers['user-agent'], referer: req.headers.referer,
+      });
+      return res.status(403).json({ ok: false, code: 'bot' });
+    }
+  } catch (err) {
+    // Fail open: a BotID outage must never cost the restaurant a booking.
+    console.error('[inquiry] BotID check errored, delivering anyway:', err && err.message);
+  }
 
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = null; } }
