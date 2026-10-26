@@ -3965,3 +3965,23 @@ now clips.
 
 Lighthouse mobile after: 94 / 94 / 94, LCP 3.0 s, CLS 0 to 0.001. Copy coverage and the heading
 outline unchanged.
+
+## 126. /new-years-eve: the poster hero is exactly one screen, 25 October
+
+Mario asked for the whole hero to fit in the viewport. `.ny-hero` is now `100svh` less the 63px
+header and, while the page is in preview, the gold bar: `Base.astro` publishes the bar's rendered
+height as `--pv` from an inline script right after it (it wraps to two lines on phones). The
+countdown, H1 and lead size by viewport height as well as width, the fact chips (aria-hidden, they
+restate the lead) drop out below 960px tall and on phones, and phones set Reserve full width with
+the other two buttons side by side. A new `data-fit` in `SeasonalMotion` steps the type down when
+the content is still taller than the box, which only happens on unusually short windows (1000 x
+560 lands at 0.8). Measured from 375 x 667 to 1920 x 1080 and 1024 x 1366: the hero ends at the
+bottom of the screen and the content sits centred inside the frame on every one. With JS off it is
+taller by the preview bar's height, which goes away when the page publishes. The header was left at
+63px; it did not need to shrink.
+
+Found on the way: `.ny-poster` is SignFrame's root, a different component, so the page's scoped
+rules for it never applied (it was never `overflow: hidden` either); it is reached with `:global`
+now. Birria Ramen's `.br-close { text-align: center }` has the same problem and was left alone,
+since activating it would change a section already reviewed. The molcajete frame now clips its
+reveal scale, which had pushed the page 8px wide. Lighthouse mobile 92 / 94, CLS 0.001.

@@ -15,6 +15,8 @@
                                    fallback text in [data-cd-fallback]
      data-map-facade               a static map stand-in that loads the Google embed on click
      data-kenburns                 a slow 10s scale on a hero photo
+     data-fit                      a flex column in a fixed-height box; if its content is still taller
+                                   than the box, --fit steps down from 1 until it fits (type scales by it)
      data-stack                    a sticky card stack; each [data-stack-card] gets --cover 0..1 as the
                                    next card slides over it (and --cover-scale, 0 under reduced motion)
 
@@ -78,6 +80,34 @@
       }
       window.addEventListener('scroll', function () { if (!queued) { queued = true; requestAnimationFrame(pick); } }, { passive: true });
       pick();
+    });
+
+    /* ---- fit to the box ---------------------------------------------------------------------
+       Not motion, so it runs under reduced motion too. Most screens never need it: the CSS sizes
+       the type by viewport height. This catches the rest without a fixed list of breakpoints. */
+    [].slice.call(document.querySelectorAll('[data-fit]')).forEach(function (box) {
+      function need() {
+        var kids = box.children, top = Infinity, bottom = -Infinity;
+        for (var i = 0; i < kids.length; i++) {
+          var r = kids[i].getBoundingClientRect();
+          if (!r.height) continue;
+          top = Math.min(top, r.top); bottom = Math.max(bottom, r.bottom);
+        }
+        var cs = getComputedStyle(box);
+        return { content: bottom - top, room: box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) };
+      }
+      function fit() {
+        var k = 1; box.style.setProperty('--fit', '1');
+        for (var i = 0; i < 8; i++) {
+          var m = need();
+          if (m.content <= m.room) break;
+          k = Math.max(0.5, k * Math.max(0.8, m.room / m.content) * 0.98);
+          box.style.setProperty('--fit', k.toFixed(3));
+        }
+      }
+      fit();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(fit, 120); });
     });
 
     /* ---- the sticky card stack --------------------------------------------------------------- */

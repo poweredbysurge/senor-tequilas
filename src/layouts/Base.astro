@@ -197,6 +197,7 @@ const jsonLd = {
   <body data-route={route}>
     {preview && (
       <div data-preview-bar role="note" style="background: rgb(214, 188, 133); color: rgb(18, 18, 16); font-family: Barlow, 'Barlow Fallback', system-ui, sans-serif; font-weight: 700; font-size: 13px; line-height: 1.35; text-align: center; padding: 7px 16px;">Preview for Señor Tequila's review. This page is not published yet.</div>
+      <script is:inline>document.documentElement.style.setProperty('--pv', document.querySelector('[data-preview-bar]').offsetHeight + 'px');</script>
     )}
     <slot />
     <MobileMenu />

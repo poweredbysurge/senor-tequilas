@@ -123,7 +123,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <div class="ny-poster-media" aria-hidden="true">
           <img src={HERO.src} srcset="/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar-640.webp 640w, /images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp 1600w" sizes="100vw" alt="" width={HERO.w} height={HERO.h} fetchpriority="high" decoding="async" data-kenburns />
         </div>
-        <div class="ny-poster-inner">
+        <div class="ny-poster-inner" data-fit>
           <div class="ny-eyebrow">Thursday, December 31 · Germantown, MD · 3 PM to 2 AM</div>
           <div class="ny-cd"><Countdown target={COUNTDOWN_TARGET} until={COUNTDOWN_UNTIL} fallback="Thursday, December 31 · 9 PM" caption="9 PM. The masquerade begins in the bar area." /></div>
           <h1 class="ny-h1">New Year's Eve Dinner and Masquerade Party in <span style="white-space: nowrap;">Germantown, MD</span></h1>
@@ -135,7 +135,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
             <span style={CHIP}>Spanish and English, sound up</span>
             <span style={CHIP}>A champagne toast at midnight</span>
           </div>
-          <div class="ny-ctas">
+          <div class="ny-ctas ny-hero-ctas">
             <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
             <a href="#inquire" style={BTN_GHOST}>Book a Private Room</a>
             <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
@@ -296,21 +296,42 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
 
 <style>
   /* ---- 1. hero ---- */
-  .ny-hero { background: rgb(18, 18, 16); padding: clamp(14px, 2vw, 28px) clamp(14px, 2vw, 28px) clamp(28px, 4vw, 48px); border-bottom: 1px solid rgba(185, 156, 102, 0.2); }
-  .ny-hero-wrap { max-width: 1384px; margin: 0 auto; }
-  .ny-poster { overflow: hidden; }
+  /* The hero is exactly one screen: the viewport less the 63px sticky header and, while the page is
+     in preview, the gold bar (Base publishes its height as --pv). Everything inside scales with the
+     screen's height as well as its width, so a short window shrinks the type rather than pushing
+     the buttons below the fold. */
+  .ny-hero { background: rgb(18, 18, 16); padding: clamp(8px, 1.4vw, 20px); border-bottom: 1px solid rgba(185, 156, 102, 0.2); box-sizing: border-box; height: calc(100vh - 63px - var(--pv, 0px)); height: calc(100svh - 63px - var(--pv, 0px)); min-height: 460px; display: flex; }
+  .ny-hero-wrap { max-width: 1384px; margin: 0 auto; width: 100%; display: flex; }
+  /* .ny-poster is SignFrame's root, a different component, so the page's scoped selector never reached
+     it; :global under the page's own wrapper does */
+  .ny-hero-wrap :global(.ny-poster) { overflow: hidden; flex: 1; display: flex; }
   .ny-poster-media { position: absolute; inset: 0; overflow: hidden; }
   .ny-poster-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1); }
   .ny-poster-media img.is-kenburns { animation: nyKen 16s ease-in-out infinite alternate; }
   @keyframes nyKen { from { transform: scale(1); } to { transform: scale(1.1); } }
   .ny-poster-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(18, 18, 16, 0.78) 0%, rgba(18, 18, 16, 0.9) 60%, rgba(18, 18, 16, 0.97) 100%); }
-  .ny-poster-inner { position: relative; z-index: 1; text-align: center; padding: clamp(48px, 8vw, 110px) clamp(18px, 4.5vw, 64px); max-width: 1000px; margin: 0 auto; }
+  .ny-poster-inner { position: relative; z-index: 1; text-align: center; padding: clamp(14px, 3.2svh, 44px) clamp(18px, 4.5vw, 64px); max-width: 1000px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+  .ny-cd { margin-top: clamp(6px, 1.6svh, 18px); }
+  /* --fit is 1 unless SeasonalMotion's data-fit finds the content still taller than the screen (a very
+     short window), and then it steps the type down until it fits */
+  .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(36px, min(13vw, 13svh), 190px)); }
+  .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(26px, min(9vw, 9svh), 134px)); }
+  .ny-cd :global(.cd-fallback) { font-size: clamp(22px, min(4vw, 5svh), 56px); }
+  .ny-cd :global(.cd-l) { margin-top: clamp(2px, 0.8svh, 10px); }
+  .ny-cd :global(.cd-caption) { margin-top: clamp(6px, 1.4svh, 18px); font-size: 12px; }
   .ny-eyebrow { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
   .ny-cd { margin-top: clamp(18px, 3vw, 36px); }
-  .ny-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(28px, 4.4vw, 60px); line-height: 1.04; margin: clamp(20px, 3vw, 34px) auto 0; text-transform: uppercase; text-wrap: balance; max-width: 20ch; }
-  .ny-lead { font-size: 16px; line-height: 1.7; color: rgba(246, 239, 228, 0.9); margin: 18px auto 0; max-width: 62ch; text-wrap: pretty; }
-  .ny-facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(214, 188, 133, 0.35); }
+  .ny-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: calc(var(--fit, 1) * clamp(22px, min(4.4vw, 5svh), 60px)); line-height: 1.04; margin: clamp(10px, 2.4svh, 34px) auto 0; text-transform: uppercase; text-wrap: balance; max-width: 20ch; }
+  .ny-lead { font-size: calc(var(--fit, 1) * clamp(13px, 1.9svh, 16px)); line-height: 1.55; color: rgba(246, 239, 228, 0.9); margin: clamp(8px, 1.8svh, 18px) auto 0; max-width: 62ch; text-wrap: pretty; }
+  .ny-facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: clamp(10px, 2svh, 22px); padding-top: clamp(10px, 1.8svh, 18px); border-top: 1px solid rgba(214, 188, 133, 0.35); }
   .ny-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; justify-content: center; }
+  .ny-hero-ctas { margin-top: clamp(12px, 2.6svh, 26px); }
+  /* the fact chips restate the lead (they are aria-hidden), so they are what gives way when the
+     screen is short: phones, and windows under 960px tall */
+  @media (max-width: 767px), (max-height: 960px) { .ny-facts { display: none; } }
+  /* phones: Reserve full width, the other two side by side, so three buttons take two rows. The
+     doubled class outranks tweaks.css's one-column [data-mcta-row] rule, which Base adds on load. */
+  @media (max-width: 767px) { body[data-route] .ny-hero-ctas.ny-hero-ctas { grid-template-columns: 1fr 1fr !important; gap: 8px; } body[data-route] .ny-hero-ctas.ny-hero-ctas a:first-child { grid-column: 1 / -1; } body[data-route] .ny-hero-ctas.ny-hero-ctas a { padding-left: 8px !important; padding-right: 8px !important; font-size: 13px !important; } }
   /* the phone CTA layout Base.astro's mobileCtas() applies at runtime, set up front so nothing moves */
   @media (max-width: 767px) { .ny-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .ny-ctas a { width: 100%; justify-content: center; text-align: center; } }
 
@@ -329,7 +350,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   .ny-cream { background: rgb(246, 239, 228); color: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); scroll-margin-top: 70px; }
   .ny-cream-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 560px; }
   .ny-cream-copy { padding: clamp(40px, 6vw, 84px) clamp(18px, 4.5vw, 64px); align-self: center; }
-  .ny-cream-media { position: relative; min-height: 320px; }
+  .ny-cream-media { position: relative; min-height: 320px; overflow: hidden; }   /* clips the reveal scale-in, which pushed the page 8px wide */
   .ny-cream-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .ny-eyebrow-ink { display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(18, 18, 16, 0.75); }
   .ny-eyebrow-ink::before { content: ""; width: 26px; height: 1px; background: rgba(18, 18, 16, 0.6); }
