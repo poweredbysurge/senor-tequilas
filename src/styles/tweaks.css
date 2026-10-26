@@ -1004,6 +1004,15 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
     box-shadow: none !important;
   }
 
+  /* /birria-ramen is split the same way: on a phone the bowl now sits above the copy, not behind
+     it, and was asked to show at full brightness (Mario, 26 October). */
+  body[data-route="/birria-ramen"] section[data-screen-label="Birria ramen hero"] img {
+    filter: none !important;
+  }
+  body[data-route="/birria-ramen"] section[data-screen-label="Birria ramen hero"] {
+    box-shadow: none !important;
+  }
+
   /* /taco-tuesday paints its hero photograph on an inner div rather than an <img>. The other
      inner backgrounds inside heroes are the lucha collage texture, which is already dark. */
   body[data-route="/taco-tuesday"] section[data-screen-label="Taco hero"] [style*="eca8597506381a36"] {

@@ -19,6 +19,9 @@
     .sc-host:is(.hp, .ny, .br) .cs { text-align: center !important; justify-items: center; }
     .sc-host:is(.hp, .ny, .br) .rl { flex-wrap: wrap; }
 
+    /* ---- eyebrows that are flex rows with a rule line ("No prix fixe. No three choices.") ---- */
+    .sc-host.ny .ny-eyebrow-ink { justify-content: center; }
+
     /* ---- the December calendar's month and key ---- */
     .sc-host.hp .cal-head { justify-content: center !important; }
     .sc-host.hp .cal-key { justify-content: center; }
@@ -33,7 +36,8 @@
 
     /* ---- booking steps: numbers centred over each step; the vertical rail, which ran down the
        left edge to join them, has no left edge to run down any more ---- */
-    .sc-host.hp .hp-step-n { margin-left: auto; margin-right: auto; }
+    /* the number is inline-flex, which auto margins cannot centre; flex can */
+    .sc-host.hp .hp-step-n { display: flex !important; margin-left: auto; margin-right: auto; }
     .sc-host.hp .hp-steps-line { display: none; }
 
     /* ---- the inquiry form's header (Tomas's photo and line) stacks ---- */

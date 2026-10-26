@@ -4030,3 +4030,23 @@ The photos had never taken their 4:3 crop: the `height` attribute on each img (9
 becomes a CSS height, and aspect-ratio is ignored when a height is set, so they rendered at full
 portrait height (700 to 920px tall). Fixed on phones with `height: auto`. Desktop and tablet have
 the same fault and are left as they are pending Mario's call, since this change was phones only.
+
+## 130. Eight phone-only changes to the three preview pages, 26 October
+
+Mario's list, every change below 768 only. Holiday Parties: the Indoor Patio card shows the photo
+/private-parties uses for that room (`abf153efda62144c.jpg`, the covered patio with the luchador
+bar cart) through a `phonePhoto` field and an `.hp-phone-photo` that is `display: none` at 768 and
+up, so the lazy image never loads on desktop, which keeps its placeholder; the four room cards get
+a darker, earlier scrim behind the copy; the booking step numbers centre (they were inline-flex,
+which auto margins cannot centre, so entry 127's margins did nothing); the "Come see the room" form
+runs edge to edge with no rounded corners or side borders. New Year's Eve: the "No prix fixe. No
+three choices." eyebrow centres. Birria Ramen: the hero shows the bowl first, then the copy, with
+no $21 badge and at full brightness (an exemption added to tweaks.css section 39, which dims every
+phone hero to 42% and lays a 45% shade over it, the same exemption /friendsgiving has); Order
+Takeout, DoorDash, Uber Eats and Grubhub are all 52px tall, 12px radius, 15px type, full width; the
+"Where the bowl is" map is the real Google embed the Gaithersburg page uses, shown straight away,
+while desktop keeps the click-to-load stand-in and never requests the embed.
+
+Desktop verified identical by computed style of every element at 768, 1024 and 1440 on the three
+pages plus /friendsgiving and /happy-hour (which share the edited tweaks.css section), against a
+build of the previous commit. Neither the phone photo nor the phone map is requested at 1440.

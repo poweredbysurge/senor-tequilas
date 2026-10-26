@@ -52,6 +52,8 @@ const DELIVERY = [
   ['Uber Eats', 'https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA'],
   ['Grubhub', 'https://www.grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303'],
 ];
+const MAP_ADDRESS = `${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion} ${business.postalCode}`;
+const PHONE_MAP_SRC = `https://maps.google.com/maps?q=${encodeURIComponent(MAP_ADDRESS)}&z=15&output=embed`;
 const MAP_EMBED = 'https://www.google.com/maps?q=' + encodeURIComponent(`${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion} ${business.postalCode}`) + '&output=embed';
 const BOWL = [
   { name: 'Birria beef', sub: 'Braised 8 hours, piled on' },
@@ -240,6 +242,9 @@ const dishLd = [
           <div class="br-map" data-map-facade data-map-src={MAP_EMBED}>
             <div class="br-map-art" aria-hidden="true"><span class="br-map-pin"></span><span class="br-map-ring"></span></div>
             <button type="button" data-map-title={`Map of ${business.name}, ${business.streetAddress}`}>Load the map<small>{business.streetAddress}, {business.addressLocality}, {business.addressRegion}</small></button>
+            {/* phones: the real embed, the same one /mexican-restaurant-gaithersburg-md uses, shown straight
+                away. Hidden at 768 and up, where the click-to-load stand-in stays, so it never loads there. */}
+            <iframe class="br-map-phone" data-real-map src={PHONE_MAP_SRC} title={`Map to ${business.name}, ${MAP_ADDRESS}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
         </SignFrame>
       </div>
@@ -343,6 +348,9 @@ const dishLd = [
   .br-badge.is-rocking { animation: brRock 1100ms cubic-bezier(.34,1.56,.64,1) both; }
   @keyframes brRock { 0% { transform: rotate(-6deg) scale(0.96); } 45% { transform: rotate(13deg) scale(1.03); } 75% { transform: rotate(5deg); } 100% { transform: rotate(8deg) scale(1); } }
   @media (max-width: 767px) { .br-hero-grid { grid-template-columns: 1fr; } .br-h1-big { font-size: clamp(54px, 17vw, 96px); } .br-badge { top: -14px; right: 6px; } .br-hero-copy { text-align: left !important; } }
+  /* phones: the bowl first, then the copy, and no $21 badge (Mario, 26 October). The photo's full
+     brightness comes from an exemption in tweaks.css section 39. */
+  @media (max-width: 767px) { .br-hero-media { order: -1; } .br-badge { display: none; } }
 
   /* ---- 2. tiles ---- */
   .br-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
@@ -379,6 +387,11 @@ const dishLd = [
   .br-delivery { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .br-delivery a { display: inline-flex; align-items: center; border: 1px solid rgba(214, 188, 133, 0.55); color: rgb(234, 226, 214); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; text-decoration: none; min-height: 36px; }
   .br-delivery a:hover, .br-delivery a:focus-visible { border-color: rgb(214, 188, 133); color: rgb(246, 239, 228); }
+  /* phones: DoorDash, Uber Eats and Grubhub take Order Takeout's size, radius and type, one per row */
+  @media (max-width: 767px) {
+    .br-delivery { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 12px; }
+    .br-delivery a { justify-content: center; width: 100%; box-sizing: border-box; min-height: 52px; padding: 16px 24px; border-radius: 12px !important; border: 1.5px solid rgba(185, 156, 102, 0.75); font-family: inherit; font-weight: 700; font-size: 15px !important; letter-spacing: 0 !important; }
+  }
   .br-map { position: relative; margin-top: 22px; aspect-ratio: 16 / 7; border-radius: 12px; overflow: hidden; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); }
   .br-map-art { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(214, 188, 133, 0.06) 0 1px, transparent 1px 28px), repeating-linear-gradient(90deg, rgba(214, 188, 133, 0.06) 0 1px, transparent 1px 28px), rgb(24, 23, 20); }
   .br-map-pin { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: rgb(56, 176, 73); box-shadow: 0 0 0 4px rgba(56, 176, 73, 0.25); }
@@ -388,6 +401,8 @@ const dishLd = [
   .br-map button:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: -4px; }
   .br-map[data-map-loaded] .br-map-art, .br-map[data-map-loaded] button { display: none; }
   @media (max-width: 767px) { .br-panels { grid-template-columns: 1fr; } .br-map { aspect-ratio: 16 / 10; } }
+  .br-map-phone { display: none !important; }
+  @media (max-width: 767px) { .br-map-phone { display: block !important; z-index: 2; } .br-map .br-map-art, .br-map button { display: none; } }
 
   /* ---- 7. story ---- */
   .br-quote { margin: 22px 0 0; }
