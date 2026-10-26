@@ -1,0 +1,406 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+import business from '../data/business.json';
+import { roundedTotal } from '../lib/reviews.js';
+import SeasonalMotion from '../components/seasonal/SeasonalMotion.astro';
+import SignFrame from '../components/seasonal/SignFrame.astro';
+import MenuBoard from '../components/seasonal/MenuBoard.astro';
+import CountStat from '../components/seasonal/CountStat.astro';
+import Placeholder from '../components/seasonal/Placeholder.astro';
+import RatingLine from '../components/seasonal/RatingLine.astro';
+import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
+import Faq from '../components/seasonal/Faq.astro';
+import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, FRAME, IMG, PHONE_DISPLAY, PHONE_HREF, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
+
+/*
+  /birria-ramen, concept 3c "Painted Sign" (design/concepts/2026-10-25-selected). In PREVIEW:
+  listed in src/data/preview-pages.ts, so it is noindex, out of the sitemap, carries the preview
+  bar, and nothing on the site links to it yet (the dish strip and the homepage dish card wait for
+  the publish step). Copy is verbatim from design/copy/holiday-pages-copy-2026-10-24.md, page D;
+  the mock's condensed text is never used.
+
+  PRICES ARE ALLOWED ON THIS PAGE: $21 and the $7 happy hour comparison are the copy's own.
+*/
+const PAGE = '/birria-ramen';
+const PAGE_URL = business.siteUrl + PAGE;
+// The Local section states the address and the full weekly hours in a sentence. If business.json
+// moves either, the build stops here rather than letting this page go quietly wrong.
+assertFacts(PAGE, {
+  street: '20021 Century Blvd',
+  phone: '301-569-4574',
+  hours: [
+    { days: ['Monday', 'Tuesday', 'Wednesday'], opens: '15:00', closes: '22:00' },
+    { days: ['Thursday'], opens: '15:00', closes: '00:00' },
+    { days: ['Friday'], opens: '15:00', closes: '01:00' },
+    { days: ['Saturday'], opens: '11:00', closes: '01:00' },
+    { days: ['Sunday'], opens: '11:00', closes: '22:00' },
+  ],
+});
+
+const HERO = { src: '/images/dishes/birria-ramen.jpg', w: 1265, h: 929, alt: 'A bowl of birria ramen: noodles in red consommé with shredded birria beef, corn, sliced radish and cilantro, limes on the side' };
+const BIRRIA = { src: '/images/dishes/quesabirrias-hero.jpg', w: 1588, h: 751, alt: 'Quesabirria tacos topped with radish and cilantro, with cups of consommé and salsa and wedges of lime' };
+const BROTHERS = { src: '/images/site/brothers.jpg', w: 1600, h: 1600, alt: 'Alex and Roberto Rivas, the brothers who own Señor Tequila\'s, side by side' };
+const REVIEW = { name: 'Matt P.', text: "Easiest decision, we're coming back! The Birria Ramen is amazing. But every dish that came by looks phenomenal. Wish we had room for dessert." };
+// PENDING ROBERTO Q3: this first-person quote is awaiting his OK. If he declines, replace it with
+// his original third-person wording.
+const ROBERTO_QUOTE = 'He would drive by my house every two days with a fresh batch of birria and handmade tortillas and leave it on top of my trunk. After about fifteen recipes, this one was chosen, then perfected.';
+const DELIVERY = [
+  ['DoorDash', 'https://www.doordash.com/store/tequilas-germantown-1382099/87487565/'],
+  ['Uber Eats', 'https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA'],
+  ['Grubhub', 'https://www.grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303'],
+];
+const MAP_EMBED = 'https://www.google.com/maps?q=' + encodeURIComponent(`${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion} ${business.postalCode}`) + '&output=embed';
+const BOWL = [
+  { name: 'Birria beef', sub: 'Braised 8 hours, piled on' },
+  { name: 'Ramen noodles', sub: 'Japanese, wheat, underneath' },
+  { name: 'Consommé', sub: 'Ladled over everything' },
+  { name: 'Corn, radish, onion', sub: 'On top' },
+  { name: 'Cilantro', sub: 'On top' },
+  { name: 'Limes', sub: 'On the side, to cut it' },
+];
+const DRINKS = [
+  { name: 'Michelada', sub: 'Cold and carbonated' },
+  { name: 'Mexican Coke', sub: 'Cold and carbonated' },
+  { name: 'Negra Modelo', sub: 'Cold and carbonated' },
+];
+
+const FAQ = [
+  { q: 'What is birria ramen?',
+    a: "Birria ramen is a bowl of Japanese ramen noodles in birria consommé, topped with the braised birria meat, corn, radish, onion and cilantro, with lime on the side. At Señor Tequila's the birria is beef braised for eight hours with guajillo, chile de árbol, cloves and garlic. It has been on the menu since 2021." },
+  { q: 'How much is the birria ramen, and how big is it?',
+    a: '$21, and it is a full meal for one person. Most people do not finish the bowl. It is not on the happy hour menu. It is available at full price any time we are open.' },
+  { q: 'Is birria ramen spicy?',
+    a: 'Ours is mild as served. The guajillo and chile de árbol in the braise are there for depth, not heat. If you want it hotter, ask for salsa diabla and we will bring it to the table or pack it with your takeout.' },
+  { q: 'Does the birria ramen have allergens?',
+    a: 'The ramen noodles are wheat. Tell your server about any other allergy and the kitchen will walk you through the bowl.' },
+  { q: 'Can I get birria ramen for takeout or delivery?',
+    a: 'Yes. It travels well because the consommé is packed separately. Order pickup through Toast up to 15 minutes before close, or delivery through DoorDash, Uber Eats or Grubhub.' },
+  { q: 'What is the difference between birria ramen and birria tacos?',
+    a: 'Same eight-hour beef braise, same consommé. The tacos put the meat in a handmade tortilla with the consommé on the side for dipping. The ramen puts the meat and consommé over noodles so the broth is in every bite. Many guests order one of each for the table.' },
+  { q: 'What should I drink with birria ramen?',
+    a: 'Something cold and carbonated: a michelada, a Mexican Coke, or a Negra Modelo. The bowl is rich, and the bubbles reset your palate between bites.' },
+];
+
+// /menu outputs no Menu node, so the dish stands on its own, with a stable @id the menu can point
+// at later instead of repeating it
+const ROBERTO_ID = business.siteUrl + '/our-story#roberto-rivas';
+const dishLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MenuItem',
+    '@id': PAGE_URL + '#menuitem',
+    name: 'Birria Ramen',
+    description: 'Beef braised eight hours in guajillo and chile de árbol, Japanese ramen noodles, birria consommé, corn, radish, onion, cilantro and lime. Mild as served.',
+    image: business.siteUrl + HERO.src,
+    url: PAGE_URL,
+    offers: { '@type': 'Offer', price: '21', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
+    menuAddOn: { '@type': 'MenuItem', name: 'Salsa diabla' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': ROBERTO_ID,
+    name: 'Roberto Rivas',
+    jobTitle: 'Co-owner',
+    worksFor: { '@id': RESTAURANT_ID },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Quotation',
+    text: ROBERTO_QUOTE,
+    creator: { '@id': ROBERTO_ID },
+    about: { '@id': PAGE_URL + '#menuitem' },
+  },
+];
+---
+<Base title="Birria Ramen in Germantown, Maryland | Señor Tequila's" description="Birria ramen, $21: beef braised eight hours in guajillo and chile de árbol, Japanese ramen noodles, consommé, corn, radish, lime. Mild as served. Dine in or take out." canonical={PAGE_URL} ogImage={HERO.src} route={PAGE}>
+<div class="sc-host br" data-sc-name="Birria Ramen" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
+  <Header5 />
+
+  <!-- 1. the sign-frame hero -->
+  <section data-screen-label="Birria ramen hero" class="br-hero">
+    <div class="br-wrap">
+      <SignFrame tone="dark" class="br-sign" padding="clamp(26px, 4vw, 56px)">
+        <div class="br-sign-top"><span>On the menu since 2021 · $21 · Dine in, takeout, delivery</span></div>
+        <div class="br-hero-grid">
+          <div class="br-hero-copy">
+            <div class="br-kicker">The one that makes people take a photo first</div>
+            <h1 class="br-h1"><span class="br-h1-big">Birria Ramen</span> <span class="br-h1-sub"><i></i>in Germantown, Maryland<i></i></span></h1>
+            <p class="br-lead">Beef braised for eight hours in guajillo and chile de árbol. Japanese ramen noodles. A consommé that took as long as the meat. One bowl, $21, and most people do not finish it.</p>
+            <div class="br-ctas">
+              <a href={business.orderUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Order Takeout</a>
+              <a href="/menu" style={BTN_GHOST}>See the Menu</a>
+              <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+            </div>
+          </div>
+          <div class="br-hero-media">
+            <div style={`${FRAME} aspect-ratio: 4 / 5;`}>
+              <img src={HERO.src} srcset="/images/dishes/birria-ramen-800.webp 800w, /images/dishes/birria-ramen.jpg 1265w" sizes="(max-width: 767px) 92vw, min(42vw, 500px)" alt={HERO.alt} width={HERO.w} height={HERO.h} fetchpriority="high" decoding="async" style={`${IMG} object-position: center 45%;`} />
+            </div>
+            <div class="br-badge" data-badge-rock aria-hidden="true"><span class="br-badge-n">$21</span><span class="br-badge-l">A full meal</span></div>
+          </div>
+        </div>
+      </SignFrame>
+    </div>
+  </section>
+
+  <!-- 2. four fact tiles -->
+  <section data-screen-label="Fact tiles" class="br-sec" style="padding-top: 0; border-top: 0;">
+    <div class="br-wrap">
+      <ul class="br-tiles">
+        <li><div class="br-tile-n"><span data-countup="8" data-suffix=" hrs">8 hrs</span></div><div class="br-tile-t">In the braise</div><div class="br-tile-s">Guajillo, chile de árbol, cloves, garlic</div></li>
+        <li><div class="br-tile-n">Mild</div><div class="br-tile-t">As served</div><div class="br-tile-s">Ask for salsa diabla</div></li>
+        <li><div class="br-tile-n"><span data-countup="21" data-prefix="$">$21</span></div><div class="br-tile-t">A full meal</div><div class="br-tile-s">Most people do not finish the bowl</div></li>
+        <li><div class="br-tile-n">2021</div><div class="br-tile-t">On the menu since</div><div class="br-tile-s">A top ten seller since</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. what is in the bowl, as a menu board beside the photograph -->
+  <section id="bowl" data-screen-label="The bowl" class="br-sec">
+    <div class="br-wrap">
+      <div class="br-split">
+        <div style={`${FRAME} aspect-ratio: 1 / 1;`}>
+          <img src={HERO.src} alt="The birria ramen bowl from above: noodles, shredded beef, corn, radish and cilantro in the red consommé" width={HERO.w} height={HERO.h} loading="lazy" decoding="async" style={`${IMG} object-position: 58% 40%; transform: scale(1.18); transform-origin: 58% 40%;`} />
+        </div>
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>What is in it</div>
+          <h2 style={H2}>What Is in the Bowl</h2>
+          <div style="margin-top: 22px;"><MenuBoard items={BOWL} /></div>
+          <p style={P}>Birria meat, piled on. Japanese ramen noodles underneath. Corn, radish, onion and cilantro on top. A ladle of birria consommé over all of it, and limes on the side to cut it when you are ready.</p>
+          <p style={P}>It is a full meal for one person. Roberto's words: "You will not be hungry afterwards." Most people do not finish the bowl, and the ones who do ask for a pillow.</p>
+          <p style={P}>It arrives mild. The chiles in the braise give it depth, not fire. Want it hotter? Ask for salsa diabla and we will bring it.</p>
+          <p style={P}>The noodles are wheat. If that matters to you, it matters here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. the braise: the spice word chain, then the photograph -->
+  <section id="birria" data-screen-label="The birria" class="br-sec">
+    <div class="br-wrap" style="text-align: center;">
+      <div style={`${EYEBROW} justify-content: center;`}><span style={RULE}></span>Eight hours before it meets a noodle<span style={RULE}></span></div>
+      <h2 style={`${H2} margin-left: auto; margin-right: auto;`}>How the Birria Is Made</h2>
+      <p class="br-chain" aria-hidden="true"><span>Chile guajillo</span><i>✦</i><span>Chile de árbol</span><i>✦</i><span>Cloves</span><i>✦</i><span>Garlic</span><i>✦</i><span>Eight hours</span><i>✦</i><span class="is-muted">and the rest of a spice list the brothers are not going to type out for a website</span></p>
+      <div class="br-braise-copy">
+        <p style={P}>Tender beef, braised for eight hours with chile guajillo, chile de árbol, cloves, garlic, and the rest of a spice list the brothers are not going to type out for a website. The meat falls apart. The liquid it cooked in becomes the consommé, and that consommé is why the bowl works: it is the same red broth you dip a quesabirria taco into, except here the noodles soak it up for you.</p>
+        <p style={P}>If you know our <a href="/birria-tacos" style={LINK}>birria tacos and quesabirria</a>, this is the same braise in a different shape. If you do not, start with the ramen. It is the one that makes people take a photo first.</p>
+        <p style={P}>The Birria Pizza is moving to takeout only, so if that was your order, the <a href="/takeout-delivery" style={LINK}>takeout page</a> is where it lives now.</p>
+      </div>
+      <figure class="br-braise-fig">
+        <div style={`${FRAME} aspect-ratio: 2 / 1;`}><img src={BIRRIA.src} alt={BIRRIA.alt} width={BIRRIA.w} height={BIRRIA.h} loading="lazy" decoding="async" style={IMG} /></div>
+        <figcaption class="br-cap">The same braise and the same consommé, on the quesabirria tacos</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 5. drinks, as a menu board on the cream field -->
+  <section id="drink" data-screen-label="The drink" class="br-cream">
+    <div class="br-wrap">
+      <SignFrame tone="cream" class="br-drinks">
+        <div class="br-sign-top br-sign-top-ink"><span>Cold and carbonated</span></div>
+        <div class="br-split" style="align-items: start;">
+          <div>
+            <h2 class="br-h2-ink">What to Drink With It</h2>
+            <p class="br-p-ink">A cold michelada. A Mexican Coke. A Negra Modelo. Roberto's rule is anything cold and carbonated, because the bowl is rich and the bubbles reset your mouth between bites.</p>
+            <p class="br-p-ink">The Birria Ramen is not on the <a href="/happy-hour" class="br-link-ink">happy hour</a> menu. It is a $21 dinner, not a $7 snack, and it is on the menu at full price every hour we are open. The happy hour drinks are, though, 3 to 6, Monday to Friday, in the bar area. <a href="/margaritas" class="br-link-ink">The margaritas</a></p>
+          </div>
+          <div>
+            <MenuBoard items={DRINKS} tone="cream" numbered={false} />
+            <div class="br-drink-ph">
+              <Placeholder label="Michelada with a salted rim. Portrait 3:4." ratio="3 / 4" />
+              <Placeholder label="Mexican Coke bottle on ice. Portrait 3:4." ratio="3 / 4" />
+              <Placeholder label="Negra Modelo, poured. Portrait 3:4." ratio="3 / 4" />
+            </div>
+          </div>
+        </div>
+      </SignFrame>
+    </div>
+  </section>
+
+  <!-- 6. two sign panels: order it in, and where the bowl is -->
+  <section id="takeout" data-screen-label="Takeout and local" class="br-sec">
+    <div class="br-wrap">
+      <div class="br-panels">
+        <SignFrame tone="dark" class="br-panel">
+          <div style={EYEBROW}><span style={RULE}></span>It travels</div>
+          <h2 style={H2}>Order It In</h2>
+          <p style={P}>Birria ramen is one of the few noodle dishes that travels well, because the consommé goes in its own container and the noodles do not sit in it until you say so. Roberto's words: "Travels great. Available in every way."</p>
+          <p style={P}>Pickup through <a href="/takeout-delivery" style={LINK}>Toast</a> up to 15 minutes before close. Delivery through DoorDash, Uber Eats and Grubhub. And if you want the braise without the noodles, birria goes home by itself too, along with tamales, pozole and handmade tortillas.</p>
+          <div class="br-ctas" style="margin-top: 22px;"><a href={business.orderUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Order Takeout</a></div>
+          <div class="br-delivery">{DELIVERY.map(([n, u]) => <a href={u} target="_blank" rel="noopener">{n}</a>)}</div>
+        </SignFrame>
+        <SignFrame tone="dark" class="br-panel" id="local">
+          <div style={EYEBROW}><span style={RULE}></span>Where the bowl is</div>
+          <h2 style={H2}>Birria Ramen in Germantown, Ten Minutes From Gaithersburg</h2>
+          <p style={P}>We are at 20021 Century Blvd in Germantown, Maryland, next to Topgolf, with free parking at the door. Gaithersburg and Montgomery Village are about ten minutes away. Clarksburg, Boyds, Urbana and Frederick are the drive people tell us they make for this bowl.</p>
+          <p style={P}>Open Monday to Friday from 3 PM, Saturday and Sunday from 11 AM. Sunday to Wednesday until 10 PM, Thursday until midnight, Friday and Saturday until 1 AM. <a href="/late-night" style={LINK}>Late night</a></p>
+          <div class="br-ctas" style="margin-top: 22px;"><a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a></div>
+          <div class="br-map" data-map-facade data-map-src={MAP_EMBED}>
+            <div class="br-map-art" aria-hidden="true"><span class="br-map-pin"></span><span class="br-map-ring"></span></div>
+            <button type="button" data-map-title={`Map of ${business.name}, ${business.streetAddress}`}>Load the map<small>{business.streetAddress}, {business.addressLocality}, {business.addressRegion}</small></button>
+          </div>
+        </SignFrame>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. the story, two columns with the typewriter quote -->
+  <section id="story" data-screen-label="The story" class="br-sec">
+    <div class="br-wrap">
+      <div class="br-split" style="align-items: center;">
+        <div style={`${FRAME} aspect-ratio: 1 / 1;`}><img src={BROTHERS.src} alt={BROTHERS.alt} width={BROTHERS.w} height={BROTHERS.h} loading="lazy" decoding="async" style={IMG} /></div>
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>2020</div>
+          <h2 style={H2}>Fifteen Recipes and the Trunk of a Car</h2>
+          <p style={P}>Alex Rivas loves caldos. Stews, broths, anything that takes a day. During the 2020 lockdown, with the dining rooms dark, he started cooking birria at home and testing it on the one critic he trusted.</p>
+          <p style={P}>Every two days he drove to his brother Roberto's house with a fresh batch of birria and a stack of handmade tortillas, and left them on the trunk of Roberto's car, because that was the closest two people were allowed to get. Roberto ate. Alex adjusted. About fifteen recipes later, one of them was the one.</p>
+          <p style={P}>It went on the menu in 2021. It has been a top ten seller since. Frequent guests mention it way too often, which we take as a compliment.</p>
+          {/* PENDING ROBERTO Q3: first-person quote awaiting his OK (see ROBERTO_QUOTE above). */}
+          <figure class="br-quote">
+            <blockquote>"{ROBERTO_QUOTE}"</blockquote>
+            <figcaption>Roberto Rivas, co-owner</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. proof, as a ruled band -->
+  <section id="proof" data-screen-label="Proof" class="br-sec">
+    <div class="br-wrap">
+      <div class="br-proof">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>{roundedTotal(business.reviews.total).replace('over', 'Over')} reviews</div>
+          <h2 style={H2}>Do Not Take Our Word for It</h2>
+          <p style={P}>Our Google reviews mention the birria more than any other dish except the quesabirria. {business.reviews.rating} stars across {roundedTotal(business.reviews.total)} of them. Family-owned by the Rivas brothers, Roberto and Alex, in Germantown since 2015.</p>
+          <div style="margin-top: 20px;"><RatingLine /></div>
+        </div>
+        <ReviewQuote name={REVIEW.name} text={REVIEW.text} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. FAQ, two columns of cards -->
+  <section id="faq" data-screen-label="Birria ramen FAQ" class="br-sec">
+    <div class="br-wrap">
+      <h2 style={`${H2} margin: 0 auto; text-align: center;`}>Birria Ramen, Answered</h2>
+      <div style="margin-top: 26px;"><Faq items={FAQ} columns={2} /></div>
+    </div>
+  </section>
+
+  <!-- 10. come hungry, in the same frame as the hero -->
+  <section data-screen-label="Close" class="br-sec">
+    <div class="br-wrap">
+      <SignFrame tone="dark" class="br-close" padding="clamp(40px, 7vw, 96px) clamp(18px, 4.5vw, 64px)">
+        <h2 class="br-close-h2"><span>Come</span><span class="is-gold">Hungry</span></h2>
+        <p style={`${P} margin-left: auto; margin-right: auto; text-align: center;`}>One bowl, eight hours of work, $21. Dine in, pick it up, or have it brought to you.</p>
+        <div class="br-ctas" style="justify-content: center; margin-top: 24px;">
+          <a href={business.orderUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Order Takeout</a>
+          <a href="/menu" style={BTN_GHOST}>See the Menu</a>
+          <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+        </div>
+      </SignFrame>
+    </div>
+  </section>
+
+  {dishLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd(FAQ))} />
+
+  <Footer2 />
+</div>
+<SeasonalMotion />
+
+<style>
+  .br-wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(18px, 4.5vw, 48px); }
+  .br-sec { background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0; scroll-margin-top: 70px; }
+  .br-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .br-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  /* the phone CTA layout Base.astro's mobileCtas() applies at runtime, set up front so nothing moves */
+  @media (max-width: 767px) { .br-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .br-ctas a { width: 100%; justify-content: center; text-align: center; } }
+  @media (max-width: 767px) { .br-split { grid-template-columns: 1fr; } }
+
+  /* ---- 1. hero ---- */
+  .br-hero { background: rgb(18, 18, 16); padding: clamp(18px, 3vw, 40px) 0 clamp(18px, 3vw, 32px); }
+  .br-sign-top { position: absolute; top: -11px; left: 0; right: 0; text-align: center; pointer-events: none; }
+  .br-sign-top span { display: inline-block; background: rgb(18, 18, 16); padding: 0 14px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .br-sign-top span::before, .br-sign-top span::after { content: "★"; margin: 0 10px; font-size: 10px; }
+  .br-sign-top-ink span { background: rgb(246, 239, 228); color: rgb(18, 18, 16); }
+  .br-hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .br-kicker { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(234, 226, 214, 0.75); }
+  .br-h1 { margin: 14px 0 0; text-transform: uppercase; color: rgb(246, 239, 228); line-height: 1; display: grid; gap: 14px; }
+  .br-h1-big { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(54px, 10.5vw, 150px); line-height: 0.88; letter-spacing: -0.01em; display: block; }
+  .br-h1-big::first-line { color: rgb(246, 239, 228); }
+  .br-h1-sub { display: flex; align-items: center; gap: 14px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: clamp(14px, 1.4vw, 18px); letter-spacing: 0.2em; color: rgb(214, 188, 133); }
+  .br-h1-sub i { flex: 1 1 auto; height: 1px; background: rgba(214, 188, 133, 0.6); max-width: 120px; }
+  .br-lead { font-size: 16px; line-height: 1.7; color: rgba(246, 239, 228, 0.9); margin: 18px 0 0; max-width: 54ch; text-wrap: pretty; }
+  .br-hero-copy .br-ctas { margin-top: 24px; }
+  .br-hero-media { position: relative; }
+  .br-badge { position: absolute; top: -18px; right: -14px; width: clamp(110px, 11vw, 150px); height: clamp(110px, 11vw, 150px); border-radius: 50%; background: rgb(214, 188, 133); color: rgb(18, 18, 16); display: grid; place-items: center; align-content: center; transform: rotate(8deg); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, 0.7); }
+  .br-badge-n { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(32px, 3.4vw, 48px); line-height: 1; }
+  .br-badge-l { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 4px; }
+  .br-badge.is-rocking { animation: brRock 1100ms cubic-bezier(.34,1.56,.64,1) both; }
+  @keyframes brRock { 0% { transform: rotate(-6deg) scale(0.96); } 45% { transform: rotate(13deg) scale(1.03); } 75% { transform: rotate(5deg); } 100% { transform: rotate(8deg) scale(1); } }
+  @media (max-width: 767px) { .br-hero-grid { grid-template-columns: 1fr; } .br-h1-big { font-size: clamp(54px, 17vw, 96px); } .br-badge { top: -14px; right: 6px; } .br-hero-copy { text-align: left !important; } }
+
+  /* ---- 2. tiles ---- */
+  .br-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .br-tiles li { border: 1.5px solid rgba(214, 188, 133, 0.7); border-radius: 12px; padding: 22px 18px; text-align: center; }
+  .br-tile-n { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(34px, 3.6vw, 52px); line-height: 1; color: rgb(214, 188, 133); font-variant-numeric: tabular-nums; }
+  .br-tile-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 16px; color: rgb(246, 239, 228); margin-top: 10px; }
+  .br-tile-s { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(234, 226, 214, 0.65); margin-top: 6px; }
+  @media (max-width: 767px) { .br-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* ---- 4. braise ---- */
+  .br-chain { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(20px, 2.6vw, 34px); line-height: 1.4; color: rgb(246, 239, 228); margin: 22px auto 0; max-width: 900px; text-transform: none; }
+  .br-chain i { color: rgb(214, 188, 133); font-style: normal; font-size: 0.6em; margin: 0 0.5em; vertical-align: middle; }
+  .br-chain .is-muted { color: rgba(234, 226, 214, 0.45); font-size: 0.72em; }
+  .br-braise-copy { max-width: 720px; margin: 0 auto; text-align: left; }
+  .br-braise-copy p { margin-left: auto; margin-right: auto; }
+  .br-braise-fig { margin: 30px 0 0; }
+  .br-cap { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(234, 226, 214, 0.65); margin-top: 10px; }
+
+  /* ---- 5. drinks on cream ---- */
+  .br-cream { background: rgb(246, 239, 228); color: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0; scroll-margin-top: 70px; }
+  .br-h2-ink { color: rgb(18, 18, 16); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(26px, 4.6vw, 42px); line-height: 1.04; margin: 0; text-transform: uppercase; text-wrap: balance; }
+  .br-p-ink { font-size: 15px; line-height: 1.7; color: rgba(18, 18, 16, 0.82); margin: 14px 0 0; max-width: 54ch; text-wrap: pretty; }
+  .br-link-ink { color: rgb(18, 18, 16); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .br-drink-ph { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+  .br-drink-ph :global(.ph) { background: rgb(232, 224, 210); border-color: rgba(18, 18, 16, 0.35); }
+  .br-drink-ph :global(.ph img) { opacity: 0.18; }
+  .br-drink-ph :global(.ph-label) { color: rgba(18, 18, 16, 0.75); }
+  .br-drink-ph :global(.ph-label span) { color: rgb(18, 18, 16); }
+
+  /* ---- 6. panels ---- */
+  .br-panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+  .br-delivery { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .br-delivery a { display: inline-flex; align-items: center; border: 1px solid rgba(214, 188, 133, 0.55); color: rgb(234, 226, 214); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; text-decoration: none; min-height: 36px; }
+  .br-delivery a:hover, .br-delivery a:focus-visible { border-color: rgb(214, 188, 133); color: rgb(246, 239, 228); }
+  .br-map { position: relative; margin-top: 22px; aspect-ratio: 16 / 7; border-radius: 12px; overflow: hidden; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); }
+  .br-map-art { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(214, 188, 133, 0.06) 0 1px, transparent 1px 28px), repeating-linear-gradient(90deg, rgba(214, 188, 133, 0.06) 0 1px, transparent 1px 28px), rgb(24, 23, 20); }
+  .br-map-pin { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: rgb(56, 176, 73); box-shadow: 0 0 0 4px rgba(56, 176, 73, 0.25); }
+  .br-map-ring { position: absolute; left: 50%; top: 50%; width: 46%; aspect-ratio: 1; transform: translate(-50%, -50%); border: 1px dashed rgba(214, 188, 133, 0.5); border-radius: 50%; }
+  .br-map button { position: absolute; inset: 0; width: 100%; background: transparent; border: 0; cursor: pointer; display: grid; place-items: center; align-content: center; gap: 4px; color: rgb(246, 239, 228); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .br-map button small { font-family: Barlow, 'Barlow Fallback', sans-serif; font-weight: 400; font-size: 13px; letter-spacing: 0; text-transform: none; color: rgba(234, 226, 214, 0.75); }
+  .br-map button:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: -4px; }
+  .br-map[data-map-loaded] .br-map-art, .br-map[data-map-loaded] button { display: none; }
+  @media (max-width: 767px) { .br-panels { grid-template-columns: 1fr; } .br-map { aspect-ratio: 16 / 10; } }
+
+  /* ---- 7. story ---- */
+  .br-quote { margin: 22px 0 0; }
+  .br-quote blockquote { margin: 0; font-family: 'Special Elite', 'Special Elite Fallback', 'Courier New', monospace; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: rgb(214, 188, 133); }
+  .br-quote figcaption { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(234, 226, 214, 0.7); margin-top: 10px; }
+
+  /* ---- 8. proof band ---- */
+  .br-proof { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; padding: clamp(24px, 3vw, 40px) 0; border-top: 1px solid rgba(214, 188, 133, 0.35); border-bottom: 1px solid rgba(214, 188, 133, 0.35); }
+  @media (max-width: 767px) { .br-proof { grid-template-columns: 1fr; } }
+
+  /* ---- 10. close ---- */
+  .br-close { text-align: center; }
+  .br-close-h2 { margin: 0; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(56px, 11vw, 168px); line-height: 0.88; text-transform: uppercase; color: rgb(246, 239, 228); display: grid; }
+  .br-close-h2 .is-gold { color: rgb(214, 188, 133); }
+</style>
+
+</Base>

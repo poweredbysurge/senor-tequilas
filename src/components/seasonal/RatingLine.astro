@@ -1,0 +1,25 @@
+---
+/* "4.6" with a star row whose fifth star is filled to 60 percent, never five solid stars for a
+   4.6, and the live count from roundedTotal(). No rating schema anywhere near it. */
+import business from '../../data/business.json';
+import { roundedTotal } from '../../lib/reviews.js';
+const { tone = 'dark', trailing = '' } = Astro.props;
+const rating = Number(business.reviews.rating);
+const fill = Math.max(0, Math.min(100, (rating - 4) * 100));   // the fifth star's fill
+const ink = tone === 'dark' ? 'rgb(246, 239, 228)' : 'rgb(18, 18, 16)';
+const muted = tone === 'dark' ? 'rgba(234, 226, 214, 0.75)' : 'rgba(18, 18, 16, 0.7)';
+---
+<div class="rl" style={`--rl-ink: ${ink}; --rl-muted: ${muted};`}>
+  <span class="rl-n">{business.reviews.rating}</span>
+  <span class="rl-stars" role="img" aria-label={`${business.reviews.rating} out of 5 stars`}>
+    <span aria-hidden="true">★★★★</span><span class="rl-last" aria-hidden="true" style={`--fill: ${fill}%;`}>★</span>
+  </span>
+  <span class="rl-t">across {roundedTotal(business.reviews.total)} Google reviews{trailing}</span>
+</div>
+<style>
+  .rl { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+  .rl-n { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(34px, 3.4vw, 48px); line-height: 1; color: rgb(214, 188, 133); }
+  .rl-stars { color: rgb(214, 188, 133); letter-spacing: 2px; font-size: 18px; line-height: 1; display: inline-flex; }
+  .rl-last { background: linear-gradient(90deg, rgb(214, 188, 133) var(--fill), rgba(214, 188, 133, 0.22) var(--fill)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .rl-t { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rl-muted); }
+</style>

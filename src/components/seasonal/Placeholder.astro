@@ -1,0 +1,15 @@
+---
+/* A labelled photo placeholder, the need-image.svg pattern: the client sees exactly what to shoot.
+   The label is real text on the page, so it also reads out and survives a screenshot. */
+const { label, ratio = '16 / 9', style = '', class: cls = '' } = Astro.props;
+---
+<div class={`ph ${cls}`} style={`aspect-ratio: ${ratio}; ${style}`} role="group" aria-label={`Photo needed: ${label}`}>
+  <img src="/images/site/need-image.svg" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1200" height="900" />
+  <p class="ph-label"><span>Photo needed</span>{label}</p>
+</div>
+<style>
+  .ph { position: relative; overflow: hidden; border-radius: 16px; background: rgb(13, 13, 11); border: 1px dashed rgba(255, 255, 255, 0.28); }
+  .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+  .ph-label { position: absolute; left: 14px; right: 14px; bottom: 12px; margin: 0; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.4; color: rgba(246, 239, 228, 0.85); text-align: left !important; }
+  .ph-label span { display: block; color: rgb(214, 188, 133); font-size: 11px; letter-spacing: 0.14em; margin-bottom: 2px; }
+</style>

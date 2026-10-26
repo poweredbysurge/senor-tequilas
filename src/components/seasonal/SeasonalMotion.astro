@@ -1,0 +1,203 @@
+---
+/* The one motion module for the seasonal pages (/holiday-parties, /new-years-eve, /birria-ramen).
+   Vanilla, no libraries, bundled once per page by Astro. Everything is driven by data attributes
+   so the pages carry no behaviour of their own:
+
+     data-countup="112"            a numeral that counts up from 0 on enter (server HTML holds the
+                                   final number, so no JavaScript simply shows it)
+     data-chapter-index            a list of #links; the one whose [data-chapter] section is in view
+                                   gets aria-current="true"
+     data-calendar                 cells [data-cal-cell] fade in by date order on enter
+     data-parallax="0.6"           a photo inside an overflow-hidden frame moves at 0.6x scroll
+     data-draw-line                a rule that draws left to right on enter (scaleX)
+     data-badge-rock               rocks once on load (transform only, never hidden)
+     data-countdown="<ISO>"        live countdown to that instant, cells [data-cd="days|hours|minutes"],
+                                   fallback text in [data-cd-fallback]
+     data-map-facade               a static map stand-in that loads the Google embed on click
+     data-kenburns                 a slow 10s scale on a hero photo
+     data-stack                    a sticky card stack; each [data-stack-card] gets --cover 0..1 as the
+                                   next card slides over it (and --cover-scale, 0 under reduced motion)
+
+   The STANDARDS.md reveal rules hold throughout: nothing in the first viewport starts hidden, the
+   hidden state is applied here and never in the stylesheet, opacity and transform only, and one
+   kill switch: <html data-motion-off> or window.ST_MOTION_OFF = true turns every effect off.
+   prefers-reduced-motion: no count-ups (final number shown), no parallax, no Ken Burns, no badge
+   rock, no calendar stagger, no flip on the countdown (it still updates). */
+---
+<script>
+  (function () {
+    var root = document.documentElement;
+    if (root.hasAttribute('data-motion-off') || window.ST_MOTION_OFF) return;   // the kill switch
+    var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var hasIO = 'IntersectionObserver' in window;
+    var fold = window.innerHeight;
+    function belowFold(el) { return el.getBoundingClientRect().top + window.scrollY >= fold; }
+    function onEnter(el, fn, margin) {
+      if (!hasIO) { fn(); return; }
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); fn(); } }, { rootMargin: margin || '0px 0px -10% 0px', threshold: 0.15 });
+      io.observe(el);
+    }
+    var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
+
+    /* ---- count-up numerals ------------------------------------------------------------------ */
+    [].slice.call(document.querySelectorAll('[data-countup]')).forEach(function (el) {
+      var target = parseFloat(el.getAttribute('data-countup'));
+      if (isNaN(target) || reduced || !belowFold(el)) return;   // the final number is already there
+      var prefix = el.getAttribute('data-prefix') || '', suffix = el.getAttribute('data-suffix') || '';
+      var text = el.textContent;
+      // the slot keeps its final width so the layout never moves while the number climbs
+      el.style.display = 'inline-block'; el.style.minWidth = el.getBoundingClientRect().width + 'px';
+      el.textContent = prefix + '0' + suffix;
+      onEnter(el, function () {
+        var t0 = null, ms = 900;
+        function step(ts) {
+          if (!t0) t0 = ts;
+          var p = Math.min(1, (ts - t0) / ms);
+          el.textContent = prefix + Math.round(target * ease(p)) + suffix;
+          if (p < 1) requestAnimationFrame(step); else el.textContent = text;
+        }
+        requestAnimationFrame(step);
+      });
+    });
+
+    /* ---- chapter index --------------------------------------------------------------------- */
+    [].slice.call(document.querySelectorAll('[data-chapter-index]')).forEach(function (nav) {
+      var links = [].slice.call(nav.querySelectorAll('a[href^="#"]'));
+      var targets = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+      if (!targets.length || !hasIO) return;
+      function mark(id) { links.forEach(function (a) { var on = a.getAttribute('href') === '#' + id; if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }); }
+      // the last chapter whose top has passed the middle of the screen. Measured on scroll rather than
+      // by IntersectionObserver because the chapters are a sticky stack: a covered card never leaves
+      // the viewport, so on the way back up it would never report itself in view again.
+      var current = null, queued = false;
+      function pick() {
+        queued = false;
+        var mid = window.innerHeight * 0.5, id = null;
+        targets.forEach(function (t) { var r = t.getBoundingClientRect(); if (r.top <= mid && r.bottom > 0) id = t.id; });
+        if (id !== current) { current = id; mark(id); }
+      }
+      window.addEventListener('scroll', function () { if (!queued) { queued = true; requestAnimationFrame(pick); } }, { passive: true });
+      pick();
+    });
+
+    /* ---- the sticky card stack --------------------------------------------------------------- */
+    [].slice.call(document.querySelectorAll('[data-stack]')).forEach(function (stack) {
+      var cards = [].slice.call(stack.querySelectorAll('[data-stack-card]'));
+      if (cards.length < 2) return;
+      var queued = false;
+      function frame() {
+        queued = false;
+        cards.forEach(function (card, i) {
+          var next = cards[i + 1], p = 0;
+          if (next) {
+            var pin = parseFloat(getComputedStyle(card).top) || 0;
+            var travel = card.offsetHeight || 1;
+            p = Math.min(1, Math.max(0, (pin + travel - next.getBoundingClientRect().top) / travel));
+          }
+          card.style.setProperty('--cover', p.toFixed(3));
+          card.style.setProperty('--cover-scale', reduced ? '0' : p.toFixed(3));
+        });
+      }
+      function onScroll() { if (!queued) { queued = true; requestAnimationFrame(frame); } }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      frame();
+    });
+
+    /* ---- calendar cells, fading in by date ------------------------------------------------- */
+    [].slice.call(document.querySelectorAll('[data-calendar]')).forEach(function (cal) {
+      var cells = [].slice.call(cal.querySelectorAll('[data-cal-cell]'));
+      if (reduced || !cells.length || !belowFold(cal)) return;
+      cells.forEach(function (c) { c.style.opacity = '0'; c.style.transform = 'translateY(6px)'; c.style.transition = 'opacity 420ms cubic-bezier(.16,.8,.3,1), transform 420ms cubic-bezier(.16,.8,.3,1)'; });
+      onEnter(cal, function () {
+        cells.forEach(function (c, i) { c.style.transitionDelay = (i * 22) + 'ms'; c.style.opacity = ''; c.style.transform = ''; });
+      });
+    });
+
+    /* ---- parallax photos ------------------------------------------------------------------- */
+    var para = [].slice.call(document.querySelectorAll('[data-parallax]'));
+    if (para.length && !reduced) {
+      para.forEach(function (el) { el.style.willChange = 'transform'; });
+      var ticking = false;
+      function frame() {
+        ticking = false;
+        var vh = window.innerHeight;
+        para.forEach(function (el) {
+          var box = el.parentElement.getBoundingClientRect();
+          if (box.bottom < 0 || box.top > vh) return;
+          var f = parseFloat(el.getAttribute('data-parallax')) || 0.6;
+          // the photo is taller than its frame; it slides against the scroll by (1 - f)
+          var progress = (box.top + box.height / 2 - vh / 2) / vh;   // -1 .. 1 through the viewport
+          el.style.transform = 'translate3d(0,' + (progress * (1 - f) * box.height * 0.5).toFixed(1) + 'px,0)';
+        });
+      }
+      function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      frame();
+    }
+
+    /* ---- a line that draws itself ---------------------------------------------------------- */
+    [].slice.call(document.querySelectorAll('[data-draw-line]')).forEach(function (el) {
+      if (reduced || !belowFold(el)) return;
+      el.style.transformOrigin = 'left center'; el.style.transform = 'scaleX(0)';
+      el.style.transition = 'transform 1400ms cubic-bezier(.16,.8,.3,1)';
+      onEnter(el, function () { el.style.transform = 'scaleX(1)'; });
+    });
+
+    /* ---- the price badge rocks once -------------------------------------------------------- */
+    [].slice.call(document.querySelectorAll('[data-badge-rock]')).forEach(function (el) {
+      if (reduced) return;
+      el.classList.add('is-rocking');
+      el.addEventListener('animationend', function () { el.classList.remove('is-rocking'); }, { once: true });
+    });
+
+    /* ---- Ken Burns on a hero photo --------------------------------------------------------- */
+    if (!reduced) [].slice.call(document.querySelectorAll('[data-kenburns]')).forEach(function (el) { el.classList.add('is-kenburns'); });
+
+    /* ---- the countdown --------------------------------------------------------------------- */
+    [].slice.call(document.querySelectorAll('[data-countdown]')).forEach(function (box) {
+      var target = Date.parse(box.getAttribute('data-countdown'));
+      var endAt = Date.parse(box.getAttribute('data-countdown-until') || '') || (target + 5 * 3600 * 1000);
+      if (isNaN(target)) return;
+      var cells = { days: box.querySelector('[data-cd="days"]'), hours: box.querySelector('[data-cd="hours"]'), minutes: box.querySelector('[data-cd="minutes"]') };
+      var live = box.querySelector('[data-cd-live]'), fallback = box.querySelector('[data-cd-fallback]'), tonight = box.querySelector('[data-cd-tonight]');
+      var last = {};
+      function pad(n) { return (n < 10 ? '0' : '') + n; }
+      function set(k, v) {
+        var el = cells[k]; if (!el) return;
+        var s = k === 'days' ? String(v) : pad(v);
+        if (last[k] === s) return;
+        last[k] = s;
+        if (!reduced && last.hasOwnProperty(k + '_seen')) {
+          el.classList.remove('is-flip'); void el.offsetWidth; el.classList.add('is-flip');
+        }
+        last[k + '_seen'] = true;
+        el.textContent = s;
+      }
+      function tick() {
+        var now = Date.now();
+        if (now >= endAt) { box.setAttribute('data-cd-state', 'over'); return; }
+        if (now >= target) { box.setAttribute('data-cd-state', 'tonight'); return; }
+        var d = target - now;
+        set('days', Math.floor(d / 86400000)); set('hours', Math.floor(d / 3600000) % 24); set('minutes', Math.floor(d / 60000) % 60);
+        box.setAttribute('data-cd-state', 'live');
+      }
+      tick();
+      setInterval(tick, 1000);
+      document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+    });
+
+    /* ---- the map facade: the embed only loads when asked for ------------------------------ */
+    [].slice.call(document.querySelectorAll('[data-map-facade]')).forEach(function (box) {
+      var btn = box.querySelector('button'), src = box.getAttribute('data-map-src');
+      if (!btn || !src) return;
+      btn.addEventListener('click', function () {
+        var f = document.createElement('iframe');
+        f.src = src; f.title = btn.getAttribute('data-map-title') || 'Map'; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade';
+        f.setAttribute('allowfullscreen', ''); f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;';
+        box.appendChild(f); box.setAttribute('data-map-loaded', '');
+      });
+    });
+  })();
+</script>

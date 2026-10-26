@@ -10,6 +10,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import business from '../data/business.json';
+import { PREVIEW_PAGES } from '../data/preview-pages';
 
 const files = Object.keys(import.meta.glob('./**/*.astro'));
 
@@ -38,12 +39,23 @@ function lastModified(file, boundary) {
   }
 }
 
+// Preview pages are reachable by link but unpublished, so they stay out of the sitemap. Their
+// X-Robots-Tag rules in vercel.json have to match the same list, or the build stops here: a
+// page published in one place and not the other is either hidden by accident or indexed early.
+const noindexHeaders = (JSON.parse(readFileSync('vercel.json', 'utf8')).headers || [])
+  .filter((h) => (h.headers || []).some((x) => /x-robots-tag/i.test(x.key) && /noindex/i.test(x.value)))
+  .map((h) => h.source).sort();
+if (JSON.stringify(noindexHeaders) !== JSON.stringify([...PREVIEW_PAGES].sort())) {
+  throw new Error(`preview pages out of step: preview-pages.ts has ${JSON.stringify(PREVIEW_PAGES)}, vercel.json noindex headers have ${JSON.stringify(noindexHeaders)}`);
+}
+
 const boundary = shallowBoundary();
 const pages = files
   .map((f) => {
     const p = f.replace(/^\.\//, '/').replace(/\.astro$/, '').replace(/\/index$/, '/');
     return { path: p === '/index' ? '/' : p, lastmod: lastModified(f, boundary) };
   })
+  .filter((p) => !PREVIEW_PAGES.includes(p.path))
   .sort((a, b) => (a.path === '/' ? -1 : b.path === '/' ? 1 : a.path.localeCompare(b.path)));
 
 const dated = pages.filter((p) => p.lastmod).length;

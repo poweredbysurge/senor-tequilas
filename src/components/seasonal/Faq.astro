@@ -1,0 +1,30 @@
+---
+/* The site's FAQ accordion markup (the private-parties pattern Base.astro's eventsFaq() upgrades at
+   runtime), from one list that also feeds the FAQPage schema on the page. columns: 1 | 2 */
+import { faqHtml } from '../../lib/authored.js';
+const { items, columns = 1, variant = 'card' } = Astro.props;
+---
+<div class={`fq fq-${variant}`} style={`--cols: ${columns};`}>
+  {items.map((f, i) => (
+    <div class="fq-item">
+      <button type="button" aria-expanded={i === 0 ? 'true' : 'false'}><span>{f.q}</span><span class="fq-sign">+</span></button>
+      <div class="fq-a" set:html={faqHtml(f)}></div>
+    </div>
+  ))}
+</div>
+<style>
+  .fq { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 10px; align-items: start; }
+  @media (max-width: 767px) { .fq { grid-template-columns: 1fr; } }
+  .fq-card .fq-item { background: rgba(18, 18, 16, 0.72); border: 1px solid rgba(185, 156, 102, 0.3); border-radius: 14px; overflow: hidden; }
+  .fq-rule .fq-item { border-bottom: 1px solid rgb(42, 40, 32); }
+  .fq-rule .fq-item:first-child { border-top: 1px solid rgb(42, 40, 32); }
+  .fq-item button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; text-align: left; background: none; border: 0; padding: 16px 18px; min-height: 52px; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 15px; color: rgb(246, 239, 228); }
+  .fq-rule .fq-item button { padding-left: 0; padding-right: 0; }
+  .fq-item button:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: -2px; border-radius: 10px; }
+  .fq-sign { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(185, 156, 102, 0.5); display: inline-flex; align-items: center; justify-content: center; color: rgb(214, 188, 133); font-size: 16px; line-height: 1; }
+  .fq-a { font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.82); padding: 0 18px 16px; text-align: left !important; }
+  .fq-rule .fq-a { padding-left: 0; padding-right: 0; }
+  .fq-a :global(a) { color: rgb(214, 188, 133); font-weight: 700; }
+  /* the brief's 240ms height ease, over tweaks.css's 260ms */
+  .fq :global([data-faq-panel]) { transition-duration: 240ms; }
+</style>

@@ -1,0 +1,17 @@
+---
+/* One Google review, in full, with the reviewer's initials. No review schema. tone: dark | cream */
+import { initials } from '../../lib/authored.js';
+const { name, text, tone = 'dark', size = 'clamp(17px, 1.6vw, 22px)' } = Astro.props;
+const ink = tone === 'dark' ? 'rgb(246, 239, 228)' : 'rgb(18, 18, 16)';
+const muted = tone === 'dark' ? 'rgba(234, 226, 214, 0.7)' : 'rgba(18, 18, 16, 0.65)';
+---
+<figure class="rq" style={`--rq-ink: ${ink}; --rq-muted: ${muted}; --rq-size: ${size};`}>
+  <blockquote class="rq-q">"{text}"</blockquote>
+  <figcaption class="rq-c"><span class="rq-a" aria-hidden="true">{initials(name)}</span><span>{name}, Google review</span></figcaption>
+</figure>
+<style>
+  .rq { margin: 0; }
+  .rq-q { margin: 0; font-family: Barlow, 'Barlow Fallback', sans-serif; font-size: var(--rq-size); line-height: 1.5; color: var(--rq-ink); text-wrap: pretty; }
+  .rq-c { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rq-muted); }
+  .rq-a { width: 32px; height: 32px; border-radius: 50%; background: rgb(58, 56, 47); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-family: Barlow, 'Barlow Fallback', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0; }
+</style>

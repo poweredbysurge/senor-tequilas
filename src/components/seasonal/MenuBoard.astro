@@ -1,0 +1,28 @@
+---
+/* A dashed menu board: numbered lines with a name on the left and a sublabel on the right, the
+   way a painted board lists a bowl. Lines reveal in sequence through the site's reveal tagger,
+   which staggers the children of any grid or flex row below the fold. tone: dark | cream */
+const { items, tone = 'dark', numbered = true } = Astro.props;
+const ink = tone === 'dark' ? 'rgb(246, 239, 228)' : 'rgb(18, 18, 16)';
+const sub = tone === 'dark' ? 'rgba(234, 226, 214, 0.72)' : 'rgba(18, 18, 16, 0.65)';
+const num = tone === 'dark' ? 'rgb(214, 188, 133)' : 'rgb(18, 18, 16)';
+const rule = tone === 'dark' ? 'rgba(214, 188, 133, 0.45)' : 'rgba(18, 18, 16, 0.4)';
+---
+<ol class="mb" style={`--mb-ink: ${ink}; --mb-sub: ${sub}; --mb-num: ${num}; --mb-rule: ${rule};`}>
+  {items.map((it, i) => (
+    <li class="mb-row">
+      {numbered && <span class="mb-n" aria-hidden="true">{i + 1}</span>}
+      <span class="mb-name">{it.name}</span>
+      <span class="mb-sub">{it.sub}</span>
+    </li>
+  ))}
+</ol>
+<style>
+  .mb { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .mb-row { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 14px; padding: 12px 0; border-bottom: 1px dashed var(--mb-rule); text-align: left !important; }
+  .mb-row:first-child { border-top: 1px dashed var(--mb-rule); }
+  .mb-n { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; color: var(--mb-num); min-width: 1.4ch; }
+  .mb-name { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(18px, 1.6vw, 22px); color: var(--mb-ink); line-height: 1.15; }
+  .mb-sub { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mb-sub); text-align: right; }
+  @media (max-width: 767px) { .mb-row { grid-template-columns: auto 1fr; } .mb-sub { grid-column: 2; text-align: left; margin-top: -4px; } }
+</style>

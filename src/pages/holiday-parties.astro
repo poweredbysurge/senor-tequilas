@@ -1,0 +1,545 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+import business from '../data/business.json';
+import SeasonalMotion from '../components/seasonal/SeasonalMotion.astro';
+import ChapterIndex from '../components/seasonal/ChapterIndex.astro';
+import DecemberCalendar from '../components/seasonal/DecemberCalendar.astro';
+import CountStat from '../components/seasonal/CountStat.astro';
+import Placeholder from '../components/seasonal/Placeholder.astro';
+import RatingLine from '../components/seasonal/RatingLine.astro';
+import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
+import Faq from '../components/seasonal/Faq.astro';
+import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, FRAME, IMG, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, PHONE_HREF, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
+
+/*
+  /holiday-parties, concept 1a "The Room Tour" (design/concepts/2026-10-25-selected). In PREVIEW:
+  listed in src/data/preview-pages.ts, so it is noindex, out of the sitemap, carries the preview
+  bar, and nothing on the site links to it yet. Copy is verbatim from
+  design/copy/holiday-pages-copy-2026-10-24.md, page B; the mock's condensed text is never used.
+
+  PRICES ARE ALLOWED ON THIS PAGE (client decision for holiday pages): $26 buffet, $22 quotes,
+  $200 an hour, $499 upgrades, $20 cake fee, $500 gift certificate. Do not strip them in a sweep.
+*/
+const PAGE = '/holiday-parties';
+const PAGE_URL = business.siteUrl + PAGE;
+assertFacts(PAGE, { phone: '301-569-4574' });
+
+// The hero can be the Mexican Room photograph or the dance-floor loop. Both were shown to Mario;
+// 'photo' is the LCP entry in Base.astro, so switching to 'video' means updating that map too.
+const HERO_MEDIA = 'photo';
+const HERO = { src: '/images/site/mexican-room.webp', w: 1400, h: 933, alt: 'The Mexican Room set for dinner: long tables, painted wooden chairs, a star lantern and hand-painted portraits on the walls' };
+const HERO_VIDEO = { mp4: '/videos/party-dancefloor.mp4', poster: '/videos/party-dancefloor.jpg', alt: 'A full dance floor in the bar area under the lights' };
+
+const ROOMS = [
+  { id: 'room-mexican', name: 'Mexican Room', seated: 112, standing: 134, notes: 'Main dining room', line: 'Our main dining room.', chip: 'A/V wired',
+    photo: { src: '/images/site/mexican-room.webp', w: 1400, h: 933, alt: 'The Mexican Room: long tables with painted chairs under a star lantern, portraits on the orange walls' } },
+  { id: 'room-international', name: 'International Room', seated: 96, standing: 115, notes: 'Where most private events happen', line: 'Our second dining room, and where most private events happen.', chip: 'Most booked',
+    photo: { src: '/images/site/international-room-long-tables.webp', w: 1600, h: 900, alt: 'The International Room set with long tables and painted chairs, flags along the ceiling' } },
+  { id: 'room-patio', name: 'Indoor Patio', seated: 48, standing: 58, notes: 'Roofed, enclosed, warm in December', line: 'Under a roof, windows open all summer, warm and closed in for winter.', chip: 'Year-round', photo: null,
+    shot: 'Indoor Patio at night, string lights on. Landscape, full bleed.' },
+  { id: 'room-bar', name: 'Bar Area', seated: 108, standing: 150, notes: 'The DJ booth lives here', line: 'Sixteen tables, two long tables, a 20-seat counter, and the DJ booth.', chip: 'DJ booth',
+    photo: { src: '/images/site/friendsgiving/friendsgiving-full-bar-area.webp', w: 1600, h: 1069, alt: 'The bar area full from end to end on a busy night, the flower ceiling and lanterns overhead' } },
+];
+const SHARED_CHIPS = ['Mic', 'HDMI screens', 'Holiday décor'];
+const STEPS = [
+  ['Reach Tomas.', `Call ${PHONE_DISPLAY} or send the form below. He replies within 24 hours.`, 'Within 24 hours'],
+  ['Meet, or walk the room.', 'Fifteen minutes. Bring whoever signs off. We go over the date, the headcount, the menu and the tickets.', 'Fifteen minutes'],
+  ['Get a formal invoice.', 'It comes through our catering and private parties system. Pay in person, or on the invoice page through a secure link.', 'Formal invoice'],
+  ['Hold the date.', 'The deposit is the room fee, refundable up to 48 hours before the party.', 'Refundable up to 48 hours before'],
+];
+const REVIEW = { name: 'Sian R.', text: 'I had a party of 25 last Friday and the service from Jonathan and the manager Tomas was phenomenal! It was a surprise party for my mom so I needed everything to be perfect so they walked me through all of the steps to ensure the night was successful and executed it perfectly.' };
+
+const FAQ = [
+  { q: "How many people can a holiday party be at Señor Tequila's?",
+    a: 'From 12 to 134 in a single room. The Mexican Room seats 112 or holds 134 standing, the International Room 96 or 115, the Indoor Patio 48 or 58. The whole house runs to about 400. Nobody has done that yet. We would love to talk about it.' },
+  { q: 'What does a company holiday party cost?',
+    a: 'The fajita buffet, the most popular option, starts at $26 a person. Other menus are quoted from $22 a person. Weekday rooms start from $200 an hour. Weekend fees depend on the date and time and are quoted when you ask. DJ, karaoke and lighting upgrades start at $499. Every quote is written up as a formal invoice.' },
+  { q: 'Can we hold a holiday party on a weekday or at lunch?',
+    a: 'Yes, and it is the best value in December. Weekday room fees are much smaller than weekend fees. Monday to Friday we do not open to the public until 3 PM, so a lunch party has the whole restaurant to itself, and very large lunch groups are welcome.' },
+  { q: 'Is there a screen and a microphone for speeches or a slideshow?',
+    a: 'Every room has a microphone and large TVs that connect over HDMI. Bring a laptop and the cable, or ask Tomas ahead of time. Sound and lighting in each room run from our DJ booth.' },
+  { q: 'How do drinks work? Open bar, drink tickets, or cash bar?',
+    a: 'Drink tickets or a cash bar. You set what a ticket covers and how many each guest gets with your coordinator, so it fits the budget. A dedicated bartender or a mini bar in your room are upgrades. No self-serve alcohol stations. Every drink is poured by a bartender.' },
+  { q: 'Can you invoice our company?',
+    a: 'Yes. After a short meeting we send a formal invoice through our catering and private parties system. Pay in person or through the secure link on the invoice. The deposit is the room fee, refundable up to 48 hours before the event. We work with tax-exempt groups. Tomas replies within 24 hours.' },
+  { q: 'Which December dates are unavailable for holiday parties?',
+    a: 'December 24 and 25 only. We are also closed Thanksgiving Day. Fridays and Saturdays in December book first, so if you need a weekend, call now. Weeknights and lunches stay open longest.' },
+];
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Holiday party venue and private event hosting',
+  serviceType: 'Holiday party venue',
+  url: PAGE_URL,
+  provider: { '@id': RESTAURANT_ID },
+  areaServed: 'Montgomery County, MD',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Holiday parties',
+    itemListElement: [
+      { '@type': 'Offer', name: 'Fajita buffet', priceSpecification: { '@type': 'UnitPriceSpecification', price: '26', priceCurrency: 'USD', unitText: 'per person' } },
+      { '@type': 'Offer', name: 'Weekday private room', priceSpecification: { '@type': 'UnitPriceSpecification', minPrice: '200', priceCurrency: 'USD', unitText: 'per hour' } },
+      { '@type': 'Offer', name: 'DJ, karaoke and lighting upgrades', priceSpecification: { '@type': 'PriceSpecification', minPrice: '499', priceCurrency: 'USD' } },
+      { '@type': 'Offer', name: 'The Holiday Gift Box', description: 'A sealed holiday box with every visit from November 27 through December 31, opened at the table between January 1 and February 13.', validFrom: '2026-11-27', validThrough: '2026-12-31' },
+    ],
+  },
+};
+
+const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(214, 188, 133, 0.55); color: rgb(234, 226, 214); font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px;';
+---
+<Base title="Holiday Party Venue in Germantown, MD | Señor Tequila's" description="Company and family holiday parties in private rooms for 12 to 134. Fajita buffet from $26 a person, weekday rooms from $200 an hour, mic and screen in every room." canonical={PAGE_URL} ogImage={HERO.src} extraTypes={['EventVenue']} ldExtra={{ maximumAttendeeCapacity: 400 }} route={PAGE}>
+<div class="sc-host hp" data-sc-name="Holiday Parties" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
+  <Header5 />
+
+  <!-- 1. hero: full-bleed photograph, H1 bottom-left, the chapter index right -->
+  <section data-screen-label="Holiday parties hero" class="hp-hero">
+    <div class="hp-hero-media" aria-hidden={HERO_MEDIA === 'video' ? 'true' : undefined}>
+      {HERO_MEDIA === 'video'
+        ? <video autoplay loop muted playsinline preload="metadata" poster={HERO_VIDEO.poster} aria-label={HERO_VIDEO.alt} tabindex="-1"><source src={HERO_VIDEO.mp4} type="video/mp4" /></video>
+        : <img src={HERO.src} srcset="/images/site/mexican-room-800.webp 800w, /images/site/mexican-room.webp 1400w" sizes="100vw" alt={HERO.alt} width={HERO.w} height={HERO.h} fetchpriority="high" decoding="async" />}
+    </div>
+    <div class="hp-hero-grid">
+      <div class="hp-hero-copy">
+        <div style={EYEBROW}><span style={RULE}></span>Germantown, MD · Company and Family Holiday Parties · November and December</div>
+        <h1 class="hp-h1">A Holiday Party Venue With the Kitchen Already in the Room</h1>
+        <p class="hp-lead">Four private rooms that seat 48 to 112, or hold up to 134 standing. A microphone and a big HDMI screen in every one. The fajita buffet from $26 a person, weekday rooms from $200 an hour, and a coordinator who gets back to you within 24 hours. December Fridays and Saturdays are going fast.</p>
+        <div class="hp-hero-ctas" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px;">
+          <a href="#inquire" style={BTN_PRIMARY}>Book a Tour</a>
+          <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+        </div>
+      </div>
+      <div class="hp-hero-index"><ChapterIndex items={ROOMS} /></div>
+    </div>
+  </section>
+
+  <!-- 2. dates, with December as a graphic -->
+  <section id="dates" data-screen-label="Dates" class="hp-sec">
+    <div style={WRAP}>
+      <div class="hp-split">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>December fills from the weekends inward</div>
+          <h2 style={H2}>The Weekends Are Going. Call Now.</h2>
+          <p style={P}>You have a budget, a date that has already moved twice, and forty people with opinions. Here is what we know about the calendar.</p>
+          <p style={P}>Fridays and Saturdays in December go first, every year, and this year they are already going. If you want a weekend, call this week. Tomas will tell you what is still open and hold a date for you.</p>
+          <p style={P}>Weeknights are the smart money. Weekday rooms start from $200 an hour, and a Tuesday party gets the same room, the same lights, the same food as a Saturday. Monday to Friday we open to the public at 3 PM, which means a lunch party can have the entire building to itself. Very large lunch groups are welcome.</p>
+          <p style={P}>Hours in the room are set booking by booking, so tell us how long the speeches run. The dates we cannot do: Thanksgiving Day, December 24 and December 25. Every other day in November and December is open, including the week between Christmas and <a href="/new-years-eve" style={LINK}>New Year's</a>.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px;">
+            <a href={PHONE_HREF} style={BTN_PRIMARY}>Call {PHONE_DISPLAY}</a>
+            <a href="#inquire" style={BTN_GHOST}>Book a Tour</a>
+          </div>
+        </div>
+        <div><DecemberCalendar /></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 + 4. the rooms: the H2 opens the block, each room is an H3 chapter, the cream table closes it -->
+  <section id="rooms" data-screen-label="The rooms" class="hp-sec" style="padding-bottom: 0;">
+    <div style={WRAP}>
+      <div class="hp-rooms-index"><ChapterIndex items={ROOMS} /></div>
+      <div style={EYEBROW}><span style={RULE}></span>Four rooms, properly decorated</div>
+      <h2 style={H2}>The Rooms, Dressed for December</h2>
+      <p style={P}>If you are comparing Christmas party venues in Montgomery County, you have probably seen a lot of beige. Our rooms were hand-painted by artists from Mexico City, and from the foyer to the bar area the whole house is decorated for the holidays. Properly. Not a wreath on the door.</p>
+    </div>
+  </section>
+  {/* the four rooms as a sticky stack: each pins full height under the header and the next slides up over it */}
+  {/* data-own-motion: Base's scroll reveal waits for an element to clear the bottom 8% of the screen,
+      and the chips sit there on a pinned card that never scrolls further, so they never appeared.
+      The slide-over is the entrance. */}
+  <div class="hp-stack" data-stack data-own-motion>
+  {ROOMS.map((r, i) => (
+    <section id={r.id} data-chapter data-stack-card data-screen-label={`Room chapter ${i + 1}`} class="hp-chapter">
+      <div class="hp-chapter-media">
+        {r.photo
+          ? <img src={r.photo.src} alt={r.photo.alt} width={r.photo.w} height={r.photo.h} loading="lazy" decoding="async" data-parallax="0.6" />
+          : <Placeholder label={r.shot} ratio="16 / 9" class="hp-chapter-ph" style="border-radius: 0; border: 0;" />}
+      </div>
+      <div class="hp-chapter-grid">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>Chapter {String(i + 1).padStart(2, '0')} · {r.notes}</div>
+          <h3 class="hp-h3">{r.name}</h3>
+          <p class="hp-chapter-line">{r.line}</p>
+          <div class="hp-chips">{[...SHARED_CHIPS, r.chip].map((c) => <span style={CHIP}>{c}</span>)}</div>
+        </div>
+        <div class="hp-nums">
+          <CountStat value={r.seated} label="Seated" tone="gold" align="right" />
+          <CountStat value={r.standing} label="Standing" tone="cream" align="right" />
+        </div>
+      </div>
+      <div class="hp-chapter-shade" aria-hidden="true"></div>
+    </section>
+  ))}
+  </div>
+  <section data-screen-label="The rooms, capacity" class="hp-cream">
+    <div style={WRAP}>
+      <div class="hp-split" style="align-items: start;">
+        <div>
+          <p class="hp-cream-p">Every room has a microphone and large TVs that take an HDMI cable, so the year-in-review slideshow and the CEO's toast both work without anyone renting a projector. Sound and lighting run from our DJ booth into your room only, or into the bar as well.</p>
+          <p class="hp-cream-p">Bring your own décor, and check with us first on anything that attaches to a wall. Bring a cake if you like, there is a $20 fee for outside cake, or let our dessert kitchen do it. Room photos, the tour, and the full rundown are on <a href="/private-parties" class="hp-cream-link">private parties</a>.</p>
+          <div class="hp-price-heroes">
+            <CountStat value={200} prefix="$" label="Weekday rooms from, an hour" tone="ink" size="clamp(44px, 5vw, 72px)" />
+            <div class="cs-ink"><div class="hp-range">12 to 134</div><div class="hp-range-l">Guests in one room</div></div>
+          </div>
+        </div>
+        <div class="hp-table-wrap">
+          <table class="hp-table">
+            <caption class="hp-vh">Private rooms and capacities</caption>
+            <thead><tr><th scope="col">Room</th><th scope="col">Seated</th><th scope="col">Standing</th><th scope="col">Notes</th></tr></thead>
+            <tbody>
+              {ROOMS.map((r) => <tr><th scope="row">{r.name}</th><td>{r.seated}</td><td>{r.standing}</td><td>{r.notes}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. food: photo left, the two prices as numerals right -->
+  <section id="food" data-screen-label="The food" class="hp-sec hp-food">
+    <div class="hp-food-grid">
+      <div class="hp-food-media">
+        <img src="/images/dishes/steak-fajitas-hero.jpg" alt="Steak fajitas on a sizzling skillet with peppers and onions, tortillas and sides alongside" width="1600" height="959" loading="lazy" decoding="async" />
+      </div>
+      <div class="hp-food-copy">
+        <div style={EYEBROW}><span style={RULE}></span>What most companies order</div>
+        <h2 style={H2}>The Fajita Buffet Is What Most Companies Pick</h2>
+        <div class="hp-prices">
+          <CountStat value={26} prefix="$" label="A person, fajita buffet" tone="gold" size="clamp(52px, 6vw, 88px)" />
+          <CountStat value={22} prefix="$" label="A person, other setups" tone="cream" size="clamp(40px, 4.4vw, 64px)" />
+        </div>
+        <p style={P}>Most holiday groups go buffet, and most of those go fajita buffet: from $26 a person, chicken and steak sizzling on the line, rice, beans, guacamole, and tortillas pressed by hand that morning. People go back for thirds. We plan for that.</p>
+        <p style={P}>The other way to run it is a short, handpicked menu printed for your group, so guests order what they want and nobody stands in a line in a blazer. Quotes for other setups start at $22 a person. Either way it is the kitchen our regulars drive across the county for, not a catering company's version of it.</p>
+        <p style={P}>Dessert is made in house: churros, flan, tres leches. A dessert table is a real option.</p>
+        <p style={P}>Sending people home with something? We sell tamales, pozole, birria and handmade tortillas to take home. Ask Tomas to add them to the order.</p>
+        <p style={P}><a href="/menu" style={LINK}>The menu</a> · <a href="/catering" style={LINK}>If the party is at your office instead, catering</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. the bar, with the ticket stub -->
+  <section id="bar" data-screen-label="The bar" class="hp-sec">
+    <div style={WRAP}>
+      <div class="hp-split" style="align-items: center;">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>Poured by a bartender, every time</div>
+          <h2 style={H2}>Drink Tickets, Set With Your Coordinator</h2>
+          <p style={P}>Drink tickets are the usual way. You and Tomas decide what a ticket covers and how many each guest gets, so a two-drink budget and an all-night budget both work. Anything beyond the tickets runs as a cash bar.</p>
+          <p style={P}>Two upgrades if you want them: a dedicated bartender for your room, or a mini bar set up inside it.</p>
+          <p style={P}>One thing we do not do: self-serve alcohol stations. No margarita fountain, no pour-your-own tequila table. Every drink with alcohol in it is poured by a bartender. Your HR department will like that sentence.</p>
+          <p style={P}><a href="/margaritas" style={LINK}>The margaritas</a> · <a href="/tequila-bar" style={LINK}>The tequila bar</a></p>
+        </div>
+        <div class="hp-stub" aria-hidden="true">
+          <div class="hp-stub-main">
+            <div class="hp-stub-k">Drink ticket · Admit one</div>
+            <div class="hp-stub-t">You set what it covers</div>
+            <div class="hp-stub-k">Set with your coordinator</div>
+          </div>
+          <div class="hp-stub-tear"><span>Admit one</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. entertainment: three photo cards, $499 as the hero numeral -->
+  <section id="entertainment" data-screen-label="Entertainment" class="hp-sec">
+    <div style={WRAP}>
+      <div class="hp-ent-head">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>The room comes with a DJ booth</div>
+          <h2 style={H2}>Mariachi, a DJ, or Both</h2>
+        </div>
+        <CountStat value={499} prefix="$" label="DJ, karaoke and lighting upgrades from" tone="gold" size="clamp(44px, 5.4vw, 80px)" align="right" />
+      </div>
+      <p style={P}>A mariachi for your party is a yes, depending on their availability, with a one-hour minimum. December is their busy month too, so ask when you book.</p>
+      <p style={P}>DJ, karaoke and lighting upgrades start at $499: the DJ booth, the sound system, the lighting system, karaoke in your own room, DJs and hosts. See everything on the <a href="/private-parties#entertainment" style={LINK}>entertainment add-ons</a>.</p>
+      <div class="hp-cards">
+        <a class="hp-card" href="/private-parties#entertainment" data-lift>
+          <img src="/images/site/addon-mariachi-ensemble.jpg" alt="A seven-piece mariachi in black and silver charro suits playing between the tables" width="1600" height="900" loading="lazy" decoding="async" />
+          <div class="hp-card-body"><div class="hp-card-k">One-hour minimum · Ask when you book</div><div class="hp-card-t">Mariachi</div></div>
+        </a>
+        <a class="hp-card" href="/private-parties#entertainment" data-lift>
+          <img src="/images/site/addon-sound-light.jpg" alt="The sound and lighting rig lit in colour over a dance floor" width="1400" height="788" loading="lazy" decoding="async" />
+          <div class="hp-card-body"><div class="hp-card-k">The DJ booth, the sound system</div><div class="hp-card-t">DJs and hosts</div></div>
+        </a>
+        <a class="hp-card" href="/private-parties#entertainment" data-lift>
+          <img src="/images/site/karaoke-singing.webp" alt="A guest singing karaoke under the lights" width="546" height="683" loading="lazy" decoding="async" />
+          <div class="hp-card-body"><div class="hp-card-k">Karaoke in your own room</div><div class="hp-card-t">Karaoke and lighting</div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. booking: four nodes on a line that draws itself -->
+  <section id="booking" data-screen-label="Booking for a company" class="hp-sec">
+    <div style={WRAP}>
+      <div style={EYEBROW}><span style={RULE}></span>Invoiced, not improvised</div>
+      <h2 style={H2}>How Booking Works for a Company</h2>
+      <div class="hp-steps-wrap" data-own-motion>
+        <span class="hp-steps-line" data-draw-line aria-hidden="true"></span>
+        <ol class="hp-steps">
+          {STEPS.map(([lead, rest, tag], i) => (
+            <li>
+              <span class="hp-step-n" aria-hidden="true">{i + 1}</span>
+              <h3 class="hp-step-h">{lead}</h3>
+              <p class="hp-step-p">{rest}</p>
+              <div class="hp-step-tag">{tag}</div>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <p style={P}>We work with tax-exempt groups. Tell Tomas when you book and he will set the invoice up that way.</p>
+    </div>
+  </section>
+
+  <!-- 9. proof: quote left, group photo right -->
+  <section id="proof" data-screen-label="Proof" class="hp-sec">
+    <div style={WRAP}>
+      <div class="hp-split" style="align-items: center;">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>Who has held theirs here</div>
+          <h2 style={H2}>Office Teams, Family Parties, and the Ones Who Come Back Every December</h2>
+          <p style={P}>Company teams of 20 to 100, retirement send-offs, the big family dinner that outgrew the house. Some of the companies that book December with us have done it for years running.</p>
+          {/* PENDING ROBERTO Q5 (optional): a one-line owner quote may be added here, above the review. Built without it. */}
+          <div style="margin-top: 24px;"><ReviewQuote name={REVIEW.name} text={REVIEW.text} /></div>
+          <div style="margin-top: 22px;"><RatingLine /></div>
+          <p style={`${P} margin-top: 10px;`}>Family-owned by the Rivas brothers, Roberto and Alex, in Germantown since 2015.</p>
+        </div>
+        <div style={`${FRAME} aspect-ratio: 4 / 5;`}>
+          <img src="/images/site/happy-hour-group.webp" alt="A group of friends around a table raising margaritas, the lit bar behind them" width="960" height="1200" loading="lazy" decoding="async" style={IMG} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. the gift box -->
+  <section id="gift-box" data-screen-label="The Holiday Gift Box" class="hp-sec">
+    <div style={WRAP}>
+      <div class="hp-gift">
+        <Placeholder label="Sealed holiday gift box with ribbon, on a table or stacked on the bar. Square, top down." ratio="1 / 1" class="hp-gift-ph" />
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>Black Friday through December 31</div>
+          <h2 style={H2}>The Holiday Gift Box</h2>
+          <p style={P}>Every visit from November 27 through December 31 sends you home with a sealed holiday box. Do not open it. Bring it back between January 1 and February 13, and we open it at the table. Inside: free margaritas, free dinner entrées, free appetizers, a free Avion shooter, free dessert, and one box somewhere in the stack holding a $500 gift certificate.</p>
+          <p style={P}>A holiday party is a lot of visits at once. The boxes come with them.</p>
+          <p style={SMALL}><small style="font-size: inherit;">Fine print: boxes must be returned unopened between January 1 and February 13. One box redeemed per table, per check, for parties of 1 to 50 people. Cannot be combined with other offers. Boxes hold no cash value. Señor Tequila's reserves the right to cancel, void or change the offer at any time.</small></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. FAQ: sticky heading left, accordion right -->
+  <section id="faq" data-screen-label="Holiday party FAQ" class="hp-sec">
+    <div style={WRAP}>
+      <div class="hp-faq">
+        <div class="hp-faq-head">
+          <div style={EYEBROW}><span style={RULE}></span>Seven questions</div>
+          <h2 style={H2}>Holiday Party Questions, Answered</h2>
+          <a href={PHONE_HREF} style={`${BTN_GHOST} margin-top: 20px;`}>Call {PHONE_DISPLAY}</a>
+        </div>
+        <Faq items={FAQ} variant="rule" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. close: photo field, form card right -->
+  <section id="inquire" data-screen-label="Close" class="hp-close">
+    <div class="hp-close-media" aria-hidden="true">
+      <img src="/images/site/international-room-long-tables.webp" alt="" width="1600" height="900" loading="lazy" decoding="async" />
+    </div>
+    <div class="hp-close-grid">
+      <div class="hp-close-copy">
+        <div style={EYEBROW}><span style={RULE}></span>Start here</div>
+        <h2 style={H2}>Come See the Room Before the Weekends Go</h2>
+        <p style={P}>Most people decide standing in the room. Tours take fifteen minutes, and Tomas replies within 24 hours.</p>
+        <a href={PHONE_HREF} style={`${BTN_GHOST} margin-top: 20px;`}>Call {PHONE_DISPLAY}</a>
+      </div>
+      <form data-inquiry="private-party" data-ap-company method="post" action="/api/inquiry" class="hp-form" style={FORM}>
+        <div class="hp-form-head">
+          <img src="/images/site/tomas-headshot.webp" alt="Tomas, private party coordinator, smiling with his arms crossed" width="288" height="288" loading="lazy" decoding="async" />
+          <div><div class="hp-form-k">Book a tour</div><div class="hp-form-t">Tomas replies within 24 hours.</div></div>
+        </div>
+        <label style={LABEL}>Name<input type="text" name="name" autocomplete="name" required minlength="2" maxlength="120" placeholder="Full name" style={FIELD} /></label>
+        {/* not name="company": that name is the spam honeypot in api/inquiry.js, and a filled one is
+            answered "ok" and silently dropped. The page script folds it into the message instead. */}
+        <label style={LABEL}>Company<input type="text" name="org" autocomplete="organization" maxlength="120" placeholder="Optional" style={FIELD} /></label>
+        <label style={LABEL}>Phone<input type="tel" name="phone" autocomplete="tel" required maxlength="40" placeholder="(301) 555-0100" style={FIELD} /></label>
+        <label style={LABEL}>Email<input type="email" name="email" autocomplete="email" maxlength="160" placeholder="Optional, for a written reply" style={FIELD} /></label>
+        <label style={LABEL}>Preferred date<input type="date" name="date" style={FIELD} /></label>
+        <label style={LABEL}>Guest count<input type="number" name="guests" inputmode="numeric" min="1" max="5000" placeholder="e.g. 40" style={FIELD} /></label>
+        <label style={`${LABEL} grid-column: 1 / -1;`}>Tell us about the party<textarea name="details" rows="4" maxlength="4000" placeholder="The kind of party, the time, anything we should know" style={`${FIELD} resize: vertical;`}></textarea></label>
+        <div style="grid-column: 1 / -1;"><button type="submit" style={`${BTN_PRIMARY} width: 100%;`}>Book a Tour</button></div>
+      </form>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(serviceLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd(FAQ))} />
+
+  <Footer2 />
+</div>
+<SeasonalMotion />
+
+<style>
+  /* ---- 1. hero ---- */
+  .hp-hero { position: relative; min-height: min(92vh, 900px); display: flex; align-items: flex-end; background: rgb(18, 18, 16); border-bottom: 1px solid rgba(185, 156, 102, 0.2); overflow: hidden; }
+  .hp-hero-media { position: absolute; inset: 0; }
+  .hp-hero-media img, .hp-hero-media video { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; }
+  .hp-hero-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 18, 16, 0.78) 0%, rgba(18, 18, 16, 0.6) 38%, rgba(18, 18, 16, 0.18) 72%, rgba(18, 18, 16, 0.08) 100%), linear-gradient(180deg, rgba(18, 18, 16, 0.35) 0%, rgba(18, 18, 16, 0.15) 35%, rgba(18, 18, 16, 0.92) 100%); }
+  @media (max-width: 1023px) { .hp-hero-media::after { background: linear-gradient(180deg, rgba(18, 18, 16, 0.55) 0%, rgba(18, 18, 16, 0.6) 40%, rgba(18, 18, 16, 0.94) 100%); } }
+  .hp-hero-grid { position: relative; z-index: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: clamp(120px, 18vh, 200px) clamp(18px, 4.5vw, 48px) clamp(40px, 6vw, 72px); display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: end; }
+  .hp-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 4.6vw, 68px); line-height: 1.02; margin: 12px 0 0; text-transform: uppercase; text-wrap: balance; max-width: 16ch; }
+  .hp-lead { font-size: 16px; line-height: 1.7; color: rgba(246, 239, 228, 0.92); margin: 18px 0 0; max-width: 56ch; text-wrap: pretty; }
+  .hp-hero-index { align-self: end; }
+  /* the phone CTA layout Base.astro's mobileCtas() would apply at runtime, set up front: the hero
+     copy is anchored to the bottom edge, so a late stack moved everything above it (CLS 0.135) */
+  @media (max-width: 767px) { .hp-hero-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .hp-hero-ctas a { width: 100%; justify-content: center; text-align: center; } }
+  @media (min-width: 1024px) { .hp-hero-index { position: sticky; bottom: 40px; } }
+  @media (max-width: 1023px) { .hp-hero-grid { grid-template-columns: 1fr; padding-top: clamp(80px, 14vh, 140px); } .hp-hero-index { display: none; } }
+
+  /* ---- shared ---- */
+  .hp-sec { background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0; scroll-margin-top: 70px; }
+  .hp-sec:nth-of-type(even) { background: rgb(20, 18, 16); }
+  .hp-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); }
+  @media (max-width: 767px) { .hp-split { grid-template-columns: 1fr; } }
+
+  .hp-rooms-index { margin-bottom: 26px; }
+  .hp-rooms-index :global(.ci) { border-left: 0; padding-left: 0; }
+  .hp-rooms-index :global(.ci-list) { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+  @media (min-width: 1024px) { .hp-rooms-index { display: none; } }   /* the sticky index in the hero carries it there */
+
+  /* ---- 3. chapters ---- */
+  /* The sticky stack. Each chapter pins below the 63px sticky header at the full height left on
+     screen, and the next one, later in the DOM so painted above, scrolls up over it. --cover (0 to 1,
+     set by SeasonalMotion as the next card arrives) dims the covered card and shrinks it a little;
+     reduced motion keeps the dim and drops the shrink. Without JS the stack still works, just
+     without the dim. */
+  .hp-stack { position: relative; }
+  .hp-chapter { position: sticky; top: 63px; height: calc(100vh - 63px); height: calc(100svh - 63px); display: flex; align-items: flex-end; overflow: hidden; border-top: 1px solid rgba(185, 156, 102, 0.2); scroll-margin-top: 63px; background: rgb(18, 18, 16); box-shadow: 0 -28px 56px -20px rgba(0, 0, 0, 0.7); }
+  .hp-chapter-media, .hp-chapter-grid { transform: scale(calc(1 - var(--cover-scale, 0) * 0.06)); transform-origin: 50% 0; }
+  .hp-chapter-shade { position: absolute; inset: 0; z-index: 2; background: rgb(10, 10, 9); opacity: calc(var(--cover, 0) * 0.65); pointer-events: none; }
+  .hp-chapter-media { position: absolute; inset: 0; }
+  .hp-chapter-media img { position: absolute; left: 0; top: -12%; width: 100%; height: 124%; object-fit: cover; object-position: center; }
+  .hp-chapter-media :global(.hp-chapter-ph) { position: absolute; inset: 0; aspect-ratio: auto !important; height: 100%; }
+  /* the need-image art fits the space above the copy instead of covering the card, and its label
+     reads at the top, clear of the room name */
+  .hp-chapter .hp-chapter-media :global(.hp-chapter-ph img) { inset: 6% 8% 46% 8%; width: 84%; height: 48%; object-fit: contain; }
+  .hp-chapter .hp-chapter-media :global(.hp-chapter-ph .ph-label) { top: 18px; bottom: auto; left: clamp(18px, 4.5vw, 48px); }
+  .hp-chapter-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18, 18, 16, 0.15) 0%, rgba(18, 18, 16, 0.25) 40%, rgba(18, 18, 16, 0.94) 100%); }
+  .hp-chapter-grid { position: relative; z-index: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: clamp(60px, 10vh, 140px) clamp(18px, 4.5vw, 48px) clamp(36px, 5vw, 60px); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; align-items: end; }
+  .hp-h3 { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(34px, 5vw, 72px); line-height: 1; color: rgb(246, 239, 228); margin: 10px 0 0; text-transform: none; }
+  .hp-chapter-line { font-size: 16px; line-height: 1.6; color: rgba(246, 239, 228, 0.9); margin: 14px 0 0; max-width: 48ch; }
+  .hp-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .hp-nums { display: flex; justify-content: flex-end; gap: clamp(20px, 3vw, 48px); align-items: flex-end; }
+  /* phones keep the full-height card, copy over the photo like desktop. The site's 80px phone
+     section padding (tweaks.css) is lifted here for the same reason heroes are exempt: the photo
+     runs to the card edge, and the grid carries its own padding. */
+  body[data-route] section.hp-chapter[data-stack-card] { padding-top: 0 !important; padding-bottom: 0 !important; }
+  @media (max-width: 767px) {
+    .hp-chapter-media > img { top: 0; height: 100%; transform: none !important; }
+    .hp-chapter-grid { grid-template-columns: 1fr; padding-bottom: 32px; }
+    .hp-nums { justify-content: flex-start; }
+    .hp-nums :global(.cs) { text-align: left !important; }
+  }
+
+  /* ---- 4. cream ---- */
+  .hp-cream { background: rgb(246, 239, 228); color: rgb(18, 18, 16); padding: clamp(40px, 6.4vw, 84px) 0; }
+  .hp-cream-p { font-size: 15px; line-height: 1.7; color: rgba(18, 18, 16, 0.82); margin: 0 0 14px; max-width: 62ch; text-wrap: pretty; }
+  .hp-cream-link { color: rgb(18, 18, 16); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .hp-price-heroes { display: flex; flex-wrap: wrap; gap: clamp(24px, 4vw, 56px); margin-top: 26px; align-items: flex-end; }
+  .hp-range { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(44px, 5vw, 72px); line-height: 0.95; color: rgb(18, 18, 16); }
+  .hp-range-l { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(18, 18, 16, 0.7); margin-top: 8px; }
+  .hp-table-wrap { overflow-x: auto; }
+  .hp-table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+  .hp-table th, .hp-table td { padding: 14px 12px; border-bottom: 1px solid rgba(18, 18, 16, 0.18); text-align: left !important; vertical-align: top; }
+  .hp-table thead th { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(18, 18, 16, 0.65); border-bottom-color: rgba(18, 18, 16, 0.4); }
+  .hp-table tbody th { font-weight: 700; color: rgb(18, 18, 16); }
+  .hp-table td { color: rgba(18, 18, 16, 0.8); }
+  .hp-table td:nth-child(2), .hp-table td:nth-child(3) { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 18px; font-variant-numeric: tabular-nums; color: rgb(18, 18, 16); }
+  .hp-table td:nth-child(3) { color: rgba(18, 18, 16, 0.5); }
+  .hp-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---- 5. food ---- */
+  .hp-food { padding: 0; }
+  .hp-food-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 560px; }
+  .hp-food-media { position: relative; min-height: 320px; overflow: hidden; }   /* clips the reveal scale-in, which pushed the page 4px wide on phones */
+  .hp-food-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hp-food-copy { padding: clamp(40px, 6vw, 84px) clamp(18px, 4.5vw, 64px); }
+  .hp-prices { display: flex; flex-wrap: wrap; gap: clamp(20px, 3vw, 48px); align-items: flex-end; margin-top: 22px; }
+  @media (max-width: 767px) { .hp-food-grid { grid-template-columns: 1fr; } .hp-food-media { aspect-ratio: 4 / 3; min-height: 0; } }
+
+  /* ---- 6. ticket stub ---- */
+  .hp-stub { display: grid; grid-template-columns: 1fr auto; border: 1.5px dashed rgba(214, 188, 133, 0.6); border-radius: 14px; background: rgb(20, 18, 16); max-width: 440px; justify-self: center; width: 100%; }
+  .hp-stub-main { padding: 22px 24px; }
+  .hp-stub-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .hp-stub-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.05; color: rgb(246, 239, 228); margin: 10px 0; }
+  .hp-stub-tear { border-left: 1.5px dashed rgba(214, 188, 133, 0.6); padding: 12px; display: grid; place-items: center; }
+  .hp-stub-tear span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(214, 188, 133, 0.7); }
+
+  /* ---- 7. entertainment ---- */
+  .hp-ent-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 32px; }
+  .hp-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 26px; }
+  .hp-card { display: flex; flex-direction: column; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; overflow: hidden; color: rgb(234, 226, 214); text-decoration: none; transition: transform 240ms ease, border-color 240ms ease; }
+  .hp-card:hover, .hp-card:focus-visible { transform: translateY(-4px); border-color: rgba(214, 188, 133, 0.6); }
+  .hp-card:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 2px; }
+  .hp-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .hp-card-body { padding: 14px 16px 16px; }
+  .hp-card-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .hp-card-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 18px; color: rgb(246, 239, 228); margin-top: 4px; }
+  @media (max-width: 767px) { .hp-cards { grid-template-columns: 1fr; } .hp-ent-head :global(.cs) { text-align: left !important; } }
+
+  /* ---- 8. booking line ---- */
+  .hp-steps-wrap { position: relative; margin-top: 26px; }
+  .hp-steps-line { position: absolute; top: 21px; left: 22px; right: 22px; height: 1px; background: rgba(214, 188, 133, 0.6); }
+  .hp-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; position: relative; }
+  .hp-steps li { text-align: left !important; }
+  .hp-step-n { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgb(214, 188, 133); background: rgb(18, 18, 16); color: rgb(214, 188, 133); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; position: relative; }
+  .hp-step-h { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 18px; color: rgb(246, 239, 228); margin: 16px 0 0; text-transform: none; }
+  .hp-step-p { font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.82); margin: 8px 0 0; }
+  .hp-step-tag { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); margin-top: 10px; }
+  @media (max-width: 767px) { .hp-steps { grid-template-columns: 1fr; } .hp-steps-line { top: 22px; bottom: 22px; left: 21px; right: auto; width: 1px; height: auto; } }
+
+  /* ---- 10. gift box ---- */
+  .hp-gift { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  @media (max-width: 767px) { .hp-gift { grid-template-columns: 1fr; } }
+
+  /* ---- 11. FAQ ---- */
+  .hp-faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+  .hp-faq-head { position: sticky; top: 90px; }
+  @media (max-width: 767px) { .hp-faq { grid-template-columns: 1fr; } .hp-faq-head { position: static; } }
+
+  /* ---- 12. close ---- */
+  .hp-close { position: relative; background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); overflow: hidden; scroll-margin-top: 70px; }
+  .hp-close-media { position: absolute; inset: 0; }
+  .hp-close-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hp-close-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 18, 16, 0.92) 0%, rgba(18, 18, 16, 0.78) 55%, rgba(18, 18, 16, 0.6) 100%); }
+  .hp-close-grid { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(18px, 4.5vw, 48px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .hp-close-copy { align-self: end; }
+  .hp-form { margin-top: 0 !important; max-width: none !important; background: rgba(28, 27, 24, 0.96) !important; }
+  .hp-form-head { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 6px; }
+  .hp-form-head img { width: 56px; height: 56px; border-radius: 14px; border: 1px solid rgb(42, 40, 32); object-fit: cover; }
+  .hp-form-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .hp-form-t { font-size: 14px; color: rgba(234, 226, 214, 0.85); margin-top: 2px; }
+  @media (max-width: 767px) { .hp-close-grid { grid-template-columns: 1fr; } }
+</style>
+
+<script is:inline>
+  /* The Company field is named org, never company (the API's honeypot). On submit, in the capture
+     phase so it runs before the site's form handler reads the fields, the company is put at the top
+     of the message, then the textarea is put back as the guest typed it. */
+  (function () {
+    var form = document.querySelector('form[data-ap-company]');
+    if (!form) return;
+    form.addEventListener('submit', function () {
+      var org = form.elements.org, msg = form.elements.details;
+      if (!org || !msg || !org.value.trim()) return;
+      var typed = msg.value;
+      msg.value = 'Company: ' + org.value.trim() + (typed.trim() ? '\n\n' + typed : '');
+      setTimeout(function () { msg.value = typed; }, 0);
+    }, true);
+  })();
+</script>
+
+</Base>

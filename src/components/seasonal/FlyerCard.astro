@@ -1,0 +1,24 @@
+---
+/* One stop of the night as a flyer card: the time as a numeral, a title, the copy, a small tag.
+   lifted: the gold-framed card the night turns on. */
+const { time, title, tag, lifted = false } = Astro.props;
+---
+<li class={`fc${lifted ? ' is-lifted' : ''}`}>
+  <div class="fc-time">{time}</div>
+  <h3 class="fc-title">{title}</h3>
+  <div class="fc-body"><slot /></div>
+  {tag && <div class="fc-tag">{tag}</div>}
+</li>
+<style>
+  .fc { list-style: none; background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 22px 20px 20px; display: flex; flex-direction: column; text-align: left !important; }
+  /* the phone rule that centres h3 and p site-wide stops at the card edge */
+  .fc-time, .fc-title, .fc-body, .fc-tag { text-align: left !important; }
+  .fc.is-lifted { border-color: rgb(214, 188, 133); background: rgb(35, 33, 28); box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.6); transform: translateY(-10px); }
+  .fc-time { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(32px, 3vw, 44px); line-height: 1; color: rgb(214, 188, 133); font-variant-numeric: tabular-nums; }
+  .fc-title { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 17px; line-height: 1.15; color: rgb(246, 239, 228); margin: 12px 0 0; text-transform: none; }
+  .fc-body { font-size: 14px; line-height: 1.55; color: rgba(234, 226, 214, 0.85); margin-top: 10px; }
+  .fc-body :global(p) { margin: 0; }
+  .fc-body :global(p + p) { margin-top: 8px; }
+  .fc-tag { margin-top: auto; padding-top: 14px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(214, 188, 133, 0.85); }
+  @media (max-width: 767px) { .fc.is-lifted { transform: none; } }
+</style>

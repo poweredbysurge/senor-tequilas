@@ -1,0 +1,27 @@
+---
+/* The room tour's index: four numbered links with a standing capacity each. Sticky on desktop,
+   and SeasonalMotion marks the chapter in view with aria-current. */
+const { label = 'The tour, four rooms', items } = Astro.props;
+---
+<nav class="ci" data-chapter-index aria-label="The rooms">
+  <div class="ci-label">{label}</div>
+  <ol class="ci-list">
+    {items.map((it, i) => (
+      <li><a href={`#${it.id}`}><span class="ci-n">{String(i + 1).padStart(2, '0')}</span><span class="ci-name">{it.name}</span><span class="ci-cap">{it.standing} standing</span></a></li>
+    ))}
+  </ol>
+</nav>
+<style>
+  .ci { border-left: 1px solid rgba(214, 188, 133, 0.35); padding-left: 18px; }
+  .ci-label { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .ci-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 2px; }
+  .ci a { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: baseline; padding: 7px 10px 7px 0; border-radius: 8px; color: rgb(234, 226, 214); text-decoration: none; transition: color 200ms ease; }
+  .ci a:hover, .ci a:focus-visible { color: rgb(246, 239, 228); }
+  .ci a:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 2px; }
+  .ci-n { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.08em; color: rgb(214, 188, 133); }
+  .ci-name { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .ci-cap { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(234, 226, 214, 0.6); font-variant-numeric: tabular-nums; }
+  .ci a[aria-current="true"] { color: rgb(246, 239, 228); }
+  .ci a[aria-current="true"] .ci-name { color: rgb(214, 188, 133); }
+  .ci a[aria-current="true"] .ci-cap { color: rgb(246, 239, 228); }
+</style>

@@ -1,0 +1,42 @@
+---
+/* December 2026 as a graphic. It is aria-hidden: the dates section's prose carries the facts, and
+   the calendar only shows three states. Weekends gold ("Weekends book first"), 24 and 25 closed,
+   every other day open. Nothing implies live availability. Cells fade in by date on enter. */
+const closed = new Set([24, 25]);
+const firstWeekday = new Date(2026, 11, 1).getDay();   // 0 = Sunday; 1 Dec 2026 is a Tuesday
+const days = Array.from({ length: 31 }, (_, i) => i + 1);
+---
+<div class="cal" data-calendar aria-hidden="true">
+  <div class="cal-head">
+    <div class="cal-month">December</div>
+    <div class="cal-key">
+      <span><i class="k k-weekend"></i>Weekends book first</span>
+      <span><i class="k k-open"></i>Open</span>
+      <span><i class="k k-closed"></i>Closed</span>
+    </div>
+  </div>
+  <div class="cal-grid">
+    {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => <div class="cal-dow">{d}</div>)}
+    {Array.from({ length: firstWeekday }, () => <div class="cal-pad"></div>)}
+    {days.map((d) => {
+      const dow = (firstWeekday + d - 1) % 7;
+      const state = closed.has(d) ? 'closed' : dow === 5 || dow === 6 ? 'weekend' : 'open';
+      return <div class={`cal-cell is-${state}`} data-cal-cell>{d}</div>;
+    })}
+  </div>
+</div>
+<style>
+  .cal { background: rgb(20, 18, 16); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: clamp(16px, 2vw, 24px); }
+  .cal-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 10px 18px; }
+  .cal-month { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(22px, 2.2vw, 30px); color: rgb(246, 239, 228); }
+  .cal-key { display: flex; flex-wrap: wrap; gap: 6px 16px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(234, 226, 214, 0.7); }
+  .cal-key span { display: inline-flex; align-items: center; gap: 6px; }
+  .k { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+  .k-weekend { background: rgb(214, 188, 133); } .k-open { background: rgb(42, 40, 32); } .k-closed { border: 1px dashed rgba(234, 226, 214, 0.4); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 16px; }
+  .cal-dow { text-align: center; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(234, 226, 214, 0.55); padding-bottom: 4px; }
+  .cal-cell { aspect-ratio: 1 / 1; display: grid; place-items: center; border-radius: 10px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: clamp(14px, 1.3vw, 18px); font-variant-numeric: tabular-nums; }
+  .cal-cell.is-open { background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); color: rgb(234, 226, 214); }
+  .cal-cell.is-weekend { background: rgb(214, 188, 133); color: rgb(18, 18, 16); }
+  .cal-cell.is-closed { border: 1px dashed rgba(234, 226, 214, 0.35); color: rgba(234, 226, 214, 0.4); text-decoration: line-through; }
+</style>

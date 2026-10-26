@@ -1,0 +1,15 @@
+---
+/* A big numeral that counts up on enter (SeasonalMotion), with its label under it. The number is
+   in the HTML, so with no JavaScript it is simply there. tone: gold | cream | ink */
+const { value, label, prefix = '', suffix = '', tone = 'gold', size = 'clamp(56px, 7vw, 112px)', align = 'left' } = Astro.props;
+const color = tone === 'gold' ? 'rgb(214, 188, 133)' : tone === 'ink' ? 'rgb(18, 18, 16)' : 'rgb(246, 239, 228)';
+const labelColor = tone === 'ink' ? 'rgba(18, 18, 16, 0.7)' : 'rgba(234, 226, 214, 0.75)';
+---
+<div class="cs" style={`text-align: ${align};`}>
+  <div class="cs-n" style={`color: ${color}; font-size: ${size};`}><span data-countup={value} data-prefix={prefix} data-suffix={suffix}>{prefix}{value}{suffix}</span></div>
+  <div class="cs-l" style={`color: ${labelColor};`}>{label}</div>
+</div>
+<style>
+  .cs-n { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; line-height: 0.95; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .cs-l { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 8px; }
+</style>

@@ -1,0 +1,44 @@
+---
+/* A live countdown. The server HTML is the static date line, so crawlers and no-JS visitors get
+   the date; SeasonalMotion replaces it with the digits, and the digits sit in fixed-width tabular
+   cells so a tick never moves the layout. The digit row is laid out from the first paint, invisible
+   under the static line, so taking over from it moves nothing (it was a 23px jump, CLS). After the
+   target it reads "Tonight", and after `until` it hides itself. It is not a heading. */
+const { target, until, fallback, caption } = Astro.props;
+---
+<div class="cd" data-countdown={target} data-countdown-until={until} data-cd-state="static" aria-live="off">
+  <p class="cd-fallback" data-cd-fallback>{fallback}</p>
+  <div class="cd-live" data-cd-live aria-label={`Counting down to ${fallback}`}>
+    <div class="cd-cell"><span class="cd-n" data-cd="days">00</span><span class="cd-l">Days</span></div>
+    <span class="cd-sep" aria-hidden="true">:</span>
+    <div class="cd-cell"><span class="cd-n" data-cd="hours">00</span><span class="cd-l">Hours</span></div>
+    <span class="cd-sep" aria-hidden="true">:</span>
+    <div class="cd-cell"><span class="cd-n" data-cd="minutes">00</span><span class="cd-l">Minutes</span></div>
+  </div>
+  <p class="cd-tonight" data-cd-tonight>Tonight</p>
+  {caption && <p class="cd-caption">{caption}</p>}
+</div>
+<style>
+  .cd { text-align: center; position: relative; }
+  .cd-fallback { margin: 0; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(26px, 4vw, 56px); line-height: 1.05; color: rgb(214, 188, 133); text-transform: uppercase; }
+  .cd-tonight { display: none; }
+  /* the row keeps its box in every state and only becomes visible when live; in the static state
+     the fallback line sits centred over it, so the switch is a visibility change, not a reflow */
+  .cd-live { display: flex; justify-content: center; align-items: flex-start; gap: clamp(6px, 1.4vw, 18px); visibility: hidden; }
+  .cd[data-cd-state="live"] .cd-live { visibility: visible; }
+  .cd[data-cd-state="tonight"] .cd-live { display: none; }
+  .cd[data-cd-state="static"] .cd-fallback { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; }
+  .cd[data-cd-state="static"] .cd-caption { position: relative; }
+  .cd[data-cd-state="live"] .cd-fallback, .cd[data-cd-state="tonight"] .cd-fallback, .cd[data-cd-state="over"] .cd-fallback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .cd[data-cd-state="tonight"] .cd-tonight { display: block; margin: 0; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(56px, 12vw, 200px); line-height: 0.95; color: rgb(214, 188, 133); text-transform: uppercase; }
+  .cd[data-cd-state="over"] { display: none; }
+  .cd-cell { display: grid; justify-items: center; }
+  .cd-n { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(56px, 13vw, 200px); line-height: 0.95; color: rgb(214, 188, 133); font-variant-numeric: tabular-nums; min-width: 2ch; display: inline-block; text-align: center; }
+  .cd-cell:first-child .cd-n { min-width: 2ch; }
+  .cd-sep { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(40px, 9vw, 140px); line-height: 1.3; color: rgba(214, 188, 133, 0.45); }
+  .cd-l { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(234, 226, 214, 0.75); margin-top: 10px; }
+  .cd-caption { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); margin: 18px 0 0; }
+  /* the minute flip: transform only, and only when the module adds the class, never under reduced motion */
+  .cd-n.is-flip { animation: cdFlip 420ms cubic-bezier(.16,.8,.3,1); }
+  @keyframes cdFlip { 0% { transform: rotateX(90deg); opacity: 0.2; } 100% { transform: rotateX(0); opacity: 1; } }
+</style>

@@ -4,8 +4,13 @@ import '../styles/overlay.css';
 import '../styles/tweaks.css';
 import MobileMenu from '../components/MobileMenu.astro';
 import business from '../data/business.json';
+import { isPreview } from '../data/preview-pages';
 
-const { title, description, canonical, ogImage, extraTypes = [], route } = Astro.props;
+// noindex: keep a page out of search. A page listed in src/data/preview-pages.ts gets it
+// automatically, along with the preview bar; ldExtra adds fields to this page's Restaurant node.
+const { title, description, canonical, ogImage, extraTypes = [], route, noindex = false, ldExtra = {} } = Astro.props;
+const preview = isPreview(route);
+const robotsNoindex = noindex || preview;
 // Every absolute URL on the page is built on business.siteUrl, the one host that serves the
 // site. Vercel serves www.senortequilas.com and 308s the apex to it, so www is canonical.
 // Pages pass their canonical as a full URL; only its path is used, so the host can never
@@ -37,8 +42,16 @@ const LCP_IMAGE = {
   '/taco-tuesday': '/images/eca8597506381a36.jpg',
   '/game-day': '/images/site/game-day-hero.jpg',
   '/friendsgiving': '/videos/friendsgiving-flyer-poster.jpg',   // the hero video's poster, confirmed by PerformanceObserver 21 Oct
+  // An object when the hero carries a srcset: the preload must offer the same candidates or the
+  // browser fetches both. The strings must match the page's <img> byte for byte.
+  '/holiday-parties': { href: '/images/site/mexican-room.webp', srcset: '/images/site/mexican-room-800.webp 800w, /images/site/mexican-room.webp 1400w', sizes: '100vw' },
+  '/new-years-eve': { href: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp', srcset: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar-640.webp 640w, /images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp 1600w', sizes: '100vw' },
+  '/birria-ramen': { href: '/images/dishes/birria-ramen.jpg', srcset: '/images/dishes/birria-ramen-800.webp 800w, /images/dishes/birria-ramen.jpg 1265w', sizes: '(max-width: 767px) 92vw, min(42vw, 500px)' },
 };
-const lcpImage = LCP_IMAGE[route];
+const lcpEntry = LCP_IMAGE[route];
+const lcpImage = typeof lcpEntry === 'string' ? lcpEntry : lcpEntry?.href;
+const lcpSrcset = typeof lcpEntry === 'object' ? lcpEntry.srcset : undefined;
+const lcpSizes = typeof lcpEntry === 'object' ? lcpEntry.sizes : undefined;
 
 // One branded share card for every link on the site, supplied 11 September. Each page keeps
 // its own ogImage for the JSON-LD image, where a photograph of the thing itself is the right
@@ -51,6 +64,9 @@ const shareCard = '/images/site/open-graph.jpg';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': ['Restaurant', 'LocalBusiness', ...extraTypes],
+  // one stable id, so a page's Event, Person or MenuItem can point at this node instead of
+  // repeating it
+  '@id': site + '/#restaurant',
   name: business.name,
   url: pageUrl,
   telephone: business.telephone,
@@ -88,6 +104,7 @@ const jsonLd = {
     '@type': 'OrderAction',
     target: { '@type': 'EntryPoint', urlTemplate: business.orderUrl, inLanguage: 'en-US' },
   },
+  ...ldExtra,
 };
 ---
 <!doctype html>
@@ -100,7 +117,9 @@ const jsonLd = {
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={pageUrl} />
+    {robotsNoindex
+      ? <meta name="robots" content="noindex, nofollow" />
+      : <link rel="canonical" href={pageUrl} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={business.name} />
     <meta property="og:locale" content="en_US" />
@@ -120,7 +139,7 @@ const jsonLd = {
          tags that also carry fetchpriority. Three pages are missing on purpose: /our-story,
          /mexican-restaurant-gaithersburg-md and /contact have a text LCP and nothing to
          preload. See DESIGN-DEBT.md entry 53. -->
-    {lcpImage && <link rel="preload" as="image" fetchpriority="high" href={lcpImage} />}
+    {lcpImage && <link rel="preload" as="image" fetchpriority="high" href={lcpImage} imagesrcset={lcpSrcset} imagesizes={lcpSizes} />}
     <!-- The three faces that carry the top of the homepage: the H1, the body copy and the
          gold eyebrow. Everything else swaps in, which font-display: swap makes cheap.
          See DESIGN-DEBT.md entry 49. -->
@@ -176,6 +195,9 @@ const jsonLd = {
     </script>
   </head>
   <body data-route={route}>
+    {preview && (
+      <div data-preview-bar role="note" style="background: rgb(214, 188, 133); color: rgb(18, 18, 16); font-family: Barlow, 'Barlow Fallback', system-ui, sans-serif; font-weight: 700; font-size: 13px; line-height: 1.35; text-align: center; padding: 7px 16px;">Preview for Señor Tequila's review. This page is not published yet.</div>
+    )}
     <slot />
     <MobileMenu />
     <script is:inline>

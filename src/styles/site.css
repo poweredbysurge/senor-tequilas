@@ -302,3 +302,19 @@ body{margin:0;font-family:Barlow,system-ui,-apple-system,sans-serif;-webkit-font
 [data-c1p-root] h1,[data-c1p-root] h2,[data-c1p-root] h3{color:#F6EFE4}
 [data-c1p-root] [data-rail]::-webkit-scrollbar{display:none}
 @keyframes mdPulse{0%,100%{box-shadow:0 0 0 0 rgba(56,176,73,.55)}70%{box-shadow:0 0 0 8px rgba(56,176,73,0)}}
+
+/* Metric-matched fallbacks, so text set in a system font before the web font arrives takes the
+   same width and the swap moves nothing (CLS). size-adjust is the measured glyph-width ratio of the
+   web font to Arial (bold for 600 and up) or Courier New, taken on uppercase labels for Barlow
+   Condensed and Archivo Black because that is how the pages set them, and on running text for
+   Barlow. The vertical overrides are the web fonts' own metrics divided by size-adjust, because
+   Chrome applies them to the adjusted size. Inert unless a stack names the fallback family: the
+   seasonal pages do, the rest of the site does not yet. See DESIGN-DEBT.md entry 124. */
+@font-face { font-family: 'Barlow Fallback'; font-weight: 400; src: local('Arial'), local('Roboto'), local('Helvetica'); size-adjust: 94%; ascent-override: 106.4%; descent-override: 21.3%; line-gap-override: 0%; }
+@font-face { font-family: 'Barlow Fallback'; font-weight: 600; src: local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Helvetica Bold'); size-adjust: 88%; ascent-override: 113.6%; descent-override: 22.7%; line-gap-override: 0%; }
+@font-face { font-family: 'Barlow Fallback'; font-weight: 700 800; src: local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Helvetica Bold'); size-adjust: 88%; ascent-override: 113.6%; descent-override: 22.7%; line-gap-override: 0%; }
+@font-face { font-family: 'Barlow Condensed Fallback'; font-weight: 500; src: local('Arial'), local('Roboto'), local('Helvetica'); size-adjust: 67%; ascent-override: 149.3%; descent-override: 29.9%; line-gap-override: 0%; }
+@font-face { font-family: 'Barlow Condensed Fallback'; font-weight: 600; src: local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Helvetica Bold'); size-adjust: 67.5%; ascent-override: 148.1%; descent-override: 29.6%; line-gap-override: 0%; }
+@font-face { font-family: 'Barlow Condensed Fallback'; font-weight: 700; src: local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Helvetica Bold'); size-adjust: 68.5%; ascent-override: 146.0%; descent-override: 29.2%; line-gap-override: 0%; }
+@font-face { font-family: 'Archivo Black Fallback'; font-weight: 400; src: local('Arial Bold'), local('Arial-BoldMT'), local('Roboto Bold'), local('Helvetica Bold'); size-adjust: 116%; ascent-override: 75.7%; descent-override: 18.1%; line-gap-override: 0%; }
+@font-face { font-family: 'Special Elite Fallback'; font-weight: 400; src: local('Courier New'), local('CourierNewPSMT'), local('Courier'); size-adjust: 86%; ascent-override: 94.1%; descent-override: 39.7%; line-gap-override: 0%; }

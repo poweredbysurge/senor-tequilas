@@ -3817,3 +3817,151 @@ gallery opens on the party again. A category can carry `captions`, one per photo
 the lightbox shows that line instead of "Label, n / total". The cocktails tab uses it to name the
 drink in each photo (Dulce Descanso, Berry Scary). The other two tabs keep their counter. When
 photos 05 to 08 arrive, they need a caption each as well as an alt.
+
+## 123. Three pages in preview: /holiday-parties, /new-years-eve, /birria-ramen, 24 October
+
+Built on the /friendsgiving pattern from `design/copy/holiday-pages-copy-2026-10-24.md`, verbatim,
+and live at their final addresses for the client to review, but unpublished. One switch controls
+all three, `src/data/preview-pages.ts`. While a path is listed, `Base.astro` writes
+`noindex, nofollow` and leaves the canonical out, and draws a thin gold bar above the header
+("Preview for Señor Tequila's review. This page is not published yet."); the sitemap leaves it out;
+`vercel.json` sends `X-Robots-Tag: noindex, nofollow`. The sitemap route compares the vercel.json
+noindex rules with the list and fails the build if they differ, so the two cannot drift. Not done
+with robots.txt, which would hide the noindex from Google. Nothing on the site links to the three
+yet; they link to each other. Publishing is removing the path from the list and its vercel.json
+rule; the file's header lists the rest of the publish step (nav, homepage cards, internal links,
+the NYE blackout line on /private-parties, specialHours, Search Console).
+
+Paths are bare, `/holiday-parties` rather than the brief's `/holiday-parties/`, because the site
+runs `trailingSlash: false` and every canonical and sitemap entry uses the bare form; the
+slashed address 308s to it. Internal links follow the same rule.
+
+Shared changes beyond the brief's list, both invisible: the Restaurant node in `Base.astro` gained
+an `@id` (`/#restaurant`) so an Event location, a Person's `worksFor` and a Service provider can
+point at it, and an `ldExtra` prop so one page can add a field to it (Holiday Parties adds
+`maximumAttendeeCapacity: 400`). Verified the homepage and /friendsgiving render pixel-identical
+to the last pushed build at 390 and 1440, and no other page gained a robots tag or lost its
+canonical. The three pages share their style strings and FAQ helpers through a new
+`src/lib/authored.js`; /friendsgiving keeps its own copy and was not touched.
+
+The Holiday Parties form has a Company field, but `company` is the spam honeypot in
+`api/inquiry.js`: a filled one is answered "ok" and silently dropped. The input is named `org`,
+and a capture-phase submit listener on that page puts "Company: ..." at the top of the message
+before the site's handler reads the fields, then restores the textarea. Both forms post as
+`private-party`, the API's existing type, and carry the page path; the New Year's Eve form sends
+the date 2026-12-31 without asking. Tested by intercepting `/api/inquiry` locally (preview does not
+run the function): the payloads are right and the success state shows.
+
+The copy repeats the address, the phone and the full weekly hours in prose. CLAUDE.md keeps those
+in business.json only, so each page asserts at build time the facts its prose assumes, and the
+build stops if business.json moves under them. The review count is read live through
+`roundedTotal()`: the copy's "over 5,600" reads "over 5,700". `/menu` outputs no Menu node, so the
+Birria Ramen MenuItem stands alone with an `@id` the menu can reference later. Five
+`PENDING ROBERTO` comments mark the open questions (Q1 dress code, Q2 NYE photos, Q3 the
+first-person quote, Q4 card-only cover, Q5 an optional owner quote).
+
+## 124. The three preview pages rebuilt from the selected concepts, 25 October
+
+Entry 123's three pages were plain /friendsgiving-pattern builds. Mario picked one Claude Design
+concept per page (`design/concepts/2026-10-25-selected/`) and this is the visual rebuild: same
+paths, same preview mode, same copy (`design/copy/holiday-pages-copy-2026-10-24.md`, verbatim),
+same title, description and JSON-LD on every page, byte-for-byte against snapshots of the entry
+123 build. Holiday Parties is 1a Room Tour: full-bleed hero, a December calendar with the
+weekends gold, one chapter per room with a sticky chapter index at 1024 and up, the numbers as
+count-ups, a cream capacity section, a ticket stub for the bar, four booking nodes on a drawn
+line. New Year's Eve is 2a Countdown: a double gold poster frame with a live countdown to 9 PM on
+31 December (days, hours, minutes, tabular; "Tonight" once it passes, hidden after 2 AM on the
+1st, never negative; a static "Thursday, December 31 · 9 PM" when JS is off), five flyer cards
+with 9 PM lifted, the masks line in Special Elite. Birria Ramen is 3c Painted Sign: a sign frame
+hero with "Birria Ramen" at 160px and "in Germantown, Maryland" smaller inside the same `<h1>`, a
+$21 badge that rocks once, dashed menu boards, a word chain for the braise, two sign panels for
+takeout and local, a map facade that loads the iframe on click.
+
+Reusable parts went to `src/components/seasonal/`: `SeasonalMotion.astro` (one bundled module,
+honours `prefers-reduced-motion`, and `html[data-motion-off]` or `window.ST_MOTION_OFF` turns
+every effect off), `Countdown`, `DecemberCalendar` (aria-hidden, weekend/open/closed only),
+`ChapterIndex`, `CountStat`, `SignFrame`, `MenuBoard`, `FlyerCard`, `RatingLine` (4.6, the fifth
+star filled to 60%, no review schema), `ReviewQuote`, `Faq`, `Placeholder`. The checker is
+`scripts/check-seasonal.py` (`coverage`, `headings`, `links`).
+
+Decisions worth remembering. The Holiday Parties hero is the Mexican Room photo, not
+`party-dancefloor.mp4` (10 MB); `HERO_MEDIA` at the top of the page flips it and both were
+screenshotted for Mario. The hero scrim had to be darkened on the text side: the mural behind the
+H1 measured 1.4:1 at its brightest patch, and now measures 4.6:1 at 1440 and 10.7:1 at 390.
+The concept's "Next to Topgolf" eyebrow was dropped for the copy's own eyebrow. Delivery chips on
+Birria Ramen link to the DoorDash, Uber Eats and Grubhub URLs already on /takeout-delivery. The
+copy's "over 5,600 reviews" renders as the live "over 5,700" (entry 123), so the coverage script
+reports those lines as misses by design. Placeholders still waiting on photos: Holiday Parties
+Indoor Patio and the gift box; New Year's Eve gift box; Birria Ramen michelada, Mexican Coke and
+Negra Modelo. The five `PENDING ROBERTO` comments carry over unchanged.
+
+Two things the first Lighthouse pass forced. The heroes were 160 to 270 KB at full width on a
+412px screen: each now carries a `srcset` with a phone-sized variant (`mexican-room-800.webp`,
+`birria-ramen-800.webp`, the existing `-640` for the New Year's Eve crowd), and `LCP_IMAGE` in
+`Base.astro` accepts an object so the preload hint carries the same `imagesrcset` and
+`imagesizes`, otherwise the browser fetches both candidates. LCP fell from 4.7 s to 3.1 s on
+Holiday Parties and 3.8 s to 2.8 s on Birria Ramen. The remaining CLS (0.16 to 0.17 on Holiday
+Parties, every run) was the font swap: Arial is wider than Barlow and much wider than Barlow
+Condensed, so eyebrows, chips and the lead wrapped differently before the web fonts arrived and
+the hero, anchored to its bottom edge, moved. `site.css` now ends with metric-matched fallback
+faces (`Barlow Fallback`, `Barlow Condensed Fallback`, `Archivo Black Fallback`, `Special Elite
+Fallback`: local Arial or Courier New with `size-adjust` from measured glyph-width ratios and the
+web fonts' vertical metrics as overrides, divided by the size-adjust because Chrome applies them
+to the adjusted size). They are inert until a stack names them; the three pages, the seasonal
+components, `authored.js` and the preview bar do, the rest of the site does not. With fonts
+blocked, every hero element now measures the same height and position as with fonts loaded, at
+412 and 1440. The live homepage measures CLS 0.17 and /friendsgiving 0.09 on the same machine from
+the same cause, so the fallbacks are worth extending site-wide in their own change.
+
+Two more runtime shifts, both deterministic. `Base.astro`'s `mobileCtas()` sets the phone
+buttons full width and stacks a side-by-side pair after load; the Holiday Parties hero copy is
+anchored to the section's bottom edge, so the stack moved everything above it 64px (CLS 0.135,
+every run). The three heroes now carry that phone layout in their own CSS (`.hp-hero-ctas`,
+`.ny-ctas`, `.br-ctas`), so the script's attributes change nothing. And the New Year's Eve
+countdown grew 23px when the digits replaced the static date line; the digit row is now laid out
+from the first paint, invisible, with the static line centred over it, so going live is a
+visibility change. With JS off the static line still shows and nothing sits at opacity 0.
+
+A flyer-card bug from the first pass: `min-height: 100%` on a grid item inflated each card 44px
+past its row, so the masks line sat on the cards and, on phones, each card on the one before it.
+Removed. The card text also now stays left-aligned under the site's phone centring rule.
+
+Checks: 25 pages build, check-build passes, all three noindex with no canonical, out of the
+sitemap, unlinked. Copy coverage 141/142, 105/107, 104/106 (the review-count lines above).
+Headings outline matches the copy. Every copy link present. No dashes. JS off: nothing at opacity
+0, the countdown fallback shows, count-ups show their final numbers. Reduced motion: no running
+animations, no parallax, no Ken Burns, no badge rock. Keyboard: FAQ toggles on Enter with a
+visible ring, chapter index and forms reachable, no zero-size tab stops. Lighthouse mobile,
+three runs a page on `npm run preview`: Holiday Parties 93 / 93 / 93 (LCP 3.0 to 3.1 s, CLS
+0.001, TBT 0 to 50 ms, 994 KB), New Year's Eve 92 / 93 / 92 (LCP 2.9 to 3.2 s, CLS 0 to 0.001,
+TBT 0), Birria Ramen 94 / 94 / 94 (LCP 2.8 s, CLS 0 to 0.001, TBT 0). The first pass had
+read 61 to 82, 90 to 91 and 77 to 86. LCP stays above the brief's 2.5 s on every page: FCP is
+already 1.7 to 2.0 s on this profile because the document itself is 160 to 190 KB of inline
+styles, which is the site's build, not these pages (the live homepage reads 78 and /friendsgiving
+86 on the same machine). Contrast over photographs, worst 24px cell behind any text block at
+1440: Holiday Parties H1 4.6:1 (10.7:1 at 390), the International Room H3 over its parallax
+photo 4.2:1, everything else above 8:1.
+
+## 125. /holiday-parties: the four rooms become a sticky card stack, 25 October
+
+Mario asked for the room chapters to take the full screen and for each next room to slide up over
+the one before, taking its place. The four `.hp-chapter` sections sit in `.hp-stack` and are
+`position: sticky; top: 63px` (under the sticky header) at `100svh - 63px`, so each pins and the
+next, later in the DOM, scrolls over it. `SeasonalMotion` gained `data-stack`: as the next card
+arrives it sets `--cover` 0 to 1 on the card underneath, which dims it (a shade layer to 65%) and
+shrinks its photo and copy by up to 6%. Reduced motion keeps the dim and drops the shrink; with JS
+off the cards still pin and cover, without the dim. Phones get the same full-height card, copy over
+the photo, so the old phone layout (photo above, copy below) is gone. The chapters lift the site's
+80px phone section padding for the reason heroes are exempt: the photo runs to the card edge.
+
+Three knock-on fixes. The chapter index used an IntersectionObserver band, which never re-reports
+a pinned card on the way back up because it never leaves the screen; it now picks the last chapter
+whose top is above mid-screen, on scroll. Base's scroll reveal waits for an element to clear the
+bottom 8% of the viewport, and the chips at the foot of a pinned card never do, so they stayed at
+opacity 0; the stack carries `data-own-motion` and the slide-over is the entrance. The Indoor Patio
+placeholder art now fits above the copy instead of covering the whole card, with its label at the
+top. Separately, the fajita photo's reveal scale was pushing the page 4px wide on phones; its frame
+now clips.
+
+Lighthouse mobile after: 94 / 94 / 94, LCP 3.0 s, CLS 0 to 0.001. Copy coverage and the heading
+outline unchanged.

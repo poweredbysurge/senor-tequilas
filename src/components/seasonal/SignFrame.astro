@@ -1,0 +1,15 @@
+---
+/* The painted-sign frame: a 3px gold rule with a hairline outline a few pixels outside it, on
+   either the dark page or the cream field. Content goes inside. */
+const { tone = 'dark', class: cls = '', style = '', padding = 'clamp(28px, 4vw, 56px)', id } = Astro.props;
+const rule = tone === 'dark' ? 'rgb(214, 188, 133)' : 'rgb(18, 18, 16)';
+const hair = tone === 'dark' ? 'rgba(214, 188, 133, 0.45)' : 'rgba(18, 18, 16, 0.45)';
+---
+<div id={id} class={`sf ${cls}`} style={`--sf-rule: ${rule}; --sf-hair: ${hair}; padding: ${padding}; ${style}`}>
+  <slot />
+</div>
+<style>
+  .sf { position: relative; border: 3px solid var(--sf-rule); border-radius: 4px; }
+  .sf::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--sf-hair); border-radius: 2px; pointer-events: none; }
+  @media (max-width: 767px) { .sf::before { inset: 5px; } }
+</style>

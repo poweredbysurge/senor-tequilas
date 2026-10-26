@@ -1,0 +1,388 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+import business from '../data/business.json';
+import { roundedTotal } from '../lib/reviews.js';
+import SeasonalMotion from '../components/seasonal/SeasonalMotion.astro';
+import SignFrame from '../components/seasonal/SignFrame.astro';
+import Countdown from '../components/seasonal/Countdown.astro';
+import FlyerCard from '../components/seasonal/FlyerCard.astro';
+import Placeholder from '../components/seasonal/Placeholder.astro';
+import RatingLine from '../components/seasonal/RatingLine.astro';
+import ReviewQuote from '../components/seasonal/ReviewQuote.astro';
+import Faq from '../components/seasonal/Faq.astro';
+import { EYEBROW, RULE, H2, P, LINK, WRAP, BTN_PRIMARY, BTN_GHOST, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, PHONE_HREF, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
+
+/*
+  /new-years-eve, concept 2a "The Countdown" (design/concepts/2026-10-25-selected). In PREVIEW:
+  listed in src/data/preview-pages.ts, so it is noindex, out of the sitemap, carries the preview
+  bar, and nothing on the site links to it yet. Copy is verbatim from
+  design/copy/holiday-pages-copy-2026-10-24.md, page C; the mock's condensed text is never used.
+  The homepage card waits for 1 December.
+
+  PRICES ARE ALLOWED ON THIS PAGE (client decision for holiday pages): the $5 cover and the $500
+  gift certificate. Do not strip them in a sweep.
+*/
+const PAGE = '/new-years-eve';
+const PAGE_URL = business.siteUrl + PAGE;
+assertFacts(PAGE, { street: '20021 Century Blvd', phone: '301-569-4574' });
+
+// PENDING ROBERTO Q2: last year's NYE photos were not supplied. The hero and the private-room
+// backdrop are bar-area photographs from other nights, held here so they swap in one place.
+const HERO = { src: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp', w: 1600, h: 1069, alt: 'A crowd with hands in the air in front of the golden heart behind the bar' };
+const ROOM_BG = { src: '/images/site/international-room-long-tables.webp', w: 1600, h: 900 };
+// the Event schema keeps the image it was published with, so the JSON-LD stays byte-identical
+const LD_IMAGE_PATH = '/images/site/friendsgiving/friendsgiving-full-bar-area.webp';
+const LD_IMAGE = business.siteUrl + LD_IMAGE_PATH;
+const DINNER = { src: '/images/dishes/molcajete.jpg', w: 1600, h: 725, alt: 'A molcajete bubbling in its stone bowl, grilled meats, cactus and cheese over the sauce' };
+const COUNTDOWN_TARGET = '2026-12-31T21:00:00-05:00';
+const COUNTDOWN_UNTIL = '2027-01-01T02:00:00-05:00';
+const REVIEW = { name: 'Joe T.', text: 'What an absolutely amazing, electric place! The atmosphere is absolutely electric: the music (they had a great DJ who played all types of music), the dim lighting, and the perfectly used smoke machine, make for a great atmosphere! The bartenders are super responsive, attentive, and engaging!' };
+
+const FAQ = [
+  { q: 'Is there a New Year\'s Eve dinner near Germantown that takes reservations?',
+    a: "Yes. Señor Tequila's serves the full menu on New Year's Eve, with reservations for the dining rooms through Toast Tables for groups under 20. Families are welcome for dinner all night. The bar area is first come, first served. We are at 20021 Century Blvd, next to Topgolf, with free parking." },
+  { q: "Is the New Year's Eve party 21 and over?",
+    a: 'The bar area is 21 and over from 9 PM, and that is where the masquerade, the DJs and the cover are. The dining rooms stay open to all ages the whole night, so families can eat late and still hear the countdown.' },
+  { q: "How much is the cover on New Year's Eve, and are there tickets?",
+    a: 'No tickets, no tiers. A $5 cover for the bar area after 9 PM, paid at the door. Dinner in the dining rooms has no cover. The champagne toast at midnight is complimentary.' },
+  { q: 'Do I need a mask?',
+    a: 'It is a masquerade, so yes. We hand out a limited number of masks at the door while they last. Bring your own if you want to be sure.' },
+  { q: "What time do you close on New Year's Eve, and are you open New Year's Day?",
+    a: "We open at 3 PM on New Year's Eve and close at 2 AM, with last call 15 minutes before. New Year's Day we open at 3 PM with regular Friday hours. We are closed December 24 and 25." },
+  { q: 'Can we reserve a table in the bar area for the countdown?',
+    a: 'No. The bar area is first come, first served on New Year\'s Eve, and it fills before 9. Reservations are for the dining rooms. If you want a guaranteed spot for a group, book a private room.' },
+  { q: "Can we book a private room for our own New Year's Eve party?",
+    a: 'Yes. Rooms seat 48 to 112, with sound, lighting, a microphone and a screen built in, and the full kitchen behind them. Holiday rates apply. Contact Tomas by phone or the form on this page and he replies within 24 hours with a formal invoice.' },
+];
+
+const LOCATION = {
+  '@type': 'Restaurant',
+  '@id': RESTAURANT_ID,
+  name: business.name,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.streetAddress,
+    addressLocality: business.addressLocality,
+    addressRegion: business.addressRegion,
+    postalCode: business.postalCode,
+    addressCountry: business.addressCountry,
+  },
+};
+const eventLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: "New Year's Eve Masquerade Party",
+    description: "A masquerade in the bar area with DJs, a countdown and a complimentary champagne toast at midnight. 21 and over in the bar area after 9 PM, $5 cover at the door.",
+    startDate: '2026-12-31T21:00:00-05:00',
+    endDate: '2027-01-01T02:00:00-05:00',
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: LOCATION,
+    organizer: { '@id': RESTAURANT_ID },
+    image: [LD_IMAGE],
+    url: PAGE_URL,
+    typicalAgeRange: '21-',
+    offers: {
+      '@type': 'Offer',
+      price: '5',
+      priceCurrency: 'USD',
+      url: PAGE_URL,
+      availability: 'https://schema.org/InStock',
+      description: 'Cover for the bar area after 9 PM. Dinner in the dining rooms has no cover.',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: "New Year's Eve Dinner",
+    description: 'Dinner off the full menu in the dining rooms, all ages, with reservations through Toast Tables for groups under 20.',
+    startDate: '2026-12-31T15:00:00-05:00',
+    endDate: '2026-12-31T21:00:00-05:00',
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: LOCATION,
+    organizer: { '@id': RESTAURANT_ID },
+    image: [LD_IMAGE],
+    url: PAGE_URL,
+    isAccessibleForFree: true,
+  },
+];
+const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(214, 188, 133, 0.55); color: rgb(234, 226, 214); font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px;';
+---
+<Base title="New Year's Eve Masquerade Party & Dinner | Germantown, MD" description="NYE in Germantown, MD: family dinner off the full menu, then a masquerade in the bar area with DJs, a countdown and a free champagne toast. 21+ in the bar after 9 PM. Open to 2 AM." canonical={PAGE_URL} ogImage={LD_IMAGE_PATH} extraTypes={['BarOrPub']} route={PAGE}>
+<div class="sc-host ny" data-sc-name="New Year's Eve" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
+  <Header5 />
+
+  <!-- 1. the poster hero: double gold frame, the live countdown, the H1, the facts, three CTAs -->
+  <section data-screen-label="New Year's Eve hero" class="ny-hero">
+    <div class="ny-hero-wrap">
+      <SignFrame tone="dark" class="ny-poster" padding="0">
+        <div class="ny-poster-media" aria-hidden="true">
+          <img src={HERO.src} srcset="/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar-640.webp 640w, /images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp 1600w" sizes="100vw" alt="" width={HERO.w} height={HERO.h} fetchpriority="high" decoding="async" data-kenburns />
+        </div>
+        <div class="ny-poster-inner">
+          <div class="ny-eyebrow">Thursday, December 31 · Germantown, MD · 3 PM to 2 AM</div>
+          <div class="ny-cd"><Countdown target={COUNTDOWN_TARGET} until={COUNTDOWN_UNTIL} fallback="Thursday, December 31 · 9 PM" caption="9 PM. The masquerade begins in the bar area." /></div>
+          <h1 class="ny-h1">New Year's Eve Dinner and Masquerade Party in <span style="white-space: nowrap;">Germantown, MD</span></h1>
+          <p class="ny-lead">Dinner for the whole family off the full menu, in the dining rooms, all night. Then the masks go on in the bar area: DJs, a countdown, and a champagne toast on us at midnight. The bar area is 21 and over after 9 PM with a $5 cover at the door, and we do not close until 2.</p>
+          <div class="ny-facts" aria-hidden="true">
+            <span style={CHIP}>The full menu, for everyone, all ages</span>
+            <span style={CHIP}>Bar area 21 and over after 9 PM</span>
+            <span style={CHIP}>$5 cover, paid at the door</span>
+            <span style={CHIP}>Spanish and English, sound up</span>
+            <span style={CHIP}>A champagne toast at midnight</span>
+          </div>
+          <div class="ny-ctas">
+            <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
+            <a href="#inquire" style={BTN_GHOST}>Book a Private Room</a>
+            <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+          </div>
+        </div>
+      </SignFrame>
+    </div>
+  </section>
+
+  <!-- 2. the night as five flyer cards -->
+  <section id="night" data-screen-label="The night" class="ny-sec">
+    <div style={WRAP}>
+      <div class="ny-night-head">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>Two parties in one building</div>
+          <h2 style={H2}>How the Night Runs</h2>
+        </div>
+        <p style={`${P} margin-top: 0;`}>Early, it is a restaurant with a very good dinner and your whole family at the table. Late, the bar area is a masquerade. Same building, same kitchen, different volume.</p>
+      </div>
+      <ol class="ny-flyers">
+        <FlyerCard time="3 PM" title="Doors open" tag="All ages"><p>Doors open, like any Thursday.</p></FlyerCard>
+        <FlyerCard time="Dinner" title="The full menu, for everyone" tag="Reservations"><p>The full menu, for everyone, all ages, in the dining rooms. Reserve on Toast Tables for groups under 20, or call for anything larger. The dining rooms stay all ages the whole night.</p></FlyerCard>
+        {/* PENDING ROBERTO Q4: if the cover is card only, add "credit or debit, no cash" here and in the cover FAQ. */}
+        <FlyerCard time="9 PM" title="The masquerade begins" tag="21 and over · $5 cover" lifted><p>The masquerade begins in the bar area, which turns 21 and over. $5 cover, paid at the door. DJs take it from here, Spanish and English, sound up.</p></FlyerCard>
+        <FlyerCard time="12" title="The countdown" tag="Midnight"><p>The countdown, then a champagne toast, on us.</p></FlyerCard>
+        <FlyerCard time="2 AM" title="We close" tag="Last call 1:45 AM"><p>We close. Last call is 15 minutes before.</p></FlyerCard>
+      </ol>
+      <p class="ny-masks">Masks: we hand out a limited number at the door while they last. Bring your own to be sure of one.</p>
+      {/* PENDING ROBERTO Q1: dress code unknown. Do not add one. If he supplies it, add one line here and one FAQ. */}
+    </div>
+  </section>
+
+  <!-- 3. dinner, on the cream field -->
+  <section id="dinner" data-screen-label="Dinner" class="ny-cream">
+    <div class="ny-cream-grid">
+      <div class="ny-cream-copy">
+        <div class="ny-eyebrow-ink">No prix fixe. No three choices.</div>
+        <h2 class="ny-h2-ink">Dinner First, Off the Full Menu</h2>
+        <p class="ny-p-ink">Most New Year's Eve dinners come with a set menu and a chicken-or-fish decision made for you in October. Ours is the full menu, the same as any Thursday. Molcajetes that arrive still bubbling in stone. Quesabirria. Fajitas. Tortillas pressed by hand that morning. The <a href="/birria-ramen" class="ny-link-ink">Birria Ramen</a>, if you want to start the year full.</p>
+        <p class="ny-p-ink">No drink specials that night, and we would rather tell you than pretend. The margaritas are the margaritas, 14 ounces, 18 ounces, or the 54-ounce Big Mami. <a href="/margaritas" class="ny-link-ink">The margaritas</a> · <a href="/tequila-bar" class="ny-link-ink">The tequila bar</a> · <a href="/menu" class="ny-link-ink">The menu</a></p>
+        <p class="ny-p-ink">Reservations are for the dining rooms, through Toast Tables for groups under 20. The bar area does not take reservations on New Year's Eve. It is first come, first served, and it fills before 9. For 20 or more, call {PHONE_DISPLAY} or book a room.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px;">
+          <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
+          <a href={PHONE_HREF} class="ny-btn-ink">Call {PHONE_DISPLAY}</a>
+        </div>
+      </div>
+      <div class="ny-cream-media">
+        <img src={DINNER.src} alt={DINNER.alt} width={DINNER.w} height={DINNER.h} loading="lazy" decoding="async" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. private rooms: dimmed room photograph, the form card right -->
+  <section id="inquire" data-screen-label="Private rooms" class="ny-room">
+    <div class="ny-room-media" aria-hidden="true"><img src={ROOM_BG.src} alt="" width={ROOM_BG.w} height={ROOM_BG.h} loading="lazy" decoding="async" /></div>
+    <div class="ny-room-grid">
+      <div class="ny-room-copy">
+        <div style={EYEBROW}><span style={RULE}></span>Your own countdown</div>
+        <h2 style={H2}>Your Own Room for the Countdown</h2>
+        <p style={P}>Private rooms are available on New Year's Eve. You get a room that seats 48 to 112 with its own sound and lighting from the DJ booth, a microphone and a large HDMI screen, your playlist or our DJ, and the kitchen on your side of the wall. Groups from 12. Holiday rates apply, and Tomas quotes them when you call.</p>
+        <p style={P}>Tomas replies within 24 hours with a formal invoice and a secure payment link. The deposit is the room fee. Rooms, photos and the tour are on <a href="/private-parties" style={LINK}>private parties</a>.</p>
+      </div>
+      <form data-inquiry="private-party" method="post" action="/api/inquiry" class="ny-form" style={FORM}>
+        <div class="ny-form-k" style="grid-column: 1 / -1;">Book a private room</div>
+        <label style={LABEL}>Name<input type="text" name="name" autocomplete="name" required minlength="2" maxlength="120" placeholder="Full name" style={FIELD} /></label>
+        <label style={LABEL}>Phone<input type="tel" name="phone" autocomplete="tel" required maxlength="40" placeholder="(301) 555-0100" style={FIELD} /></label>
+        <label style={LABEL}>Email<input type="email" name="email" autocomplete="email" maxlength="160" placeholder="Optional, for a written reply" style={FIELD} /></label>
+        <label style={LABEL}>Guest count<input type="number" name="guests" inputmode="numeric" min="1" max="5000" placeholder="e.g. 30" style={FIELD} /></label>
+        {/* the night is fixed, so the date travels with the inquiry without asking for it */}
+        <input type="hidden" name="date" value="2026-12-31" />
+        <label style={`${LABEL} grid-column: 1 / -1;`}>Tell us about the night<textarea name="details" rows="4" maxlength="4000" placeholder="How many, what time, anything we should know" style={`${FIELD} resize: vertical;`}></textarea></label>
+        <div style="grid-column: 1 / -1;"><button type="submit" style={`${BTN_PRIMARY} width: 100%;`}>Book a Private Room</button></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- 5. Christmas week hours as three tiles -->
+  <section id="hours" data-screen-label="Holiday hours" class="ny-sec">
+    <div style={WRAP}>
+      <div class="ny-hours">
+        <div>
+          <div style={EYEBROW}><span style={RULE}></span>NYE and the days around it</div>
+          <h2 style={H2}>Christmas Week Hours</h2>
+          <p style={P}>Pozole on New Year's Day is a tradition in a lot of Mexican houses, and it is a good one for the morning after. Tamales, pozole, birria and handmade tortillas all go home with you. Order ahead through <a href="/catering" style={LINK}>catering</a> with 48 hours notice, or grab them with <a href="/takeout-delivery" style={LINK}>takeout</a> earlier in the week.</p>
+        </div>
+        <ul class="ny-tiles">
+          <li class="ny-tile is-closed"><div class="ny-tile-k">December 24 and 25<span class="ny-vh">:</span></div><div class="ny-tile-n"><s>closed.</s></div></li>
+          <li class="ny-tile"><div class="ny-tile-k">December 31<span class="ny-vh">:</span></div><div class="ny-tile-n">3 PM to 2 AM.</div></li>
+          <li class="ny-tile"><div class="ny-tile-k">January 1<span class="ny-vh">:</span></div><div class="ny-tile-n">open at 3 PM, regular Friday hours.</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. the gift box banner -->
+  <section id="gift-box" data-screen-label="The Holiday Gift Box" class="ny-sec">
+    <div style={WRAP}>
+      <SignFrame tone="dark" class="ny-gift">
+        <div class="ny-gift-grid">
+          <Placeholder label="Sealed holiday gift box. Square." ratio="1 / 1" />
+          <div>
+            <div style={EYEBROW}><span style={RULE}></span>Your NYE visit counts</div>
+            <h2 style={H2}>The Holiday Gift Box</h2>
+            <p style={P}>New Year's Eve is the last night of the Holiday Gift Box. Every visit from November 27 through December 31 sends you home with a sealed box. Bring it back unopened between January 1 and February 13 and we open it at your table. Inside: free margaritas, free dinner entrées, free appetizers, a free Avion shooter, free dessert, and one box somewhere in the stack holding a $500 gift certificate.</p>
+            <p style={P}>So you already have a reason to come back on New Year's Day. We open at 3.</p>
+            <p style={SMALL}><small style="font-size: inherit;">Fine print: boxes must be returned unopened between January 1 and February 13. One box redeemed per table, per check, for parties of 1 to 50 people. Cannot be combined with other offers. Boxes hold no cash value. Señor Tequila's reserves the right to cancel, void or change the offer at any time.</small></p>
+            <a href="/holiday-parties#gift-box" style={`${BTN_GHOST} margin-top: 18px;`}>The Holiday Gift Box</a>
+          </div>
+        </div>
+      </SignFrame>
+    </div>
+  </section>
+
+  <!-- 7. proof: centred pull quote, the rating line -->
+  <section id="proof" data-screen-label="Proof" class="ny-sec">
+    <div style={`${WRAP} text-align: center;`}>
+      <div style={`${EYEBROW} justify-content: center;`}><span style={RULE}></span>{roundedTotal(business.reviews.total).replace('over', 'Over')} reviews<span style={RULE}></span></div>
+      <h2 style={`${H2} margin-left: auto; margin-right: auto;`}>What People Say After a Night Here</h2>
+      <p style={`${P} margin-left: auto; margin-right: auto;`}>Our Google reviews mention the DJ nights more than we expected. {business.reviews.rating} stars across {roundedTotal(business.reviews.total)} of them, and family-owned by the Rivas brothers, Roberto and Alex, in Germantown since 2015.</p>
+      <div class="ny-pull"><ReviewQuote name={REVIEW.name} text={REVIEW.text} size="clamp(20px, 2.4vw, 30px)" /></div>
+      <div class="ny-rating"><RatingLine /></div>
+    </div>
+  </section>
+
+  <!-- 8. FAQ -->
+  <section id="faq" data-screen-label="New Year's Eve FAQ" class="ny-sec">
+    <div style={WRAP}>
+      <div class="ny-faq">
+        <div class="ny-faq-head">
+          <h2 style={H2}>New Year's Eve, Answered</h2>
+          <a href={PHONE_HREF} style={`${BTN_GHOST} margin-top: 20px;`}>Call {PHONE_DISPLAY}</a>
+        </div>
+        <Faq items={FAQ} variant="rule" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. close: dark photo field, centred -->
+  <section data-screen-label="Close" class="ny-close">
+    <div class="ny-close-media" aria-hidden="true"><img src="/images/site/friendsgiving/friendsgiving-full-bar-area.webp" alt="" width="1600" height="1069" loading="lazy" decoding="async" /></div>
+    <div class="ny-close-inner">
+      <h2 class="ny-close-h2">Reserve Dinner. Stay for the Toast.</h2>
+      <p style={`${P} margin-left: auto; margin-right: auto;`}>Book the early table on Toast Tables, eat properly, and let the masks find you at 9.</p>
+      <div class="ny-ctas" style="justify-content: center;">
+        <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
+        <a href="#inquire" style={BTN_GHOST}>Book a Private Room</a>
+        <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+      </div>
+    </div>
+  </section>
+
+  {eventLd.map((e) => <script type="application/ld+json" set:html={JSON.stringify(e)} />)}
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd(FAQ))} />
+
+  <Footer2 />
+</div>
+<SeasonalMotion />
+
+<style>
+  /* ---- 1. hero ---- */
+  .ny-hero { background: rgb(18, 18, 16); padding: clamp(14px, 2vw, 28px) clamp(14px, 2vw, 28px) clamp(28px, 4vw, 48px); border-bottom: 1px solid rgba(185, 156, 102, 0.2); }
+  .ny-hero-wrap { max-width: 1384px; margin: 0 auto; }
+  .ny-poster { overflow: hidden; }
+  .ny-poster-media { position: absolute; inset: 0; overflow: hidden; }
+  .ny-poster-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1); }
+  .ny-poster-media img.is-kenburns { animation: nyKen 16s ease-in-out infinite alternate; }
+  @keyframes nyKen { from { transform: scale(1); } to { transform: scale(1.1); } }
+  .ny-poster-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(18, 18, 16, 0.78) 0%, rgba(18, 18, 16, 0.9) 60%, rgba(18, 18, 16, 0.97) 100%); }
+  .ny-poster-inner { position: relative; z-index: 1; text-align: center; padding: clamp(48px, 8vw, 110px) clamp(18px, 4.5vw, 64px); max-width: 1000px; margin: 0 auto; }
+  .ny-eyebrow { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .ny-cd { margin-top: clamp(18px, 3vw, 36px); }
+  .ny-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(28px, 4.4vw, 60px); line-height: 1.04; margin: clamp(20px, 3vw, 34px) auto 0; text-transform: uppercase; text-wrap: balance; max-width: 20ch; }
+  .ny-lead { font-size: 16px; line-height: 1.7; color: rgba(246, 239, 228, 0.9); margin: 18px auto 0; max-width: 62ch; text-wrap: pretty; }
+  .ny-facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(214, 188, 133, 0.35); }
+  .ny-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; justify-content: center; }
+  /* the phone CTA layout Base.astro's mobileCtas() applies at runtime, set up front so nothing moves */
+  @media (max-width: 767px) { .ny-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .ny-ctas a { width: 100%; justify-content: center; text-align: center; } }
+
+  /* ---- shared ---- */
+  .ny-sec { background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0; scroll-margin-top: 70px; }
+  .ny-sec:nth-of-type(even) { background: rgb(20, 18, 16); }
+
+  /* ---- 2. flyers ---- */
+  .ny-night-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: end; }
+  .ny-flyers { list-style: none; margin: 30px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+  .ny-masks { font-family: 'Special Elite', 'Special Elite Fallback', 'Courier New', monospace; font-size: 17px; line-height: 1.5; color: rgb(214, 188, 133); margin: 26px 0 0; text-align: center; }
+  @media (max-width: 1023px) { .ny-flyers { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) { .ny-night-head, .ny-flyers { grid-template-columns: 1fr; } }
+
+  /* ---- 3. cream ---- */
+  .ny-cream { background: rgb(246, 239, 228); color: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); scroll-margin-top: 70px; }
+  .ny-cream-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 560px; }
+  .ny-cream-copy { padding: clamp(40px, 6vw, 84px) clamp(18px, 4.5vw, 64px); align-self: center; }
+  .ny-cream-media { position: relative; min-height: 320px; }
+  .ny-cream-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ny-eyebrow-ink { display: flex; align-items: center; gap: 10px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(18, 18, 16, 0.75); }
+  .ny-eyebrow-ink::before { content: ""; width: 26px; height: 1px; background: rgba(18, 18, 16, 0.6); }
+  .ny-h2-ink { color: rgb(18, 18, 16); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(26px, 4.6vw, 42px); line-height: 1.04; margin: 10px 0 0; text-transform: uppercase; text-wrap: balance; }
+  .ny-p-ink { font-size: 15px; line-height: 1.7; color: rgba(18, 18, 16, 0.82); margin: 14px 0 0; max-width: 62ch; text-wrap: pretty; }
+  .ny-link-ink { color: rgb(18, 18, 16); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .ny-btn-ink { display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(18, 18, 16, 0.6); color: rgb(18, 18, 16); font-weight: 700; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; text-decoration: none; }
+  @media (max-width: 767px) { .ny-cream-grid { grid-template-columns: 1fr; } .ny-cream-media { aspect-ratio: 4 / 3; min-height: 0; } }
+
+  /* ---- 4. private room ---- */
+  .ny-room { position: relative; background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); overflow: hidden; scroll-margin-top: 70px; }
+  .ny-room-media { position: absolute; inset: 0; }
+  .ny-room-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ny-room-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 18, 16, 0.94) 0%, rgba(18, 18, 16, 0.86) 55%, rgba(18, 18, 16, 0.7) 100%); }
+  .ny-room-grid { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: clamp(48px, 7vw, 96px) clamp(18px, 4.5vw, 48px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .ny-form { margin-top: 0 !important; max-width: none !important; background: rgba(28, 27, 24, 0.96) !important; }
+  .ny-form-k { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 20px; color: rgb(246, 239, 228); }
+  @media (max-width: 767px) { .ny-room-grid { grid-template-columns: 1fr; } }
+
+  /* ---- 5. hours ---- */
+  .ny-hours { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  .ny-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .ny-tile { background: rgb(28, 27, 24); border: 1px solid rgb(42, 40, 32); border-radius: 16px; padding: 20px; text-align: left !important; }
+  .ny-tile-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .ny-tile-n { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(20px, 1.9vw, 26px); line-height: 1.1; color: rgb(246, 239, 228); margin-top: 10px; text-transform: none; }
+  .ny-tile.is-closed .ny-tile-n { color: rgba(234, 226, 214, 0.5); }
+  .ny-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 1023px) { .ny-hours { grid-template-columns: 1fr; } }
+  @media (max-width: 767px) { .ny-tiles { grid-template-columns: 1fr; } }
+
+  /* ---- 6. gift box ---- */
+  .ny-gift-grid { display: grid; grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  @media (max-width: 767px) { .ny-gift-grid { grid-template-columns: 1fr; } }
+
+  /* ---- 7. proof ---- */
+  .ny-pull { max-width: 860px; margin: 28px auto 0; }
+  .ny-pull :global(.rq-q) { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; text-transform: uppercase; line-height: 1.2; text-wrap: balance; }
+  .ny-pull :global(.rq-c) { justify-content: center; }
+  .ny-rating { display: flex; justify-content: center; margin-top: 26px; }
+  .ny-rating :global(.rl) { justify-content: center; }
+
+  /* ---- 8. FAQ ---- */
+  .ny-faq { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+  .ny-faq-head { position: sticky; top: 90px; }
+  @media (max-width: 767px) { .ny-faq { grid-template-columns: 1fr; } .ny-faq-head { position: static; } }
+
+  /* ---- 9. close ---- */
+  .ny-close { position: relative; background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); overflow: hidden; }
+  .ny-close-media { position: absolute; inset: 0; }
+  .ny-close-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ny-close-media::after { content: ""; position: absolute; inset: 0; background: rgba(18, 18, 16, 0.86); }
+  .ny-close-inner { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: clamp(64px, 10vw, 140px) clamp(18px, 4.5vw, 48px); text-align: center; }
+  .ny-close-h2 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(32px, 6vw, 84px); line-height: 1; margin: 0 auto; text-transform: uppercase; text-wrap: balance; max-width: 16ch; }
+</style>
+
+</Base>
