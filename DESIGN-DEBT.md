@@ -4076,3 +4076,12 @@ On desktop the three entertainment card photos (Mariachi, DJs, Karaoke) ran 680 
 and unequal: the img `height` attribute became a CSS height and defeated the `aspect-ratio`. From
 768 up they are now `height: auto; aspect-ratio: 1 / 1`, 390 x 390 at 1280 wide, about half the
 old height, and all three match. Phones keep the 4:3 carousel from entry 130, unchanged.
+
+## 134. Holiday Parties: the Indoor Patio photo at every width, 26 October
+
+Entry 130 put the /private-parties Indoor Patio photo (`/images/abf153efda62144c.jpg`) on phones
+only and left desktop on the placeholder. Mario: use it everywhere. It is now the room's ordinary
+`photo`, so it renders like the other three rooms (parallax on desktop, full card on phones), and
+the phone-only `phonePhoto` field, `.hp-phone-photo` img and its `:has` rules are gone. No room
+renders a placeholder now. Caveat: the source is 573 x 860, so on a wide desktop it is upscaled
+about 2.2x and reads soft; a larger original would sharpen it.

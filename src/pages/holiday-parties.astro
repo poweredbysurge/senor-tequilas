@@ -38,10 +38,9 @@ const ROOMS = [
     photo: { src: '/images/site/mexican-room.webp', w: 1400, h: 933, alt: 'The Mexican Room: long tables with painted chairs under a star lantern, portraits on the orange walls' } },
   { id: 'room-international', name: 'International Room', seated: 96, standing: 115, notes: 'Where most private events happen', line: 'Our second dining room, and where most private events happen.', chip: 'Most booked',
     photo: { src: '/images/site/international-room-long-tables.webp', w: 1600, h: 900, alt: 'The International Room set with long tables and painted chairs, flags along the ceiling' } },
-  { id: 'room-patio', name: 'Indoor Patio', seated: 48, standing: 58, notes: 'Roofed, enclosed, warm in December', line: 'Under a roof, windows open all summer, warm and closed in for winter.', chip: 'Year-round', photo: null,
-    // phones only for now (Mario, 26 October): the photo /private-parties uses for the Indoor Patio. Desktop keeps the placeholder.
-    phonePhoto: { src: '/images/abf153efda62144c.jpg', w: 573, h: 860, alt: "The covered Indoor Patio: the Señor Tequila's bar cart with the luchador mask, painted chairs and neon signs under the roof" },
-    shot: 'Indoor Patio at night, string lights on. Landscape, full bleed.' },
+  { id: 'room-patio', name: 'Indoor Patio', seated: 48, standing: 58, notes: 'Roofed, enclosed, warm in December', line: 'Under a roof, windows open all summer, warm and closed in for winter.', chip: 'Year-round',
+    // the photo /private-parties uses for the Indoor Patio (Mario, 26 October), every width
+    photo: { src: '/images/abf153efda62144c.jpg', w: 573, h: 860, alt: "The covered Indoor Patio: the Señor Tequila's bar cart with the luchador mask, painted chairs and neon signs under the roof" } },
   { id: 'room-bar', name: 'Bar Area', seated: 108, standing: 150, notes: 'The DJ booth lives here', line: 'Sixteen tables, two long tables, a 20-seat counter, and the DJ booth.', chip: 'DJ booth',
     photo: { src: '/images/site/friendsgiving/friendsgiving-full-bar-area.webp', w: 1600, h: 1069, alt: 'The bar area full from end to end on a busy night, the flower ceiling and lanterns overhead' } },
 ];
@@ -157,7 +156,6 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         {r.photo
           ? <img src={r.photo.src} alt={r.photo.alt} width={r.photo.w} height={r.photo.h} loading="lazy" decoding="async" data-parallax="0.6" />
           : <Placeholder label={r.shot} ratio="16 / 9" class="hp-chapter-ph" style="border-radius: 0; border: 0;" />}
-        {r.phonePhoto && <img class="hp-phone-photo" src={r.phonePhoto.src} alt={r.phonePhoto.alt} width={r.phonePhoto.w} height={r.phonePhoto.h} loading="lazy" decoding="async" />}
       </div>
       <div class="hp-chapter-grid">
         <div>
@@ -438,12 +436,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
      section padding (tweaks.css) is lifted here for the same reason heroes are exempt: the photo
      runs to the card edge, and the grid carries its own padding. */
   body[data-route] section.hp-chapter[data-stack-card] { padding-top: 0 !important; padding-bottom: 0 !important; }
-  /* a photo shown only on phones (the Indoor Patio for now); display: none keeps the lazy image
-     from loading at all on desktop */
-  .hp-phone-photo { display: none; }
   @media (max-width: 767px) {
-    .hp-chapter .hp-chapter-media :global(.hp-chapter-ph):has(~ .hp-phone-photo) { display: none; }
-    .hp-phone-photo { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     /* the room name, line, chips and numbers sit over the bottom half of a tall photo on a phone,
        so the scrim starts earlier and goes darker than the desktop one */
     .hp-chapter-media::after { background: linear-gradient(180deg, rgba(18, 18, 16, 0.3) 0%, rgba(18, 18, 16, 0.45) 30%, rgba(18, 18, 16, 0.86) 55%, rgba(18, 18, 16, 0.97) 100%); }
