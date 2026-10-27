@@ -4282,3 +4282,18 @@ MD" at 15.6px (1.2 times the 13px eyebrow), tracking 0.06em so it holds one line
 a 302px line at 360), and "3 PM to 2 AM" on its own line at 23.4px (1.8 times), weight 800, cream.
 768 and up the eyebrow is the one line it was, "Thursday, December 31 · Germantown, MD · 3 PM to 2
 AM" (the "st" shows on phones only).
+
+## 143. New Year's Eve, phones: the first screen is the flyer and the countdown, 26 October
+
+Mario, from an iPhone screenshot. Below 768 only:
+- The countdown moves up to sit right under the flyer; the two-line date and hours (entry 142),
+  the H1, lead, buttons and chips follow it. Grid order: flyer, countdown, eyebrow, H1, lead,
+  buttons, chips. The markup order is unchanged, so the H1 still comes first for crawlers.
+- The gap above the flyer now equals the gaps beside it: the frame's top padding is the side
+  padding, clamp(18px, 4.5vw, 48px), and the flyer fills the column instead of stopping at 340px,
+  which had left wider phones with bigger side gaps than top. Measured: top 18 / sides 17 at 390,
+  19 / 18 at 430, 18 / 17 at 360 (the 1px is the hairline).
+- Flyer to countdown 20px. Countdown bottom (caption included) inside the first screen at Safari's
+  visible heights: 652 of 664 at 390, 712 of 739 at 430, 609 of 640 at 360. An iPhone SE's 548
+  is shorter than the flyer itself.
+768 and up is unchanged.

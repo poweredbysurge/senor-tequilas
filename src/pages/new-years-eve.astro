@@ -324,7 +324,18 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   /* one grid for every width: the flyer is placed first by grid area, not by markup order */
   .ny-poster-inner { position: relative; z-index: 1; width: 100%; max-width: 1240px; margin: 0 auto; box-sizing: border-box; display: grid; text-align: center;
     padding: clamp(28px, 4svh, 52px) clamp(18px, 4.5vw, 64px);
-    grid-template-columns: minmax(0, 1fr); grid-template-areas: "fly" "eb" "cd" "h1" "lead" "ctas" "facts"; }
+    grid-template-columns: minmax(0, 1fr); grid-template-areas: "fly" "cd" "eb" "h1" "lead" "ctas" "facts"; }
+  /* phones (Mario, 26 October): the first screen is the flyer and the countdown only, so the
+     countdown sits right under the flyer and the date, hours and copy follow it. The gap above the
+     flyer equals the gaps beside it: the frame's top padding matches its side padding, and the
+     flyer fills the column rather than stopping at 340px, which on a wider phone left the sides
+     wider than the top. */
+  @media (max-width: 767px) {
+    .ny-poster-inner { padding-top: clamp(18px, 4.5vw, 48px); }
+    .ny-poster-inner .ny-flyer { width: 100%; margin-bottom: 20px; }   /* outranks the 340px cap set further down */
+    .ny-cd { margin-top: 0; }
+    .ny-eyebrow { margin-top: 26px; }
+  }
   .ny-eyebrow { grid-area: eb; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
   .ny-cd { grid-area: cd; margin-top: clamp(14px, 2.4svh, 28px); }
   /* the countdown is smaller than it was alone in the poster, about 110 to 130px on a desktop, so it
