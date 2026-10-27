@@ -31,7 +31,13 @@
 
     /* ---- the drink-ticket stub: the tear-off strip drops below the ticket ---- */
     .sc-host.hp .hp-stub { grid-template-columns: 1fr !important; margin-left: auto; margin-right: auto; }
-    .sc-host.hp .hp-stub-tear { border-left: 0 !important; border-top: 1.5px dashed rgba(214, 188, 133, 0.6); }
+    .sc-host.hp .hp-stub-tear { border-left: 0 !important; border-top: 2px dashed rgba(28, 27, 24, 0.45); border-radius: 0 0 12px 12px;
+      -webkit-mask-image: radial-gradient(circle var(--tk-n) at 0 0, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 0, #0000 98%, #000);
+      mask-image: radial-gradient(circle var(--tk-n) at 0 0, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 0, #0000 98%, #000); }
+    /* the yellow ticket's notches move with the perforation: sides of the ticket, ends of the tear line */
+    .sc-host.hp .hp-stub-main { border-radius: 12px 12px 0 0;
+      -webkit-mask-image: radial-gradient(circle var(--tk-n) at 0 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 0 100%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 100%, #0000 98%, #000);
+      mask-image: radial-gradient(circle var(--tk-n) at 0 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 0 100%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 100%, #0000 98%, #000); }
     .sc-host.hp .hp-stub-tear span { writing-mode: horizontal-tb !important; transform: none !important; }
 
     /* ---- booking steps: numbers centred over each step; the vertical rail, which ran down the

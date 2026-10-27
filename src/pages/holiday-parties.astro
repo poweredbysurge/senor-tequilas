@@ -472,13 +472,20 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   .hp-prices { display: flex; flex-wrap: wrap; gap: clamp(20px, 3vw, 48px); align-items: flex-end; margin-top: 22px; }
   @media (max-width: 767px) { .hp-food-grid { grid-template-columns: 1fr; } .hp-food-media { aspect-ratio: 4 / 3; min-height: 0; } }
 
-  /* ---- 6. ticket stub ---- */
-  .hp-stub { display: grid; grid-template-columns: 1fr auto; border: 1.5px dashed rgba(214, 188, 133, 0.6); border-radius: 14px; background: rgb(20, 18, 16); max-width: 440px; justify-self: center; width: 100%; }
-  .hp-stub-main { padding: 22px 24px; }
-  .hp-stub-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
-  .hp-stub-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.05; color: rgb(246, 239, 228); margin: 10px 0; }
-  .hp-stub-tear { border-left: 1.5px dashed rgba(214, 188, 133, 0.6); padding: 12px; display: grid; place-items: center; }
-  .hp-stub-tear span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(214, 188, 133, 0.7); }
+  /* ---- 6. ticket stub: a yellow paper drink ticket (Roberto, 26 October). Notches are cut with
+     masks: one on each short side and a pair at the perforation, so the drop shadow on the
+     wrapper follows the cut paper. Phones stack the stub, see MobileCenter. ---- */
+  .hp-stub { --tk: rgb(242, 196, 48); --tk-ink: rgb(28, 27, 24); --tk-n: 9px; display: grid; grid-template-columns: 1fr auto; max-width: 440px; justify-self: center; width: 100%; filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.45)); }
+  .hp-stub-main, .hp-stub-tear { background: var(--tk); -webkit-mask-composite: source-in; mask-composite: intersect; }
+  .hp-stub-main { position: relative; padding: 24px 26px; border-radius: 12px 0 0 12px; outline: 1.5px solid rgba(28, 27, 24, 0.35); outline-offset: -12px;
+    -webkit-mask-image: radial-gradient(circle var(--tk-n) at 0 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 0, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 100%, #0000 98%, #000);
+    mask-image: radial-gradient(circle var(--tk-n) at 0 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 0, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 100% 100%, #0000 98%, #000); }
+  .hp-stub-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(28, 27, 24, 0.75); }
+  .hp-stub-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(22px, 2.4vw, 32px); line-height: 1.05; color: var(--tk-ink); margin: 10px 0; }
+  .hp-stub-tear { border-left: 2px dashed rgba(28, 27, 24, 0.45); padding: 12px 14px; display: grid; place-items: center; border-radius: 0 12px 12px 0;
+    -webkit-mask-image: radial-gradient(circle var(--tk-n) at 100% 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 0 0, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 0 100%, #0000 98%, #000);
+    mask-image: radial-gradient(circle var(--tk-n) at 100% 50%, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 0 0, #0000 98%, #000), radial-gradient(circle var(--tk-n) at 0 100%, #0000 98%, #000); }
+  .hp-stub-tear span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(28, 27, 24, 0.7); }
 
   /* ---- 7. entertainment ---- */
   .hp-ent-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 32px; }

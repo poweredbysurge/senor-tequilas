@@ -4180,3 +4180,13 @@ automation. Mario then sent the contact form by hand: it went through, so a huma
 26 October.
 
 **Rollback.** `git revert 77ebd64`, or set BotID back to Basic in the Vercel dashboard.
+
+## 139. Holiday Parties: the drink ticket is a yellow paper ticket, 26 October
+
+Roberto asked for the drink ticket stub ("You set what it covers") to look like an actual ticket,
+yellow. It was a dark card with a gold dashed outline. Now it is ticket yellow (rgb 242, 196, 48)
+with dark ink text, an inner rule, a dashed perforation before the "Admit one" stub, half-circle
+notches on both short sides and at each end of the perforation, and a drop shadow that follows the
+cut edges. The notches are CSS masks, so the shadow on the wrapper traces them. Phones keep the
+stacked layout from MobileCenter, with the perforation across the ticket and the notches moved to
+match. Copy unchanged. Holiday Parties only.
