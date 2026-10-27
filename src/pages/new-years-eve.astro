@@ -15,28 +15,38 @@ import Faq from '../components/seasonal/Faq.astro';
 import { EYEBROW, RULE, H2, P, LINK, WRAP, IMG, FRAME, BTN_PRIMARY, BTN_GHOST, SMALL, FORM, LABEL, FIELD, PHONE_DISPLAY, assertFacts, faqLd, RESTAURANT_ID } from '../lib/authored.js';
 
 /*
-  /new-years-eve, concept 2a "The Countdown" (design/concepts/2026-10-25-selected). In PREVIEW:
-  listed in src/data/preview-pages.ts, so it is noindex, out of the sitemap, carries the preview
-  bar, and nothing on the site links to it yet. Copy is verbatim from
-  design/copy/holiday-pages-copy-2026-10-24.md, page C; the mock's condensed text is never used.
-  The homepage card waits for 1 December.
+  /new-years-eve, concept 2a "The Countdown" (design/concepts/2026-10-25-selected). Published 26
+  October (DESIGN-DEBT.md entry 136). Copy is verbatim from design/copy/holiday-pages-copy-2026-10-24.md,
+  page C, updated to Roberto's flyer facts of 26 October; the mock's condensed text is never used.
 
-  PRICES ARE ALLOWED ON THIS PAGE (client decision for holiday pages): the $5 cover and the $500
-  gift certificate. Do not strip them in a sweep.
+  PRICES ARE ALLOWED ON THIS PAGE (client decision for holiday pages): the $15 bar cover and the
+  $500 gift certificate. Do not strip them in a sweep.
 */
 const PAGE = '/new-years-eve';
 const PAGE_URL = business.siteUrl + PAGE;
 assertFacts(PAGE, { street: '20021 Century Blvd', phone: '301-569-4574' });
 
-// PENDING ROBERTO Q2: last year's NYE photos were not supplied. The hero and the private-room
-// backdrop are bar-area photographs from other nights, held here so they swap in one place.
-const HERO = { src: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp', w: 1600, h: 1069, alt: 'A crowd with hands in the air in front of the golden heart behind the bar' };
+// PENDING ROBERTO Q2: last year's NYE photos were not supplied. The hero is done: it is the
+// official 2027 flyer (26 October). The private-room backdrop and the other photos are still from
+// other nights, held here so they swap in one place.
+// The flyer: 3:4, 1080x1440 at full size. The srcset and sizes are repeated byte for byte in
+// Base.astro's LCP_IMAGE preload, so change both together. The JPG is for shares and schema.
+const FLYER = {
+  src: '/images/site/nye/nye-2027-flyer-720.webp',
+  full: '/images/site/nye/nye-2027-flyer-1080.webp',
+  jpg: '/images/site/nye/nye-2027-flyer.jpg',
+  srcset: '/images/site/nye/nye-2027-flyer-480.webp 480w, /images/site/nye/nye-2027-flyer-720.webp 720w, /images/site/nye/nye-2027-flyer-1080.webp 1080w',
+  sizes: '(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 90vw',
+  alt: "Señor Tequila's 2027 New Year's Eve Masquerade Party flyer: DJ Gerra 8 PM to 2 AM, $15 bar cover includes mask, party favors and champagne toast, dress code business casual, no sneakers, no jeans, strictly enforced, first come, first served, 20021 Century Blvd, Germantown, Maryland",
+};
+const FLYER_LD = business.siteUrl + FLYER.jpg;
 const ROOM_BG = { src: '/images/site/international-room-long-tables.webp', w: 1600, h: 900 };
-// the Event schema keeps the image it was published with, so the JSON-LD stays byte-identical
+// the dinner Event and the Restaurant node keep the image they were published with; the
+// masquerade Event uses the flyer
 const LD_IMAGE_PATH = '/images/site/friendsgiving/friendsgiving-full-bar-area.webp';
 const LD_IMAGE = business.siteUrl + LD_IMAGE_PATH;
 const DINNER = { src: '/images/dishes/molcajete.jpg', w: 1600, h: 725, alt: 'A molcajete bubbling in its stone bowl, grilled meats, cactus and cheese over the sauce' };
-const COUNTDOWN_TARGET = '2026-12-31T21:00:00-05:00';
+const COUNTDOWN_TARGET = '2026-12-31T20:00:00-05:00';
 const COUNTDOWN_UNTIL = '2027-01-01T02:00:00-05:00';
 const REVIEW = { name: 'Joe T.', text: 'What an absolutely amazing, electric place! The atmosphere is absolutely electric: the music (they had a great DJ who played all types of music), the dim lighting, and the perfectly used smoke machine, make for a great atmosphere! The bartenders are super responsive, attentive, and engaging!' };
 
@@ -44,15 +54,17 @@ const FAQ = [
   { q: 'Is there a New Year\'s Eve dinner near Germantown that takes reservations?',
     a: "Yes. Señor Tequila's serves the full menu on New Year's Eve, with reservations for the dining rooms through Toast Tables for groups under 20. Families are welcome for dinner all night. The bar area is first come, first served. We are at 20021 Century Blvd, next to Topgolf, with free parking." },
   { q: "Is the New Year's Eve party 21 and over?",
-    a: 'The bar area is 21 and over from 9 PM, and that is where the masquerade, the DJs and the cover are. The dining rooms stay open to all ages the whole night, so families can eat late and still hear the countdown.' },
+    a: 'The bar area is 21 and over from 8 PM, and that is where the masquerade, DJ Gerra and the cover are. The dining rooms stay open to all ages the whole night, so families can eat late and still hear the countdown.' },
   { q: "How much is the cover on New Year's Eve, and are there tickets?",
-    a: 'No tickets, no tiers. A $5 cover for the bar area after 9 PM, paid at the door. Dinner in the dining rooms has no cover. The champagne toast at midnight is complimentary.' },
+    a: 'No tickets, no tiers. A $15 cover for the bar area after 8 PM, paid at the door, and it includes your mask, party favors and the champagne toast at midnight. Dinner in the dining rooms has no cover.' },
   { q: 'Do I need a mask?',
-    a: 'It is a masquerade, so yes. We hand out a limited number of masks at the door while they last. Bring your own if you want to be sure.' },
+    a: 'It is a masquerade, so yes, and your mask comes with the $15 bar cover.' },
+  { q: "Is there a dress code for New Year's Eve?",
+    a: 'Yes. Business casual. No sneakers and no jeans, and it is strictly enforced at the door.' },
   { q: "What time do you close on New Year's Eve, and are you open New Year's Day?",
     a: "We open at 3 PM on New Year's Eve and close at 2 AM, with last call 15 minutes before. New Year's Day we open at 3 PM with regular Friday hours. We are closed December 24 and 25." },
   { q: 'Can we reserve a table in the bar area for the countdown?',
-    a: 'No. The bar area is first come, first served on New Year\'s Eve, and it fills before 9. Reservations are for the dining rooms. If you want a guaranteed spot for a group, book a private room.' },
+    a: 'No. The bar area is first come, first served on New Year\'s Eve, and it fills early. Reservations are for the dining rooms. If you want a guaranteed spot for a group, book a private room.' },
   { q: "Can we book a private room for our own New Year's Eve party?",
     a: 'Yes. Rooms seat 48 to 112, with sound, lighting, a microphone and a screen built in, and the full kitchen behind them. Holiday rates apply. Contact Tomas by phone or the form on this page and he replies within 24 hours with a formal invoice.' },
 ];
@@ -75,23 +87,24 @@ const eventLd = [
     '@context': 'https://schema.org',
     '@type': 'Event',
     name: "New Year's Eve Masquerade Party",
-    description: "A masquerade in the bar area with DJs, a countdown and a complimentary champagne toast at midnight. 21 and over in the bar area after 9 PM, $5 cover at the door.",
-    startDate: '2026-12-31T21:00:00-05:00',
+    description: 'A masquerade in the bar area with DJ Gerra, a countdown and a champagne toast at midnight. 21 and over in the bar area after 8 PM. The $15 cover includes a mask, party favors and the champagne toast. Business casual dress code.',
+    startDate: '2026-12-31T20:00:00-05:00',
     endDate: '2027-01-01T02:00:00-05:00',
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     location: LOCATION,
     organizer: { '@id': RESTAURANT_ID },
-    image: [LD_IMAGE],
+    performer: { '@type': 'Person', name: 'DJ Gerra' },
+    image: [FLYER_LD],
     url: PAGE_URL,
     typicalAgeRange: '21-',
     offers: {
       '@type': 'Offer',
-      price: '5',
+      price: '15',
       priceCurrency: 'USD',
       url: PAGE_URL,
       availability: 'https://schema.org/InStock',
-      description: 'Cover for the bar area after 9 PM. Dinner in the dining rooms has no cover.',
+      description: 'Bar area cover after 8 PM. Includes a mask, party favors and the champagne toast. Dinner in the dining rooms has no cover.',
     },
   },
   {
@@ -100,7 +113,7 @@ const eventLd = [
     name: "New Year's Eve Dinner",
     description: 'Dinner off the full menu in the dining rooms, all ages, with reservations through Toast Tables for groups under 20.',
     startDate: '2026-12-31T15:00:00-05:00',
-    endDate: '2026-12-31T21:00:00-05:00',
+    endDate: '2026-12-31T20:00:00-05:00',
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     location: LOCATION,
@@ -112,33 +125,35 @@ const eventLd = [
 ];
 const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(214, 188, 133, 0.55); color: rgb(234, 226, 214); font-family: "Barlow Condensed", sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px;';
 ---
-<Base title="New Year's Eve Masquerade Party & Dinner | Germantown, MD" description="NYE in Germantown, MD: family dinner off the full menu, then a masquerade in the bar area with DJs, a countdown and a free champagne toast. 21+ in the bar after 9 PM. Open to 2 AM." canonical={PAGE_URL} ogImage={LD_IMAGE_PATH} extraTypes={['BarOrPub']} route={PAGE}>
+<Base title="New Year's Eve Masquerade Party & Dinner | Germantown, MD" description="NYE in Germantown, MD: dinner for the family, then a masquerade in the bar with DJ Gerra and a champagne toast. $15 bar cover, 21+ after 8 PM. Open to 2 AM." canonical={PAGE_URL} ogImage={LD_IMAGE_PATH} shareImage={{ src: FLYER.jpg, w: 1080, h: 1440 }} extraTypes={['BarOrPub']} route={PAGE}>
 <div class="sc-host ny" data-sc-name="New Year's Eve" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
   <Header5 />
 
-  <!-- 1. the poster hero: double gold frame, the live countdown, the H1, the facts, three CTAs -->
+  <!-- 1. the poster hero: double gold frame. 768 and up, two columns: the copy left (eyebrow, the
+       countdown, the H1, the lead, the facts, the CTAs) and the flyer right. Phones stack it with
+       the flyer after the buttons and the facts last. Every fact on the flyer is also in the text. -->
   <section data-screen-label="New Year's Eve hero" class="ny-hero">
     <div class="ny-hero-wrap">
       <SignFrame tone="dark" class="ny-poster" padding="0">
-        <div class="ny-poster-media" aria-hidden="true">
-          <img src={HERO.src} srcset="/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar-640.webp 640w, /images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp 1600w" sizes="100vw" alt="" width={HERO.w} height={HERO.h} fetchpriority="high" decoding="async" data-kenburns />
-        </div>
         <div class="ny-poster-inner" data-fit>
           <div class="ny-eyebrow">Thursday, December 31 · Germantown, MD · 3 PM to 2 AM</div>
-          <div class="ny-cd"><Countdown target={COUNTDOWN_TARGET} until={COUNTDOWN_UNTIL} fallback="Thursday, December 31 · 9 PM" caption="9 PM. The masquerade begins in the bar area." /></div>
+          <div class="ny-cd"><Countdown target={COUNTDOWN_TARGET} until={COUNTDOWN_UNTIL} fallback="Thursday, December 31 · 8 PM" caption="8 PM. The masquerade begins in the bar area." /></div>
           <h1 class="ny-h1">New Year's Eve Dinner and Masquerade Party in <span style="white-space: nowrap;">Germantown, MD</span></h1>
-          <p class="ny-lead">Dinner for the whole family off the full menu, in the dining rooms, all night. Then the masks go on in the bar area: DJs, a countdown, and a champagne toast on us at midnight. The bar area is 21 and over after 9 PM with a $5 cover at the door, and we do not close until 2.</p>
-          <div class="ny-facts" aria-hidden="true">
-            <span style={CHIP}>The full menu, for everyone, all ages</span>
-            <span style={CHIP}>Bar area 21 and over after 9 PM</span>
-            <span style={CHIP}>$5 cover, paid at the door</span>
-            <span style={CHIP}>Spanish and English, sound up</span>
-            <span style={CHIP}>A champagne toast at midnight</span>
+          <p class="ny-lead">Dinner for the whole family off the full menu, in the dining rooms, all night. Then the masks go on in the bar area: DJ Gerra from 8 PM, a countdown, and a champagne toast at midnight. The bar area is 21 and over after 8 PM, with a $15 cover at the door that includes your mask, party favors and the toast. Business casual, and we do not close until 2.</p>
+          <div class="ny-facts">
+            <span style={CHIP}>Dinner · full menu · all ages</span>
+            <span style={CHIP}>8 PM · masquerade · bar area 21+</span>
+            <span style={CHIP}>$15 bar cover · mask, favors, champagne toast</span>
+            <span style={CHIP}>DJ Gerra · 8 PM to 2 AM</span>
+            <span style={CHIP}>Business casual · no sneakers, no jeans</span>
           </div>
           <div class="ny-ctas ny-hero-ctas">
             <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
             <a href="#inquire" style={BTN_GHOST}>Book a Private Room</a>
           </div>
+          <a class="ny-flyer" href={FLYER.full} target="_blank" rel="noopener">
+            <img src={FLYER.src} srcset={FLYER.srcset} sizes={FLYER.sizes} alt={FLYER.alt} width="1080" height="1440" loading="eager" fetchpriority="high" decoding="async" />
+          </a>
         </div>
       </SignFrame>
     </div>
@@ -158,12 +173,12 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <FlyerCard time="3 PM" title="Doors open" tag="All ages"><p>Doors open, like any Thursday.</p></FlyerCard>
         <FlyerCard time="Dinner" title="The full menu, for everyone" tag="Reservations"><p>The full menu, for everyone, all ages, in the dining rooms. Reserve on Toast Tables for groups under 20, or call for anything larger. The dining rooms stay all ages the whole night.</p></FlyerCard>
         {/* PENDING ROBERTO Q4: if the cover is card only, add "credit or debit, no cash" here and in the cover FAQ. */}
-        <FlyerCard time="9 PM" title="The masquerade begins" tag="21 and over · $5 cover" lifted><p>The masquerade begins in the bar area, which turns 21 and over. $5 cover, paid at the door. DJs take it from here, Spanish and English, sound up.</p></FlyerCard>
-        <FlyerCard time="12" title="The countdown" tag="Midnight"><p>The countdown, then a champagne toast, on us.</p></FlyerCard>
+        <FlyerCard time="8 PM" title="The masquerade begins" tag="21 and over · $15 cover" lifted><p>The masquerade begins in the bar area, which turns 21 and over. The $15 cover, paid at the door, includes your mask, party favors and the midnight champagne toast. DJ Gerra plays from 8 PM to 2 AM, Spanish and English, sound up.</p></FlyerCard>
+        {/* PENDING ROBERTO Q6: toast for dining room guests too? Until he answers, the toast is in the bar area. */}
+        <FlyerCard time="12" title="The countdown" tag="Midnight"><p>The countdown, then the champagne toast in the bar area.</p></FlyerCard>
         <FlyerCard time="2 AM" title="We close" tag="Last call 1:45 AM"><p>We close. Last call is 15 minutes before.</p></FlyerCard>
       </ol>
-      <p class="ny-masks">Masks: we hand out a limited number at the door while they last. Bring your own to be sure of one.</p>
-      {/* PENDING ROBERTO Q1: dress code unknown. Do not add one. If he supplies it, add one line here and one FAQ. */}
+      <p class="ny-masks">Dress code: business casual. No sneakers, no jeans. Strictly enforced at the door. Your mask comes with the cover.</p>
     </div>
   </section>
 
@@ -175,7 +190,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <h2 class="ny-h2-ink">Dinner First, Off the Full Menu</h2>
         <p class="ny-p-ink">Most New Year's Eve dinners come with a set menu and a chicken-or-fish decision made for you in October. Ours is the full menu, the same as any Thursday. Molcajetes that arrive still bubbling in stone. Quesabirria. Fajitas. Tortillas pressed by hand that morning. The <a href="/birria-ramen" class="ny-link-ink">Birria Ramen</a>, if you want to start the year full.</p>
         <p class="ny-p-ink">No drink specials that night, and we would rather tell you than pretend. The margaritas are the margaritas, 14 ounces, 18 ounces, or the 54-ounce Big Mami. <a href="/margaritas" class="ny-link-ink">The margaritas</a> · <a href="/tequila-bar" class="ny-link-ink">The tequila bar</a> · <a href="/menu" class="ny-link-ink">The menu</a></p>
-        <p class="ny-p-ink">Reservations are for the dining rooms, through Toast Tables for groups under 20. The bar area does not take reservations on New Year's Eve. It is first come, first served, and it fills before 9. For 20 or more, call {PHONE_DISPLAY} or book a room.</p>
+        <p class="ny-p-ink">Reservations are for the dining rooms, through Toast Tables for groups under 20. The bar area does not take reservations on New Year's Eve. It is first come, first served, and it fills early. For 20 or more, call {PHONE_DISPLAY} or book a room.</p>
         <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px;">
           <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
         </div>
@@ -275,7 +290,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
     <div class="ny-close-media" aria-hidden="true"><img src="/images/site/friendsgiving/friendsgiving-full-bar-area.webp" alt="" width="1600" height="1069" loading="lazy" decoding="async" /></div>
     <div class="ny-close-inner">
       <h2 class="ny-close-h2">Reserve Dinner. Stay for the Toast.</h2>
-      <p style={`${P} margin-left: auto; margin-right: auto;`}>Book the early table on Toast Tables, eat properly, and let the masks find you at 9.</p>
+      <p style={`${P} margin-left: auto; margin-right: auto;`}>Book the early table on Toast Tables, eat properly, and let the masks find you at 8.</p>
       <div class="ny-ctas" style="justify-content: center;">
         <a href={business.reserveUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Reserve a Table</a>
         <a href="#inquire" style={BTN_GHOST}>Book a Private Room</a>
@@ -293,44 +308,64 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
 
 <style>
   /* ---- 1. hero ---- */
-  /* The hero is exactly one screen: the viewport less the 63px sticky header and, while the page is
-     in preview, the gold bar (Base publishes its height as --pv). Everything inside scales with the
-     screen's height as well as its width, so a short window shrinks the type rather than pushing
-     the buttons below the fold. */
-  .ny-hero { background: rgb(18, 18, 16); padding: clamp(8px, 1.4vw, 20px); border-bottom: 1px solid rgba(185, 156, 102, 0.2); box-sizing: border-box; height: calc(100vh - 63px - var(--pv, 0px)); height: calc(100svh - 63px - var(--pv, 0px)); min-height: 460px; display: flex; }
+  /* At least one screen tall (the viewport less the 63px sticky header), growing if the content
+     needs more. No photograph behind it any more: the flyer is the picture, and the field is the
+     dark page with a soft gold glow that echoes the smoke in the flyer. */
+  .ny-hero { background: rgb(18, 18, 16); padding: clamp(8px, 1.4vw, 20px); border-bottom: 1px solid rgba(185, 156, 102, 0.2); box-sizing: border-box; min-height: calc(100vh - 63px - var(--pv, 0px)); min-height: calc(100svh - 63px - var(--pv, 0px)); display: flex; }
   .ny-hero-wrap { max-width: 1384px; margin: 0 auto; width: 100%; display: flex; }
   /* .ny-poster is SignFrame's root, a different component, so the page's scoped selector never reached
      it; :global under the page's own wrapper does */
-  .ny-hero-wrap :global(.ny-poster) { overflow: hidden; flex: 1; display: flex; }
-  .ny-poster-media { position: absolute; inset: 0; overflow: hidden; }
-  .ny-poster-media img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1); }
-  .ny-poster-media img.is-kenburns { animation: nyKen 16s ease-in-out infinite alternate; }
-  @keyframes nyKen { from { transform: scale(1); } to { transform: scale(1.1); } }
-  .ny-poster-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(18, 18, 16, 0.78) 0%, rgba(18, 18, 16, 0.9) 60%, rgba(18, 18, 16, 0.97) 100%); }
-  .ny-poster-inner { position: relative; z-index: 1; text-align: center; padding: clamp(14px, 3.2svh, 44px) clamp(18px, 4.5vw, 64px); max-width: 1000px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
-  .ny-cd { margin-top: clamp(6px, 1.6svh, 18px); }
-  /* --fit is 1 unless SeasonalMotion's data-fit finds the content still taller than the screen (a very
-     short window), and then it steps the type down until it fits */
-  .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(36px, min(13vw, 13svh), 190px)); }
-  .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(26px, min(9vw, 9svh), 134px)); }
-  .ny-cd :global(.cd-fallback) { font-size: clamp(22px, min(4vw, 5svh), 56px); }
+  .ny-hero-wrap :global(.ny-poster) { overflow: hidden; flex: 1; display: flex;
+    background: radial-gradient(ellipse 60% 55% at 74% 42%, rgba(214, 188, 133, 0.17), rgba(214, 188, 133, 0) 70%), radial-gradient(ellipse 45% 40% at 18% 88%, rgba(214, 188, 133, 0.07), rgba(214, 188, 133, 0) 70%), rgb(18, 18, 16); }
+  /* one grid for every width, so phones can put the flyer between the buttons and the facts */
+  .ny-poster-inner { position: relative; z-index: 1; width: 100%; max-width: 1240px; margin: 0 auto; box-sizing: border-box; display: grid; text-align: center;
+    padding: clamp(28px, 4svh, 52px) clamp(18px, 4.5vw, 64px);
+    grid-template-columns: minmax(0, 1fr); grid-template-areas: "eb" "cd" "h1" "lead" "ctas" "fly" "facts"; }
+  .ny-eyebrow { grid-area: eb; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .ny-cd { grid-area: cd; margin-top: clamp(14px, 2.4svh, 28px); }
+  /* the countdown is smaller than it was alone in the poster, about 110 to 130px on a desktop, so it
+     does not fight the flyer. --fit is 1 unless SeasonalMotion's data-fit steps it down. */
+  .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(40px, 13vw, 60px)); }
+  .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(28px, 9vw, 42px)); }
+  .ny-cd :global(.cd-fallback) { font-size: clamp(22px, 6vw, 40px); }
   .ny-cd :global(.cd-l) { margin-top: clamp(2px, 0.8svh, 10px); }
-  .ny-cd :global(.cd-caption) { margin-top: clamp(6px, 1.4svh, 18px); font-size: 12px; }
-  .ny-eyebrow { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
-  .ny-cd { margin-top: clamp(18px, 3vw, 36px); }
-  .ny-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: calc(var(--fit, 1) * clamp(22px, min(4.4vw, 5svh), 60px)); line-height: 1.04; margin: clamp(10px, 2.4svh, 34px) auto 0; text-transform: uppercase; text-wrap: balance; max-width: 20ch; }
-  .ny-lead { font-size: calc(var(--fit, 1) * clamp(13px, 1.9svh, 16px)); line-height: 1.55; color: rgba(246, 239, 228, 0.9); margin: clamp(8px, 1.8svh, 18px) auto 0; max-width: 62ch; text-wrap: pretty; }
-  .ny-facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: clamp(10px, 2svh, 22px); padding-top: clamp(10px, 1.8svh, 18px); border-top: 1px solid rgba(214, 188, 133, 0.35); }
+  .ny-cd :global(.cd-caption) { margin-top: clamp(6px, 1.4svh, 16px); font-size: 12px; }
+  .ny-h1 { grid-area: h1; color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: calc(var(--fit, 1) * clamp(24px, 6.4vw, 34px)); line-height: 1.04; margin: clamp(14px, 2.4svh, 28px) auto 0; text-transform: uppercase; text-wrap: balance; max-width: 20ch; }
+  .ny-lead { grid-area: lead; font-size: 16px; line-height: 1.6; color: rgba(246, 239, 228, 0.9); margin: clamp(10px, 1.8svh, 18px) auto 0; max-width: 60ch; text-wrap: pretty; }
+  .ny-facts { grid-area: facts; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 28px; padding-top: 18px; border-top: 1px solid rgba(214, 188, 133, 0.35); }
   .ny-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; justify-content: center; }
-  .ny-hero-ctas { margin-top: clamp(12px, 2.6svh, 26px); }
-  /* the fact chips restate the lead (they are aria-hidden), so they are what gives way when the
-     screen is short: phones, and windows under 960px tall */
-  @media (max-width: 767px), (max-height: 960px) { .ny-facts { display: none; } }
+  .ny-hero-ctas { grid-area: ctas; margin-top: clamp(16px, 2.6svh, 26px); }
+  /* the flyer: gold hairline, 16px corners, the Friendsgiving flyer's shadow, a slight tilt that
+     straightens on hover. It is there from the first paint, never animated in. A click opens the
+     full 1080 image. */
+  .ny-flyer { grid-area: fly; justify-self: center; display: block; width: min(100%, 340px); margin-top: 32px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(214, 188, 133, 0.55); background: rgb(28, 27, 24); box-shadow: rgba(0, 0, 0, 0.45) 0px 18px 40px -12px; }
+  .ny-flyer img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; }
+  .ny-flyer:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 4px; }
   /* phones: the two hero buttons side by side, one row. The doubled class outranks tweaks.css's
      one-column [data-mcta-row] rule, which Base adds on load. */
   @media (max-width: 767px) { body[data-route] .ny-hero-ctas.ny-hero-ctas { grid-template-columns: 1fr 1fr !important; gap: 8px; } body[data-route] .ny-hero-ctas.ny-hero-ctas a { padding-left: 8px !important; padding-right: 8px !important; font-size: 13px !important; } }
   /* the phone CTA layout Base.astro's mobileCtas() applies at runtime, set up front so nothing moves */
   @media (max-width: 767px) { .ny-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .ny-ctas a { width: 100%; justify-content: center; text-align: center; } }
+  /* 768 and up: copy left, about 55%, and the flyer right, about 45%, sized to the screen's height
+     so the whole poster stays on one screen. The empty first and last rows centre the copy. */
+  @media (min-width: 768px) {
+    .ny-poster-inner { text-align: left; align-content: center; column-gap: clamp(28px, 4vw, 64px);
+      grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+      grid-template-rows: 1fr repeat(6, auto) 1fr;
+      grid-template-areas: ". fly" "eb fly" "cd fly" "h1 fly" "lead fly" "facts fly" "ctas fly" ". fly"; }
+    .ny-cd :global(.cd), .ny-cd :global(.cd-caption) { text-align: left; }
+    .ny-cd :global(.cd-live), .ny-cd :global(.cd-fallback) { justify-content: flex-start !important; }
+    .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(48px, min(8.6vw, 13svh), 124px)); }
+    .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(34px, min(6vw, 9svh), 88px)); }
+    .ny-cd :global(.cd-fallback) { font-size: clamp(24px, min(3.2vw, 5svh), 46px); }
+    .ny-h1 { font-size: calc(var(--fit, 1) * clamp(26px, min(3.6vw, 5.4svh), 54px)); margin-left: 0; }
+    .ny-lead { margin-left: 0; }
+    .ny-facts { justify-content: flex-start; margin-top: clamp(14px, 2.2svh, 24px); padding-top: clamp(12px, 1.8svh, 18px); }
+    .ny-ctas.ny-hero-ctas { justify-content: flex-start; }
+    .ny-flyer { align-self: center; margin-top: 0; width: min(100%, 560px, calc((100svh - 63px - var(--pv, 0px) - 120px) * 0.75)); transform: rotate(-2deg); transition: transform 300ms ease; }
+    .ny-flyer:hover, .ny-flyer:focus-visible { transform: rotate(0deg); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ny-flyer { transition: none; } }
 
   /* ---- shared ---- */
   .ny-sec { background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0; scroll-margin-top: 70px; }

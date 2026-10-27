@@ -4190,3 +4190,67 @@ notches on both short sides and at each end of the perforation, and a drop shado
 cut edges. The notches are CSS masks, so the shadow on the wrapper traces them. Phones keep the
 stacked layout from MobileCenter, with the perforation across the ticket and the notches moved to
 match. Copy unchanged. Holiday Parties only.
+
+## 140. New Year's Eve: Roberto's flyer facts, and the flyer is the hero, 26 October
+
+Roberto sent the official 2027 flyer and changed the facts. The masquerade and the bar area's 21+
+start move from 9 PM to **8 PM**. The DJ is **DJ Gerra, 8 PM to 2 AM**. The cover is a **$15 bar
+cover** that includes a mask, party favors and the champagne toast; it was $5 with a free toast
+and masks while they lasted. The dress code is **business casual, no sneakers, no jeans, strictly
+enforced** (PENDING Q1 answered and removed). Everything else is unchanged: doors at 3, dinner all
+ages, Toast Tables under 20, bar area first come, first served, close at 2, last call 1:45.
+
+**Page copy.** New lead, five new fact chips, countdown to 8 PM with the 8 PM fallback and
+caption, the 8 PM timeline card (Q4 comment kept), the Midnight card ("the champagne toast in the
+bar area", with `PENDING ROBERTO Q6: toast for dining room guests too?`), the Special Elite line
+is now the dress code, "fills early" twice, "the masks find you at 8", new meta description (156).
+FAQ: the 21+, cover and mask answers rewritten, a dress code question added after the mask one, 8
+in all, the accordion and FAQPage from the one list. Title unchanged. The copy file
+(design/copy/holiday-pages-copy-2026-10-24.md, page C) carries the same text.
+
+**Hero.** The flyer is the picture and every fact on it is also page text (the H1, lead and chips
+stay HTML). 768 and up: two columns inside the SignFrame, copy left (about 55%: eyebrow, countdown,
+H1, lead, chips, CTAs) and the flyer right (about 45%), sized to the screen's height, gold hairline,
+16px corners, the Friendsgiving flyer's shadow, tilted -2deg and straight on hover, linking to the
+full 1080 image (the only lightbox on the site lives inside UpcomingEvents' dialog, not reusable).
+Phones: eyebrow, countdown, H1, lead, CTAs, flyer (up to 340px), chips, from one grid with areas.
+The countdown digits are about 117 to 124px on a desktop, down from up to 190. The Ken Burns bar
+photo behind the hero is gone, `<img>` and all, so it is not downloaded; the field is the dark page
+with a soft gold radial glow. The hero is at least one screen tall now rather than exactly one, and
+the chips show at every width. The flyer is never animated in. tweaks.css section 39 (phone heroes
+darkened to brightness 0.42) now exempts this hero, as it does Friendsgiving and Birria Ramen: the
+flyer sits below the buttons, not behind the copy.
+
+**Image and SEO.** `<img>` with srcset 480w, 720w, 1080w, sizes `(min-width: 1024px) 40vw,
+(min-width: 768px) 50vw, 90vw`, width 1080, height 1440, eager, fetchpriority high, Roberto's alt
+text verbatim. LCP_IMAGE in Base points at it with the same srcset and sizes. Base takes a new
+optional `shareImage` ({ src, w, h }) that replaces the site-wide share card for og:image and
+twitter:image, with the right width and height; only /new-years-eve passes it (the flyer JPG,
+1080x1440). Every other page still shares the branded card.
+
+**Schema.** Masquerade Event: startDate 20:00, the new description, price 15, the new offer
+description, performer Person "DJ Gerra", image the flyer JPG. Dinner Event ends at 20:00 and keeps
+its image. The Restaurant node's image is unchanged.
+
+**Homepage card.** Dates "Thu, Dec 31 · Dinner, then 8 PM to 2 AM", four details, the flyer
+(720 webp) as the slide picture, startDate 20:00, price 15. Photo slides take an optional `ratio`
+(the flyer is 3:4, the videos 9:16) and `ldImage` (the Event schema uses the flyer JPG). The width
+and height attributes would have pinned the image at 960px tall over aspect-ratio, so 768 and up a
+still gets `height: auto` (phones size the flyer by height already).
+
+**Swept and left alone.** No "$5", "9 PM", "on us", "complimentary" or "free champagne" left in any
+NYE context. The weekend "9 PM to 1 AM" DJ lines, Friendsgiving's $5 cover and the pan de muerto
+prices are untouched.
+
+**Checks.** Build and check-build pass. One H1, unchanged. DJ Gerra, $15, 8 PM, business casual and
+no sneakers all appear in the page text. FAQPage 8, matching the accordion. Masquerade JSON-LD:
+20:00, 15, performer, the flyer image. og:image and twitter:image are the flyer JPG at 1080x1440.
+
+**Mobile Lighthouse, not at target.** The brief asked for 90+, CLS under 0.05 and LCP under 2.5 s.
+Local build behind a brotli server, 3 runs: 89, 89, 89, LCP 3.3 s, CLS 0, TBT 0, FCP 2.0 s. The LCP
+element on a phone is the hero lead paragraph (text), not the flyer, which sits just below the fold
+there. Dropping the flyer's preload and fetchpriority changed nothing (89, 3.4 s). The same server
+gives /friendsgiving 89 (3.6 s), /holiday-parties 92 (3.0 s), /birria-ramen 94 (2.6 s), so the
+remainder is the site-wide CSS, the fonts and a 322KB image every page loads, not this hero. The
+live page before this change (Ken Burns hero) measured 67 and 74, LCP 6.9 and 5.4 s, TBT 270 ms.
+Live numbers after the deploy are added below.

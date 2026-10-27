@@ -90,9 +90,11 @@ const EVENTS = [
     offers: { price: '5', priceCurrency: 'USD' },
     gallery: null,
   },
-  // the two holiday pages have no flyer video, so their slide shows the page's hero photo
-  // (photo in place of video). Holiday Parties is a season, not one event: no startDate, so it
-  // gets no Event schema. Text is the HOMEPAGE CARD copy in design/copy/holiday-pages-copy-2026-10-24.md.
+  // the two holiday pages have no flyer video, so their slide shows a still (photo in place of
+  // video): Holiday Parties its hero photo, NYE its official flyer (26 October), a 3:4 still, so
+  // it carries ratio and is shown whole rather than cropped to 9:16. ldImage, when set, is the
+  // Event schema's image. Holiday Parties is a season, not one event: no startDate, so it gets no
+  // Event schema. Text is the HOMEPAGE CARD copy in design/copy/holiday-pages-copy-2026-10-24.md.
   {
     id: 'holiday-parties',
     dates: 'November and December · Private rooms',
@@ -109,18 +111,21 @@ const EVENTS = [
   },
   {
     id: 'new-years-eve',
-    dates: 'Thu, Dec 31 · Dinner, then 9 PM to 2 AM',
+    dates: 'Thu, Dec 31 · Dinner, then 8 PM to 2 AM',
     title: 'NYE Masquerade',
     page: '/new-years-eve',
     details: [
-      "New Year's Eve masquerade: dinner for the family, DJs, countdown, free champagne toast at midnight",
-      'Bar area 21+ after 9 PM',
+      "New Year's Eve masquerade: dinner for the family, DJ Gerra, a countdown and a champagne toast at midnight",
+      '$15 bar cover: mask, party favors, champagne toast',
+      'Bar area 21+ after 8 PM',
+      'Business casual, no sneakers, no jeans',
     ],
-    photo: { src: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar-640.webp', alt: 'A crowd with hands in the air in front of the golden heart behind the bar' },
+    photo: { src: '/images/site/nye/nye-2027-flyer-720.webp', w: 720, h: 960, ratio: '3 / 4', alt: "The 2027 New Year's Eve Masquerade Party flyer" },
+    ldImage: '/images/site/nye/nye-2027-flyer.jpg',
     hideAfter: '2027-01-01',
-    startDate: '2026-12-31T21:00:00-05:00',
+    startDate: '2026-12-31T20:00:00-05:00',
     endDate: '2027-01-01T02:00:00-05:00',
-    offers: { price: '5', priceCurrency: 'USD' },
+    offers: { price: '15', priceCurrency: 'USD' },
     gallery: null,
   },
 ];
@@ -171,7 +176,7 @@ const jsonLd = events.filter((e) => e.startDate).map((e) => ({
   eventStatus: 'https://schema.org/EventScheduled',
   location: LOCATION,
   organizer: { '@type': 'Organization', name: "Señor Tequila's", url: 'https://www.senortequilas.com' },
-  image: [`https://www.senortequilas.com${e.video ? e.video.poster : e.photo.src}`],
+  image: [`https://www.senortequilas.com${e.ldImage || (e.video ? e.video.poster : e.photo.src)}`],
   ...(e.page ? { url: `https://www.senortequilas.com${e.page}` } : {}),
   ...(e.offers ? { offers: { '@type': 'Offer', price: e.offers.price, priceCurrency: e.offers.priceCurrency, availability: 'https://schema.org/InStock', url: 'https://www.senortequilas.com/' } } : {}),
 }));
@@ -194,7 +199,7 @@ const single = events.length === 1;
               <div class="ue-flyer" style={e.photo ? `--ue-bg: url("${e.photo.src}")` : undefined}>
                 {e.photo ? (
                   <a class="ue-flyer-link" href={e.page} aria-label={`More about ${e.title}`}>
-                    <img class="ue-video" src={e.photo.src} alt={e.photo.alt} loading="lazy" decoding="async" />
+                    <img class="ue-video" src={e.photo.src} alt={e.photo.alt} width={e.photo.w} height={e.photo.h} style={e.photo.ratio ? `aspect-ratio: ${e.photo.ratio}` : undefined} loading="lazy" decoding="async" />
                   </a>
                 ) : e.page ? (
                   <a class="ue-flyer-link" href={e.page} aria-label={`More about ${e.title}`}>
@@ -362,6 +367,9 @@ const single = events.length === 1;
     object-fit: cover; border-radius: 16px; background: rgb(20, 12, 8);
     box-shadow: rgba(0, 0, 0, 0.45) 0 18px 40px -12px;
   }
+  /* a still with width and height attributes: the height attribute would beat aspect-ratio, so
+     768 and up it gives way (phones set the flyer's height themselves) */
+  @media (min-width: 768px) { #upcoming img.ue-video { height: auto; } }
   #upcoming .ue-tabs {
     display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px;
   }

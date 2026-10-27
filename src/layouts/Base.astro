@@ -8,7 +8,7 @@ import { isPreview } from '../data/preview-pages';
 
 // noindex: keep a page out of search. A page listed in src/data/preview-pages.ts gets it
 // automatically, along with the preview bar; ldExtra adds fields to this page's Restaurant node.
-const { title, description, canonical, ogImage, extraTypes = [], route, noindex = false, ldExtra = {} } = Astro.props;
+const { title, description, canonical, ogImage, shareImage, extraTypes = [], route, noindex = false, ldExtra = {} } = Astro.props;
 const preview = isPreview(route);
 const robotsNoindex = noindex || preview;
 // Every absolute URL on the page is built on business.siteUrl, the one host that serves the
@@ -45,7 +45,7 @@ const LCP_IMAGE = {
   // An object when the hero carries a srcset: the preload must offer the same candidates or the
   // browser fetches both. The strings must match the page's <img> byte for byte.
   '/holiday-parties': { href: '/images/site/mexican-room.webp', srcset: '/images/site/mexican-room-800.webp 800w, /images/site/mexican-room.webp 1400w', sizes: '100vw' },
-  '/new-years-eve': { href: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp', srcset: '/images/site/friendsgiving/friendsgiving-hands-up-at-the-bar-640.webp 640w, /images/site/friendsgiving/friendsgiving-hands-up-at-the-bar.webp 1600w', sizes: '100vw' },
+  '/new-years-eve': { href: '/images/site/nye/nye-2027-flyer-720.webp', srcset: '/images/site/nye/nye-2027-flyer-480.webp 480w, /images/site/nye/nye-2027-flyer-720.webp 720w, /images/site/nye/nye-2027-flyer-1080.webp 1080w', sizes: '(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 90vw' },
   '/birria-ramen': { href: '/images/dishes/birria-ramen.jpg', srcset: '/images/dishes/birria-ramen-800.webp 800w, /images/dishes/birria-ramen.jpg 1265w', sizes: '(max-width: 767px) 92vw, min(42vw, 500px)' },
 };
 const lcpEntry = LCP_IMAGE[route];
@@ -57,7 +57,9 @@ const lcpSizes = typeof lcpEntry === 'object' ? lcpEntry.sizes : undefined;
 // its own ogImage for the JSON-LD image, where a photograph of the thing itself is the right
 // answer, but every og:image and twitter:image is the card, so a link to any page previews
 // the same way. To go back to per page hero images, use absolute(ogImage) below instead.
-const shareCard = '/images/site/open-graph.jpg';
+// The one exception is a page that passes shareImage ({ src, w, h }): /new-years-eve, so a
+// shared link shows the event flyer. See DESIGN-DEBT.md entry 140.
+const share = shareImage || { src: '/images/site/open-graph.jpg', w: 1200, h: 630 };
 
 // Restaurant and LocalBusiness on every page, with EventVenue and Caterer added where the
 // page sells the room or the catering rather than the table.
@@ -126,13 +128,13 @@ const jsonLd = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={pageUrl} />
-    <meta property="og:image" content={absolute(shareCard)} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content={absolute(share.src)} />
+    <meta property="og:image:width" content={String(share.w)} />
+    <meta property="og:image:height" content={String(share.h)} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={absolute(shareCard)} />
+    <meta name="twitter:image" content={absolute(share.src)} />
     <!-- The LCP element of each page, every one confirmed with a largest-contentful-paint
          PerformanceObserver on the deployed page rather than assumed to be the hero. Five of
          them are CSS backgrounds, which a preload is the only lever on; the rest are <img>

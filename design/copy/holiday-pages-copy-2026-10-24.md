@@ -114,18 +114,21 @@ Eyebrow: November and December · Private rooms · Title: Holiday Parties · Blu
 
 ---
 
-# PAGE C: /new-years-eve/ · NEW page · rewrite of Oct 20 draft · homepage from Dec 1
+# PAGE C: /new-years-eve/ · NEW page · rewrite of Oct 20 draft · facts updated to Roberto's flyer, Oct 26
 
 **Title tag:** New Year's Eve Masquerade Party & Dinner | Germantown, MD (57)
-**Meta description:** NYE in Germantown, MD: family dinner off the full menu, then a masquerade in the bar area with DJs, a countdown and a free champagne toast. 21+ in the bar after 9 PM. Open to 2 AM. (159)
+**Meta description:** NYE in Germantown, MD: dinner for the family, then a masquerade in the bar with DJ Gerra and a champagne toast. $15 bar cover, 21+ after 8 PM. Open to 2 AM. (156)
 **Primary:** new years eve dinner near me · new years eve party near me · **Secondary:** nye germantown md · new years eve masquerade party maryland · new years eve restaurant open montgomery county
 
 ### HERO
 **Eyebrow:** Thursday, December 31 · Germantown, MD · 3 PM to 2 AM
 **H1:** New Year's Eve Dinner and Masquerade Party in Germantown, MD
-Dinner for the whole family off the full menu, in the dining rooms, all night. Then the masks go on in the bar area: DJs, a countdown, and a champagne toast on us at midnight. The bar area is 21 and over after 9 PM with a $5 cover at the door, and we do not close until 2.
+**Countdown:** to Thursday, December 31, 8 PM · Fallback: Thursday, December 31 · 8 PM · Caption: 8 PM. The masquerade begins in the bar area.
+Dinner for the whole family off the full menu, in the dining rooms, all night. Then the masks go on in the bar area: DJ Gerra from 8 PM, a countdown, and a champagne toast at midnight. The bar area is 21 and over after 8 PM, with a $15 cover at the door that includes your mask, party favors and the toast. Business casual, and we do not close until 2.
+**Fact chips:** Dinner · full menu · all ages / 8 PM · masquerade · bar area 21+ / $15 bar cover · mask, favors, champagne toast / DJ Gerra · 8 PM to 2 AM / Business casual · no sneakers, no jeans
 **CTA:** Reserve a Table (Toast Tables, groups under 20) · Book a Private Room · Call 301-569-4574
-> PENDING (Roberto Q2): last year's NYE photos not supplied. Use existing DJ / bar-area photos; swap when they arrive.
+**Visual:** the official 2027 flyer (public/images/site/nye/nye-2027-flyer-*.webp, the JPG for shares and schema). Every fact on it is also in the text above.
+> PENDING (Roberto Q2): last year's NYE photos not supplied. The hero is done (the flyer). Use existing DJ / bar-area photos elsewhere; swap when they arrive.
 
 ### SECTION: The night
 **Eyebrow:** Two parties in one building
@@ -133,19 +136,19 @@ Dinner for the whole family off the full menu, in the dining rooms, all night. T
 Early, it is a restaurant with a very good dinner and your whole family at the table. Late, the bar area is a masquerade. Same building, same kitchen, different volume.
 **3 PM.** Doors open, like any Thursday.
 **Dinner.** The full menu, for everyone, all ages, in the dining rooms. Reserve on Toast Tables for groups under 20, or call for anything larger. The dining rooms stay all ages the whole night.
-**9 PM.** The masquerade begins in the bar area, which turns 21 and over. $5 cover, paid at the door. DJs take it from here, Spanish and English, sound up.
+**8 PM.** The masquerade begins in the bar area, which turns 21 and over. The $15 cover, paid at the door, includes your mask, party favors and the midnight champagne toast. DJ Gerra plays from 8 PM to 2 AM, Spanish and English, sound up.
 > PENDING (Roberto Q4): if the cover is card only, add "credit or debit, no cash" here and in the cover FAQ.
-**Midnight.** The countdown, then a champagne toast, on us.
+> PENDING (Roberto Q6): toast for dining room guests too? Until answered, the toast is in the bar area.
+**Midnight.** The countdown, then the champagne toast in the bar area.
 **2 AM.** We close. Last call is 15 minutes before.
-Masks: we hand out a limited number at the door while they last. Bring your own to be sure of one.
-> PENDING (Roberto Q1): dress code unknown. Do not add one. If he supplies it, add one line here and one FAQ.
+Dress code: business casual. No sneakers, no jeans. Strictly enforced at the door. Your mask comes with the cover.
 
 ### SECTION: Dinner
 **Eyebrow:** No prix fixe. No three choices.
 **H2:** Dinner First, Off the Full Menu
 Most New Year's Eve dinners come with a set menu and a chicken-or-fish decision made for you in October. Ours is the full menu, the same as any Thursday. Molcajetes that arrive still bubbling in stone. Quesabirria. Fajitas. Tortillas pressed by hand that morning. The [Birria Ramen](/birria-ramen/), if you want to start the year full.
 No drink specials that night, and we would rather tell you than pretend. The margaritas are the margaritas, 14 ounces, 18 ounces, or the 54-ounce Big Mami. [The margaritas](/margaritas/) · [The tequila bar](/tequila-bar/) · [The menu](/menu/)
-Reservations are for the dining rooms, through Toast Tables for groups under 20. The bar area does not take reservations on New Year's Eve. It is first come, first served, and it fills before 9. For 20 or more, call 301-569-4574 or book a room.
+Reservations are for the dining rooms, through Toast Tables for groups under 20. The bar area does not take reservations on New Year's Eve. It is first come, first served, and it fills early. For 20 or more, call 301-569-4574 or book a room.
 
 ### SECTION: Private rooms
 **Eyebrow:** Your own countdown
@@ -180,25 +183,27 @@ Our Google reviews mention the DJ nights more than we expected. 4.6 stars across
 **Is there a New Year's Eve dinner near Germantown that takes reservations?**
 Yes. Señor Tequila's serves the full menu on New Year's Eve, with reservations for the dining rooms through Toast Tables for groups under 20. Families are welcome for dinner all night. The bar area is first come, first served. We are at 20021 Century Blvd, next to Topgolf, with free parking.
 **Is the New Year's Eve party 21 and over?**
-The bar area is 21 and over from 9 PM, and that is where the masquerade, the DJs and the cover are. The dining rooms stay open to all ages the whole night, so families can eat late and still hear the countdown.
+The bar area is 21 and over from 8 PM, and that is where the masquerade, DJ Gerra and the cover are. The dining rooms stay open to all ages the whole night, so families can eat late and still hear the countdown.
 **How much is the cover on New Year's Eve, and are there tickets?**
-No tickets, no tiers. A $5 cover for the bar area after 9 PM, paid at the door. Dinner in the dining rooms has no cover. The champagne toast at midnight is complimentary.
+No tickets, no tiers. A $15 cover for the bar area after 8 PM, paid at the door, and it includes your mask, party favors and the champagne toast at midnight. Dinner in the dining rooms has no cover.
 **Do I need a mask?**
-It is a masquerade, so yes. We hand out a limited number of masks at the door while they last. Bring your own if you want to be sure.
+It is a masquerade, so yes, and your mask comes with the $15 bar cover.
+**Is there a dress code for New Year's Eve?**
+Yes. Business casual. No sneakers and no jeans, and it is strictly enforced at the door.
 **What time do you close on New Year's Eve, and are you open New Year's Day?**
 We open at 3 PM on New Year's Eve and close at 2 AM, with last call 15 minutes before. New Year's Day we open at 3 PM with regular Friday hours. We are closed December 24 and 25.
 **Can we reserve a table in the bar area for the countdown?**
-No. The bar area is first come, first served on New Year's Eve, and it fills before 9. Reservations are for the dining rooms. If you want a guaranteed spot for a group, book a private room.
+No. The bar area is first come, first served on New Year's Eve, and it fills early. Reservations are for the dining rooms. If you want a guaranteed spot for a group, book a private room.
 **Can we book a private room for our own New Year's Eve party?**
 Yes. Rooms seat 48 to 112, with sound, lighting, a microphone and a screen built in, and the full kitchen behind them. Holiday rates apply. Contact Tomas by phone or the form on this page and he replies within 24 hours with a formal invoice.
 
 ### CLOSE
 **H2:** Reserve Dinner. Stay for the Toast.
-Book the early table on Toast Tables, eat properly, and let the masks find you at 9.
+Book the early table on Toast Tables, eat properly, and let the masks find you at 8.
 **CTA:** Reserve a Table · Book a Private Room · Call 301-569-4574
 
-### HOMEPAGE CARD (from Dec 1)
-Eyebrow: Thu, Dec 31 · Dinner, then 9 PM to 2 AM · Title: NYE Masquerade · Blurb: New Year's Eve masquerade: dinner for the family, DJs, countdown, free champagne toast at midnight. Bar area 21+ after 9 PM.
+### HOMEPAGE CARD
+Eyebrow: Thu, Dec 31 · Dinner, then 8 PM to 2 AM · Title: NYE Masquerade · Details: New Year's Eve masquerade: dinner for the family, DJ Gerra, a countdown and a champagne toast at midnight / $15 bar cover: mask, party favors, champagne toast / Bar area 21+ after 8 PM / Business casual, no sneakers, no jeans · Visual: the flyer.
 
 ---
 
@@ -293,7 +298,7 @@ Eyebrow: Since 2021 · $21 · Title: Birria Ramen · Blurb: Birria ramen, $21. B
 ## Schema (for the page builder)
 - Restaurant node from business.json on every page, sameAs to GBP, Yelp, TripAdvisor, Facebook, Instagram.
 - B: Service "Holiday party venue and private event hosting" with an OfferCatalog (fajita buffet 26 USD per person; weekday room fee minPrice 200 USD per hour; entertainment upgrades minPrice 499 USD); EventVenue via extraTypes, maximumAttendeeCapacity 400; FAQPage (7); gift box as Offer validFrom 2026-11-27 validThrough 2026-12-31. Review markup: none (self-serving).
-- C: Event "New Year's Eve Masquerade Party" 2026-12-31T21:00 to 2027-01-01T02:00, location the Restaurant node, offers price 5 USD, typicalAgeRange "21-" with description "bar area"; optional second Event for dinner 15:00 to 21:00, isAccessibleForFree true; FAQPage (7); specialOpeningHoursSpecification in business.json.
+- C: Event "New Year's Eve Masquerade Party" 2026-12-31T20:00 to 2027-01-01T02:00, location the Restaurant node, offers price 15 USD (bar area cover, includes mask, party favors and the champagne toast), performer Person "DJ Gerra", image the flyer JPG, typicalAgeRange "21-" with description "bar area"; optional second Event for dinner 15:00 to 20:00, isAccessibleForFree true; FAQPage (8); specialOpeningHoursSpecification in business.json.
 - D: MenuItem "Birria Ramen" (offers 21 USD, menuAddOn "Salsa diabla") attached to the Menu node on /menu/ by @id, not duplicated; FAQPage (7); no Recipe schema.
 - Person for Roberto Rivas (co-owner) on D, worksFor the Restaurant node.
 

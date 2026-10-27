@@ -1013,6 +1013,15 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
     box-shadow: none !important;
   }
 
+  /* /new-years-eve: the hero picture is the event flyer, a panel below the buttons, not a photo
+     behind the copy, so it stays at full brightness (26 October, DESIGN-DEBT.md entry 140). */
+  body[data-route="/new-years-eve"] section[data-screen-label="New Year's Eve hero"] img {
+    filter: none !important;
+  }
+  body[data-route="/new-years-eve"] section[data-screen-label="New Year's Eve hero"] {
+    box-shadow: none !important;
+  }
+
   /* /taco-tuesday paints its hero photograph on an inner div rather than an <img>. The other
      inner backgrounds inside heroes are the lucha collage texture, which is already dark. */
   body[data-route="/taco-tuesday"] section[data-screen-label="Taco hero"] [style*="eca8597506381a36"] {
