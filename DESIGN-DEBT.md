@@ -4253,4 +4253,9 @@ there. Dropping the flyer's preload and fetchpriority changed nothing (89, 3.4 s
 gives /friendsgiving 89 (3.6 s), /holiday-parties 92 (3.0 s), /birria-ramen 94 (2.6 s), so the
 remainder is the site-wide CSS, the fonts and a 322KB image every page loads, not this hero. The
 live page before this change (Ken Burns hero) measured 67 and 74, LCP 6.9 and 5.4 s, TBT 270 ms.
-Live numbers after the deploy are added below.
+Live after the deploy (64c5a94), 6 runs: 70, 93, 93, 94, 69 (and the first, on a cold cache, 70).
+The good runs: LCP 2.6, 2.5, 2.4 s, CLS 0.001 to 0.033, TBT 200 ms. The bad ones: LCP 7.2 s, the
+same lead paragraph. That split is site-wide, not this page: on the same minutes /friendsgiving
+measured 71, 70, 85 (LCP 6.8, 7.0, 2.2 s, CLS up to 0.183) and /holiday-parties 69 and 95 (6.9,
+2.2 s). Worth its own look: something in every page intermittently holds a text LCP to about 7 s
+on Lighthouse's mobile profile.
