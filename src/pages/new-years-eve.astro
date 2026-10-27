@@ -129,9 +129,11 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
 <div class="sc-host ny" data-sc-name="New Year's Eve" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
   <Header5 />
 
-  <!-- 1. the poster hero: double gold frame. 768 and up, two columns: the copy left (eyebrow, the
-       countdown, the H1, the lead, the facts, the CTAs) and the flyer right. Phones stack it with
-       the flyer after the buttons and the facts last. Every fact on the flyer is also in the text. -->
+  <!-- 1. the poster hero: double gold frame. The flyer comes first (Mario, 26 October): 768 and up
+       it is the left column and the copy the right (eyebrow, the countdown, the H1, the lead, the
+       facts, the CTAs); phones put it on top, then the copy, the buttons and the facts. The flyer
+       stays last in the markup, so the H1 is still the first thing a crawler or screen reader
+       meets; only the grid places it first. Every fact on the flyer is also in the text. -->
   <section data-screen-label="New Year's Eve hero" class="ny-hero">
     <div class="ny-hero-wrap">
       <SignFrame tone="dark" class="ny-poster" padding="0">
@@ -317,10 +319,10 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
      it; :global under the page's own wrapper does */
   .ny-hero-wrap :global(.ny-poster) { overflow: hidden; flex: 1; display: flex;
     background: radial-gradient(ellipse 60% 55% at 74% 42%, rgba(214, 188, 133, 0.17), rgba(214, 188, 133, 0) 70%), radial-gradient(ellipse 45% 40% at 18% 88%, rgba(214, 188, 133, 0.07), rgba(214, 188, 133, 0) 70%), rgb(18, 18, 16); }
-  /* one grid for every width, so phones can put the flyer between the buttons and the facts */
+  /* one grid for every width: the flyer is placed first by grid area, not by markup order */
   .ny-poster-inner { position: relative; z-index: 1; width: 100%; max-width: 1240px; margin: 0 auto; box-sizing: border-box; display: grid; text-align: center;
     padding: clamp(28px, 4svh, 52px) clamp(18px, 4.5vw, 64px);
-    grid-template-columns: minmax(0, 1fr); grid-template-areas: "eb" "cd" "h1" "lead" "ctas" "fly" "facts"; }
+    grid-template-columns: minmax(0, 1fr); grid-template-areas: "fly" "eb" "cd" "h1" "lead" "ctas" "facts"; }
   .ny-eyebrow { grid-area: eb; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
   .ny-cd { grid-area: cd; margin-top: clamp(14px, 2.4svh, 28px); }
   /* the countdown is smaller than it was alone in the poster, about 110 to 130px on a desktop, so it
@@ -338,7 +340,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   /* the flyer: gold hairline, 16px corners, the Friendsgiving flyer's shadow, a slight tilt that
      straightens on hover. It is there from the first paint, never animated in. A click opens the
      full 1080 image. */
-  .ny-flyer { grid-area: fly; justify-self: center; display: block; width: min(100%, 340px); margin-top: 32px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(214, 188, 133, 0.55); background: rgb(28, 27, 24); box-shadow: rgba(0, 0, 0, 0.45) 0px 18px 40px -12px; }
+  .ny-flyer { grid-area: fly; justify-self: center; display: block; width: min(100%, 340px); margin-bottom: 32px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(214, 188, 133, 0.55); background: rgb(28, 27, 24); box-shadow: rgba(0, 0, 0, 0.45) 0px 18px 40px -12px; }
   .ny-flyer img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; }
   .ny-flyer:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 4px; }
   /* phones: the two hero buttons side by side, one row. The doubled class outranks tweaks.css's
@@ -346,13 +348,13 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   @media (max-width: 767px) { body[data-route] .ny-hero-ctas.ny-hero-ctas { grid-template-columns: 1fr 1fr !important; gap: 8px; } body[data-route] .ny-hero-ctas.ny-hero-ctas a { padding-left: 8px !important; padding-right: 8px !important; font-size: 13px !important; } }
   /* the phone CTA layout Base.astro's mobileCtas() applies at runtime, set up front so nothing moves */
   @media (max-width: 767px) { .ny-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .ny-ctas a { width: 100%; justify-content: center; text-align: center; } }
-  /* 768 and up: copy left, about 55%, and the flyer right, about 45%, sized to the screen's height
-     so the whole poster stays on one screen. The empty first and last rows centre the copy. */
+  /* 768 and up: the flyer left, about 45%, sized to the screen's height so the whole poster stays
+     on one screen, and the copy right, about 55%. The empty first and last rows centre the copy. */
   @media (min-width: 768px) {
     .ny-poster-inner { text-align: left; align-content: center; column-gap: clamp(28px, 4vw, 64px);
-      grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+      grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
       grid-template-rows: 1fr repeat(6, auto) 1fr;
-      grid-template-areas: ". fly" "eb fly" "cd fly" "h1 fly" "lead fly" "facts fly" "ctas fly" ". fly"; }
+      grid-template-areas: "fly ." "fly eb" "fly cd" "fly h1" "fly lead" "fly facts" "fly ctas" "fly ."; }
     .ny-cd :global(.cd), .ny-cd :global(.cd-caption) { text-align: left; }
     .ny-cd :global(.cd-live), .ny-cd :global(.cd-fallback) { justify-content: flex-start !important; }
     .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(48px, min(8.6vw, 13svh), 124px)); }
@@ -362,7 +364,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
     .ny-lead { margin-left: 0; }
     .ny-facts { justify-content: flex-start; margin-top: clamp(14px, 2.2svh, 24px); padding-top: clamp(12px, 1.8svh, 18px); }
     .ny-ctas.ny-hero-ctas { justify-content: flex-start; }
-    .ny-flyer { align-self: center; margin-top: 0; width: min(100%, 560px, calc((100svh - 63px - var(--pv, 0px) - 120px) * 0.75)); transform: rotate(-2deg); transition: transform 300ms ease; }
+    .ny-flyer { align-self: center; margin-bottom: 0; width: min(100%, 560px, calc((100svh - 63px - var(--pv, 0px) - 120px) * 0.75)); transform: rotate(-2deg); transition: transform 300ms ease; }
     .ny-flyer:hover, .ny-flyer:focus-visible { transform: rotate(0deg); }
   }
   @media (prefers-reduced-motion: reduce) { .ny-flyer { transition: none; } }

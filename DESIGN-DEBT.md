@@ -4259,3 +4259,12 @@ same lead paragraph. That split is site-wide, not this page: on the same minutes
 measured 71, 70, 85 (LCP 6.8, 7.0, 2.2 s, CLS up to 0.183) and /holiday-parties 69 and 95 (6.9,
 2.2 s). Worth its own look: something in every page intermittently holds a text LCP to about 7 s
 on Lighthouse's mobile profile.
+
+## 141. New Year's Eve: the flyer comes first in the hero, 26 October
+
+Mario asked for the picture first. 768 and up, the flyer is now the left column (about 45%) and the
+copy the right (about 55%), the reverse of entry 140. Phones put the flyer at the top of the hero,
+then the eyebrow, countdown, H1, lead, buttons and fact chips; on a 390 screen the flyer and the
+start of the H1 both show on the first screen. Only the grid areas changed: the flyer is still last
+in the markup, so the H1 is still the first thing a crawler or a screen reader meets. Everything
+else in entry 140 holds. Local Lighthouse (brotli server) unchanged at 89, LCP 3.3 s, CLS 0.

@@ -1013,8 +1013,8 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
     box-shadow: none !important;
   }
 
-  /* /new-years-eve: the hero picture is the event flyer, a panel below the buttons, not a photo
-     behind the copy, so it stays at full brightness (26 October, DESIGN-DEBT.md entry 140). */
+  /* /new-years-eve: the hero picture is the event flyer, a panel above the copy, not a photo
+     behind it, so it stays at full brightness (26 October, DESIGN-DEBT.md entries 140 and 141). */
   body[data-route="/new-years-eve"] section[data-screen-label="New Year's Eve hero"] img {
     filter: none !important;
   }
