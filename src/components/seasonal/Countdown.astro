@@ -3,7 +3,8 @@
    the date; SeasonalMotion replaces it with the digits, and the digits sit in fixed-width tabular
    cells so a tick never moves the layout. The digit row is laid out from the first paint, invisible
    under the static line, so taking over from it moves nothing (it was a 23px jump, CLS). After the
-   target it reads "Tonight", and after `until` it hides itself. It is not a heading. */
+   target it reads "Tonight", and after `until` it hides itself. It is not a heading. It counts
+   down to the second, so it visibly moves every second (Mario, 26 October). */
 const { target, until, fallback, caption } = Astro.props;
 ---
 <div class="cd" data-countdown={target} data-countdown-until={until} data-cd-state="static" aria-live="off">
@@ -14,6 +15,8 @@ const { target, until, fallback, caption } = Astro.props;
     <div class="cd-cell"><span class="cd-n" data-cd="hours">00</span><span class="cd-l">Hours</span></div>
     <span class="cd-sep" aria-hidden="true">:</span>
     <div class="cd-cell"><span class="cd-n" data-cd="minutes">00</span><span class="cd-l">Minutes</span></div>
+    <span class="cd-sep" aria-hidden="true">:</span>
+    <div class="cd-cell"><span class="cd-n" data-cd="seconds">00</span><span class="cd-l">Seconds</span></div>
   </div>
   <p class="cd-tonight" data-cd-tonight>Tonight</p>
   {caption && <p class="cd-caption">{caption}</p>}

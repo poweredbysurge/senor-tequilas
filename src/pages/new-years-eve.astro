@@ -138,7 +138,9 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
     <div class="ny-hero-wrap">
       <SignFrame tone="dark" class="ny-poster" padding="0">
         <div class="ny-poster-inner" data-fit>
-          <div class="ny-eyebrow">Thursday, December 31 · Germantown, MD · 3 PM to 2 AM</div>
+          {/* phones: the date and the town on one line, the hours larger on a line of their own
+              (Mario, 26 October). 768 and up it stays the one eyebrow line it was. */}
+          <div class="ny-eyebrow"><span class="ny-eb-date">Thursday, December 31<span class="ny-eb-st">st</span> · Germantown, MD</span><span class="ny-eb-sep"> · </span><span class="ny-eb-time">3 PM to 2 AM</span></div>
           <div class="ny-cd"><Countdown target={COUNTDOWN_TARGET} until={COUNTDOWN_UNTIL} fallback="Thursday, December 31 · 8 PM" caption="8 PM. The masquerade begins in the bar area." /></div>
           <h1 class="ny-h1">New Year's Eve Dinner and Masquerade Party in <span style="white-space: nowrap;">Germantown, MD</span></h1>
           <p class="ny-lead">Dinner for the whole family off the full menu, in the dining rooms, all night. Then the masks go on in the bar area: DJ Gerra from 8 PM, a countdown, and a champagne toast at midnight. The bar area is 21 and over after 8 PM, with a $15 cover at the door that includes your mask, party favors and the toast. Business casual, and we do not close until 2.</p>
@@ -327,8 +329,20 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   .ny-cd { grid-area: cd; margin-top: clamp(14px, 2.4svh, 28px); }
   /* the countdown is smaller than it was alone in the poster, about 110 to 130px on a desktop, so it
      does not fight the flyer. --fit is 1 unless SeasonalMotion's data-fit steps it down. */
-  .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(40px, 13vw, 60px)); }
-  .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(28px, 9vw, 42px)); }
+  /* four cells now (days, hours, minutes, seconds), so the digits are sized to fit four across */
+  .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(34px, 10.4vw, 52px)); }
+  .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(24px, 7.2vw, 36px)); }
+  .ny-cd :global(.cd-live) { gap: clamp(4px, 1.6vw, 12px); }
+  /* phones: under the flyer, "Thursday, December 31st · Germantown, MD" at 1.2 times the eyebrow,
+     then "3 PM to 2 AM" on its own line at 1.8 times and heavier */
+  .ny-eb-sep { display: none; }
+  .ny-eb-date { display: block; font-size: 15.6px; letter-spacing: 0.06em; white-space: nowrap; }   /* tighter tracking holds it to one line */
+  .ny-eb-time { display: block; font-size: 23.4px; font-weight: 800; letter-spacing: 0.1em; color: rgb(246, 239, 228); margin-top: 6px; }
+  @media (min-width: 768px) {
+    .ny-eb-st { display: none; }
+    .ny-eb-sep { display: inline; }
+    .ny-eb-date, .ny-eb-time { display: inline; font-size: inherit; font-weight: inherit; letter-spacing: inherit; color: inherit; margin-top: 0; }
+  }
   .ny-cd :global(.cd-fallback) { font-size: clamp(22px, 6vw, 40px); }
   .ny-cd :global(.cd-l) { margin-top: clamp(2px, 0.8svh, 10px); }
   .ny-cd :global(.cd-caption) { margin-top: clamp(6px, 1.4svh, 16px); font-size: 12px; }
@@ -357,8 +371,8 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
       grid-template-areas: "fly ." "fly eb" "fly cd" "fly h1" "fly lead" "fly facts" "fly ctas" "fly ."; }
     .ny-cd :global(.cd), .ny-cd :global(.cd-caption) { text-align: left; }
     .ny-cd :global(.cd-live), .ny-cd :global(.cd-fallback) { justify-content: flex-start !important; }
-    .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(48px, min(8.6vw, 13svh), 124px)); }
-    .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(34px, min(6vw, 9svh), 88px)); }
+    .ny-cd :global(.cd-n) { font-size: calc(var(--fit, 1) * clamp(40px, min(6.2vw, 11svh), 92px)); }
+    .ny-cd :global(.cd-sep) { font-size: calc(var(--fit, 1) * clamp(28px, min(4.4vw, 7.6svh), 64px)); }
     .ny-cd :global(.cd-fallback) { font-size: clamp(24px, min(3.2vw, 5svh), 46px); }
     .ny-h1 { font-size: calc(var(--fit, 1) * clamp(26px, min(3.6vw, 5.4svh), 54px)); margin-left: 0; }
     .ny-lead { margin-left: 0; }

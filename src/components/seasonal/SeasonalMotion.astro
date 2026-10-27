@@ -11,7 +11,7 @@
      data-parallax="0.6"           a photo inside an overflow-hidden frame moves at 0.6x scroll
      data-draw-line                a rule that draws left to right on enter (scaleX)
      data-badge-rock               rocks once on load (transform only, never hidden)
-     data-countdown="<ISO>"        live countdown to that instant, cells [data-cd="days|hours|minutes"],
+     data-countdown="<ISO>"        live countdown to that instant, cells [data-cd="days|hours|minutes|seconds"],
                                    fallback text in [data-cd-fallback]
      data-map-facade               a static map stand-in that loads the Google embed on click
      data-kenburns                 a slow 10s scale on a hero photo
@@ -190,7 +190,7 @@
       var target = Date.parse(box.getAttribute('data-countdown'));
       var endAt = Date.parse(box.getAttribute('data-countdown-until') || '') || (target + 5 * 3600 * 1000);
       if (isNaN(target)) return;
-      var cells = { days: box.querySelector('[data-cd="days"]'), hours: box.querySelector('[data-cd="hours"]'), minutes: box.querySelector('[data-cd="minutes"]') };
+      var cells = { days: box.querySelector('[data-cd="days"]'), hours: box.querySelector('[data-cd="hours"]'), minutes: box.querySelector('[data-cd="minutes"]'), seconds: box.querySelector('[data-cd="seconds"]') };
       var live = box.querySelector('[data-cd-live]'), fallback = box.querySelector('[data-cd-fallback]'), tonight = box.querySelector('[data-cd-tonight]');
       var last = {};
       function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -210,7 +210,7 @@
         if (now >= endAt) { box.setAttribute('data-cd-state', 'over'); return; }
         if (now >= target) { box.setAttribute('data-cd-state', 'tonight'); return; }
         var d = target - now;
-        set('days', Math.floor(d / 86400000)); set('hours', Math.floor(d / 3600000) % 24); set('minutes', Math.floor(d / 60000) % 60);
+        set('days', Math.floor(d / 86400000)); set('hours', Math.floor(d / 3600000) % 24); set('minutes', Math.floor(d / 60000) % 60); set('seconds', Math.floor(d / 1000) % 60);
         box.setAttribute('data-cd-state', 'live');
       }
       tick();

@@ -4268,3 +4268,17 @@ then the eyebrow, countdown, H1, lead, buttons and fact chips; on a 390 screen t
 start of the H1 both show on the first screen. Only the grid areas changed: the flyer is still last
 in the markup, so the H1 is still the first thing a crawler or a screen reader meets. Everything
 else in entry 140 holds. Local Lighthouse (brotli server) unchanged at 89, LCP 3.3 s, CLS 0.
+
+## 142. New Year's Eve: a seconds countdown, and the date and hours under the flyer on phones, 26 October
+
+Mario asked for the countdown to visibly move every second. Countdown.astro now has a fourth cell,
+Seconds, and SeasonalMotion's tick (already once a second) fills it, with the same flip as the
+other digits. Only /new-years-eve uses the component. Four cells need less width than three big
+ones did: phones clamp(34px, 10.4vw, 52px), 768 and up clamp(40px, min(6.2vw, 11svh), 92px).
+Measured with no horizontal scroll at 360, 375, 390, 768 and 1440.
+
+Phones, right under the flyer, the eyebrow is now two lines: "Thursday, December 31st · Germantown,
+MD" at 15.6px (1.2 times the 13px eyebrow), tracking 0.06em so it holds one line (292px of text in
+a 302px line at 360), and "3 PM to 2 AM" on its own line at 23.4px (1.8 times), weight 800, cream.
+768 and up the eyebrow is the one line it was, "Thursday, December 31 · Germantown, MD · 3 PM to 2
+AM" (the "st" shows on phones only).
