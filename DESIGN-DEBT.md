@@ -4297,3 +4297,15 @@ Mario, from an iPhone screenshot. Below 768 only:
   visible heights: 652 of 664 at 390, 712 of 739 at 430, 609 of 640 at 360. An iPhone SE's 548
   is shorter than the flyer itself.
 768 and up is unchanged.
+
+## 144. New Year's Eve: a gold beam traces the hero flyer, 26 October
+
+Mario asked for a gold beam that loops around the flyer, smooth, controlled, not intense. It is a
+`::after` ring on `.ny-flyer`: 2px, 5px outside the flyer's edge, a conic gradient whose start
+angle is a registered custom property (`@property --ny-beam`) animated 0 to 360deg over 7s,
+linear, forever. The arc is a tail fading in over about a third of the lap to one bright head,
+with a 5px soft glow. On the flyer's own gold edge it disappeared, hence outside it; the link no
+longer clips (`overflow: hidden` off) and the image carries its own 15px corners. Every width,
+tilt included on desktop. Reduced motion: no animation, a faint static gold ring. Browsers
+without `@property` show the arc standing still. Nothing moves in the layout, it is a paint on
+one small element; Safari not tested here (Playwright's WebKit will not launch on this machine).

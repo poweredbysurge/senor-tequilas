@@ -365,8 +365,25 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
   /* the flyer: gold hairline, 16px corners, the Friendsgiving flyer's shadow, a slight tilt that
      straightens on hover. It is there from the first paint, never animated in. A click opens the
      full 1080 image. */
-  .ny-flyer { grid-area: fly; justify-self: center; display: block; width: min(100%, 340px); margin-bottom: 32px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(214, 188, 133, 0.55); background: rgb(28, 27, 24); box-shadow: rgba(0, 0, 0, 0.45) 0px 18px 40px -12px; }
-  .ny-flyer img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; }
+  .ny-flyer { grid-area: fly; justify-self: center; display: block; width: min(100%, 340px); margin-bottom: 32px; border-radius: 16px; border: 1px solid rgba(214, 188, 133, 0.55); background: rgb(28, 27, 24); box-shadow: rgba(0, 0, 0, 0.45) 0px 18px 40px -12px; }
+  .ny-flyer img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; border-radius: 15px; }   /* the corners, now that the link does not clip (the beam sits outside it) */
+  /* the gold beam (Mario, 26 October): a short, soft arc of light that travels round the flyer's
+     edge, one lap every 7s, linear so it never speeds up or stalls. A conic gradient on a 2px ring
+     4px outside the flyer (on the flyer's own gold edge it disappeared), the mask cutting out
+     everything but the ring, turned by animating its start angle, a registered custom property so
+     it interpolates. Kept gentle: a tail that fades in over a third of the lap to one bright head,
+     and a soft glow. Browsers without @property see the arc
+     standing still; reduced motion gets a faint static gold edge instead. */
+  @property --ny-beam { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+  .ny-flyer { position: relative; }
+  .ny-flyer::after { content: ""; position: absolute; inset: -5px; border-radius: 21px; padding: 2px; pointer-events: none; z-index: 1;
+    background: conic-gradient(from var(--ny-beam), rgba(214, 188, 133, 0) 0deg, rgba(214, 188, 133, 0) 230deg, rgba(214, 188, 133, 0.3) 290deg, rgba(240, 210, 140, 0.75) 335deg, rgba(255, 236, 184, 1) 352deg, rgba(214, 188, 133, 0) 360deg);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    filter: drop-shadow(0 0 5px rgba(255, 214, 130, 0.55));
+    animation: nyBeam 7s linear infinite; }
+  @keyframes nyBeam { to { --ny-beam: 360deg; } }
+  @media (prefers-reduced-motion: reduce) { .ny-flyer::after { animation: none; background: rgba(214, 188, 133, 0.3); } }
   .ny-flyer:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 4px; }
   /* phones: the two hero buttons side by side, one row. The doubled class outranks tweaks.css's
      one-column [data-mcta-row] rule, which Base adds on load. */
