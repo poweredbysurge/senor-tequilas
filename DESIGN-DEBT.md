@@ -4174,7 +4174,9 @@ it, so their form post always gets the "please call us" page and never reaches t
 Checked live: a plain form post returned 403 and the call-us page with 301-569-4574.
 
 **Verified.** Build and check-build pass. Production deploy is green. The live JSON `curl` with an
-empty body returns 403 `bot`, as expected. Still pending: one real contact form test ("TEST Surge"),
-confirming the managers' email arrives and that Firewall > Traffic shows the test as Human.
+empty body returns 403 `bot`, as expected. A contact form test sent from a Playwright-driven
+browser was blocked as a bot (403, call-us message shown, no email), which is BotID catching
+automation. Mario then sent the contact form by hand: it went through, so a human passes. Closed
+26 October.
 
 **Rollback.** `git revert 77ebd64`, or set BotID back to Basic in the Vercel dashboard.
