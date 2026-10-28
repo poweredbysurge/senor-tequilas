@@ -123,7 +123,7 @@ const jsonLd = {
          property, and the tag starts working by itself once the domain cuts over. The one
          override is ?ga_debug=1, which fires anywhere and flags the hits for DebugView.
          See DESIGN-DEBT.md entry 55. -->
-    <script is:inline define:vars={{ ga: business.ga4 }}>
+    <script is:inline define:vars={{ ga: business.ga4, ads: business.googleAds }}>
       (function () {
         var debug = new RegExp('[?&]' + ga.debugParam + '=1(&|$)').test(location.search);
         if (!debug && ga.hosts.indexOf(location.hostname) === -1) return;
@@ -131,6 +131,9 @@ const jsonLd = {
         window.gtag = function () { window.dataLayer.push(arguments); };
         window.gtag('js', new Date());
         window.gtag('config', ga.measurementId, debug ? { debug_mode: true } : {});
+        // Google Ads tag on the same gtag.js load. Lets Ads read the click ID and import the
+        // GA4 key events below as conversions. See DESIGN-DEBT.md entry 115.
+        if (ads && ads.conversionId) window.gtag('config', ads.conversionId);
         // Conversion clicks. One delegated listener, so every call, order, reservation,
         // gift card and delivery link on every page is counted without touching the pages.
         // The names are marked as key events in GA4. See DESIGN-DEBT.md entry 94.

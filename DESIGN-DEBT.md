@@ -3464,3 +3464,19 @@ was one fetch, and now it was a second high-priority image racing the LCP. It is
 
 Mobile, local preview, three runs each. Build 21 pages, canonicals and H1s unchanged. The
 original is in `incoming-media/`, not committed.
+
+## 115. Google Ads tag, 28 October
+
+The Google Ads account (517-306-6299, now under the Surge manager account) gets its tag on the
+site so ad clicks can be tied to what visitors do after they land.
+
+- **No second gtag.js.** The Ads ID `AW-10923472404` lives in `src/data/business.json` under
+  `googleAds.conversionId`, and the existing GA4 block in `Base.astro` adds one
+  `gtag('config', ...)` call for it. Same async load after the window load event, same
+  hostname gate, so previews and localhost still send nothing.
+- **Conversions come from GA4.** The five key events from entry 94 (`click_to_call`,
+  `order_online`, `reserve_table`, `gift_card_click`, `delivery_click`) are imported into
+  Google Ads as conversions from the linked GA4 property, rather than adding Ads conversion
+  labels to the click listener. One set of events, counted the same way in both tools.
+- **Still open:** the inquiry forms still do not send (entry 94), so catering and private
+  party leads are not counted anywhere yet.

@@ -65,6 +65,9 @@
     ],
     "debugParam": "ga_debug"
   },
+  "googleAds": {
+    "conversionId": "AW-10923472404"
+  },
   "reviews": {
     "placeId": "ChIJfQWUP2wstokR0hf-aq2yO5Y",
     "rating": 4.6,
