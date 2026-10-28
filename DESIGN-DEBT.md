@@ -4405,3 +4405,18 @@ the site. Both guides' H1s carry "Germantown", which CLAUDE.md's H1 rule (entry 
 allow on /guides. The holiday guide's hero alt was written from the photo; the same image's alt on
 /holiday-parties ("flags along the ceiling") does not match the photo and is left for a separate
 fix.
+
+## 146. Guides follow-ups: the birria guide's dates, the H1 rule, the International Room alt, 28 October
+
+Mario, after entry 145:
+- The birria ramen guide's `date_published` and `date_modified` are 2026-10-28, the day it went
+  live, not 2026-10-30. The page reads "Updated October 28, 2026", the BlogPosting dates and the
+  sitemap lastmod (the guide and /guides) follow.
+- CLAUDE.md's "Germantown in H1" rule now also allows `/guides` and every guide under it, so both
+  guides' approved H1s ("Germantown's Favorite Bowl", "Germantown, MD") are within it.
+- The guide body stays left-aligned on phones (tweaks.css 19a), confirmed as built.
+- /holiday-parties: the International Room card's alt said "flags along the ceiling"; the photo
+  has none. It now describes the photo: long tables of hand-painted chairs, a turquoise wall of
+  painted masks, a buffet line with chafing dishes on a striped runner, the same words as the
+  holiday guide's hero. The weddings page's label for this photo ("two long tables and painted
+  chairs") is accurate and unchanged.

@@ -53,9 +53,10 @@ project and the code in `src/` is the source of truth, not the board.
 
 Plus two generated routes: `src/pages/sitemap.xml.js` and `src/pages/robots.txt.js`.
 
-"Germantown" may appear inside an H1 only on `/happy-hour`, `/mexican-restaurant-gaithersburg-md`
-and the seasonal and dish landing pages: `/new-years-eve`, `/birria-ramen` and `/friendsgiving`.
-Any other page keeps it out of the H1. See DESIGN-DEBT.md entry 137.
+"Germantown" may appear inside an H1 only on `/happy-hour`, `/mexican-restaurant-gaithersburg-md`,
+the seasonal and dish landing pages (`/new-years-eve`, `/birria-ramen` and `/friendsgiving`), and
+`/guides` and every guide under it (`/guides/<slug>`). Any other page keeps it out of the H1. See
+DESIGN-DEBT.md entries 137 and 146.
 
 ## SEO
 

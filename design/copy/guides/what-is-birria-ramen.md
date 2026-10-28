@@ -4,8 +4,8 @@ url: /guides/what-is-birria-ramen
 title_tag: "What Is Birria Ramen? The Story Behind Germantown's Bowl"
 meta_description: "What is birria ramen? Ramen noodles in birria consommé with eight-hour braised beef. Its origin, how to eat it, and the $21 bowl in Germantown, MD."
 byline: "By the Señor Tequila's team, reviewed by Roberto H. Rivas, co-owner"
-date_published: 2026-10-30
-date_modified: 2026-10-30
+date_published: 2026-10-28
+date_modified: 2026-10-28
 article_section: Menu
 primary_keyword: birria ramen
 draft: false
