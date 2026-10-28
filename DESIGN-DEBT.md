@@ -3478,5 +3478,6 @@ site so ad clicks can be tied to what visitors do after they land.
   `order_online`, `reserve_table`, `gift_card_click`, `delivery_click`) are imported into
   Google Ads as conversions from the linked GA4 property, rather than adding Ads conversion
   labels to the click listener. One set of events, counted the same way in both tools.
-- **Still open:** the inquiry forms still do not send (entry 94), so catering and private
-  party leads are not counted anywhere yet.
+- **Form leads count too.** The five inquiry forms send through Resend (entries 107 to 110)
+  and fire `generate_lead` on success. Once it is a key event in GA4 (TASKS M21) it is
+  imported into Google Ads as a primary conversion alongside calls, orders and reservations.
