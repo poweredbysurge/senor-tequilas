@@ -1,0 +1,67 @@
+---
+/* One run of a guide's body blocks (src/lib/guides.js): paragraphs, lists, the table, pull quotes
+   and photos. Inline HTML comes from the parser, which escapes the copy first. `lead` styles the
+   first paragraph as the article's standfirst. */
+const { blocks, lead = false } = Astro.props;
+const ratio = (im) => im.ratio || `${im.w} / ${im.h}`;
+---
+{blocks.map((b, i) => (
+  b.type === 'p' ? <p class={lead && i === 0 ? 'gd-p gd-lead' : 'gd-p'} set:html={b.html} />
+  : b.type === 'list' ? <ul class="gd-list">{b.items.map((it) => <li set:html={it} />)}</ul>
+  : b.type === 'table' ? (
+    <div class="gd-table" role="region" aria-label="Table" tabindex="0">
+      <table>
+        <thead><tr>{b.head.map((c) => <th scope="col" set:html={c} />)}</tr></thead>
+        <tbody>{b.rows.map((r) => <tr>{r.map((c, j) => j === 0 ? <th scope="row" set:html={c} /> : <td set:html={c} />)}</tr>)}</tbody>
+      </table>
+    </div>
+  )
+  : b.type === 'quote' ? (
+    <figure class="gd-quote">
+      <blockquote set:html={b.text} />
+      <figcaption set:html={b.cite} />
+    </figure>
+  )
+  : b.type === 'figure' ? (
+    <figure class={`gd-fig${b.imgs.length > 1 ? ' gd-fig-row' : ''}`}>
+      {b.imgs.map((im) => (
+        <div class="gd-frame" style={`aspect-ratio: ${ratio(im)};`}>
+          <img src={im.src} alt={im.alt} width={im.w} height={im.h} loading="lazy" decoding="async" />
+        </div>
+      ))}
+    </figure>
+  )
+  : null
+))}
+
+<style>
+  .gd-p { font-size: 17px; line-height: 1.75; color: rgba(234, 226, 214, 0.88); margin: 18px 0 0; max-width: 68ch; text-wrap: pretty; }
+  .gd-lead { font-size: 19px; line-height: 1.7; color: rgba(246, 239, 228, 0.94); margin-top: 0; }
+  .gd-p :global(strong), .gd-list :global(strong) { color: rgb(246, 239, 228); font-weight: 700; }
+  .gd-p :global(.gd-link), .gd-list :global(.gd-link), .gd-table :global(.gd-link) { color: rgb(214, 188, 133); font-weight: 700; text-decoration: underline; text-decoration-color: rgba(214, 188, 133, 0.45); text-underline-offset: 3px; }
+  .gd-p :global(.gd-link:hover), .gd-list :global(.gd-link:hover) { text-decoration-color: rgb(214, 188, 133); }
+
+  .gd-list { list-style: none; margin: 18px 0 0; padding: 0; max-width: 68ch; display: grid; gap: 12px; }
+  .gd-list li { position: relative; padding-left: 26px; font-size: 17px; line-height: 1.7; color: rgba(234, 226, 214, 0.88); }
+  .gd-list li::before { content: ""; position: absolute; left: 4px; top: 0.72em; width: 8px; height: 8px; border-radius: 50%; background: rgb(214, 188, 133); }
+
+  /* a wide table scrolls inside its own box on a phone instead of widening the page */
+  .gd-table { margin: 26px 0 0; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid rgba(185, 156, 102, 0.35); border-radius: 16px; background: rgb(28, 27, 24); }
+  .gd-table:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 3px; }
+  /* full width, cells kept on one line: it scrolls only when its content is genuinely wider */
+  .gd-table table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  .gd-table th, .gd-table td { padding: 14px clamp(12px, 2.4vw, 18px); text-align: left; border-bottom: 1px solid rgb(42, 40, 32); white-space: nowrap; }
+  .gd-table tbody tr:last-child th, .gd-table tbody tr:last-child td { border-bottom: 0; }
+  .gd-table thead th { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .gd-table tbody th { font-weight: 700; color: rgb(246, 239, 228); }
+  .gd-table td { color: rgba(234, 226, 214, 0.88); font-variant-numeric: tabular-nums; }
+
+  .gd-quote { margin: 30px 0 0; padding: 4px 0 4px 22px; border-left: 3px solid rgb(214, 188, 133); max-width: 64ch; }
+  .gd-quote blockquote { margin: 0; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(19px, 2.2vw, 24px); line-height: 1.3; text-transform: uppercase; color: rgb(246, 239, 228); text-wrap: balance; }
+  .gd-quote figcaption { margin-top: 12px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133); }
+
+  .gd-fig { margin: 28px 0 0; }
+  .gd-fig-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .gd-frame { border-radius: 16px; overflow: hidden; border: 1px solid rgb(42, 40, 32); background: rgb(28, 27, 24); }
+  .gd-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+</style>

@@ -1,0 +1,191 @@
+---
+/* One guide, from design/copy/guides/<slug>.md, verbatim (DESIGN-DEBT.md entry 145). Only published
+   guides get a route: a `draft: true` file has no page, so its URL is a 404, and it is in no list,
+   sitemap or schema. The template: breadcrumb, eyebrow, H1, byline, updated date, reading time and
+   hero photo; the body at a 68-character measure; the FAQ section as the site's accordion and the
+   FAQPage schema from the same list; the Related line as cards; a CTA band chosen by section. */
+import Base from '../../layouts/Base.astro';
+import Header5 from '../../components/Header5.astro';
+import Footer2 from '../../components/Footer2.astro';
+import Faq from '../../components/seasonal/Faq.astro';
+import GuideBlocks from '../../components/guides/GuideBlocks.astro';
+import business from '../../data/business.json';
+import { HERO_SIZES } from '../../data/guides.js';
+import { publishedGuides, parseGuide, isoDate, longDate } from '../../lib/guides.js';
+import { EYEBROW, RULE, BTN_PRIMARY, BTN_GHOST, PHONE_DISPLAY, PHONE_HREF, faqLd, RESTAURANT_ID } from '../../lib/authored.js';
+
+export async function getStaticPaths() {
+  const published = await publishedGuides();
+  return published.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry, published } }));
+}
+
+const { entry, published } = Astro.props;
+const d = entry.data;
+const g = parseGuide(entry, published);
+const hero = g.cfg.hero;
+const PAGE_URL = business.siteUrl + d.url;
+const HERO_URL = business.siteUrl + hero.src;
+const guideFor = (href) => published.find((p) => p.data.url === href);
+
+const ROBERTO = { '@type': 'Person', '@id': business.siteUrl + '/our-story#roberto-rivas', name: 'Roberto H. Rivas', jobTitle: 'Co-owner', worksFor: { '@id': RESTAURANT_ID } };
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': PAGE_URL + '#article',
+    headline: g.h1,
+    description: d.meta_description,
+    author: { '@type': 'Organization', '@id': RESTAURANT_ID, name: business.name },
+    publisher: { '@id': RESTAURANT_ID },
+    datePublished: isoDate(d.date_published),
+    dateModified: isoDate(d.date_modified),
+    image: [HERO_URL],
+    mainEntityOfPage: PAGE_URL,
+    articleSection: d.article_section,
+    inLanguage: 'en-US',
+    ...g.cfg.schema,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': PAGE_URL,
+    url: PAGE_URL,
+    name: d.title_tag,
+    inLanguage: 'en-US',
+    mainEntity: { '@id': PAGE_URL + '#article' },
+    reviewedBy: ROBERTO,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: business.siteUrl + '/' },
+      { '@type': 'ListItem', position: 2, name: 'Guides', item: business.siteUrl + '/guides' },
+      { '@type': 'ListItem', position: 3, name: g.h1, item: PAGE_URL },
+    ],
+  },
+];
+if (g.faq.length) ld.push(faqLd(g.faq));
+
+const MENU = d.article_section === 'Menu';
+---
+<Base title={d.title_tag} description={d.meta_description} canonical={PAGE_URL} ogImage={hero.src} shareImage={{ src: hero.src, w: hero.w, h: hero.h }} route={d.url}>
+<div class="gd" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
+  <Header5 />
+
+  <!-- the header: breadcrumb, eyebrow, H1, byline, updated date, reading time, the hero photo -->
+  <section data-screen-label="Guide hero" class="gd-head">
+    <div class="gd-col">
+      <nav aria-label="Breadcrumb" class="gd-crumbs">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/guides">Guides</a></li>
+          <li aria-current="page">{g.h1}</li>
+        </ol>
+      </nav>
+      <div style={EYEBROW}><span style={RULE}></span>{d.article_section}</div>
+      <h1 class="gd-h1">{g.h1}</h1>
+      <p class="gd-meta">
+        <span>{d.byline}</span>
+        <span>Updated <time datetime={isoDate(d.date_modified)}>{longDate(d.date_modified)}</time></span>
+        <span>{g.minutes} min read</span>
+      </p>
+      <figure class="gd-hero">
+        <img src={hero.src} srcset={hero.srcset} sizes={HERO_SIZES} alt={hero.alt} width={hero.w} height={hero.h} style={`aspect-ratio: ${hero.w} / ${hero.h};`} loading="eager" fetchpriority="high" decoding="async" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- the article -->
+  <section data-screen-label="Guide" class="gd-sec">
+    <article class="gd-col gd-body">
+      <GuideBlocks blocks={g.lead} lead />
+      {g.sections.map((s) => (
+        <>
+          <h2 id={s.id} class="gd-h2">{s.title}</h2>
+          {s.faq ? <div class="gd-faq"><Faq items={g.faq} variant="rule" /></div> : <GuideBlocks blocks={s.blocks} />}
+        </>
+      ))}
+    </article>
+  </section>
+
+  {g.related.length > 0 && (
+    <section data-screen-label="Related" class="gd-sec gd-related">
+      <div class="gd-col">
+        <div style={EYEBROW}><span style={RULE}></span>Related</div>
+        <ul class={`gd-rel${g.related.length === 1 ? ' is-one' : ''}`}>
+          {g.related.map((r) => {
+            const other = guideFor(r.href);
+            return (
+              <li><a href={r.href} class="gd-rel-card">
+                <span class="gd-rel-k">{other ? `Guide · ${other.data.article_section}` : "Señor Tequila's"}</span>
+                <span class="gd-rel-t">{r.text}</span>
+                <span class="gd-rel-go">{other ? 'Read the guide' : 'See the page'}</span>
+              </a></li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- the CTA band, by section -->
+  <section data-screen-label="Call to action" class="gd-sec gd-cta">
+    <div class="gd-col gd-cta-row">
+      {MENU ? (
+        <>
+          <a href="/takeout-delivery" style={BTN_PRIMARY}>Order Takeout</a>
+          <a href="/menu" style={BTN_GHOST}>See the Menu</a>
+        </>
+      ) : (
+        <>
+          <a href="/holiday-parties" style={BTN_PRIMARY}>Book a Tour</a>
+          <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+        </>
+      )}
+    </div>
+  </section>
+
+  {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+
+  <Footer2 />
+</div>
+
+<style>
+  .gd-col { max-width: 760px; margin: 0 auto; padding: 0 clamp(18px, 4.5vw, 48px); box-sizing: content-box; }
+  .gd-head { background: rgb(18, 18, 16); padding: clamp(28px, 4.4vw, 56px) 0 0; }
+  .gd-crumbs ol { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 13px; line-height: 1.5; color: rgba(234, 226, 214, 0.62); }
+  .gd-crumbs li { display: inline; }
+  .gd-crumbs li + li::before { content: "›"; margin-right: 8px; color: rgba(214, 188, 133, 0.7); }
+  .gd-crumbs a { color: rgb(214, 188, 133); }
+  .gd-crumbs a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .gd-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(28px, 4.4vw, 50px); line-height: 1.04; margin: 12px 0 0; text-transform: uppercase; text-wrap: balance; }
+  .gd-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 18px 0 0; font-size: 14px; line-height: 1.5; color: rgba(234, 226, 214, 0.7); }
+  .gd-meta span + span::before { content: "·"; margin-right: 18px; color: rgba(214, 188, 133, 0.7); }
+  @media (max-width: 767px) { .gd-meta { flex-direction: column; gap: 2px; } .gd-meta span + span::before { content: none; } }
+  .gd-hero { margin: 28px 0 0; border-radius: 16px; overflow: hidden; border: 1px solid rgba(185, 156, 102, 0.35); background: rgb(28, 27, 24); }
+  .gd-hero img { display: block; width: 100%; height: auto; object-fit: cover; }
+
+  .gd-sec { background: rgb(18, 18, 16); padding: clamp(40px, 5vw, 64px) 0; }
+  .gd-h2 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(22px, 2.8vw, 32px); line-height: 1.08; margin: 56px 0 0; text-transform: uppercase; text-wrap: balance; scroll-margin-top: 80px; }
+  .gd-faq { margin-top: 22px; }
+  /* the accordion's answers at the body's size, not the 14px the component uses on event pages */
+  .gd-faq :global(.fq-a) { font-size: 16px; line-height: 1.7; }
+  .gd-faq :global(.fq-item button) { font-size: 16px; }
+
+  .gd-related { border-top: 1px solid rgba(185, 156, 102, 0.2); }
+  .gd-rel { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .gd-rel.is-one { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
+  @media (max-width: 767px) { .gd-rel { grid-template-columns: minmax(0, 1fr); } }
+  .gd-rel-card { display: flex; flex-direction: column; gap: 6px; height: 100%; box-sizing: border-box; padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(185, 156, 102, 0.35); background: rgb(28, 27, 24); color: rgb(234, 226, 214); transition: border-color 200ms ease; }
+  .gd-rel-card:hover, .gd-rel-card:focus-visible { border-color: rgb(214, 188, 133); }
+  .gd-rel-card:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 3px; }
+  .gd-rel-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .gd-rel-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 17px; line-height: 1.2; text-transform: uppercase; color: rgb(246, 239, 228); }
+  .gd-rel-go { margin-top: auto; padding-top: 6px; font-weight: 700; font-size: 14px; color: rgb(214, 188, 133); }
+
+  .gd-cta { border-top: 1px solid rgba(185, 156, 102, 0.2); background: rgb(20, 18, 16); }
+  .gd-cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  @media (max-width: 767px) { .gd-cta-row { display: grid; grid-template-columns: minmax(0, 1fr); } }
+</style>
+</Base>

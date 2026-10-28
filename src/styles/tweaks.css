@@ -526,6 +526,28 @@ body[data-route="/street-tacos"] .st-herovideo {
   }
 }
 
+/* ---- 19a. the guides' article body reads left-aligned on phones ---------------------------
+   Section 19 centres page copy on phones, which suits short marketing copy. A guide is long-form
+   reading, 1,500 words with lists, a table and pull quotes: centred lines there have no steady
+   left edge for the eye to return to, and a centred list item floats away from its bullet. So the
+   article body and the Related cards stay left-aligned; the guide's header (breadcrumb, eyebrow,
+   H1, byline) still centres like every other page. Guides only. DESIGN-DEBT.md entry 145. */
+@media (max-width: 767px) {
+  body[data-route^="/guides/"] section .gd-body,
+  body[data-route^="/guides/"] section .gd-body :is(h2, p, li, blockquote, figcaption),
+  body[data-route^="/guides/"] section.gd-related,
+  body[data-route^="/guides/"] section.gd-related :is(p, li) {
+    text-align: left !important;
+  }
+  body[data-route^="/guides/"] section .gd-body :is(h2, p, blockquote) {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  body[data-route^="/guides/"] section.gd-related [data-eyebrow] {
+    justify-content: flex-start !important;
+  }
+}
+
 /* ---- 20. more mobile alignment ---------------------------------------------------------
    All of this is below 768 only. Desktop is untouched. */
 @media (max-width: 767px) {
@@ -1010,6 +1032,14 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
     filter: none !important;
   }
   body[data-route="/birria-ramen"] section[data-screen-label="Birria ramen hero"] {
+    box-shadow: none !important;
+  }
+
+  /* the guides: the hero photo sits below the title, not behind it (DESIGN-DEBT.md entry 145) */
+  body[data-route^="/guides/"] section[data-screen-label="Guide hero"] img {
+    filter: none !important;
+  }
+  body[data-route^="/guides/"] section[data-screen-label="Guide hero"] {
     box-shadow: none !important;
   }
 

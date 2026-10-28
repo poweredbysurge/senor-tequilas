@@ -4309,3 +4309,99 @@ longer clips (`overflow: hidden` off) and the image carries its own 15px corners
 tilt included on desktop. Reduced motion: no animation, a faint static gold ring. Browsers
 without `@property` show the arc standing still. Nothing moves in the layout, it is a paint on
 one small element; Safari not tested here (Playwright's WebKit will not launch on this machine).
+
+## 145. Guides: /guides and the birria ramen guide published, the holiday guide built as a draft, 28 October
+
+A home for long-form articles, called Guides rather than a blog. `/guides` (index) and
+`/guides/what-is-birria-ramen` are live. `holiday-party-germantown-md` is `draft: true` and
+does not build. To publish it later: set `draft: false` and update `date_published` and
+`date_modified` in its Markdown, uncomment the two `ADD WHEN HOLIDAY GUIDE PUBLISHES` lines
+(/holiday-parties FAQ section, /private-parties hero), build, check, push.
+
+**Storage: a content collection that reads the approved copy in place.** `src/content.config.mjs`
+defines `guides` with Astro's glob loader pointed at `design/copy/guides/`, not at a copy under
+`src/content/guides/`. One file per guide, so the published text cannot drift from the approved
+one (the one-file rule). The frontmatter is validated (url shape, dates, section is Menu or Private
+Events, draft is a boolean). A new guide is one Markdown file there plus an entry in
+`src/data/guides.js` (its photos, their sections and alt text, the schema it points at, and the
+business facts its copy repeats, checked against business.json so a change there stops the
+build). Chosen over Markdown pages because a page per article would put the copy in two places,
+and over Astro's own Markdown rendering because the template needs structure, not HTML: the H1
+goes in the header, the FAQ becomes the accordion and the schema, the reviews become pull quotes,
+the Related line becomes cards, photos go into named sections. `src/lib/guides.js` is a small
+parser for exactly the Markdown these files use (#, ##, paragraphs, bold, links, "- " lists, one
+pipe table) and fails the build on anything else, a ### heading, an en or em dash, a photo section
+that no longer matches a ## heading, an FAQ question with no answer.
+
+**Drafts.** `publishedGuides()` filters `draft: true` out before anything sees it, so a draft has
+no route (its URL is a 404), no card on /guides, no sitemap entry, no ItemList entry, and no link:
+any Markdown link to an unpublished guide renders as its words without the link, and a Related
+card to one is dropped (the birria guide's Related line names the holiday guide; it shows only the
+birria tacos card). The two later links are JSX comments, not HTML ones, because Astro prints an
+HTML comment into the page, and the draft's URL must appear nowhere in dist/ (checked: zero files).
+A local preview: `npm run build:drafts` builds with GUIDES_DRAFTS=1 into `dist-drafts/`
+(gitignored), and refuses to run when VERCEL is set.
+
+**The template.** Breadcrumb (Home › Guides › title), section eyebrow, H1, byline, "Updated"
+date_modified ("October 30, 2026"), reading time (words / 230, 7 min), hero photo. Body at a 68ch
+measure, 17px / 1.75; `##` are H2s; bold lead-ins stay bold; lists with gold dots; the table in a
+gold-hairline box that scrolls sideways only if its content is wider than the screen; the "quote"
+plus "**Name, 5-star Google review**" pair becomes a pull quote; photos after the first paragraph of
+their section (the three drinks as a row of squares). The FAQ section is the site's accordion
+(seasonal/Faq.astro, answers at 16px here) and the FAQPage schema from the same list (birria 6,
+holiday 5). Related as one or two cards. A CTA band by section: Menu gets Order Takeout and See
+the Menu; Private Events gets Book a Tour (/holiday-parties) and the phone. No sidebar, share
+buttons or comments.
+
+**Phones, a deliberate exception to tweaks.css 19.** Section 19 centres all section copy below
+768. A 1,500-word article centred has no steady left edge to read from, and a centred list item
+drifts off its bullet, so tweaks.css 19a keeps the guide article body and the Related cards
+left-aligned on phones; the guide header still centres like every other page. Guides only. The
+hero photo is also exempt from the phone hero darkening (tweaks.css 39), as on the seasonal pages.
+
+**The index.** H1 "Señor Tequila's Guides", the lead, one card per published guide newest first,
+then Book a Private Room and See the Menu. The newest guide is a wide feature card (photo beside
+the text from 768 up), so one guide looks intentional. With exactly two, the second takes the same
+wide layout rather than sitting as a half-width tile beside nothing (checked in the drafts build);
+from three, the rest go two to a row. The intro and cards are one section, so phones get one 80px
+band, not two between the lead and the card.
+
+**Schema.** Each guide: BlogPosting (headline the H1, description, author Organization with the
+Restaurant @id, publisher the Restaurant @id, dates from frontmatter, image the hero, mainEntityOfPage
+the URL, articleSection, inLanguage en-US), WebPage with reviewedBy Person "Roberto H. Rivas",
+Co-owner (the same @id as Roberto on /birria-ramen), FAQPage, BreadcrumbList. Birria guide: about
+and mentions point at the existing MenuItem `https://www.senortequilas.com/birria-ramen#menuitem`,
+never redefined, no Recipe. Holiday guide: about the Restaurant @id, no Offers (those belong to
+/holiday-parties and /private-parties). Index: CollectionPage with an ItemList of the published
+guides.
+
+**Wiring.** Footer2 and MobileMenu (a card with the bowl photo, "Straight answers" / "Guides")
+link /guides on all 27 pages; the desktop header does not. Contextual: /birria-ramen ("New to it?"
+at the end of What Is in the Bowl), /birria-tacos ("Same braise, different bowl" under the cards).
+og:image and twitter:image on a guide are its hero (Base's shareImage). Each guide's hero joins
+Base's LCP_IMAGE map from src/data/guides.js (`GUIDE_LCP`), so the preload and the <img> share one
+set of strings. /guides passes its LCP preload through a new Base prop, `lcp`, because its LCP
+image is the newest guide's photo and changes when a newer one publishes.
+
+**Sitemap.** `guides/[slug].astro` is a template and is skipped; published guides are listed from
+the collection with lastmod their date_modified, and /guides takes the newest date_modified. Fixed
+on the way: a nested index.astro came out as `/guides/` with a trailing slash and no lastmod (the
+index rule was written for the homepage only). 27 locs, 27 canonicals, all matching.
+
+**Checks.** Build: no warnings. check-build: PASS. Separately, /guides and the guide (which
+check-build's fixed 19-page manifest does not open): 0 console errors, 0 404s, 0 dead links, 0
+broken images. Copy coverage: all 62 paragraphs, list items, table cells and FAQ answers of
+what-is-birria-ramen.md are in the built HTML. One H1 per page; the H2 outline matches the Markdown
+(10). FAQPage 6, matching the accordion and the Markdown word for word. No en or em dashes or
+semicolons in either page's text. Mobile Lighthouse, local brotli server, 3 runs after the last
+change set: guide 98, 98, 97 (LCP 2.3, 2.3, 2.4 s, CLS 0 to 0.008); /guides 97, 98, 98 (LCP 2.3,
+2.3, 2.2 s, CLS 0.008). LCP on both is the bowl photo. Earlier runs at 55 to 82 were this machine
+under load (load average near 40); they recovered with nothing changed.
+
+**Open.** The frontmatter dates are 30 October, two days after publishing, so the page reads
+"Updated October 30, 2026" and datePublished is in the future until then. "4.6 stars across more
+than 5,600 Google reviews" is typed copy, true today (5,717) but not read live like the rest of
+the site. Both guides' H1s carry "Germantown", which CLAUDE.md's H1 rule (entry 137) does not yet
+allow on /guides. The holiday guide's hero alt was written from the photo; the same image's alt on
+/holiday-parties ("flags along the ceiling") does not match the photo and is left for a separate
+fix.

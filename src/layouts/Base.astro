@@ -4,11 +4,12 @@ import '../styles/overlay.css';
 import '../styles/tweaks.css';
 import MobileMenu from '../components/MobileMenu.astro';
 import business from '../data/business.json';
+import { GUIDE_LCP } from '../data/guides.js';
 import { isPreview } from '../data/preview-pages';
 
 // noindex: keep a page out of search. A page listed in src/data/preview-pages.ts gets it
 // automatically, along with the preview bar; ldExtra adds fields to this page's Restaurant node.
-const { title, description, canonical, ogImage, shareImage, extraTypes = [], route, noindex = false, ldExtra = {} } = Astro.props;
+const { title, description, canonical, ogImage, shareImage, lcp, extraTypes = [], route, noindex = false, ldExtra = {} } = Astro.props;
 const preview = isPreview(route);
 const robotsNoindex = noindex || preview;
 // Every absolute URL on the page is built on business.siteUrl, the one host that serves the
@@ -47,8 +48,11 @@ const LCP_IMAGE = {
   '/holiday-parties': { href: '/images/site/mexican-room.webp', srcset: '/images/site/mexican-room-800.webp 800w, /images/site/mexican-room.webp 1400w', sizes: '100vw' },
   '/new-years-eve': { href: '/images/site/nye/nye-2027-flyer-720.webp', srcset: '/images/site/nye/nye-2027-flyer-480.webp 480w, /images/site/nye/nye-2027-flyer-720.webp 720w, /images/site/nye/nye-2027-flyer-1080.webp 1080w', sizes: '(min-width: 1024px) 40vw, (min-width: 768px) 50vw, 90vw' },
   '/birria-ramen': { href: '/images/dishes/birria-ramen.jpg', srcset: '/images/dishes/birria-ramen-800.webp 800w, /images/dishes/birria-ramen.jpg 1265w', sizes: '(max-width: 767px) 92vw, min(42vw, 500px)' },
+  // each guide's hero, from src/data/guides.js, so the preload and the <img> share one set of strings
+  ...GUIDE_LCP,
 };
-const lcpEntry = LCP_IMAGE[route];
+// a page whose LCP image is chosen at build time (/guides: the newest guide's photo) passes `lcp`
+const lcpEntry = lcp || LCP_IMAGE[route];
 const lcpImage = typeof lcpEntry === 'string' ? lcpEntry : lcpEntry?.href;
 const lcpSrcset = typeof lcpEntry === 'object' ? lcpEntry.srcset : undefined;
 const lcpSizes = typeof lcpEntry === 'object' ? lcpEntry.sizes : undefined;

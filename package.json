@@ -4,6 +4,7 @@
   "description": "Señor Tequila's, Claude Design port",
   "scripts": {
     "build": "astro build",
+    "build:drafts": "GUIDES_DRAFTS=1 astro build --outDir dist-drafts",
     "preview": "astro preview",
     "extract": "node scripts/extract.mjs",
     "gate-a": "node scripts/gate-a.mjs",

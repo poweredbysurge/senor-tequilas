@@ -11,6 +11,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import business from '../data/business.json';
 import { PREVIEW_PAGES } from '../data/preview-pages';
+import { publishedGuides, isoDate } from '../lib/guides.js';
 
 const files = Object.keys(import.meta.glob('./**/*.astro'));
 
@@ -50,11 +51,21 @@ if (JSON.stringify(noindexHeaders) !== JSON.stringify([...PREVIEW_PAGES].sort())
 }
 
 const boundary = shallowBoundary();
+// Guides (DESIGN-DEBT.md entry 145): guides/[slug].astro is a template, not a page, so it is left
+// out, and each published guide is listed from the collection instead, with lastmod its own
+// date_modified. /guides takes the newest guide's date_modified. Drafts are never listed.
+const guides = await publishedGuides();
+const guidesModified = guides.length ? isoDate(new Date(Math.max(...guides.map((g) => g.data.date_modified)))) : null;
 const pages = files
+  .filter((f) => !f.includes('['))
   .map((f) => {
-    const p = f.replace(/^\.\//, '/').replace(/\.astro$/, '').replace(/\/index$/, '/');
-    return { path: p === '/index' ? '/' : p, lastmod: lastModified(f, boundary) };
+    // index.astro is its folder's page: /index is the root, /guides/index is /guides (no trailing
+    // slash, the site's URL style and the canonical)
+    const p = f.replace(/^\.\//, '/').replace(/\.astro$/, '');
+    const path = p === '/index' ? '/' : p.replace(/\/index$/, '');
+    return { path, lastmod: path === '/guides' ? guidesModified : lastModified(f, boundary) };
   })
+  .concat(guides.map((g) => ({ path: g.data.url, lastmod: isoDate(g.data.date_modified) })))
   .filter((p) => !PREVIEW_PAGES.includes(p.path))
   .sort((a, b) => (a.path === '/' ? -1 : b.path === '/' ? 1 : a.path.localeCompare(b.path)));
 

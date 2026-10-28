@@ -1,5 +1,7 @@
 node_modules/
 dist/
+# GUIDES_DRAFTS=1 preview builds (npm run build:drafts), local only, never deployed
+dist-drafts/
 .astro/
 .DS_Store
 .env

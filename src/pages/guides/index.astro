@@ -1,0 +1,130 @@
+---
+/* /guides, the Guides index (DESIGN-DEBT.md entry 145). One card per published guide, newest first.
+   The newest is a wide feature card (photo beside the text from 768 up), so a single guide reads
+   as intentional rather than a lone tile in an empty grid; any others sit two to a row below it. */
+import Base from '../../layouts/Base.astro';
+import Header5 from '../../components/Header5.astro';
+import Footer2 from '../../components/Footer2.astro';
+import business from '../../data/business.json';
+import { GUIDES } from '../../data/guides.js';
+import { publishedGuides, parseGuide } from '../../lib/guides.js';
+import { EYEBROW, RULE, BTN_PRIMARY, BTN_GHOST, RESTAURANT_ID } from '../../lib/authored.js';
+
+const PAGE = '/guides';
+const PAGE_URL = business.siteUrl + PAGE;
+const published = await publishedGuides();
+const cards = published.map((e) => ({ e, g: parseGuide(e, published), hero: GUIDES[e.data.slug].hero }));
+const [feature, ...rest] = cards;
+// the feature card's photo is this page's LCP element, and it changes with the newest guide, so
+// the preload is passed to Base rather than fixed in its LCP_IMAGE map
+const CARD_SIZES = '(max-width: 767px) 92vw, 560px';
+const lcp = feature && { href: feature.hero.src, srcset: feature.hero.srcset, sizes: CARD_SIZES };
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': PAGE_URL,
+  url: PAGE_URL,
+  name: "Señor Tequila's Guides",
+  description: "Straight answers from the family behind Señor Tequila's in Germantown, MD: what birria ramen is, how to plan a party, and more.",
+  inLanguage: 'en-US',
+  isPartOf: { '@id': RESTAURANT_ID },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: cards.map(({ e, g }, i) => ({ '@type': 'ListItem', position: i + 1, url: business.siteUrl + e.data.url, name: g.h1 })),
+  },
+};
+---
+<Base title="Guides | Señor Tequila's, Germantown, MD" description="Straight answers from the family behind Señor Tequila's in Germantown, MD: what birria ramen is, how to plan a party, and more." canonical={PAGE_URL} ogImage={feature ? feature.hero.src : '/images/site/open-graph.jpg'} lcp={lcp} route={PAGE}>
+<div class="gi" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
+  <Header5 />
+
+  <!-- one section, the intro and the cards, so phones put one 80px band above it rather than two
+       between the lead and the first card -->
+  <section data-screen-label="Guides" class="gi-sec gi-list">
+    <div class="gi-wrap">
+      <div class="gi-intro">
+        <div style={EYEBROW}><span style={RULE}></span>Guides</div>
+        <h1 class="gi-h1">Señor Tequila's Guides</h1>
+        <p class="gi-lead">Planning a party, ordering something new, or picking a tequila. Straight answers from the family that runs the kitchen.</p>
+      </div>
+      {feature && (
+        <a href={feature.e.data.url} class="gi-card gi-feature">
+          <span class="gi-media"><img src={feature.hero.src} srcset={feature.hero.srcset} sizes={CARD_SIZES} alt={feature.hero.alt} width={feature.hero.w} height={feature.hero.h} loading="eager" fetchpriority="high" decoding="async" /></span>
+          <span class="gi-text">
+            <span class="gi-k">{feature.e.data.article_section}</span>
+            <span class="gi-t">{feature.g.h1}</span>
+            <span class="gi-d">{feature.e.data.meta_description}</span>
+            <span class="gi-go">Read the guide</span>
+          </span>
+        </a>
+      )}
+      {rest.length > 0 && (
+        <ul class={`gi-grid${rest.length === 1 ? ' is-one' : ''}`}>
+          {rest.map(({ e, g, hero }) => (
+            <li><a href={e.data.url} class={`gi-card${rest.length === 1 ? ' gi-feature' : ''}`}>
+              <span class="gi-media"><img src={hero.src} srcset={hero.srcset} sizes={CARD_SIZES} alt={hero.alt} width={hero.w} height={hero.h} loading="lazy" decoding="async" /></span>
+              <span class="gi-text">
+                <span class="gi-k">{e.data.article_section}</span>
+                <span class="gi-t">{g.h1}</span>
+                <span class="gi-d">{e.data.meta_description}</span>
+                <span class="gi-go">Read the guide</span>
+              </span>
+            </a></li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+
+  <section data-screen-label="Close" class="gi-sec gi-close">
+    <div class="gi-wrap gi-ctas">
+      <a href="/private-parties" style={BTN_PRIMARY}>Book a Private Room</a>
+      <a href="/menu" style={BTN_GHOST}>See the Menu</a>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+
+  <Footer2 />
+</div>
+
+<style>
+  .gi-wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(18px, 4.5vw, 48px); }
+  .gi-sec { background: rgb(18, 18, 16); }
+  .gi-intro { margin-bottom: clamp(28px, 3.4vw, 44px); }
+  .gi-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(32px, 5.4vw, 64px); line-height: 1; margin: 12px 0 0; text-transform: uppercase; text-wrap: balance; }
+  .gi-lead { font-size: 18px; line-height: 1.65; color: rgba(234, 226, 214, 0.86); margin: 18px 0 0; max-width: 56ch; text-wrap: pretty; }
+  .gi-list { padding: clamp(48px, 7vw, 96px) 0 clamp(48px, 6vw, 84px); }
+
+  .gi-card { display: flex; flex-direction: column; height: 100%; border-radius: 16px; overflow: hidden; border: 1px solid rgba(185, 156, 102, 0.35); background: rgb(28, 27, 24); color: rgb(234, 226, 214); transition: border-color 200ms ease; }
+  .gi-card:hover, .gi-card:focus-visible { border-color: rgb(214, 188, 133); }
+  .gi-card:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 3px; }
+  .gi-media { display: block; aspect-ratio: 4 / 3; overflow: hidden; background: rgb(20, 18, 16); }
+  .gi-media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 600ms ease; }
+  .gi-card:hover .gi-media img { transform: scale(1.03); }
+  .gi-text { display: flex; flex-direction: column; gap: 10px; padding: clamp(20px, 2.6vw, 32px); flex: 1 1 auto; }
+  .gi-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .gi-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(20px, 2.4vw, 30px); line-height: 1.08; text-transform: uppercase; color: rgb(246, 239, 228); text-wrap: balance; }
+  .gi-d { font-size: 16px; line-height: 1.6; color: rgba(234, 226, 214, 0.82); max-width: 52ch; }
+  .gi-go { margin-top: auto; padding-top: 8px; font-weight: 800; font-size: 15px; color: rgb(214, 188, 133); }
+  .gi-go::after { content: " →"; }
+
+  /* the feature card: photo and text side by side from 768 up */
+  @media (min-width: 768px) {
+    .gi-feature { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+    .gi-feature .gi-media { aspect-ratio: auto; min-height: 360px; }
+    .gi-feature .gi-text { justify-content: center; }
+  }
+  .gi-grid { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  /* a lone second card would be the half-width tile beside nothing that the feature card avoids,
+     so with exactly one left over it takes the feature's wide layout too */
+  .gi-grid.is-one { grid-template-columns: minmax(0, 1fr); }
+  @media (max-width: 767px) { .gi-grid { grid-template-columns: minmax(0, 1fr); } }
+
+  .gi-close { border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 5vw, 64px) 0; background: rgb(20, 18, 16); }
+  .gi-ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  @media (max-width: 767px) { .gi-ctas { display: grid; grid-template-columns: minmax(0, 1fr); } }
+  @media (prefers-reduced-motion: reduce) { .gi-media img { transition: none; } }
+</style>
+</Base>
