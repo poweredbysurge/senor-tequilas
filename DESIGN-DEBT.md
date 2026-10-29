@@ -4520,3 +4520,42 @@ focused. `generate_lead` still fires on success.
 Checked in a browser at 390 and 1440 on `/catering` and `/contact` with the endpoint answered
 locally (BotID cannot run off Vercel, so `fetch` was pinned for the test): the form hides, the
 panel shows the right copy and holds focus. Build 27 pages.
+
+## 150. The holiday party guide published, 29 October
+
+Roberto approved `holiday-party-germantown-md`. Published with the draft switch from entry 145:
+`draft: false` (the "waiting on Roberto" comment removed), `date_published` and `date_modified`
+2026-10-29, no copy changed. The two `ADD WHEN HOLIDAY GUIDE PUBLISHES` lines are live: the
+/private-parties hero ("holiday party planning guide") and the end of the /holiday-parties FAQ
+section ("holiday party venues in Germantown"). The birria guide's Related row now shows the
+holiday guide card first, ahead of birria tacos, with no change to its Markdown. The birria guide's
+in-body mention of it is now a link.
+
+**Two fixes the checks forced.**
+- **The hero had no phone size.** Its srcset was the 1600w webp only (242 KB), so a 412px phone
+  fetched all of it: mobile Lighthouse 85, LCP 4.3 s on three runs. Added
+  `international-room-long-tables-800.webp` (cwebp -q 70 -m 6, 64 KB, from the same photo, the way
+  `mexican-room-800.webp` and `birria-ramen-800.webp` were made) to the srcset in
+  `src/data/guides.js`, which the preload, /guides and the guide all read. The image now loads in
+  about 20 ms of the LCP. This photo is also /guides' LCP image now that the holiday guide is newest.
+- **/guides, two wide cards of different heights.** In the wide layout (768 up) the photo's own shape
+  set the row height, so the birria card (a 1265x929 photo) was 447px against the holiday card's
+  362px. The photo is now absolutely positioned inside `.gi-media`, so each wide card is as tall as
+  its text, at least 360px: 362 and 364 at 768, 1024 and 1440. Phones unchanged (photo on top, 4:3).
+  The two-card layout is otherwise the one built in entry 145: both cards wide, no half-width tile.
+
+**Checks.** Build: no warnings. check-build: PASS. Copy coverage: all 66 paragraphs, list items and
+FAQ answers and all 5 table rows of the Markdown are in the built page. Schema: BlogPosting
+(dates 2026-10-29), WebPage with reviewedBy Roberto H. Rivas, BreadcrumbList, FAQPage all parse;
+FAQPage 5, word for word with the accordion and the Markdown; no Offer. Sitemap: the guide at
+lastmod 2026-10-29, canonical equal to its loc; 28 canonicals, 28 locs, all matching. In the /guides
+ItemList. Linked from /guides, /guides/what-is-birria-ramen, /holiday-parties and /private-parties.
+No em or en dashes or semicolons in the Markdown body or the page text. Screenshots at 390 and
+1440: zero console errors and 404s, the table fits a 390 screen without scrolling (352px of 352),
+FAQ opens, no horizontal overflow.
+
+Mobile Lighthouse, local brotli server, 3 runs: guide 97, 97, 97 (LCP 2.6, 2.5, 2.5 s; CLS 0 to
+0.006); /guides 98, 99, 97 (LCP 2.4, 2.0, 2.5 s; CLS 0 to 0.008). The guide's LCP is at the 2.5 s
+line, not under it: of its 2.6 s, 1.78 s is Lighthouse's simulated time to first byte for a static
+file on this machine under load averages of 10 to 15. The already-live birria guide, the same
+template and HTML size within 2%, measured 2.4 to 2.5 s alongside it.

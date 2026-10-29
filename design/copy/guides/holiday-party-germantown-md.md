@@ -4,11 +4,11 @@ url: /guides/holiday-party-germantown-md
 title_tag: "Holiday Party Venues in Germantown, MD (2026 Guide)"
 meta_description: "Comparing holiday party venues in Germantown, MD? Timeline, cost per head, room sizes, buffet vs set menu, drinks, and the questions to ask any venue."
 byline: "By the Señor Tequila's team, reviewed by Roberto H. Rivas, co-owner"
-date_published: 2026-10-30
-date_modified: 2026-10-30
+date_published: 2026-10-29
+date_modified: 2026-10-29
 article_section: Private Events
 primary_keyword: holiday party venues germantown md
-draft: true   # waiting on Roberto's approval of the rewritten "Why Groups Choose" section. Do not publish.
+draft: false
 ---
 
 # Holiday Party Venues in Germantown, MD: Where to Host Yours (2026 Guide)

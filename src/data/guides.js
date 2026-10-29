@@ -36,7 +36,7 @@ export const GUIDES = {
   'holiday-party-germantown-md': {
     hero: {
       src: '/images/site/international-room-long-tables.webp', w: 1600, h: 900,
-      srcset: '/images/site/international-room-long-tables.webp 1600w',
+      srcset: '/images/site/international-room-long-tables-800.webp 800w, /images/site/international-room-long-tables.webp 1600w',
       alt: 'The International Room set for a party: long tables of hand-painted chairs, a turquoise wall hung with painted masks, and a buffet line with chafing dishes on a striped runner',
     },
     sections: {

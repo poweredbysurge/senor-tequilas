@@ -113,7 +113,10 @@ const ld = {
   /* the feature card: photo and text side by side from 768 up */
   @media (min-width: 768px) {
     .gi-feature { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
-    .gi-feature .gi-media { aspect-ratio: auto; min-height: 360px; }
+    .gi-feature .gi-media { aspect-ratio: auto; min-height: 360px; position: relative; }
+    /* the photo fills the box rather than sizing it, so every wide card is as tall as its text
+       (at least 360px) whatever the photo's shape: a squarer photo made its card 85px taller */
+    .gi-feature .gi-media img { position: absolute; inset: 0; }
     .gi-feature .gi-text { justify-content: center; }
   }
   .gi-grid { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
