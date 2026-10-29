@@ -4559,3 +4559,14 @@ Mobile Lighthouse, local brotli server, 3 runs: guide 97, 97, 97 (LCP 2.6, 2.5, 
 line, not under it: of its 2.6 s, 1.78 s is Lighthouse's simulated time to first byte for a static
 file on this machine under load averages of 10 to 15. The already-live birria guide, the same
 template and HTML size within 2%, measured 2.4 to 2.5 s alongside it.
+
+**Production, after the deploy (50cdd95).** Live: dates 2026-10-29, canonical, the 800w hero, the
+sitemap loc at 2026-10-29, and the link from all four pages. Mobile Lighthouse on the live guide
+with Google's tag domains blocked: 97, 100, 97 (LCP 2.4, 1.7, 2.4 s; CLS 0 to 0.006). With them
+on: 62, 60, 56 (LCP 8.3 to 8.9 s). The hero is in by 175 ms; the rest is a 2.1 s element render
+delay while four gtag.js loads run, about 600 KB: G-4GXG4DRXQF (the site's), AW-10923472404
+(entry 147), and G-W1SSD4X8HB and UA-77807374-3, which are not in the code and so come from the
+Google tag's linked destinations in Google's admin. Site-wide, not the guide's: the homepage is 92
+with them blocked, 57 with them on (and its CLS is 0.17 to 0.21 either way, a separate open
+issue). Local runs never load the tags (hostname gate), which is why they never showed this.
+Open: decide whether to drop the stray UA and second GA4 destinations and/or load gtag.js later.
