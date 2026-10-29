@@ -4437,3 +4437,66 @@ site so ad clicks can be tied to what visitors do after they land.
 - **Form leads count too.** The five inquiry forms send through Resend (entries 107 to 110)
   and fire `generate_lead` on success. Once it is a key event in GA4 (TASKS M21) it is
   imported into Google Ads as a primary conversion alongside calls, orders and reservations.
+
+## 148. The event forms go into Toast as well, 28 October
+
+The restaurant works catering and private events in Toast Catering & Events. The four event
+forms (catering, private parties, quinceañeras, weddings) now send each request into Toast as a
+lead, as well as emailing the managers. The contact form is unchanged. Branch `toast-leads`.
+
+**How.** Toast has no published API for leads. Its hosted lead form posts to a public endpoint,
+`ws-api.toasttab.com/invoice-service/v1/public/leads`, with no key, token or captcha, and
+`api/_lib/toast.js` sends the same request. The request, the field GUIDs and the date format
+were captured by submitting two test leads through the restaurant's own Toast forms and reading
+Toast's form code; all of it is in `TOAST-LEADS-NOTES.md`. The GUIDs live in `business.json`
+under `toast`.
+
+- **Catering** becomes Toast's Catering order type: guest count, utensils, delivery, and the
+  event details as the occasion.
+- **Private parties, quinceañeras and weddings** become the Private Event order type: guest
+  count, private room, flexible date, the details as notes, and the occasion set from the page
+  ("Private party", "Quinceañera", "Wedding or reception").
+- **Marketing consent is always sent as no.** Toast's own form pre-ticks the email opt-in. The
+  guest never saw a box on our form, so it is never given for them.
+
+**The forms ask what Toast asks.** Toast's forms require more than ours did, so all ten event
+forms (seven on `/private-parties`, one on each of the others) gained fields in the same inline
+styles as the Date field next to them:
+
+- every event form: email is now required ("For your confirmation", since Toast emails the
+  guest), the head count is required, and the name asks for first and last name;
+- catering: a required **Time** (15-minute steps), **Utensils** and **Delivery** (yes or no),
+  and the date is required;
+- private event forms: an optional **Start time**, and required **Private room** and
+  **Flexible date**.
+
+The endpoint enforces the same rules and answers with field-level errors the page already
+knows how to show. Under each button a new line says the request also goes to Toast, links
+Toast's Guest Terms and Privacy Statement, and says Toast emails a confirmation and may text.
+
+**Order of work in `api/inquiry.js`.** Toast first, with an eight second timeout and no way to
+throw, so the managers' email can say what happened; then the managers' email, as before.
+
+- **Toast took the lead:** the managers' email carries a green "Added to Toast" line, and the
+  site does **not** send its own guest confirmation, because Toast already sent one.
+- **Toast refused or did not answer:** the inquiry still succeeds for the guest; the managers'
+  email carries a red "Not added to Toast. Enter this one in Toast by hand" line, and the guest
+  gets the site's confirmation instead. Logged as `inquiry: toast refused`.
+- `TOAST_LEADS=off` in Vercel stops the Toast step without a deploy.
+
+The managers' email and the guest's copy show the new answers (time, utensils, delivery, private
+room, flexible date). Samples in `design/gate-a/email/`: catering shows the Toast success line,
+quinceañera the failure line.
+
+**Checked.** `node scripts/test-inquiry.mjs` passes: the old checks moved to complete payloads,
+plus the new required fields, the exact Toast payload for both order types, the time zone on
+both sides of the November clock change, marketing never consented, success, refusal,
+unreachable, switched off, and that the contact form and the honeypot never reach Toast. Build
+27 pages. In a browser at 390 and 1440 the forms hold their layout with no sideways scroll, and
+each refuses to submit until the new required fields are filled. A full submit could not be
+driven locally because BotID only loads on Vercel (true on `main` as well), so the first live
+test on the preview deploy is the end-to-end check.
+
+**Open.** TASKS M27 (watching for Toast failures, refreshing GUIDs if the Toast forms change,
+deleting the two test leads) and M28 (Toast's own Google Ads conversion to an account that is
+not the restaurant's).

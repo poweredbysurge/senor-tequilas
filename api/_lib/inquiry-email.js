@@ -35,9 +35,25 @@ export function formatDate(iso, opts = { weekday: 'long', month: 'long', day: 'n
   const d = new Date(iso + 'T00:00:00Z');
   return isNaN(d) ? '' : new Intl.DateTimeFormat('en-US', { ...opts, timeZone: 'UTC' }).format(d);
 }
+// "18:30" from a time input, as "6:30 PM".
+export function formatTime(hhmm) {
+  if (!/^\d{2}:\d{2}$/.test(hhmm || '')) return '';
+  const h = Number(hhmm.slice(0, 2)), m = hhmm.slice(3);
+  return `${h % 12 || 12}:${m} ${h < 12 ? 'AM' : 'PM'}`;
+}
+// The answers the Toast forms ask for, in the order the managers read them. See entry 148.
+export function extraRows(inq) {
+  return [
+    ['Time', formatTime(inq.time)],
+    ['Utensils', inq.utensils],
+    ['Delivery', inq.delivery],
+    ['Private room', inq.room],
+    ['Flexible date', inq.flexible],
+  ].filter(([, v]) => v);
+}
 const formatSent = (when) => new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' }).format(when) + ' ET';
 
-export function buildInquiryEmail(inq, { business, when = new Date() } = {}) {
+export function buildInquiryEmail(inq, { business, when = new Date(), toast } = {}) {
   const f = FORMS[inq.form];
   const phone = formatPhone(inq.phone);
   const date = formatDate(inq.date);
@@ -63,6 +79,19 @@ export function buildInquiryEmail(inq, { business, when = new Date() } = {}) {
               <td style="padding: 14px 0; border-top: 1px solid ${T.line}; vertical-align: top; font-family: ${BODY}; font-size: 16px; line-height: 1.5; color: ${T.cream}; font-weight: 600;">${value}</td>
             </tr>`;
   const none = `<span style="color: ${T.muted}; font-weight: 400;">Not given</span>`;
+  // Whether the lead is already in Toast. Green when it is, red with the fix when it is not.
+  const toastLine = !toast ? '' : toast.ok
+    ? 'Added to Toast Catering & Events. Toast emailed the guest its confirmation.'
+    : 'Not added to Toast. Enter this one in Toast Catering & Events by hand. The guest got the website\'s confirmation instead.';
+  const toastBanner = !toast ? '' : `
+        <tr>
+          <td class="st-pad" style="padding: 24px 36px 0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: ${toast.ok ? 'rgba(56, 176, 73, 0.1)' : 'rgba(191, 30, 46, 0.14)'}; border: 1px solid ${toast.ok ? 'rgba(56, 176, 73, 0.45)' : 'rgba(191, 30, 46, 0.6)'}; border-radius: 12px;">
+              <tr><td style="padding: 14px 18px; font-family: ${BODY}; font-size: 14px; line-height: 1.55; color: ${T.text};"><strong style="color: ${T.cream}; font-weight: 700;">Toast:</strong> ${esc(toastLine)}</td></tr>
+            </table>
+          </td>
+        </tr>
+`;
 
   const html = `<!doctype html>
 <html lang="en">
@@ -118,7 +147,7 @@ export function buildInquiryEmail(inq, { business, when = new Date() } = {}) {
         </tr>
         <tr>
           <td class="st-pad" style="padding: 20px 36px 0;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${f.event ? row('Date', date ? esc(date) : none) + row(f.guests, guests ? esc(guests) : none) : ''}${row('Email', email ? `<a href="${esc(mailto)}" style="color: ${T.cream}; text-decoration: none;">${esc(email)}</a>` : none)}${f.event ? '' : row('Phone', phone ? esc(phone) : none)}
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${f.event ? row('Date', date ? esc(date) : none) + extraRows(inq).filter(([l]) => l === 'Time').map(([l, v]) => row(l, esc(v))).join('') + row(f.guests, guests ? esc(guests) : none) + extraRows(inq).filter(([l]) => l !== 'Time').map(([l, v]) => row(l, esc(v))).join('') : ''}${row('Email', email ? `<a href="${esc(mailto)}" style="color: ${T.cream}; text-decoration: none;">${esc(email)}</a>` : none)}${f.event ? '' : row('Phone', phone ? esc(phone) : none)}
             </table>
           </td>
         </tr>
@@ -128,7 +157,7 @@ export function buildInquiryEmail(inq, { business, when = new Date() } = {}) {
             <div style="margin-top: 10px; border-left: 3px solid ${T.goldDeep}; padding: 4px 0 4px 16px; font-family: ${BODY}; font-size: 16px; line-height: 1.65; color: ${T.text}; white-space: pre-wrap;">${inq.details ? esc(inq.details) : `<span style="color: ${T.muted};">Nothing written.</span>`}</div>
           </td>
         </tr>
-        <tr>
+${toastBanner}        <tr>
           <td class="st-pad" style="padding: 24px 36px 0;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: rgba(56, 176, 73, 0.1); border: 1px solid rgba(56, 176, 73, 0.45); border-radius: 12px;">
               <tr><td style="padding: 14px 18px; font-family: ${BODY}; font-size: 14px; line-height: 1.55; color: ${T.text};"><strong style="color: ${T.cream}; font-weight: 700;">What the site promised:</strong> ${esc(f.promise)}${f.event ? ' No deposit until they say yes.' : ''}</td></tr>
@@ -162,10 +191,12 @@ export function buildInquiryEmail(inq, { business, when = new Date() } = {}) {
     `Phone: ${phone || 'Not given'}`,
     `Email: ${email || 'Not given'}`,
     ...(f.event ? [`Date: ${date || 'Not given'}`, `${f.guests}: ${guests || 'Not given'}`] : []),
+    ...(f.event ? extraRows(inq).map(([l, v]) => `${l}: ${v}`) : []),
     '',
     `${f.details}:`,
     inq.details || 'Nothing written.',
     '',
+    ...(toastLine ? [`Toast: ${toastLine}`, ''] : []),
     `What the site promised: ${f.promise}` + (f.event ? ' No deposit until they say yes.' : ''),
     '',
     `Sent ${formatSent(when)} from ${site}${inq.page}`,
@@ -229,7 +260,7 @@ export function buildConfirmationEmail(inq, { business }) {
         <tr>
           <td class="st-pad" style="padding: 26px 36px 0;">
             <div style="font-family: ${LABEL}; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: ${T.gold}; padding-bottom: 10px;">What you sent</div>
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${line('Name', inq.name)}${line('Phone', inq.phone ? formatPhone(inq.phone) : '')}${f.event ? line('Date', date) + line(f.guests, inq.guests ? String(inq.guests) : '') : ''}${line(f.event ? 'Details' : 'Message', inq.details)}
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${line('Name', inq.name)}${line('Phone', inq.phone ? formatPhone(inq.phone) : '')}${f.event ? line('Date', date) + line('Time', formatTime(inq.time)) + line(f.guests, inq.guests ? String(inq.guests) : '') : ''}${line(f.event ? 'Details' : 'Message', inq.details)}
             </table>
           </td>
         </tr>
@@ -253,6 +284,7 @@ export function buildConfirmationEmail(inq, { business }) {
     `Name: ${inq.name}`,
     ...(inq.phone ? [`Phone: ${formatPhone(inq.phone)}`] : []),
     ...(f.event && date ? [`Date: ${date}`] : []),
+    ...(f.event && inq.time ? [`Time: ${formatTime(inq.time)}`] : []),
     ...(f.event && inq.guests ? [`${f.guests}: ${inq.guests}`] : []),
     ...(inq.details ? ['', inq.details] : []),
     '',

@@ -75,6 +75,34 @@
     ],
     "debugParam": "ga_debug"
   },
+  "toast": {
+    "restaurantGuid": "d94fa749-fbd5-4a66-90b6-d7755b8c3af3",
+    "leadsUrl": "https://ws-api.toasttab.com/invoice-service/v1/public/leads",
+    "timeZone": "America/New_York",
+    "termsUrl": "https://pos.toasttab.com/terms-of-service",
+    "privacyUrl": "https://pos.toasttab.com/privacy",
+    "eventTypes": {
+      "catering": {
+        "guid": "513aa78d-e559-448f-90a7-a7f7ae64b129",
+        "fields": {
+          "guests": "bab8d8a0-2ca1-4bab-8522-c340e9d5c900",
+          "utensils": "57527fdb-a0a6-4beb-add6-7ece70d22dc1",
+          "delivery": "79c59808-ca32-4b50-80f0-ea6c7693312e",
+          "occasion": "29e709f9-613c-40c4-b9d5-4fb15456201a"
+        }
+      },
+      "privateEvent": {
+        "guid": "f41da308-8f17-48ec-bf26-70ffb9b3d0e1",
+        "fields": {
+          "guests": "c133b819-37aa-4fd9-86f0-4199187d6e25",
+          "occasion": "cc6fc471-863b-4f25-bf09-bdf086551e5d",
+          "notes": "89585236-f37f-4dd9-9e1b-8ac467fcf4b3",
+          "room": "98b967d5-e73d-468f-971f-2e118a9f6665",
+          "flexible": "a543a8ca-486a-4486-8a86-70859fc31ae5"
+        }
+      }
+    }
+  },
   "googleAds": {
     "conversionId": "AW-10923472404"
   },

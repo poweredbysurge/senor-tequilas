@@ -15,9 +15,17 @@
 //                    guest's confirmation, and not part of any reply-to.
 //   INQUIRY_CONFIRM  optional. Set to "off" to stop the confirmation sent to a guest who
 //                    gave an email address.
+//   TOAST_LEADS      optional. Set to "off" to stop sending event inquiries into Toast
+//                    Catering & Events. See DESIGN-DEBT.md entry 148.
+//
+// The four event forms are also sent into Toast as leads. Toast emails the guest its own
+// confirmation, so when Toast takes the lead the site sends the managers only. When Toast does
+// not, the guest gets the site's confirmation instead and the managers' email says to enter
+// the lead by hand.
 import { checkBotId } from 'botid/server';
 import business from '../src/data/business.json' with { type: 'json' };
 import { buildInquiryEmail, buildConfirmationEmail, FORMS } from './_lib/inquiry-email.js';
+import { sendToastLead, TOAST_FORMS } from './_lib/toast.js';
 
 // A value pasted into a dashboard can carry characters nobody can see: a line separator, a
 // zero-width space, a byte order mark. One on the end of the API key made every send throw on
@@ -35,6 +43,11 @@ export function validate(body) {
     email: clean(b.email, 160).replace(/\s/g, ''),
     date: clean(b.date, 10),
     guests: clean(b.guests, 6),
+    time: clean(b.time, 5),
+    utensils: clean(b.utensils, 3),
+    delivery: clean(b.delivery, 3),
+    room: clean(b.room, 3),
+    flexible: clean(b.flexible, 3),
     details: clean(b.details, 4000),
     page: clean(b.page, 200),
   };
@@ -53,6 +66,27 @@ export function validate(body) {
   }
   if (!event && inq.details.length < 2) errors.details = 'Please write your message.';
   if (!event) { inq.date = ''; inq.guests = ''; }
+  // The event forms also go into Toast, which needs a first and last name, an email for its
+  // confirmation, a head count, and the questions its own form asks. See entry 148.
+  const toast = TOAST_FORMS[inq.form];
+  const yesNo = (v) => v === 'Yes' || v === 'No';
+  if (toast) {
+    if (inq.name.split(/\s+/).length < 2 && !errors.name) errors.name = 'Please enter your first and last name.';
+    if (!inq.email && !errors.email) errors.email = 'Please enter your email for the confirmation.';
+    if (!inq.guests) errors.guests = 'Please enter a number of guests.';
+    if (toast.type === 'catering') {
+      if (!inq.date) errors.date = 'Please pick a date.';
+      if (!inq.time) errors.time = 'Please pick a time.';
+      if (!yesNo(inq.utensils)) errors.utensils = 'Please say whether you need utensils.';
+      if (!yesNo(inq.delivery)) errors.delivery = 'Please say whether you want delivery.';
+      inq.room = ''; inq.flexible = '';
+    } else {
+      if (!yesNo(inq.room)) errors.room = 'Please say whether you need a private room.';
+      if (!yesNo(inq.flexible)) errors.flexible = 'Please say whether your date is flexible.';
+      inq.utensils = ''; inq.delivery = '';
+    }
+  } else { inq.time = ''; inq.utensils = ''; inq.delivery = ''; inq.room = ''; inq.flexible = ''; }
+  if (inq.time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(inq.time)) errors.time = 'Please pick a time.';
   if (inq.date && !/^\d{4}-\d{2}-\d{2}$/.test(inq.date)) errors.date = 'Please pick a date.';
   if (inq.guests) {
     const n = Number(inq.guests);
@@ -129,7 +163,16 @@ export default async function handler(req, res) {
     return res.status(503).json({ ok: false, code: 'not_configured' });
   }
 
-  const { subject, html, text } = buildInquiryEmail(inq, { business });
+  // Toast first, so the managers' email can say whether the lead is already in Toast. It never
+  // throws and gives up after a few seconds, so it cannot stop the email going out.
+  let toast;
+  if (TOAST_FORMS[inq.form] && env('TOAST_LEADS').toLowerCase() !== 'off') {
+    toast = await sendToastLead(inq, business.toast);
+    if (toast.ok) console.log('inquiry: toast lead', toast.leadGuid);
+    else console.error('inquiry: toast refused', toast.status || '', toast.error);
+  }
+
+  const { subject, html, text } = buildInquiryEmail(inq, { business, toast });
   try {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -140,11 +183,12 @@ export default async function handler(req, res) {
       console.error('inquiry: resend refused', r.status, (await r.text()).slice(0, 300));
       return res.status(502).json({ ok: false, code: 'send_failed' });
     }
-    console.log('inquiry: sent', inq.form, inq.page);
+    console.log('inquiry: sent', inq.form, inq.page, toast ? (toast.ok ? 'toast ok' : 'toast failed') : '');
     // The guest's copy. A reply to it goes to every manager, the same group that got the
     // inquiry. It is a courtesy: the managers already have the inquiry, so a failure
     // here is logged and the guest is still told it went through.
-    if (inq.email && env('INQUIRY_CONFIRM').toLowerCase() !== 'off') {
+    // Toast already emailed the guest when it took the lead, so this goes out only when it did not.
+    if (inq.email && !(toast && toast.ok) && env('INQUIRY_CONFIRM').toLowerCase() !== 'off') {
       try {
         const c = buildConfirmationEmail(inq, { business });
         const cr = await fetch('https://api.resend.com/emails', {

@@ -1225,7 +1225,7 @@ const jsonLd = {
               e.preventDefault();
               if (busy) return;
               var data = { form: form.getAttribute('data-inquiry'), page: location.pathname };
-              ['name', 'phone', 'email', 'date', 'guests', 'details', 'company'].forEach(function (k) {
+              ['name', 'phone', 'email', 'date', 'time', 'guests', 'utensils', 'delivery', 'room', 'flexible', 'details', 'company'].forEach(function (k) {
                 var el = form.elements[k];
                 data[k] = el ? el.value : '';
               });
