@@ -4420,3 +4420,20 @@ Mario, after entry 145:
   painted masks, a buffet line with chafing dishes on a striped runner, the same words as the
   holiday guide's hero. The weddings page's label for this photo ("two long tables and painted
   chairs") is accurate and unchanged.
+
+## 147. Google Ads tag, 28 October
+
+The Google Ads account (517-306-6299, now under the Surge manager account) gets its tag on the
+site so ad clicks can be tied to what visitors do after they land.
+
+- **No second gtag.js.** The Ads ID `AW-10923472404` lives in `src/data/business.json` under
+  `googleAds.conversionId`, and the existing GA4 block in `Base.astro` adds one
+  `gtag('config', ...)` call for it. Same async load after the window load event, same
+  hostname gate, so previews and localhost still send nothing.
+- **Conversions come from GA4.** The five key events from entry 94 (`click_to_call`,
+  `order_online`, `reserve_table`, `gift_card_click`, `delivery_click`) are imported into
+  Google Ads as conversions from the linked GA4 property, rather than adding Ads conversion
+  labels to the click listener. One set of events, counted the same way in both tools.
+- **Form leads count too.** The five inquiry forms send through Resend (entries 107 to 110)
+  and fire `generate_lead` on success. Once it is a key event in GA4 (TASKS M21) it is
+  imported into Google Ads as a primary conversion alongside calls, orders and reservations.
