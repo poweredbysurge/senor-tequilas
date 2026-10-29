@@ -1221,6 +1221,45 @@ const jsonLd = {
               return a;
             }
 
+            function prettyPhone(v) {
+              var d = String(v || '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
+              return d.length === 10 ? '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6) : String(v || '').trim();
+            }
+            function done(data) {
+              var cs = getComputedStyle(form);
+              var panel = document.createElement('div');
+              panel.setAttribute('role', 'status');
+              panel.setAttribute('tabindex', '-1');
+              panel.setAttribute('data-inquiry-done', data.form);
+              panel.style.cssText = 'background: ' + cs.backgroundColor + '; border: ' + cs.border + '; border-radius: ' + cs.borderRadius
+                + '; padding: clamp(28px, 6vw, 44px) 22px; text-align: center; display: grid; gap: 12px; justify-items: center; outline: none; box-sizing: border-box; width: 100%;';
+              var mark = document.createElement('div');
+              mark.setAttribute('aria-hidden', 'true');
+              mark.textContent = '\u2713';
+              mark.style.cssText = 'width: 56px; height: 56px; border-radius: 50%; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-size: 30px; font-weight: 800; line-height: 56px; text-align: center;';
+              var first = String(data.name).trim().split(/\s+/)[0];
+              var head = document.createElement('div');
+              var event = data.form !== 'contact';
+              head.textContent = 'Thanks, ' + first + '. Your ' + (event ? 'request' : 'message') + ' is in.';
+              head.style.cssText = "font-family: 'Archivo Black', 'Arial Black', sans-serif; text-transform: uppercase; font-size: clamp(22px, 3.2vw, 30px); line-height: 1.1; color: rgb(246, 239, 228); max-width: 22ch;";
+              var next = event && data.phone ? 'We will call you at ' + prettyPhone(data.phone) + '.' : 'We will write back to ' + data.email + '.';
+              var line = document.createElement('p');
+              line.textContent = next + (event && data.email ? ' A confirmation is on its way to ' + data.email + '.' : '');
+              line.style.cssText = 'margin: 0; font-size: 16px; line-height: 1.6; color: rgb(234, 226, 214); max-width: 42ch;';
+              var sooner = document.createElement('p');
+              sooner.style.cssText = 'margin: 4px 0 0; font-size: 14px; color: rgba(234, 226, 214, 0.7);';
+              sooner.appendChild(document.createTextNode('Need us sooner? Call '));
+              sooner.appendChild(callLink());
+              sooner.appendChild(document.createTextNode('.'));
+              panel.appendChild(mark); panel.appendChild(head); panel.appendChild(line); panel.appendChild(sooner);
+              form.parentNode.insertBefore(panel, form);
+              form.style.display = 'none';
+              form.setAttribute('aria-hidden', 'true');
+              var r = panel.getBoundingClientRect();
+              if (r.top < 0 || r.bottom > window.innerHeight) panel.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+              try { panel.focus({ preventScroll: true }); } catch (err) {}
+            }
+
             form.addEventListener('submit', function (e) {
               e.preventDefault();
               if (busy) return;
@@ -1241,13 +1280,11 @@ const jsonLd = {
                 .then(function (out) {
                   busy = false;
                   if (out.ok) {
-                    var first = String(data.name).trim().split(/\s+/)[0];
-                    var strong = document.createElement('strong');
-                    strong.textContent = 'Thanks, ' + first + '. Your request is in.';
-                    strong.style.cssText = 'display: block; font-weight: 800; color: rgb(56, 176, 73); margin-bottom: 2px;';
-                    say('ok', [strong, data.phone ? 'We will call you at ' + data.phone + '.' : 'We will write back to ' + data.email + '.']);
-                    label.textContent = 'Sent';
-                    [].forEach.call(form.querySelectorAll('input, textarea'), function (el) { el.disabled = true; });
+                    // The form goes and a thank-you panel takes its place, in the form's own
+                    // box, so nobody is left looking at a filled-in form wondering if it sent.
+                    // Every form on the site runs through here, event and contact alike.
+                    // See DESIGN-DEBT.md entry 149.
+                    done(data);
                     try { if (window.gtag) window.gtag('event', 'generate_lead', { form_name: data.form, page_path: location.pathname }); } catch (err) {}
                     return;
                   }

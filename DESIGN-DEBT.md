@@ -4500,3 +4500,23 @@ test on the preview deploy is the end-to-end check.
 **Open.** TASKS M27 (watching for Toast failures, refreshing GUIDs if the Toast forms change,
 deleting the two test leads) and M28 (Toast's own Google Ads conversion to an account that is
 not the restaurant's).
+
+## 149. A sent form is replaced by a thank-you panel, 28 October
+
+After Sam's first live Toast test the form stayed on screen, filled in and greyed out, with the
+success line under the button. It read as if nothing had happened. Now, on success, the form is
+hidden and a panel takes its place in the same box: a green check, "Thanks, Maria. Your request
+is in." ("message" on `/contact`), what happens next ("We will call you at (301) 555-0142. A
+confirmation is on its way to maria@example.com.", or "We will write back to ..." on the contact
+form), and "Need us sooner? Call 301-569-4574."
+
+It lives in `inquiryForms()` in `Base.astro`, the one script every form on the site runs
+through, so all five form types and all eleven forms get it, Toast or not. The panel copies the
+form's own background, border and radius, takes focus as a `role="status"` region so screen
+readers announce it, and scrolls into view only if it is off screen (instantly under reduced
+motion). Errors are unchanged: the form stays, with the message under the button and the field
+focused. `generate_lead` still fires on success.
+
+Checked in a browser at 390 and 1440 on `/catering` and `/contact` with the endpoint answered
+locally (BotID cannot run off Vercel, so `fetch` was pinned for the test): the form hides, the
+panel shows the right copy and holds focus. Build 27 pages.
