@@ -1,0 +1,59 @@
+---
+// Privacy page. Linked from the footer and from the Meta Instant Form for events and catering
+// quotes, which needs a privacy policy on the business's own site. Plain language, and only
+// what the site actually does: the forms, Toast, Resend, the Meta pixel and Conversions API,
+// and Google Analytics and Ads. Update it if any of those change.
+import Base from '../layouts/Base.astro';
+import Header3 from '../components/Header3.astro';
+import Footer2 from '../components/Footer2.astro';
+import business from '../data/business.json';
+
+const updated = 'October 30, 2026';
+const h2 = 'color: rgb(246, 239, 228); font-family: "Archivo Black", sans-serif; font-size: clamp(20px, 2.6vw, 26px); line-height: 1.15; margin: 40px 0px 10px; text-transform: uppercase;';
+const p = 'margin: 0px 0px 14px;';
+const a = 'color: rgb(214, 188, 133); text-decoration: underline;';
+---
+<Base title="Privacy Policy | Señor Tequila's, Germantown" description="How Señor Tequila's handles the information you send through our website and our ads." canonical="https://senortequilas.com/privacy" ogImage="/images/site/brothers.jpg" route="/privacy">
+<div style="color: rgb(234, 226, 214); font-family: Barlow, system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16); min-height: 100%;"><Header3 />
+<main style="max-width: 760px; margin: 0px auto; padding: clamp(120px, 14vw, 160px) clamp(18px, 4.6vw, 48px) clamp(48px, 7vw, 88px); font-size: 16px; line-height: 1.75; color: rgba(234, 226, 214, 0.88);">
+  <div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);">Last updated {updated}</div>
+  <h1 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 0.98; margin: 12px 0px 24px; text-transform: uppercase;">Privacy policy</h1>
+
+  <p style={p}>This page explains what information Señor Tequila's ({business.streetAddress}, {business.addressLocality}, {business.addressRegion}) collects through this website and our ads, what we do with it, and who else handles it. We keep it short and plain.</p>
+
+  <h2 style={h2}>What we collect</h2>
+  <p style={p}>When you ask for a quote or send us a message, through a form on this site or a form in one of our Facebook or Instagram ads, we get what you type in: your name, email, phone number, and details about your event, like the date, the number of guests and what you are planning.</p>
+  <p style={p}>When you visit the site, we also collect basic browsing information through cookies and similar tools: the pages you view, the links you click, your device and browser type, and roughly where you are visiting from.</p>
+
+  <h2 style={h2}>How we use it</h2>
+  <p style={p}>We use your contact and event details to answer you, send a quote, plan your party or catering order, and follow up about it. Our managers get your request by email so the right person can reply.</p>
+  <p style={p}>We use browsing information to see how the site is used and how our ads are doing, and to show our ads to people who are likely to be interested. We do not sell your information.</p>
+
+  <h2 style={h2}>Who else handles it</h2>
+  <p style={p}>A few companies handle information for us so the site and our events business work:</p>
+  <ul style="margin: 0px 0px 14px; padding-left: 22px;">
+    <li><strong>Toast</strong> runs our restaurant system, online ordering, reservations and event inquiries. Event requests are saved there. See <a href={business.toast.privacyUrl} target="_blank" rel="noopener" style={a}>Toast's privacy statement</a>.</li>
+    <li><strong>Resend</strong> sends the emails that come from our website forms.</li>
+    <li><strong>Meta</strong> (Facebook and Instagram) runs our ads and lead forms. The Meta pixel on this site and Meta's Conversions API tell Meta when someone views a page or sends a request, so we can measure our ads. See <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener" style={a}>Meta's privacy policy</a>.</li>
+    <li><strong>Google</strong> Analytics and Google Ads measure visits and ad results. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style={a}>Google's privacy policy</a>.</li>
+    <li><strong>Vercel</strong> hosts this website.</li>
+  </ul>
+
+  <h2 style={h2}>Your choices</h2>
+  <p style={p}>You can block or delete cookies in your browser settings. You can control the ads you see in your <a href="https://www.facebook.com/adpreferences" target="_blank" rel="noopener" style={a}>Facebook ad preferences</a> and <a href="https://myadcenter.google.com/" target="_blank" rel="noopener" style={a}>Google's ad settings</a>. You can stop Google Analytics with <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener" style={a}>Google's opt-out add-on</a>.</p>
+  <p style={p}>If you want to see, correct or delete the information you sent us, or stop hearing from us, contact us and we will take care of it.</p>
+
+  <h2 style={h2}>How long we keep it</h2>
+  <p style={p}>We keep event and catering requests as long as we need them to plan your event and keep our business records. Then we delete them.</p>
+
+  <h2 style={h2}>Kids</h2>
+  <p style={p}>This site and our ads are not meant for children under 13, and we do not knowingly collect their information.</p>
+
+  <h2 style={h2}>Changes</h2>
+  <p style={p}>If we change how we handle information, we will update this page and the date at the top.</p>
+
+  <h2 style={h2}>Contact us</h2>
+  <p style={p}>Call us at <a href="tel:3015694574" style={a}>301-569-4574</a>, use our <a href="/contact" style={a}>contact form</a>, or stop by at {business.streetAddress}, {business.addressLocality}, {business.addressRegion} {business.postalCode}.</p>
+</main>
+<Footer2 /></div>
+</Base>
