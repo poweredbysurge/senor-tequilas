@@ -202,6 +202,50 @@ const jsonLd = {
         else window.addEventListener('load', load, { once: true });
       })();
     </script>
+    <!-- Meta pixel, for the Meta ad campaigns and their retargeting audiences. Same rules as the
+         GA4 block above: production hostnames only (or ?ga_debug=1), and fbevents.js is injected
+         after the window load event so it never competes with the LCP image. The fbq stub is set
+         up at once, so events fired before the library arrives are queued, not lost. Form leads
+         carry an event ID that api/inquiry.js sends again through the Conversions API, so Meta
+         counts each lead once. See DESIGN-DEBT.md entry 151. -->
+    <script is:inline define:vars={{ ga: business.ga4, meta: business.metaPixel }}>
+      (function () {
+        if (!meta || !meta.id) return;
+        var debug = new RegExp('[?&]' + ga.debugParam + '=1(&|$)').test(location.search);
+        if (!debug && ga.hosts.indexOf(location.hostname) === -1) return;
+        var n = window.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+        if (!window._fbq) window._fbq = n;
+        n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
+        window.fbq('init', meta.id);
+        window.fbq('track', 'PageView');
+        // The pages the ads send people to. ViewContent on these builds the retargeting
+        // audiences by interest: people who looked at parties or catering, and the bar crowd.
+        var path = location.pathname.replace(/\/$/, '') || '/';
+        var pages = {
+          '/private-parties': ['Private parties', 'events'],
+          '/private-parties/quinceaneras-celebrations': ['Quinceaneras', 'events'],
+          '/private-parties/weddings-receptions': ['Weddings', 'events'],
+          '/holiday-parties': ['Holiday parties', 'events'],
+          '/catering': ['Catering', 'events'],
+          '/happy-hour': ['Happy hour', 'bar'],
+          '/game-day': ['Game day', 'bar']
+        };
+        if (pages[path]) window.fbq('track', 'ViewContent', { content_name: pages[path][0], content_category: pages[path][1] });
+        // A tap on the phone number is a lead on its own.
+        document.addEventListener('click', function (e) {
+          var a = e.target && e.target.closest && e.target.closest('a[href^="tel:"]');
+          if (a) window.fbq('track', 'Contact');
+        }, true);
+        function load() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://connect.facebook.net/en_US/fbevents.js';
+          document.head.appendChild(s);
+        }
+        if (document.readyState === 'complete') load();
+        else window.addEventListener('load', load, { once: true });
+      })();
+    </script>
     <script>
       // Vercel BotID, client half. Attaches an invisible challenge result to the
       // inquiry POST. Must match the path checkBotId() guards in api/inquiry.js.
@@ -1268,6 +1312,14 @@ const jsonLd = {
                 var el = form.elements[k];
                 data[k] = el ? el.value : '';
               });
+              // One ID for this lead, sent by the browser pixel and again by the Conversions API
+              // in api/inquiry.js, so Meta matches the two and counts it once. _fbp and _fbc are
+              // the pixel's own cookies; they tie the lead back to the ad click. Entry 151.
+              var eventId = (window.crypto && window.crypto.randomUUID) ? window.crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2);
+              var cookie = function (k) { var m = document.cookie.match(new RegExp('(?:^|; )' + k + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; };
+              data.eventId = eventId;
+              data.fbp = cookie('_fbp');
+              data.fbc = cookie('_fbc');
               busy = true;
               button.disabled = true;
               button.style.opacity = '0.7';
@@ -1286,6 +1338,7 @@ const jsonLd = {
                     // See DESIGN-DEBT.md entry 149.
                     done(data);
                     try { if (window.gtag) window.gtag('event', 'generate_lead', { form_name: data.form, page_path: location.pathname }); } catch (err) {}
+                    try { if (window.fbq) window.fbq('track', data.form === 'contact' ? 'Contact' : 'Lead', { content_name: data.form }, { eventID: eventId }); } catch (err) {}
                     return;
                   }
                   button.disabled = false;
