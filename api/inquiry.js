@@ -17,6 +17,9 @@
 //                    gave an email address.
 //   TOAST_LEADS      optional. Set to "off" to stop sending event inquiries into Toast
 //                    Catering & Events. See DESIGN-DEBT.md entry 148.
+//   META_CAPI_TOKEN, META_CAPI_TEST_CODE, META_GRAPH_VERSION
+//                    the Meta Conversions API, documented in _lib/meta-capi.js. Without the
+//                    token no event is sent and nothing else changes. See entry 151.
 //
 // The four event forms are also sent into Toast as leads. Toast emails the guest its own
 // confirmation, so when Toast takes the lead the site sends the managers only. When Toast does
@@ -26,6 +29,7 @@ import { checkBotId } from 'botid/server';
 import business from '../src/data/business.json' with { type: 'json' };
 import { buildInquiryEmail, buildConfirmationEmail, FORMS } from './_lib/inquiry-email.js';
 import { sendToastLead, TOAST_FORMS } from './_lib/toast.js';
+import { sendMetaEvent } from './_lib/meta-capi.js';
 
 // A value pasted into a dashboard can carry characters nobody can see: a line separator, a
 // zero-width space, a byte order mark. One on the end of the API key made every send throw on
@@ -184,6 +188,22 @@ export default async function handler(req, res) {
       return res.status(502).json({ ok: false, code: 'send_failed' });
     }
     console.log('inquiry: sent', inq.form, inq.page, toast ? (toast.ok ? 'toast ok' : 'toast failed') : '');
+    // The lead to Meta, matched to the browser pixel's copy by the event ID. Only after the
+    // managers have it, so a lead Meta counts is one the restaurant actually received.
+    const meta = await sendMetaEvent(inq, {
+      siteUrl: business.siteUrl,
+      eventId: clean(body.eventId, 64),
+      fbp: clean(body.fbp, 200),
+      fbc: clean(body.fbc, 400),
+      ip: String(req.headers['x-forwarded-for'] || '').split(',')[0].trim(),
+      ua: clean(req.headers['user-agent'], 400),
+    }, {
+      pixelId: business.metaPixel && business.metaPixel.id,
+      token: env('META_CAPI_TOKEN').replace(/\s/g, ''),
+      testCode: env('META_CAPI_TEST_CODE'),
+      version: env('META_GRAPH_VERSION') || undefined,
+    });
+    if (!meta.ok && !meta.skipped) console.error('inquiry: meta capi refused', meta.status || '', meta.error);
     // The guest's copy. A reply to it goes to every manager, the same group that got the
     // inquiry. It is a courtesy: the managers already have the inquiry, so a failure
     // here is logged and the guest is still told it went through.

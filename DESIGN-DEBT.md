@@ -4570,3 +4570,37 @@ Google tag's linked destinations in Google's admin. Site-wide, not the guide's: 
 with them blocked, 57 with them on (and its CLS is 0.17 to 0.21 either way, a separate open
 issue). Local runs never load the tags (hostname gate), which is why they never showed this.
 Open: decide whether to drop the stray UA and second GA4 destinations and/or load gtag.js later.
+
+## 151. Meta pixel and Conversions API, 30 October
+
+The Meta ad campaigns (Events & Catering, Happy Hour, Game Day, Retargeting) need the site to
+report what visitors do, and retargeting needs an audience to target. Branch `meta-pixel-capi`.
+
+- **The dataset.** "Senor Tequila's Website", ID `2617325615444377`, created in the Senor
+  Tequilas business portfolio and connected to SEN - Ad Account (1051709922130356). The
+  portfolio-wide "Conversions API with Meta" option was left off, since the site sends its own.
+  The ID lives in `src/data/business.json` under `metaPixel.id`.
+- **Browser pixel.** A second inline block in `Base.astro`, next to GA4 and under the same
+  rules: production hostnames only (or `?ga_debug=1`), and `fbevents.js` injected after the
+  window load event so it never competes with the LCP image. The standard `fbq` stub is set up
+  at once, so nothing fired before the library arrives is lost. Events: `PageView` everywhere;
+  `ViewContent` on the pages the ads send people to (`content_category` "events" for private
+  parties, its two child pages, /holiday-parties and /catering; "bar" for /happy-hour and
+  /game-day), so retargeting can split the party crowd from the bar crowd; `Contact` on a tap
+  of any phone link.
+- **Form leads, counted once.** On submit the form makes one event ID and sends it to
+  `/api/inquiry` with the pixel's `_fbp` and `_fbc` cookies. On success the browser fires
+  `Lead` (`Contact` for the contact form) with that ID, and `api/inquiry.js` sends the same
+  event through the Conversions API (`api/_lib/meta-capi.js`) after the managers' email has
+  gone out. Meta matches the pair on the ID and keeps one. Email, phone and name are SHA-256
+  hashed before they leave the server, as Meta requires; IP and user agent go as they are.
+- **Never costs a booking.** The Conversions API call gives up after three seconds and never
+  throws. Without `META_CAPI_TOKEN` it sends nothing and the form behaves exactly as before.
+- **Environment, set in Vercel:** `META_CAPI_TOKEN` (required for the server half; generated in
+  Events Manager, dataset Settings, Conversions API), `META_CAPI_TEST_CODE` (optional, the Test
+  events code while checking, remove after), `META_GRAPH_VERSION` (optional, defaults to v25.0).
+- **Checked:** built, and in a headless browser the pixel queues `init`, `PageView` and
+  `ViewContent` on /happy-hour with `?ga_debug=1` and nothing on an unflagged localhost page;
+  a catering submit posts the event ID and `_fbp` and fires `Lead` with the same ID; the
+  handler, run with a stubbed network, sends a `Lead` to `/v25.0/2617325615444377/events` with
+  that ID, the first `x-forwarded-for` address and the `_fbc` value.
