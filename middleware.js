@@ -30,7 +30,10 @@ const SPAM_TOKEN = /^\/[a-z]+\/([a-z0-9]{10,})\/?$/;
 
 export function isSpam(url) {
   const { pathname, search } = new URL(url);
-  const query = search.replace(/^\?/, '');
+  // Vercel hands the query over percent-encoded, so `?collections/products/K1/` arrives as
+  // `collections%2Fproducts%2FK1%2F`. Decode before matching (found live on 3 November).
+  let query = search.replace(/^\?/, '');
+  try { query = decodeURIComponent(query); } catch { /* malformed escape: match it raw */ }
   if (query && SPAM_QUERY.test(query)) return true;
   if (SPAM_PATH.test(pathname)) return true;
   const m = pathname.match(SPAM_TOKEN);

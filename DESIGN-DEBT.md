@@ -4640,3 +4640,12 @@ was spending the crawl on those, not on the new pages.
   guide.
 - **After deploy:** resubmit sitemap.xml in Search Console and request indexing for the pages
   still not crawled (daily quota, about 10).
+
+**Live check after the deploy (2b3c190), 3 November.** 410 with `X-Robots-Tag: noindex` on
+/collections/products/<id>, /shop/pg/<id>, /eightvo/<token>, /populous/<token>, /?p=179 and
+/?page_id=2. Every real page, /?gclid and /?fbclid, the sitemap, robots.txt, images and /api/inquiry
+unchanged. The new redirects (/order-online, /online/*, /menu-powered-by-singleplatform) answer.
+The footer row is live with all ten links. One miss: `/?collections/products/<id>/`, the biggest
+group, still answered 200. Vercel passes the query to the middleware percent-encoded
+(`collections%2Fproducts%2F...`), so the slash in the pattern never matched. Fixed by decoding the
+query before matching.
