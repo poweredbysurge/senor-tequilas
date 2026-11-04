@@ -3,6 +3,10 @@
 Production site for Señor Tequila's, Germantown MD. Astro as a shell and a build step only:
 no client framework, no CSS framework. 21 pages, static output.
 
+## Page templates (Surge rule, 2026-11-04)
+
+Every new or rebuilt service, city, answer/cost, blog or hub page on this site follows `~/Surge-Cowork/workspace/templates/website-build/PAGE-TEMPLATES.md` (section order, components, phone-first spacing, photo slots) and passes its add-a-page gate before it publishes. Where this file is stricter, this file wins and the reason is logged in an ADR. Photos come from the client's Drive `Media` folder; a missing one is "Requested", never stock.
+
 Originally ported from a Claude Design board. That port is finished. This is now the live
 project and the code in `src/` is the source of truth, not the board.
 
