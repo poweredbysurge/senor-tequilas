@@ -4605,6 +4605,51 @@ report what visitors do, and retargeting needs an audience to target. Branch `me
   handler, run with a stubbed network, sends a `Lead` to `/v25.0/2617325615444377/events` with
   that ID, the first `x-forwarded-for` address and the `_fbc` value.
 
+## 152. Crawl budget: spam URLs answer 410, the dish and party pages linked from every footer, 3 November
+
+Search Console URL Inspection on 3 November: 10 of the 11 pages with no impressions since 16 October
+(/birria-tacos, /street-tacos, /late-night, /karaoke, /private-parties/quinceaneras-celebrations,
+/fajitas-molcajetes, /la-dulceria, /mexican-restaurant-gaithersburg-md, /game-day and the holiday
+party guide) were "Discovered, currently not indexed": in the sitemap, never crawled, no referring
+page seen. /private-parties/weddings-receptions read "URL is unknown to Google". The property counts
+1,728,161 not-indexed URLs against 529,653 indexed. Of the 1,470 URLs with impressions from 16
+October to 2 November, 1,450 were spam from the hacked WordPress site, and the biggest group
+(975, `/?collections/products/<id>/`) answered **200 with the homepage**, as did `/?p=<id>`. Google
+was spending the crawl on those, not on the new pages.
+
+- **Weddings is in the sitemap.** The live sitemap.xml lists all 29 pages, weddings-receptions
+  included (it is generated from `src/pages`, entry 55). Search Console's "unknown" was its own
+  stale read; the fix there is resubmitting the sitemap, not code.
+- **`middleware.js` (new, project root).** Vercel Routing Middleware, framework-agnostic, runs
+  before the static files. Returns 410 Gone with `X-Robots-Tag: noindex` for: a query containing
+  `collections/` or `products/`, or `p=`, `page_id=` or `attachment_id=` followed by a digit;
+  paths under /collections, /product(s), /shop, /product-category, /cart, /checkout; and the
+  `/word/token` shape (one lowercase word, then 10 or more letters and digits with at least 3
+  digits, no hyphen or dot). Everything else returns nothing and continues. The matcher skips
+  /api, /images, /videos, /fonts, /_astro and the icons. Checked: all 1,470 Search Console URLs
+  (1,448 answer 410, the 22 real or old ones pass), all 465 files in `dist/` pass, and
+  utm_*, gclid, fbclid and ga_debug queries pass.
+- **Redirects added to `vercel.json`:** /menu-powered-by-singleplatform to /menu; /order-online,
+  /online and /online/* to the Toast order page (old ordering URLs, WQA rule D14).
+- **Footer, second link row.** The homepage dish strip opens a popup from `<button data-href>`,
+  which a crawler does not follow, and the footer linked none of the dish, night or party
+  pages. A second, smaller row under the footer nav now links Birria Tacos, Birria Ramen, Street
+  Tacos, Fajitas & Molcajetes, Desserts, Late Night, Karaoke Thursdays, Quinceañeras, Weddings &
+  Showers and Near Gaithersburg from every page. Game Day was already in the first row; the
+  holiday party guide is linked from /guides, /holiday-parties, /private-parties and the birria
+  guide.
+- **After deploy:** resubmit sitemap.xml in Search Console and request indexing for the pages
+  still not crawled (daily quota, about 10).
+
+**Live check after the deploy (2b3c190), 3 November.** 410 with `X-Robots-Tag: noindex` on
+/collections/products/<id>, /shop/pg/<id>, /eightvo/<token>, /populous/<token>, /?p=179 and
+/?page_id=2. Every real page, /?gclid and /?fbclid, the sitemap, robots.txt, images and /api/inquiry
+unchanged. The new redirects (/order-online, /online/*, /menu-powered-by-singleplatform) answer.
+The footer row is live with all ten links. One miss: `/?collections/products/<id>/`, the biggest
+group, still answered 200. Vercel passes the query to the middleware percent-encoded
+(`collections%2Fproducts%2F...`), so the slash in the pattern never matched. Fixed by decoding the
+query before matching.
+
 ## 153. /game-day: a live sports schedule, 6 November
 
 Jeremy asked for the day's and the week's sports on the site: what is on while they are open,

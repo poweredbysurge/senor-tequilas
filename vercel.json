@@ -138,6 +138,26 @@
       "source": "/quesabirria-tacos{/}?",
       "destination": "/birria-tacos",
       "permanent": true
+    },
+    {
+      "source": "/menu-powered-by-singleplatform{/}?",
+      "destination": "/menu",
+      "permanent": true
+    },
+    {
+      "source": "/order-online{/}?",
+      "destination": "https://order.toasttab.com/online/senortequilastogo",
+      "permanent": true
+    },
+    {
+      "source": "/online{/}?",
+      "destination": "https://order.toasttab.com/online/senortequilastogo",
+      "permanent": true
+    },
+    {
+      "source": "/online/:path*",
+      "destination": "https://order.toasttab.com/online/senortequilastogo",
+      "permanent": true
     }
   ]
 }
