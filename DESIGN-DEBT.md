@@ -4745,3 +4745,8 @@ it. The calendar keeps `id="tonight"`.
   `design/reference/MANIFEST.json`. The list changes every build, so these drift daily.
 - **Local build note.** `node_modules/botid` was missing on this machine, so `astro build`
   failed on Base.astro's BotID import before any of this; `npm ci` from the lockfile fixed it.
+
+## 154. Homepage: "Upcoming Events", 6 November
+
+Mario: the homepage events section title reads "Upcoming Events", not "Coming Up Events"
+(`src/components/UpcomingEvents.astro`, the H2; the section is uppercase by CSS). Copy only.
