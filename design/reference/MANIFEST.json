@@ -16,7 +16,7 @@
     }
   ],
   "count": 63,
-  "totalBytes": 161333143,
+  "totalBytes": 162008090,
   "files": [
     {
       "file": "birria-tacos-1440.png",
@@ -83,24 +83,24 @@
     },
     {
       "file": "game-day-1440.png",
-      "bytes": 3863210,
+      "bytes": 4240651,
       "width": 1440,
-      "height": 5646,
-      "sha256": "78e4176c2cbf0059651315cebfd45d3341c1763636d415f81b03144601327446"
+      "height": 6683,
+      "sha256": "a55a22a0c6071f43feb5b24f274cdb212fb213877ba51c47206a5d01f9cdb87b"
     },
     {
       "file": "game-day-390.png",
-      "bytes": 2563589,
+      "bytes": 2628416,
       "width": 390,
-      "height": 9467,
-      "sha256": "083abd4ea521f61d43139d947b93e8f61fe9e11f2c40e4be8df0f18d6bfc3d64"
+      "height": 10630,
+      "sha256": "6e79a74296e223a289f5c3a615768c5463d276f1232762f1e9f8cedb3d423133"
     },
     {
       "file": "game-day-768.png",
-      "bytes": 2894355,
+      "bytes": 3127034,
       "width": 768,
-      "height": 6928,
-      "sha256": "6b672dae7b553196215da0f7390d575c727b1f42476f44df4cab9c2ee50e0b5f"
+      "height": 7506,
+      "sha256": "ecbf6724bde80bdcfa323f6d5829476d848a41a0e612092f9b69a79783a7ef7c"
     },
     {
       "file": "happy-hour-1440.png",
@@ -460,5 +460,7 @@
       "sha256": "7b59bedf2515d6c033644b45f371acf896f7c27c0b7011416412551faf9f9aa4"
     }
   ],
-  "gameDayAddedAt": "2026-09-14T22:46:23.396Z"
+  "gameDayAddedAt": "2026-09-14T22:46:23.396Z",
+  "gameDayUpdatedAt": "2026-11-06T16:49:22.062Z",
+  "gameDayNote": "Recaptured 6 November with the live schedule section (DESIGN-DEBT.md entry 153): built 6 November, clock fixed at 8:45 AM Eastern, /api/games unavailable so the build-time list shows. The list changes with every build, so expect these to drift daily."
 }

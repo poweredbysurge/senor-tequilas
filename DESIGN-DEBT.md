@@ -4604,3 +4604,99 @@ report what visitors do, and retargeting needs an audience to target. Branch `me
   a catering submit posts the event ID and `_fbp` and fires `Lead` with the same ID; the
   handler, run with a stubbed network, sends a `Lead` to `/v25.0/2617325615444377/events` with
   that ID, the first `x-forwarded-for` address and the `_fbc` value.
+
+## 153. /game-day: a live sports schedule, 6 November
+
+Jeremy asked for the day's and the week's sports on the site: what is on while they are open,
+and what is coming up. Brief: `PASTE-live-sports-schedule.md`. A new section, `#schedule`
+("Live schedule"), sits between the hero and `#soccer`, and the hero's See Tonight now lands on
+it. The calendar keeps `id="tonight"`.
+
+- **The feed: ESPN's public scoreboard.** `site.api.espn.com/apis/site/v2/sports/<league>/scoreboard`,
+  free, no key, no account. Leagues: NFL, college football (FBS, `groups=80`, Saturdays only),
+  NHL, NBA, Premier League, Champions League, Europa League, Liga MX, MLS (empty after MLS Cup
+  by itself), FIFA World Cup, international friendlies (Mexico's matches only, see below) and UFC.
+  **Gap: no boxing.** ESPN has no boxing feed, so fights stay by hand (below). If ESPN changes
+  or drops this unofficial feed, the page keeps its last built list and the API answers empty.
+- **What the feed does not do as briefed.** (1) The `dates=YYYYMMDD-YYYYMMDD` range answers
+  HTTP 400 for every league; single days and whole months work. The code asks one day at a time,
+  yesterday through six days out, all in parallel (about 90 small requests, under a second).
+  (2) El Tri friendlies are not in `fifa.world`, which holds only the World Cup; they are in
+  `soccer/fifa.friendly`, added and filtered to matches with Mexico. (3) A UFC event is a card of
+  up to 14 bouts between athletes, with no home, away or score; the main event (the last bout)
+  gives the names, the card's title is what the page shows, and the window runs to the main
+  card's start plus two hours rather than prelims plus four. (4) Soccer's `shortDetail` before
+  kickoff is just "Scheduled", so the week's list prints its own time. (5) League `name` is long
+  ("National Basketball Association", "NCAA - Football"); the label is ESPN's `abbreviation`
+  (NFL, NCAAF, NHL, NBA, Premier League, Liga MX, UEFA Champions League, MLS, UFC), with the two
+  renames from the brief applied in case ESPN ever sends the long form.
+- **`api/games.js`**, request time with an edge cache, **not a cron**: `Cache-Control: public,
+  s-maxage=300, stale-while-revalidate=900`, so ESPN is asked at most once per five minutes
+  however many people load the page. No environment variables, no `CRON_SECRET`. A league that
+  fails is skipped (`Promise.allSettled`, 6 s timeout per request); if every league fails the
+  answer is still a 200 with empty lists and `error: true`, cached for one minute only.
+- **`src/lib/games.js`** holds everything else, shared by the function, the build and the page
+  script: the fetch, the normalizer, the open-hours filter, day grouping, and the HTML.
+  **Open hours** come from `business.json` (weekly `hours` plus dated `specialHours`, a close at
+  or before the open running past midnight), all in America/New_York. A game counts if any part
+  of kickoff plus its length (NFL and college 3h15, NHL and NBA 2h45, soccer 2h, UFC 4h) overlaps
+  an open window; finished games over four hours old are dropped. **Featured** (gold card, first
+  in its time slot): Commanders, Ravens, Eagles, Steelers, Capitals, Wizards, Orioles, Nationals,
+  D.C. United, Mexico, and every Champions League match, matched on ESPN's full team name so a
+  college "Eagles" never counts.
+- **The 40-game cap.** The feed returned 231 games for the 6 November window (51 college games
+  on one Saturday alone), most of them in open hours, so the first 40 by kickoff would never reach Sunday. Featured and NFL games
+  always go in; the rest of the room is shared a day at a time, college football, the big
+  soccer leagues and UFC first, then anything with a network listed. The 6 November week came
+  out at 4 to 15 games a day with all 16 NFL games in.
+- **The page.** Block A, **On Now in the Bar Area**, shows only while open: one card per live
+  game (league, logos with the abbreviation as fallback, score, ESPN's status, network), or
+  "Nothing live this minute. Here is what is coming up." Closed, Block A is hidden and Block B's
+  heading becomes **Coming Up When We Open**; open, it is **This Week's Games**. Block B is the
+  next seven days grouped Today, Tomorrow, then weekday names, times Eastern; days three on sit
+  behind "Show the rest of the week", a plain `hidden` toggle (with a `<noscript>` style that
+  shows them when scripts are off). The build writes the list into the HTML; the page script
+  (64 lines, bundled by Astro, at the end of the page) fetches `/api/games`, redraws, and
+  refreshes every five minutes while the tab is visible; a failed fetch leaves the page as built.
+  Schedule rows and live cards range left on phones (tweaks.css 153), the entry 44 reasoning.
+- **Daily rebuild cron.** `vercel.json` `crons`: `/api/rebuild` at `0 9 * * *` (4 AM Eastern in
+  winter, 5 AM in summer). `api/rebuild.js` checks `Authorization: Bearer $CRON_SECRET` and POSTs
+  to `$DEPLOY_HOOK_URL`, so the HTML list (the one search engines and no-JS guests see) is never
+  more than a day old. **Sam: create a Deploy Hook for `main` in Vercel (Settings, Git, Deploy
+  Hooks), then set `DEPLOY_HOOK_URL` to it and `CRON_SECRET` to a long random string, both
+  Production.** Until both are set the cron gets a 401 or 503 and nothing deploys; the live
+  fetch still keeps the page current for anyone with JavaScript.
+- **Fights, by hand: `src/data/fights.json`.** `{ "_note", "fights": [{ date, time, title,
+  note }] }`, date `YYYY-MM-DD`, time 24-hour Eastern. Any fight in the next 14 days renders as
+  a **Next Fight Night** card under the Fight Nights heading. Seeded empty. UFC comes from the feed
+  and is labeled UFC in the schedule. The `[PENDING: confirm UFC]` comment in Fight Nights stands:
+  the schedule lists UFC cards, the copy still does not promise them.
+- **Schema unchanged.** No Event or BroadcastEvent for games the restaurant does not host;
+  `SportsActivityLocation` and `BarOrPub` stay. Copy: no prices, no TV count, never "Sunday
+  Ticket", no em dashes (ESPN strings have en and em dashes turned into hyphens).
+- **Open risk: CLS on the live site while open.** The build runs at 4 or 5 AM, when the
+  restaurant is closed, so the HTML has Block A hidden. During open hours the fetch then shows
+  Block A and pushes the page down once. It is near the top, under the hero. Not measurable
+  locally (no `/api/games` in a static preview); measure on production after the deploy and, if
+  it costs the score, reserve Block A's space from the page's own open-hours check before the
+  fetch lands.
+- **Checked.** Build clean, check-build PASS. In a browser with the clock stubbed and the feed
+  served: Tuesday 2 PM, closed, Block A hidden, "Coming Up When We Open"; Sunday 4 PM, ten live
+  cards, Eagles and Commanders in gold, NFL first; Saturday 12:30 AM, open from Friday, three
+  live cards; Thanksgiving Eve 11:30 PM open (the 1 AM special close), Thanksgiving Day 7 PM
+  closed, Thursday 12:05 AM closed (Thursday ends at midnight). Zero console errors, no
+  horizontal overflow at 390, 768 and 1440; the toggle works by keyboard (Enter) and mouse with
+  `aria-expanded` following. A broken logo falls back to the abbreviation. API handlers with a
+  stubbed network: 200 and the cache header live, 200 with `error: true` all down, 405 on POST;
+  rebuild 401 without or with a wrong secret, 503 without the hook, one POST to the hook
+  otherwise. A sample fight 8 days out rendered the card; one 54 days out did not.
+- **HEAD against the working tree**, all 29 sitemap pages at 390, 768 and 1440, clock fixed,
+  reduced motion: /game-day moved at all three widths (the new section; 44%, 40%, 40%). Nothing
+  else moved. /contact at 1440 read 6.0%, which is the embedded Google Map's tiles: the crops
+  are the same picture, and HEAD against itself also differs there. Every other page was
+  0.081% or under (anti-aliasing). Not re-baselined.
+- **References.** `game-day-390/768/1440.png` recaptured from the build (clock 8:45 AM Eastern,
+  no `/api/games`, so the build-time list) and their entries replaced in
+  `design/reference/MANIFEST.json`. The list changes every build, so these drift daily.
+- **Local build note.** `node_modules/botid` was missing on this machine, so `astro build`
+  failed on Base.astro's BotID import before any of this; `npm ci` from the lockfile fixed it.

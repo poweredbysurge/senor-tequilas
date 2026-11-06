@@ -1766,3 +1766,17 @@ body[data-route="/"] a[data-dc-tpl="228"] {
     padding-bottom: 80px !important;
   }
 }
+
+/* ---- 153. /game-day: the schedule rows range left on a phone ---------------------------------
+   Entry 19 centres section copy on a phone. The week's list is a time column beside a matchup,
+   and centred it reads as a ragged column with the times floating away from their games, the
+   same reason entry 44 sends the happy hour list left. Headings and the copy around it stay
+   centred; only the rows and the live cards go left. */
+@media (max-width: 767px) {
+  body[data-route="/game-day"] section[data-screen-label="Live schedule"] li,
+  body[data-route="/game-day"] section[data-screen-label="Live schedule"] li *,
+  body[data-route="/game-day"] section[data-screen-label="Live schedule"] article,
+  body[data-route="/game-day"] section[data-screen-label="Live schedule"] article * {
+    text-align: left !important;
+  }
+}

@@ -4,6 +4,20 @@ import Header5 from '../components/Header5.astro';
 import Footer2 from '../components/Footer2.astro';
 import business from '../data/business.json';
 import { roundedTotal } from '../lib/reviews.js';
+import fightData from '../data/fights.json';
+import { buildSchedule, renderSchedule, upcomingFights, TZ } from '../lib/games.js';
+
+// The live schedule, written into the HTML at build time from the same module /api/games
+// uses, so search engines and guests without JavaScript get this week's list. The page
+// script below replaces it with the live answer. A daily cron rebuilds the site so this copy
+// never goes more than a day stale. See DESIGN-DEBT.md entry 153.
+const schedule = await buildSchedule({ business }).catch((err) => {
+  console.warn('[game-day] schedule unavailable at build:', err && err.message);
+  return { now: [], upcoming: [], tz: TZ, error: true };
+});
+console.log('[game-day] schedule at build:', JSON.stringify(schedule.sources || 'error'), `${schedule.upcoming.length} upcoming`);
+const scheduleHtml = renderSchedule(schedule, { business });
+const fights = upcomingFights(fightData.fights);
 ---
 <Base title="Where to Watch the Commanders, Eagles, Steelers & Every NFL Game in Germantown, MD | Señor Tequila's" description="Every NFL game on, every Sunday: Commanders, Ravens, Eagles, Steelers. World Cup and Champions League watch parties. Bar area seats 108. Germantown, MD." canonical="https://senortequilas.com/game-day" ogImage="/images/site/game-day-hero.jpg" extraTypes={['SportsActivityLocation', 'BarOrPub']} route="/game-day">
 <!--
@@ -29,7 +43,7 @@ import { roundedTotal } from '../lib/reviews.js';
         <h1 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(30px, 5.6vw, 56px); line-height: 1.02; margin: 10px 0px 0px; text-transform: uppercase; text-wrap: balance;">Every Game, Every Night</h1>
         <p style="font-size: 16px; line-height: 1.7; color: rgba(234, 226, 214, 0.85); margin: 16px 0px 0px; max-width: 52ch; text-wrap: pretty;">The World Cup, the Champions League, Liga MX, and every NFL game from the Commanders to the Eagles, in a room built for it.</p>
         <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px;">
-          <a href="#tonight" style="display: inline-flex; align-items: center; justify-content: center; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; box-shadow: rgba(56, 176, 73, 0.35) 0px 0px 30px;">See Tonight</a>
+          <a href="#schedule" style="display: inline-flex; align-items: center; justify-content: center; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; box-shadow: rgba(56, 176, 73, 0.35) 0px 0px 30px;">See Tonight</a>
           <a href="/happy-hour" style="display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(185, 156, 102, 0.75); color: rgb(234, 226, 214); font-weight: 700; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; background: rgba(18, 18, 16, 0.4);">Happy Hour</a>
         </div>
         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;">
@@ -40,6 +54,15 @@ import { roundedTotal } from '../lib/reviews.js';
         </div>
       </div>
       <div style="position: relative; min-height: clamp(300px, 46vh, 720px); overflow: hidden; background: url(/images/site/game-day-hero.jpg) center 30% / cover no-repeat rgb(28, 27, 24);"><video autoplay loop muted playsinline preload="metadata" poster="/videos/game-day-hero.jpg" aria-hidden="true" tabindex="-1" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; pointer-events: none;"><source src="/videos/game-day-hero.mp4" type="video/mp4"></video></div>
+    </div>
+  </section>
+
+  <section id="schedule" data-screen-label="Live schedule" style="background: rgb(20, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0px; scroll-margin-top: 70px;">
+    <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);">
+      <!-- data-own-motion: the page script replaces this block, so the scroll reveals leave it alone -->
+      <div data-gd-body data-own-motion aria-live="polite" set:html={scheduleHtml} />
+      <noscript><style>[data-gd-rest] { display: block !important; } [data-gd-more] { display: none !important; }</style></noscript>
+      <p style="font-size: 14px; line-height: 1.7; color: rgba(234, 226, 214, 0.7); margin: 26px 0px 0px; max-width: 66ch; text-wrap: pretty;">Every NFL game and the big matches are on with sound. First come, first served. <a href="#fights" style="color: rgb(214, 188, 133); font-weight: 700;">Fights</a> are listed on this page below.</p>
     </div>
   </section>
 
@@ -107,6 +130,18 @@ import { roundedTotal } from '../lib/reviews.js';
         <span style="width: 26px; height: 1px; background: rgba(214, 188, 133, 0.7);"></span>When the big one lands
       </div>
       <h2 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(26px, 4.6vw, 42px); line-height: 1.04; margin: 10px 0px 0px; text-transform: uppercase;">Fight Nights</h2>
+      {fights.length > 0 && (
+        <div style="margin-top: 18px; background: linear-gradient(rgba(60, 44, 18, 0.5), rgba(28, 20, 8, 0.72)); border: 1px solid rgba(185, 156, 102, 0.4); border-radius: 18px; padding: 22px;">
+          <h3 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(20px, 3vw, 28px); text-transform: uppercase; line-height: 1.05; margin: 0px;">Next Fight Night</h3>
+          {fights.map((f) => (
+            <div style="margin-top: 14px;">
+              <div style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133);">{f.when}</div>
+              <div style="font-weight: 800; font-size: 17px; line-height: 1.3; color: rgb(246, 239, 228); margin-top: 4px;">{f.title}</div>
+              {f.note && <p style="font-size: 14px; line-height: 1.6; color: rgba(234, 226, 214, 0.85); margin: 4px 0px 0px;">{f.note}</p>}
+            </div>
+          ))}
+        </div>
+      )}
       <!-- [PENDING: confirm UFC]. If Roberto confirms they show it, this copy adds "and UFC". -->
       <p style="font-size: 15px; line-height: 1.7; color: rgba(234, 226, 214, 0.85); margin: 14px 0px 0px; max-width: 62ch; text-wrap: pretty;">Most fights are showing, so get here early. Available for select events only, and it fills.</p>
     </div>
@@ -290,5 +325,70 @@ import { roundedTotal } from '../lib/reviews.js';
 
   <Footer2 />
 </div>
+
+<script>
+  // The live schedule. Fetches /api/games on load, redraws #schedule, and refreshes every five
+  // minutes while the tab is visible. If a fetch fails, whatever is on the page stays.
+  // See DESIGN-DEBT.md entry 153.
+  import business from '../data/business.json';
+  import { renderSchedule } from '../lib/games.js';
+
+  const body = document.querySelector('[data-gd-body]');
+  const EVERY = 5 * 60 * 1000;
+  let last = 0;
+  let data = null;
+  let timer = 0;
+
+  function wire() {
+    const btn = body.querySelector('[data-gd-more]');
+    const rest = body.querySelector('[data-gd-rest]');
+    if (!btn || !rest) return;
+    btn.addEventListener('click', () => {
+      const open = rest.hidden;
+      rest.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'Show less' : 'Show the rest of the week';
+    });
+  }
+
+  function draw() {
+    if (!data) return;
+    const rest = body.querySelector('[data-gd-rest]');
+    const expanded = !!rest && !rest.hidden;
+    const hadFocus = body.contains(document.activeElement) && document.activeElement.matches('[data-gd-more]');
+    body.innerHTML = renderSchedule(data, { business, now: Date.now(), expanded });
+    wire();
+    if (hadFocus) body.querySelector('[data-gd-more]')?.focus();
+  }
+
+  async function refresh() {
+    last = Date.now();
+    try {
+      const r = await fetch('/api/games', { headers: { accept: 'application/json' } });
+      if (!r.ok) return;
+      const j = await r.json();
+      // a total failure keeps what is already showing
+      if (!j || (j.error && !(j.now || []).length && !(j.upcoming || []).length)) return;
+      data = j;
+      draw();
+    } catch { /* offline or blocked: the page keeps its schedule */ }
+  }
+
+  function schedule() {
+    clearTimeout(timer);
+    if (document.visibilityState !== 'visible') return;
+    timer = setTimeout(() => { refresh().finally(schedule); }, Math.max(0, EVERY - (Date.now() - last)));
+  }
+
+  if (body) {
+    wire();
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState !== 'visible') return clearTimeout(timer);
+      if (Date.now() - last >= EVERY) refresh().finally(schedule);
+      else schedule();
+    });
+    refresh().finally(schedule);
+  }
+</script>
 
 </Base>

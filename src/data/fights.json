@@ -1,0 +1,4 @@
+{
+  "_note": "Fight nights, kept by hand: ESPN's feed has no boxing. One entry per fight: date YYYY-MM-DD, time HH:MM in 24-hour Eastern (the main event, or leave it out), title, note (optional, one short line, no prices). Any entry dated in the next 14 days shows as a Next Fight Night card at the top of the #fights section on /game-day. The page rebuilds every morning, so a past fight drops off by itself. UFC comes from the live feed and does not go here. See DESIGN-DEBT.md entry 153.",
+  "fights": []
+}

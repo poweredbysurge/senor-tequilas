@@ -1,6 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "trailingSlash": false,
+  "crons": [
+    {
+      "path": "/api/rebuild",
+      "schedule": "0 9 * * *"
+    }
+  ],
   "redirects": [
     {
       "source": "/:path*",
