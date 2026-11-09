@@ -4750,3 +4750,15 @@ it. The calendar keeps `id="tonight"`.
 
 Mario: the homepage events section title reads "Upcoming Events", not "Coming Up Events"
 (`src/components/UpcomingEvents.astro`, the H2; the section is uppercase by CSS). Copy only.
+
+## 155. House Margarita photo: the real one, on the rocks, 9 November
+
+The House Margarita on `/happy-hour` (the item photo row) and in the Happy Hour section of
+`/menu` showed the frozen lime margarita, flagged in entry 98 because the menu says "12 oz.
+rocks". The client's own photo of the drink on the rocks, `LimeRocksMargarita-2.jpg` from the
+Drive Media folder, now replaces it in both places: `house-margarita-rocks.webp` (640) on
+`/happy-hour`, `house-margarita-rocks-thumb.webp` (320) and `-lg.webp` (1254) on `/menu`. Alt text
+and `aria-label` describe the new photo. The cocktail list's "Margarita on the Rocks or Frozen"
+keeps the frozen photo, which is accurate there. `happy-hour-frozen-margarita.webp` is now
+unreferenced and kept. Same day: the stock placeholder `hh-margarita*.webp` was deleted
+(996501b), and the Meta Happy Hour carousel card 1 was rebuilt with this photo.
