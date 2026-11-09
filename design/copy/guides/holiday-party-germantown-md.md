@@ -124,7 +124,7 @@ Ask every venue the same list.
 
 ## Why Groups Choose Señor Tequila's
 
-Señor Tequila's is a family-owned Mexican restaurant on Century Blvd, next to Topgolf, run by the Rivas brothers in Germantown since 2015. Four private rooms hand-painted by artists from Mexico City, and the whole house decorated for the holidays from the foyer to the bar. The kitchen, the bar and the sound are already in the building, so one booking covers the whole night.
+Señor Tequila's is a family-owned Mexican restaurant on Century Blvd, next to Topgolf, run by the Rivas brothers in Germantown since 2015. Four private rooms hand-painted by artists from Mexico City, and the whole house decorated for the holidays from the foyer to the bar by November 12. The kitchen, the bar and the sound are already in the building, so one booking covers the whole night.
 
 A guest who hosted a surprise party for 25 wrote this on Google:
 

@@ -27,7 +27,7 @@ Hours in the room are set booking by booking, so tell us how long the speeches r
 ### SECTION: The rooms
 **Eyebrow:** Four rooms, properly decorated
 **H2:** The Rooms, Dressed for December
-If you are comparing Christmas party venues in Montgomery County, you have probably seen a lot of beige. Our rooms were hand-painted by artists from Mexico City, and from the foyer to the bar area the whole house is decorated for the holidays. Properly. Not a wreath on the door.
+If you are comparing Christmas party venues in Montgomery County, you have probably seen a lot of beige. Our rooms were hand-painted by artists from Mexico City, and by November 12 the whole house, from the foyer to the bar area, is decorated for the holidays. Properly. Not a wreath on the door.
 
 | Room | Seated | Standing | Notes |
 |---|---|---|---|
