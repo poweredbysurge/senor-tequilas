@@ -105,6 +105,7 @@ export function readLead(body, now = new Date()) {
   const notes = [clean(b.details, 3000)];
   const planning = clean(b.type, 60);
   if (planning) notes.push(`Planning: ${planning}`);
+  lead.delivered = /deliver/i.test(planning);
   if (rawDate && !date) notes.push(`Date as written: ${rawDate}`);
   if (rawTime && !time) notes.push(`Time as written: ${rawTime}`);
   if (rawGuests && rawGuests !== guests) notes.push(`Guests as written: ${rawGuests}`);
@@ -165,17 +166,24 @@ async function sendTexts(lead) {
 }
 
 // Toast wants a first and last name, an email and a head count, and for catering a date. The
-// Instant Form does not ask Toast's yes or no questions, so the lead goes without them first,
-// and once more with "No" and a note if Toast refuses.
+// Instant Form does not ask everything Toast's own form asks, so the lead goes as it is first.
+// If Toast refuses, it goes once more in the exact shape the website forms send (the proven
+// one, entry 148): every yes or no answered, and for catering a time. Those fill-ins are
+// placeholders, and the note in Toast says so, so the manager confirms them on the call.
 async function sendToToast(lead) {
   if (lead.test || env('TOAST_LEADS').toLowerCase() === 'off') return { skipped: true };
   const ready = lead.name.split(/\s+/).length >= 2 && lead.email && lead.guests && (lead.form !== 'catering' || lead.date);
   if (!ready) return { ok: false, error: 'missing what Toast needs' };
   let r = await sendToastLead(lead, business.toast, { timeoutMs: 5000 });
   if (r.ok) return { ...r, defaults: false };
-  const noes = lead.form === 'catering' ? { utensils: 'No', delivery: 'No' } : { room: 'No', flexible: 'No' };
-  const asked = lead.form === 'catering' ? 'Utensils and delivery' : 'Private room and flexible date';
-  r = await sendToastLead({ ...lead, ...noes, details: `${lead.details}\n${asked} were not asked on the ad form. Confirm on the call.` }, business.toast, { timeoutMs: 5000 });
+  const catering = lead.form === 'catering';
+  const fill = catering
+    ? { utensils: 'No', delivery: lead.delivered ? 'Yes' : 'No', time: lead.time || '12:00' }
+    : { room: 'No', flexible: 'No' };
+  const asked = catering
+    ? `Utensils${lead.time ? '' : ' and the time'} were not asked on the ad form${lead.time ? '' : ' (noon is a placeholder)'}.`
+    : 'Private room and flexible date were not asked on the ad form.';
+  r = await sendToastLead({ ...lead, ...fill, details: `${lead.details}\n${asked} Confirm on the call.` }, business.toast, { timeoutMs: 5000 });
   return { ...r, defaults: true };
 }
 

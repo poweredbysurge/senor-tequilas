@@ -73,6 +73,15 @@ r = await call(LEAD); assert.equal(r.json.duplicate, true); assert.equal(calls.l
 toastStatuses = [400, 200];
 r = await call({ ...LEAD, leadgen_id: 'L2' }); assert.equal(of('toasttab').length, 2, 'retry with defaults');
 const retry = JSON.parse(of('toasttab')[1].init.body); assert.equal(retry.formValues.length, 4); assert.equal(r.json.toast.ok, true);
+// The retry is the website's shape: a catering lead with no time gets noon, and a lead that said "delivered" gets delivery Yes.
+toastStatuses = [400, 200];
+r = await call({ ...LEAD, leadgen_id: 'L2b', time: '', type: 'Catering delivered to my location' });
+const first = JSON.parse(of('toasttab')[0].init.body), second = JSON.parse(of('toasttab')[1].init.body);
+assert.equal(first.time, undefined); assert.ok(second.time, 'retry carries a time'); assert.ok(second.formValues.some((v) => v.value === 'Yes'), 'delivery Yes');
+assert.ok(second.formValues.some((v) => /noon is a placeholder/.test(v.value)));
+toastStatuses = [400, 200];
+r = await call({ ...LEAD, leadgen_id: 'L2c', type: 'Private party at the restaurant' });
+assert.equal(JSON.parse(of('toasttab')[1].init.body).formValues.length, 5, 'guests, occasion, notes, room, flexible');
 toastStatuses = [200];
 
 r = await call({ ...LEAD, leadgen_id: 'L3', full_name: 'Surge Test' });
