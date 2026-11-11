@@ -112,7 +112,7 @@ export function readLead(body, now = new Date()) {
   notes.push(`From a Facebook ad${from ? ': ' + from : ''}.`);
   lead.details = notes.filter(Boolean).join('\n');
   const values = [b.full_name, b.phone, b.email, b.details].map((v) => String(v || '').toLowerCase());
-  lead.test = values.some((v) => v.includes('<test lead')) || /surge test/i.test(lead.name);
+  lead.test = values.some((v) => v.includes('test lead: dummy data')) || /surge test/i.test(lead.name);
   return lead;
 }
 

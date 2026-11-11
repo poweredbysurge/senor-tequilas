@@ -23,6 +23,8 @@ assert.equal(l.form, 'private-party'); assert.equal(l.guests, '25'); assert.equa
 assert.equal(readLead({ ...LEAD, guests: 'More than 100' }).guests, '100'); assert.equal(readLead({ ...LEAD, guests: '51 to 100' }).guests, '51');
 l = readLead(LEAD, now);
 assert.equal(readLead({ ...LEAD, full_name: '<test lead: dummy data for full_name>' }).test, true);
+// As Zapier delivers Meta's testing-tool lead (seen 11 November): no angle brackets.
+assert.equal(readLead({ ...LEAD, full_name: 'test lead: dummy data for full_name' }).test, true);
 const t = buildText(l);
 assert.ok(t.length <= 160, 'one segment: ' + t.length); assert.ok(/^[\x20-\x7E\n]+$/.test(t), 'ascii only');
 assert.match(t, /Maria Lopez \(301\) 555-0142/); assert.match(t, /Sat, Dec 12, 40 guests/); assert.ok(!/tequila/i.test(t));
