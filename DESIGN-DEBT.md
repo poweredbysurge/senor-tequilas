@@ -4762,3 +4762,34 @@ and `aria-label` describe the new photo. The cocktail list's "Margarita on the R
 keeps the frozen photo, which is accurate there. `happy-hour-frozen-margarita.webp` is now
 unreferenced and kept. Same day: the stock placeholder `hh-margarita*.webp` was deleted
 (996501b), and the Meta Happy Hour carousel card 1 was rebuilt with this photo.
+
+## 156. Facebook ad leads: text, Toast, email, 11 November
+
+Jeremy, 10 November: every private party and catering lead from the Meta ads should hit the
+managers by text first, then live in Toast. The managers cannot see leads inside Meta.
+
+`api/meta-lead.js` takes one Instant Form lead from Zapier (Facebook Lead Ads, New Lead, then a
+Webhooks POST with the header `X-Lead-Secret`). In order: texts every number in `LEAD_SMS_TO`
+through Twilio without waiting, sends the lead into Toast with `sendToastLead()`, then emails the
+`INQUIRY_TO` managers with the website template. The full plan and the Zapier field map are in
+`PASTE-meta-lead-delivery.md`.
+
+- **Texts** go from (240) 255-7959, a number on Surge's Twilio account attached to Surge's own
+  verified A2P campaign, so no new registration. The messaging service also holds the Surge main
+  line, so each send passes `From` to pin the sender. The text is plain ASCII, one segment, opens
+  "Surge lead alert", and never names the restaurant or a drink, because carriers filter alcohol
+  words. Without the Twilio variables the function still does Toast and email.
+- **Toast.** The Instant Form does not ask Toast's yes or no questions. The lead goes without
+  them first and once more with "No" and a note if Toast refuses. Which of the two Toast accepts
+  is NOT yet known: no live lead has been sent. Record it here after the first real one.
+- **Email.** `buildInquiryEmail()` takes a new `source` option that changes only the wording
+  about where the lead came from. With no source the output is byte for byte what it was
+  (`scripts/test-inquiry.mjs` still passes and its samples did not change).
+- **Not sent:** a Conversions API event (Meta already counts Instant Form leads, entry 151) and a
+  guest confirmation from the site (Toast sends its own when it takes the lead).
+- **Test leads** (Meta's testing tool, or a name containing "Surge Test") text and email with
+  TEST in front and stay out of Toast.
+- **Replays.** The last 200 lead ids are held in memory. A 502 goes back only when no text and no
+  email got through, so a Zapier retry cannot text people twice.
+- Tests: `node scripts/test-meta-lead.mjs`. Not deployed as of this entry.
+

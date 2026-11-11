@@ -53,7 +53,10 @@ export function extraRows(inq) {
 }
 const formatSent = (when) => new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' }).format(when) + ' ET';
 
-export function buildInquiryEmail(inq, { business, when = new Date(), toast } = {}) {
+// `source` is set only by api/meta-lead.js: { label: 'Facebook ad', from: 'campaign / ad' }. It
+// changes the wording that says where the lead came from and nothing else. Website emails pass
+// no source and are unchanged.
+export function buildInquiryEmail(inq, { business, when = new Date(), toast, source } = {}) {
   const f = FORMS[inq.form];
   const phone = formatPhone(inq.phone);
   const date = formatDate(inq.date);
@@ -63,9 +66,9 @@ export function buildInquiryEmail(inq, { business, when = new Date(), toast } = 
   const site = business.siteUrl;
   const address = `${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion} ${business.postalCode}`;
 
-  const noun = f.event ? 'inquiry' : 'message';
+  const noun = source ? 'lead' : f.event ? 'inquiry' : 'message';
   const email = String(inq.email || '').trim();
-  const subject = `New ${f.label.toLowerCase()} ${noun}: ${inq.name}` + (guests ? `, ${guests} guests` : '') + (shortDate ? `, ${shortDate}` : '');
+  const subject = `New ${f.label.toLowerCase()} ${noun}${source ? ` (${source.label})` : ''}: ${inq.name}` + (guests ? `, ${guests} guests` : '') + (shortDate ? `, ${shortDate}` : '');
   const preheader = [inq.name, phone, email].filter(Boolean).join(', ') + (date ? `. ${date}` : '') + (guests ? `. ${guests} guests` : '') + '.';
   const mailto = email ? `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Señor Tequila\'s: your ' + (f.event ? f.label.toLowerCase() + ' inquiry' : 'message'))}` : '';
   const primary = `display: inline-block; background: ${T.green}; color: ${T.ink}; font-family: ${BODY}; font-weight: 800; font-size: 17px; text-decoration: none; padding: 15px 24px; border-radius: 12px; margin: 0 8px 8px 0;`;
@@ -82,6 +85,7 @@ export function buildInquiryEmail(inq, { business, when = new Date(), toast } = 
   // Whether the lead is already in Toast. Green when it is, red with the fix when it is not.
   const toastLine = !toast ? '' : toast.ok
     ? 'Added to Toast Catering & Events. Toast emailed the guest its confirmation.'
+    : source ? 'Not added to Toast. Enter this one in Toast Catering & Events by hand.'
     : 'Not added to Toast. Enter this one in Toast Catering & Events by hand. The guest got the website\'s confirmation instead.';
   const toastBanner = !toast ? '' : `
         <tr>
@@ -126,7 +130,7 @@ export function buildInquiryEmail(inq, { business, when = new Date(), toast } = 
         </tr>
         <tr>
           <td class="st-pad" style="padding: 26px 36px 0;">
-            <div style="font-family: ${LABEL}; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.gold};">${esc(f.label)} · Website ${noun}</div>
+            <div style="font-family: ${LABEL}; font-weight: 600; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.gold};">${esc(f.label)} · ${source ? esc(source.label) + ' lead' : 'Website ' + noun}</div>
             <div class="st-h1" style="font-family: ${DISPLAY}; font-size: 34px; line-height: 1.02; text-transform: uppercase; color: ${T.cream}; margin-top: 8px;">New <span style="color: ${T.green};">${esc(f.label)}</span> ${noun}</div>
           </td>
         </tr>
@@ -160,13 +164,13 @@ export function buildInquiryEmail(inq, { business, when = new Date(), toast } = 
 ${toastBanner}        <tr>
           <td class="st-pad" style="padding: 24px 36px 0;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background: rgba(56, 176, 73, 0.1); border: 1px solid rgba(56, 176, 73, 0.45); border-radius: 12px;">
-              <tr><td style="padding: 14px 18px; font-family: ${BODY}; font-size: 14px; line-height: 1.55; color: ${T.text};"><strong style="color: ${T.cream}; font-weight: 700;">What the site promised:</strong> ${esc(f.promise)}${f.event ? ' No deposit until they say yes.' : ''}</td></tr>
+              <tr><td style="padding: 14px 18px; font-family: ${BODY}; font-size: 14px; line-height: 1.55; color: ${T.text};"><strong style="color: ${T.cream}; font-weight: 700;">${source ? 'Call fast:' : 'What the site promised:'}</strong> ${source ? 'This person just filled out a form on an ad. These leads go cold within the hour.' : esc(f.promise) + (f.event ? ' No deposit until they say yes.' : '')}</td></tr>
             </table>
           </td>
         </tr>
         <tr>
           <td class="st-pad" style="padding: 22px 36px 28px; font-family: ${BODY}; font-size: 13px; line-height: 1.6; color: ${T.muted};">
-            Sent ${esc(formatSent(when))} from <a href="${esc(site + inq.page)}" style="color: ${T.gold}; text-decoration: none; font-weight: 700;">${esc(site.replace(/^https?:\/\//, '') + inq.page)}</a>
+            ${source ? `Received ${esc(formatSent(when))} from a ${esc(source.label)}${source.from ? ': ' + esc(source.from) : ''}` : `Sent ${esc(formatSent(when))} from <a href="${esc(site + inq.page)}" style="color: ${T.gold}; text-decoration: none; font-weight: 700;">${esc(site.replace(/^https?:\/\//, '') + inq.page)}</a>`}
           </td>
         </tr>
       </table>
@@ -174,7 +178,7 @@ ${toastBanner}        <tr>
         <tr>
           <td align="center" style="padding: 18px 20px 0; font-family: ${BODY}; font-size: 12px; line-height: 1.6; color: ${T.muted};">
             ${esc(business.name)} · ${esc(address)}<br>
-            This is an automatic notification from the website. ${email ? 'Replying to this email goes straight to the guest.' : 'The guest did not give an email address, so reply by phone.'}
+            This is an automatic notification from ${source ? 'the ' + esc(source.label) + 's' : 'the website'}. ${email ? 'Replying to this email goes straight to the guest.' : 'The guest did not give an email address, so reply by phone.'}
           </td>
         </tr>
       </table>
@@ -197,9 +201,9 @@ ${toastBanner}        <tr>
     inq.details || 'Nothing written.',
     '',
     ...(toastLine ? [`Toast: ${toastLine}`, ''] : []),
-    `What the site promised: ${f.promise}` + (f.event ? ' No deposit until they say yes.' : ''),
+    source ? 'Call fast: this person just filled out a form on an ad. These leads go cold within the hour.' : `What the site promised: ${f.promise}` + (f.event ? ' No deposit until they say yes.' : ''),
     '',
-    `Sent ${formatSent(when)} from ${site}${inq.page}`,
+    source ? `Received ${formatSent(when)} from a ${source.label}${source.from ? ': ' + source.from : ''}` : `Sent ${formatSent(when)} from ${site}${inq.page}`,
     `${business.name}, ${address}`,
   ].join('\n');
 
