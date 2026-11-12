@@ -4997,3 +4997,12 @@ asked for the rest the same day.
 - Not built locally. Quinceañeras checked as a static mock at 1440, 820 and 390. The holiday
   page was not rendered at all (it is an authored Astro page, not static markup): look at it
   at 390 and 1440, and send one test with a Company filled in to see it lead the message.
+- **The quinceañeras H1 ran into the form** on the first push (Sam's screenshot). The word
+  "QUINCEAÑERAS," cannot wrap and is 9.07em wide in Archivo Black; the H1 had kept the size it
+  had when it owned the full width (up to 72px), and the column beside the form is 562px at
+  most, so it overflowed on any screen wider than about 1440px. Now
+  `clamp(2rem, 4.2vw, 3.6rem)`, measured with the real font at every width from 780 to 1920:
+  the word clears the column by 39px at worst. On a phone site.css's own hero H1 rule sizes
+  it, as before. Weddings ("RECEPTIONS", 506px at its largest) and catering were measured the
+  same way and fit, so they are unchanged apart from `overflow-wrap: break-word` on the two
+  event H1s as a last resort.
