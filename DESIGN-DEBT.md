@@ -4847,3 +4847,25 @@ picked them 11 November.
   at every width. On a phone it stacks under the buttons at full column width. Checked as a
   static mock of the section at 1841, 1440, 820 and 390 (no site CSS or fonts in the mock),
   so look once on production.
+
+## 159. /catering hero is the customer testimonial, 12 November
+
+Roberto, 6 November (1:38:23 in the meeting): put the testimonial that ran in the ads where
+"this AI picture" is. Sam approved the plan 12 November.
+
+- The AI taco spread (`site/catering-hero.jpg`) is off the page. Nothing else on the site used
+  it. The file is still in `public/` and can be deleted.
+- The hero is boxed like /takeout-delivery (entry 158): copy and buttons on the left, the
+  testimonial on the right as a 9:16 card, 340px at most. On a phone it stacks under the
+  buttons. No copy changed; the H1 is still "Taco Catering".
+- The clip is `videos/catering-testimonial.mp4`, cut down from the ad file
+  (`incoming-media/ads-november/meta-upload/EV_roberto-catering-testimonial.mp4`, 9.4MB) to
+  720x1280 and 3.1MB, with its sound kept. Poster `catering-testimonial.jpg`, which is now the
+  route's LCP preload in Base.astro.
+- It plays muted on a loop, the captions are burned in, and a "Tap for sound" button turns
+  the sound on and starts it from the top. The script is inline in the hero.
+- `tweaks.css`: /catering is out of the phone rule that darkens hero pictures, for the same
+  reason as /friendsgiving. The picture is beside the copy, not behind it.
+- The buffet video in "What shows up" is untouched. Roberto said clicking it "shuts it down".
+  Nothing in the code pauses it, so that needs a look on a real phone.
+- Not built locally. Checked as a static mock of the section at 1841, 820 and 390.

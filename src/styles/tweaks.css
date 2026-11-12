@@ -1035,6 +1035,14 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
     box-shadow: none !important;
   }
 
+  /* /catering: the testimonial is a card under the copy, not behind it (DESIGN-DEBT.md entry 159) */
+  body[data-route="/catering"] section[data-screen-label="Event hero"] video {
+    filter: none !important;
+  }
+  body[data-route="/catering"] section[data-screen-label="Event hero"] {
+    box-shadow: none !important;
+  }
+
   /* the guides: the hero photo sits below the title, not behind it (DESIGN-DEBT.md entry 145) */
   body[data-route^="/guides/"] section[data-screen-label="Guide hero"] img {
     filter: none !important;
