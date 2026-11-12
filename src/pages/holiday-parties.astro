@@ -109,10 +109,28 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <h1 class="hp-h1">A Holiday Party Venue With the Kitchen Already in the Room</h1>
         <p class="hp-lead">Four private rooms that seat 48 to 112, or hold up to 134 standing. A microphone and a big HDMI screen in every one. The fajita buffet from $26 a person, weekday rooms from $200 an hour, and a coordinator who gets back to you within 24 hours. December Fridays and Saturdays are going fast.</p>
         <div class="hp-hero-ctas" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px;">
-          <a href="#inquire" style={BTN_PRIMARY}>Talk to Us</a>
+          <a href="tel:3015694574" style={BTN_PRIMARY}>Call Now: {PHONE_DISPLAY}</a>
+          <a href="#rooms" style={BTN_GHOST}>See the Rooms</a>
         </div>
       </div>
-      <div class="hp-hero-index"><ChapterIndex items={ROOMS} /></div>
+      <div id="talk" class="hp-hero-form">
+      <form data-inquiry="private-party" data-ap-company method="post" action="/api/inquiry" class="hp-form hp-form-hero" style={FORM}>
+        <div class="hp-form-head">
+          <div role="img" aria-label="Tomas, private party coordinator" style="flex: 0 0 auto; width: 56px; height: 56px; border-radius: 14px; border: 1px solid rgb(42, 40, 32); background: url(/images/site/tomas-headshot.webp) center center / cover no-repeat rgb(35, 33, 28);"></div>
+          <div><div class="hp-form-k">Talk to us</div><div class="hp-form-t">Tomas replies within 24 hours.</div></div>
+        </div>
+        <label style={LABEL}>Name<input type="text" name="name" autocomplete="name" required minlength="2" maxlength="120" placeholder="Full name" style={FIELD} /></label>
+        {/* not name="company": that name is the spam honeypot in api/inquiry.js, and a filled one is
+            answered "ok" and silently dropped. The page script folds it into the message instead. */}
+        <label style={LABEL}>Company<input type="text" name="org" autocomplete="organization" maxlength="120" placeholder="Optional" style={FIELD} /></label>
+        <label style={LABEL}>Phone<input type="tel" name="phone" autocomplete="tel" required maxlength="40" placeholder="(301) 555-0100" style={FIELD} /></label>
+        <label style={LABEL}>Email<input type="email" name="email" autocomplete="email" maxlength="160" placeholder="Optional, for a written reply" style={FIELD} /></label>
+        <label style={LABEL}>Preferred date<input type="date" name="date" style={FIELD} /></label>
+        <label style={LABEL}>Guest count<input type="number" name="guests" inputmode="numeric" min="1" max="5000" placeholder="e.g. 40" style={FIELD} /></label>
+        <label style={`${LABEL} grid-column: 1 / -1;`}>Tell us about the party<textarea name="details" rows="2" maxlength="4000" placeholder="The kind of party, the time, anything we should know" style={`${FIELD} resize: vertical;`}></textarea></label>
+        <div style="grid-column: 1 / -1;"><button type="submit" style={`${BTN_PRIMARY} width: 100%;`}>Talk to Us</button></div>
+      </form>
+      </div>
     </div>
   </section>
 
@@ -384,12 +402,15 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
 
 <style>
   /* ---- 1. hero ---- */
-  .hp-hero { position: relative; min-height: min(92vh, 900px); display: flex; align-items: flex-end; background: rgb(18, 18, 16); border-bottom: 1px solid rgba(185, 156, 102, 0.2); overflow: hidden; }
+  .hp-hero { position: relative; min-height: min(92vh, 900px); display: flex; align-items: center; background: rgb(18, 18, 16); border-bottom: 1px solid rgba(185, 156, 102, 0.2); overflow: hidden; }
   .hp-hero-media { position: absolute; inset: 0; }
   .hp-hero-media img, .hp-hero-media video { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; display: block; }
   .hp-hero-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 18, 16, 0.78) 0%, rgba(18, 18, 16, 0.6) 38%, rgba(18, 18, 16, 0.18) 72%, rgba(18, 18, 16, 0.08) 100%), linear-gradient(180deg, rgba(18, 18, 16, 0.35) 0%, rgba(18, 18, 16, 0.15) 35%, rgba(18, 18, 16, 0.92) 100%); }
   @media (max-width: 1023px) { .hp-hero-media::after { background: linear-gradient(180deg, rgba(18, 18, 16, 0.55) 0%, rgba(18, 18, 16, 0.6) 40%, rgba(18, 18, 16, 0.94) 100%); } }
-  .hp-hero-grid { position: relative; z-index: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: clamp(120px, 18vh, 200px) clamp(18px, 4.5vw, 48px) clamp(40px, 6vw, 72px); display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: end; }
+  .hp-hero-grid { position: relative; z-index: 1; width: 100%; max-width: 1180px; margin: 0 auto; padding: clamp(40px, 7vh, 96px) clamp(18px, 4.5vw, 48px) clamp(40px, 6vw, 72px); display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+  /* the form in the hero (DESIGN-DEBT.md entry 164): a card at every width, never edge to edge */
+  .hp-hero-form { min-width: 0; scroll-margin-top: 80px; }
+  .hp-form.hp-form-hero { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; border-radius: 18px !important; border: 1px solid rgba(185, 156, 102, 0.35) !important; padding: clamp(16px, 2.4vw, 22px) !important; }
   .hp-h1 { color: rgb(246, 239, 228); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 4.6vw, 68px); line-height: 1.02; margin: 12px 0 0; text-transform: uppercase; text-wrap: balance; max-width: 16ch; }
   .hp-lead { font-size: 16px; line-height: 1.7; color: rgba(246, 239, 228, 0.92); margin: 18px 0 0; max-width: 56ch; text-wrap: pretty; }
   .hp-hero-index { align-self: end; }
@@ -397,7 +418,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
      copy is anchored to the bottom edge, so a late stack moved everything above it (CLS 0.135) */
   @media (max-width: 767px) { .hp-hero-ctas { display: grid; grid-template-columns: minmax(0, 1fr); align-items: stretch; } .hp-hero-ctas a { width: 100%; justify-content: center; text-align: center; } }
   @media (min-width: 1024px) { .hp-hero-index { position: sticky; bottom: 40px; } }
-  @media (max-width: 1023px) { .hp-hero-grid { grid-template-columns: 1fr; padding-top: clamp(80px, 14vh, 140px); } .hp-hero-index { display: none; } }
+  @media (max-width: 1023px) { .hp-hero-grid { grid-template-columns: 1fr; padding-top: clamp(32px, 6vh, 64px); } }
 
   /* ---- shared ---- */
   .hp-sec { background: rgb(18, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0; scroll-margin-top: 70px; }
@@ -568,8 +589,8 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
      phase so it runs before the site's form handler reads the fields, the company is put at the top
      of the message, then the textarea is put back as the guest typed it. */
   (function () {
-    var form = document.querySelector('form[data-ap-company]');
-    if (!form) return;
+    // two forms now, the hero's and the one at the foot of the page
+    [].forEach.call(document.querySelectorAll('form[data-ap-company]'), function (form) {
     form.addEventListener('submit', function () {
       var org = form.elements.org, msg = form.elements.details;
       if (!org || !msg || !org.value.trim()) return;
@@ -577,6 +598,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
       msg.value = 'Company: ' + org.value.trim() + (typed.trim() ? '\n\n' + typed : '');
       setTimeout(function () { msg.value = typed; }, 0);
     }, true);
+    });
   })();
 </script>
 

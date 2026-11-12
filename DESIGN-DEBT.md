@@ -4973,3 +4973,27 @@ plan and the wording 12 November.
   has seen this one. The hero photograph is still the bar; an empty-room picture is R17.
 - Not built locally. Hero checked as a static mock at 1440, 820 and 390. The guide bar was
   not rendered at all: check it on a phone, and that the footer clears it.
+
+## 164. The form in the hero on quinceañeras, weddings and holiday parties, 12 November
+
+Entry 163's pattern on the three pages it left out. Sam reviewed /private-parties live and
+asked for the rest the same day.
+
+- **Quinceañeras and weddings:** the hero is two columns. Left: eyebrow, H1, the paragraph, a
+  green "Call Now: 301-569-4574" and the three pills. Right: the page's own inquiry form in a
+  "Talk to Us" card with Tomas (a copy; `data-inquiry` is still `quinceanera` and `wedding`).
+  The form at the foot of each page stays. The hero's "Talk to Us" jump button is gone, since
+  the form is now beside it.
+- **The quinceañeras hero no longer carries its "Placeholder: the quince court dancing" pill**
+  in the markup. tweaks.css section 13 was hiding it; that rule now matches nothing.
+- **/holiday-parties:** the form is the hero's right column. It replaces the chapter index
+  there; the same index is still at the head of the rooms section. The buttons are "Call Now"
+  and "See the Rooms". The hero copy is centred rather than pinned to the bottom, and the top
+  padding came down, because the form is taller than the index was. The form is a second
+  `form[data-ap-company]`, so the page script that folds Company into the message now runs on
+  every such form, not the first one only. In the hero the form is a rounded card at every
+  width (`.hp-form-hero`); the edge-to-edge phone treatment still applies to the one at the
+  foot of the page.
+- Not built locally. Quinceañeras checked as a static mock at 1440, 820 and 390. The holiday
+  page was not rendered at all (it is an authored Astro page, not static markup): look at it
+  at 390 and 1440, and send one test with a Company filled in to see it lead the message.
