@@ -4889,3 +4889,29 @@ hour drinks and food "in one shot". Sam approved 12 November and left the photo 
 - Not used: the flavored frozen margarita lineup in `incoming-media/hh-margarita-1.jpg`.
   Frozen margaritas are not on the happy hour list, which is the mistake being fixed here.
 - No copy changed. Not built locally; checked as a static mock at 1440 and 390.
+
+## 161. /happy-hour speed, 12 November
+
+The HQ card (from Trello, October) read "LCP 9s, CLS 0.14" with no source. Looked at on the
+live page at 375 wide, 12 November. Sam approved the three changes the same day.
+
+- **The LCP element is the hero's background**, the green folklore collage
+  `9cf29efa1cbf0c3e.webp`: 322KB at 1536 wide, under a tint that covers 82 to 95 percent of
+  it. The hero now uses `site/folklore-green-sm.webp`, the same picture at 960 wide and 33KB.
+  Side by side under the tint the two cannot be told apart. The preload in Base.astro follows.
+  The footer's green field (tweaks.css section 52) is the same picture under a heavier tint
+  and now uses the small file too, which takes 290KB off every page. /karaoke's hero still
+  uses the large one.
+- **The seven day flyers, about 1.2MB, loaded with the hero** although the carousel is three
+  screens down. Held back on this route until the carousel is within 800px of the screen:
+  tweaks.css section 154 and a short inline script at the foot of the carousel section.
+- **The hero badge moved the layout.** The page shipped "3 to 6" and the script (section 11,
+  TEXT_SWAPS) rewrote it to "3 PM to 6 PM" after paint, which wraps on a phone. The markup
+  says "3 PM to 6 PM" now, so the swap finds nothing to do.
+- Left alone: the Meta pixel (about 800KB of script, unblocking, starts at load). Delaying it
+  would lose page views from short visits.
+- The card's other half, a second Facebook link in the footer: there is one, and has been
+  since entry 2123's change. Nothing to do.
+- **Not measured.** No Lighthouse run was possible from the Cowork session. Run PageSpeed
+  Insights on /happy-hour after deploy and write the numbers here. If CLS is still over 0.1,
+  there is a second cause not yet found.

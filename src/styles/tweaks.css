@@ -1401,7 +1401,7 @@ body[data-route="/"] [data-dc-tpl="112"] {
 footer[data-footer-theme="green"] {
   background:
     linear-gradient(rgba(6, 52, 20, 0.86), rgba(6, 52, 20, 0.93)),
-    url(/images/9cf29efa1cbf0c3e.webp) center center / cover no-repeat rgb(6, 52, 20) !important;
+    url(/images/site/folklore-green-sm.webp) center center / cover no-repeat rgb(6, 52, 20) !important;
 }
 
 /* ---- 53. hover states, site wide --------------------------------------------------------
@@ -1786,5 +1786,22 @@ body[data-route="/"] a[data-dc-tpl="228"] {
   body[data-route="/game-day"] section[data-screen-label="Live schedule"] article,
   body[data-route="/game-day"] section[data-screen-label="Live schedule"] article * {
     text-align: left !important;
+  }
+}
+
+/* ---- 154. /happy-hour: the day flyers wait until they are near the screen ----------------
+   12 November, DESIGN-DEBT.md entry 161. The seven flyers in the Tonight carousel are set as
+   backgrounds in section 31 above, so the browser fetched all of them, about 1.2MB, at the
+   same moment as the hero on a page where the carousel is three screens down. Here they are
+   held back until the body carries st-flyers, which a few lines of script at the foot of that
+   section add when it comes within 800px of the screen.
+
+   Inside scripting: enabled so that a browser with JavaScript off, or one too old to know the
+   query, never sees the hold and simply loads them the way it did before.
+
+   This route only. On the homepage the carousel is near the top and should load at once. */
+@media (scripting: enabled) {
+  body[data-route="/happy-hour"]:not(.st-flyers) section[data-screen-label="Tonight carousel"] [data-dc-tpl="94"] {
+    background-image: none !important;
   }
 }
