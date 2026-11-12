@@ -4830,8 +4830,7 @@ picked them 11 November.
 - The hero picture is the Jeep and the pink "From Mexico With Love" bag
   (`223a406ae07f5bb3.jpg`), named directly on the `<img>`. It had been sitting inside the
   caption pill, on top of the quesabirria plate; that nested span is gone and so is the plate.
-  The photo is portrait, so the panel's minimum height went from 46vh to 60vh and the crop is
-  held at 58% so the face and the bag both stay in.
+  See the boxed hero below for how it is framed.
 - "Three Ways" is "How It Works". The three steps were never three ways.
 - Step 01 has two buttons: Order Online (Toast) and Call 301-569-4574. Same links as the hero.
 - DoorDash and Grubhub carry their real links in the markup now, so the script in Base.astro
@@ -4840,3 +4839,11 @@ picked them 11 November.
   /birria-ramen still names Uber Eats in a sentence (text only, no link). Left alone.
 - Not built locally. Check the hero at 390 and 1440 on production: H1 wraps cleanly, face and
   bag both in frame.
+- **The hero is boxed** (Sam, same day, after seeing the first push at 1840 wide: the
+  full-bleed half-and-half split cropped the portrait photo to a torso). The section keeps its
+  full-width dark texture, but its two columns now sit inside the same 1180px measure as the
+  sections below, so the H1 lines up with "How It Works". The photo is a 4:5 card, 480px at
+  most, rounded like the cards under it, crop held at 60% so the face and the bag are both in
+  at every width. On a phone it stacks under the buttons at full column width. Checked as a
+  static mock of the section at 1841, 1440, 820 and 390 (no site CSS or fonts in the mock),
+  so look once on production.
