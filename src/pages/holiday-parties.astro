@@ -109,7 +109,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <h1 class="hp-h1">A Holiday Party Venue With the Kitchen Already in the Room</h1>
         <p class="hp-lead">Four private rooms that seat 48 to 112, or hold up to 134 standing. A microphone and a big HDMI screen in every one. The fajita buffet from $26 a person, weekday rooms from $200 an hour, and a coordinator who gets back to you within 24 hours. December Fridays and Saturdays are going fast.</p>
         <div class="hp-hero-ctas" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px;">
-          <a href="#inquire" style={BTN_PRIMARY}>Book a Tour</a>
+          <a href="#inquire" style={BTN_PRIMARY}>Talk to Us</a>
         </div>
       </div>
       <div class="hp-hero-index"><ChapterIndex items={ROOMS} /></div>
@@ -128,7 +128,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
           <p style={P}>Weeknights are the smart money. Weekday rooms start from $200 an hour, and a Tuesday party gets the same room, the same lights, the same food as a Saturday. Monday to Friday we open to the public at 3 PM, which means a lunch party can have the entire building to itself. Very large lunch groups are welcome.</p>
           <p style={P}>Hours in the room are set booking by booking, so tell us how long the speeches run. The dates we cannot do: Thanksgiving Day, December 24 and December 25. Every other day in November and December is open, including the week between Christmas and <a href="/new-years-eve" style={LINK}>New Year's</a>.</p>
           <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px;">
-            <a href="#inquire" style={BTN_PRIMARY}>Book a Tour</a>
+            <a href="#inquire" style={BTN_PRIMARY}>Talk to Us</a>
           </div>
         </div>
         <div><DecemberCalendar /></div>
@@ -358,7 +358,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
       <form data-inquiry="private-party" data-ap-company method="post" action="/api/inquiry" class="hp-form" style={FORM}>
         <div class="hp-form-head">
           <img src="/images/site/tomas-headshot.webp" alt="Tomas, private party coordinator, smiling with his arms crossed" width="288" height="288" loading="lazy" decoding="async" />
-          <div><div class="hp-form-k">Book a tour</div><div class="hp-form-t">Tomas replies within 24 hours.</div></div>
+          <div><div class="hp-form-k">Talk to us</div><div class="hp-form-t">Tomas replies within 24 hours.</div></div>
         </div>
         <label style={LABEL}>Name<input type="text" name="name" autocomplete="name" required minlength="2" maxlength="120" placeholder="Full name" style={FIELD} /></label>
         {/* not name="company": that name is the spam honeypot in api/inquiry.js, and a filled one is
@@ -369,7 +369,7 @@ const CHIP = 'display: inline-flex; align-items: center; border: 1px solid rgba(
         <label style={LABEL}>Preferred date<input type="date" name="date" style={FIELD} /></label>
         <label style={LABEL}>Guest count<input type="number" name="guests" inputmode="numeric" min="1" max="5000" placeholder="e.g. 40" style={FIELD} /></label>
         <label style={`${LABEL} grid-column: 1 / -1;`}>Tell us about the party<textarea name="details" rows="4" maxlength="4000" placeholder="The kind of party, the time, anything we should know" style={`${FIELD} resize: vertical;`}></textarea></label>
-        <div style="grid-column: 1 / -1;"><button type="submit" style={`${BTN_PRIMARY} width: 100%;`}>Book a Tour</button></div>
+        <div style="grid-column: 1 / -1;"><button type="submit" style={`${BTN_PRIMARY} width: 100%;`}>Talk to Us</button></div>
       </form>
     </div>
   </section>

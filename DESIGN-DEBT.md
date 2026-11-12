@@ -4943,3 +4943,33 @@ it 12 November.
   days"). The H1 is Mario's call, on the seo board.
 - Not built locally. Check the strip at 390 and 1440, and that /api/games answers with soccer
   in it once deployed.
+
+## 163. Private events: the form in the hero, "Talk to Us" everywhere, 12 November
+
+From the 6 November meeting (1:33 to 1:38). Sam: the form is buried, move it to the top.
+Jeremy: "I really wish it was just talk to us", and there has to be a way to talk to someone
+now. Roberto: some people will not read any of it and only want to call. Sam approved the
+plan and the wording 12 November.
+
+- **/private-parties hero is two columns.** Left: the eyebrow, the H1 (a step smaller, the
+  column is narrower), the one paragraph, and two buttons, "Call Now: 301-569-4574" in green
+  and "See the Rooms" (to the Spaces section, which gained `id="rooms"`). Right: the inquiry
+  form itself, in a card headed "Talk to Us" with Tomas' photograph. On a phone the form sits
+  straight under the buttons. The form is a copy of the page's own, same fields, same
+  `data-inquiry="private-party"`, so Base.astro's inquiryForms() runs it with no change.
+- **The old hero button went to the wrong place.** "Book a Tour" pointed at `#types`, the
+  party types cards, not the form.
+- **The two holiday links left the hero** and sit as one paragraph under the Party types
+  heading. Same words, same links.
+- **The form at the foot of the page stays** (the one eventsFaq() lifts out of the FAQ).
+- **"Book a Tour" is "Talk to Us" on every page:** 30 places in nine files, buttons, form
+  headings and the green header pill (Header6). The phrases about an actual tour of the rooms
+  on /holiday-parties, /new-years-eve, weddings and quinceañeras were left as they are.
+- **Events guides carry a bar at the foot of the screen** (`guides/[slug].astro`, every guide
+  that is not a Menu guide): "Talk to Us", to /holiday-parties#inquire, and "Call Now". The
+  footer gets 76px of padding under it on those pages.
+- **Not done, on purpose:** the same hero treatment on quinceañeras, weddings and
+  /holiday-parties. Sam said in the meeting it should go on all of them; it follows once he
+  has seen this one. The hero photograph is still the bar; an empty-room picture is R17.
+- Not built locally. Hero checked as a static mock at 1440, 820 and 390. The guide bar was
+  not rendered at all: check it on a phone, and that the footer clears it.

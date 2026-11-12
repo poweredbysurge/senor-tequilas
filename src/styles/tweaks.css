@@ -1069,7 +1069,7 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
 
 /* ---- 41. the header row fits a phone ------------------------------------------------------
    The row carries four things on a phone: the logo, Reserve, the page's green pill and the
-   menu button. On the four pages whose green pill reads "Book a Tour" rather than "Order",
+   menu button. On the four pages whose green pill reads "Talk to Us" rather than "Order",
    Header6 and Header7, that came to 427px in a 390px screen and the document scrolled
    sideways.
 
@@ -1080,7 +1080,7 @@ body[data-route] header a[data-m-hide] { display: inline-flex !important; }
      pills  16px of side padding to 10, and 13px type to 12
      gap    8px to 6
 
-   Measured on the widest header, the "Book a Tour" one: 365px at 390 and 328px at 360, both
+   Measured on the widest header, the "Talk to Us" one: 365px at 390 and 328px at 360, both
    inside the screen with room to spare. The "Order" headers land at 327px and 293px. 320 is
    still short by a little and is still knowingly left. The menu button keeps its 44px, being
    a touch target rather than a decoration. */

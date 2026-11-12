@@ -139,7 +139,7 @@ const MENU = d.article_section === 'Menu';
         </>
       ) : (
         <>
-          <a href="/holiday-parties" style={BTN_PRIMARY}>Book a Tour</a>
+          <a href="/holiday-parties#inquire" style={BTN_PRIMARY}>Talk to Us</a>
           <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
         </>
       )}
@@ -149,6 +149,13 @@ const MENU = d.article_section === 'Menu';
   {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
 
   <Footer2 />
+  {!MENU && (
+    <div class="gd-float" role="region" aria-label="Plan a party">
+      <span class="gd-float-k">Planning a party?</span>
+      <a href="/holiday-parties#inquire" style={BTN_PRIMARY}>Talk to Us</a>
+      <a href={PHONE_HREF} style={BTN_GHOST}>Call Now</a>
+    </div>
+  )}
 </div>
 
 <style>
@@ -187,5 +194,16 @@ const MENU = d.article_section === 'Menu';
   .gd-cta { border-top: 1px solid rgba(185, 156, 102, 0.2); background: rgb(20, 18, 16); }
   .gd-cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
   @media (max-width: 767px) { .gd-cta-row { display: grid; grid-template-columns: minmax(0, 1fr); } }
+
+  /* The bar that follows a reader down an events guide (DESIGN-DEBT.md entry 163). Fixed to the
+     foot of the screen; the footer gets the same height of padding so nothing sits under it. */
+  .gd-float { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 10px clamp(12px, 4vw, 24px) calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(18, 18, 16, 0.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(185, 156, 102, 0.3); }
+  .gd-float :global(a) { min-height: 46px !important; padding-top: 0 !important; padding-bottom: 0 !important; white-space: nowrap; }
+  .gd-float-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  :global(body:has(.gd-float) footer) { padding-bottom: 76px !important; }
+  @media (max-width: 520px) {
+    .gd-float-k { display: none; }
+    .gd-float :global(a) { flex: 1 1 0; justify-content: center; }
+  }
 </style>
 </Base>
