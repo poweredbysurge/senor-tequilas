@@ -79,7 +79,7 @@ done without something from the client. Numbering is ours; the source note is in
 
 | # | Item | Source |
 |---|---|---|
-| R1 | **2002 or 2015.** The new brand copy says the Rivas brothers have owned the brand since 2002, and /our-story now reads "24 years, one mission". The footer, the homepage hero, the JSON-LD and several meta descriptions all say 2015. Both can be true, brand since 2002 and this location since 2015, but somebody has to say which number goes where, because it is in structured data Google reads. | Roberto 10, 15 |
+| ~~R1~~ | **Answered 11 November, entry 157: the brand is "since 2003", this location since 2015.** Original: **2002 or 2015.** The new brand copy says the Rivas brothers have owned the brand since 2002, and /our-story now reads "24 years, one mission". The footer, the homepage hero, the JSON-LD and several meta descriptions all say 2015. Both can be true, brand since 2002 and this location since 2015, but somebody has to say which number goes where, because it is in structured data Google reads. | Roberto 10, 15 |
 | R2 | **Private party capacity.** The note says "It is 100, not 200", but the site says 12 to 400 and nothing says 200. Which is the real maximum, and is it per room or for the building? | Tomas 4 |
 | ~~R3~~ | ~~**Sunday happy hour.**~~ **Settled 7 October**, entry 95: Sunday is not a happy hour day. Removed site wide. | Roberto 2, Daniela, Tomas 5 |
 | R4 | **Which hours block survives.** The instruction is to show hours in one place only. They currently appear in the Find Us card on the homepage and in the footer on all 22 pages. Recommend keeping the footer, since it is on every page, and dropping the Find Us copy. Confirm. | Roberto 13 |

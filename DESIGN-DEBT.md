@@ -4779,9 +4779,14 @@ through Twilio without waiting, sends the lead into Toast with `sendToastLead()`
   line, so each send passes `From` to pin the sender. The text is plain ASCII, one segment, opens
   "Surge lead alert", and never names the restaurant or a drink, because carriers filter alcohol
   words. Without the Twilio variables the function still does Toast and email.
-- **Toast.** The Instant Form does not ask Toast's yes or no questions. The lead goes without
-  them first and once more with "No" and a note if Toast refuses. Which of the two Toast accepts
-  is NOT yet known: no live lead has been sent. Record it here after the first real one.
+- **Toast.** The Instant Form does not ask Toast's yes or no questions, or a time. The lead goes
+  as it is first, and if Toast refuses, once more in the website forms' shape: every yes or no
+  answered, noon as a placeholder time for catering, delivery Yes when the guest picked
+  "Catering delivered to my location", and a note saying what was not asked. **Tested live 11
+  November: Toast refuses the bare lead and accepts the website shape, for both types.** Two test
+  leads named "Website Test (Surge Agency)" landed: private event
+  `d8c462d0-393c-4d55-b1be-1b85877a3ffb` and catering `80574cae-2dd6-422b-916e-5cf12a87fd5a`.
+  Delete both in Toast. Since the first try always fails, it could be dropped.
 - **Email.** `buildInquiryEmail()` takes a new `source` option that changes only the wording
   about where the lead came from. With no source the output is byte for byte what it was
   (`scripts/test-inquiry.mjs` still passes and its samples did not change).
@@ -4791,5 +4796,25 @@ through Twilio without waiting, sends the lead into Toast with `sendToastLead()`
   TEST in front and stay out of Toast.
 - **Replays.** The last 200 lead ids are held in memory. A 502 goes back only when no text and no
   email got through, so a Zapier retry cannot text people twice.
-- Tests: `node scripts/test-meta-lead.mjs`. Not deployed as of this entry.
+- Tests: `node scripts/test-meta-lead.mjs`. Live since 11 November (commits eb70c1f, ca799d0, 8ac105a). The zap is "SEN | Facebook ad leads to text, Toast, email and sheet"; leads also log to the Google Sheet "Señor Tequila's Ad Leads".
+
+## 157. /our-story timeline in order, and 2003 everywhere, 11 November
+
+Jeremy, 6 November: the timeline read 2015 then 2003 under "24 years, one mission", and the
+math did not work. Sam approved the fix 11 November and settled the year: **2003**, not 2002.
+The first restaurant opened in September 2003 (the Post-Crescent clipping on the page, and
+Roberto's answer in entry 97), so 2003 to 2026 was never 24 years.
+
+- The eyebrow reads "Since 2003, one mission". The struck-through "Eleven years, one block" is
+  gone. No year count anywhere, so it cannot go stale.
+- Three cards in order: 2003, 2015, Today. The "Today, the same family..." paragraph moved out
+  of the 2003 card into its own card. No new copy.
+- The 2015 card now names its photograph directly, `site/brothers-card.webp` (59KB, cut from
+  `brothers.jpg`), in place of the "[Pending]" JPG that `tweaks.css` was swapping. The swap
+  rule stays for the homepage. Sam: this becomes a photo of the restaurant later.
+- The Today card uses `site/exterior-dusk.webp`, a real photograph already in the project. No
+  placeholder is live.
+- Homepage: "have owned the brand since 2002" now says 2003. This answers R1 in TASKS.md.
+- Not built locally (the build's native binding does not run in the Cowork VM). Check the
+  three cards at 390 and 1440 on the preview before calling it done.
 
