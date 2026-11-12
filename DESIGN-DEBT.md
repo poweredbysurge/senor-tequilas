@@ -4866,6 +4866,26 @@ Roberto, 6 November (1:38:23 in the meeting): put the testimonial that ran in th
   the sound on and starts it from the top. The script is inline in the hero.
 - `tweaks.css`: /catering is out of the phone rule that darkens hero pictures, for the same
   reason as /friendsgiving. The picture is beside the copy, not behind it.
-- The buffet video in "What shows up" is untouched. Roberto said clicking it "shuts it down".
-  Nothing in the code pauses it, so that needs a look on a real phone.
+- The buffet video in "What shows up" used to sit paused until clicked, which read as broken
+  (likely what Roberto meant by it "shuts down"). Sam, 12 November: it now plays muted on a
+  loop when it scrolls into view and pauses when it leaves, with the controls kept for sound.
+  Not on Save-Data or 2g. Section 16 of the script in Base.astro.
 - Not built locally. Checked as a static mock of the section at 1841, 820 and 390.
+
+## 160. /happy-hour: the video is out, two happy hour photographs are in, 12 November
+
+Jeremy, 6 November (1:42) and again by email 9 November: the clip beside "Same Kitchen, Same
+Bar, Smaller Bill" is not happy hour, it is just drinks, and what belongs there is the happy
+hour drinks and food "in one shot". Sam approved 12 November and left the photo choice open.
+
+- The video (`videos/happy-hour-drinks.mp4`) is off the page. Nothing else uses it; the file
+  and its poster are still in `public/videos/`.
+- In its place, stacked: `site/happy-hour-bar.webp` (the happy hour drinks on one board: draft
+  beers, margaritas, sangria, shooters) over `site/happy-hour-spread.webp` (the happy hour
+  food on one table). Both were already on this page as the strips under the two deal cards.
+- So the strips changed, to keep a photograph from showing twice: The Bar now carries
+  `site/happy-hour-drinks.webp` (the handcrafted margaritas, a $13 happy hour item) and The
+  Bites carries `dishes/quesabirrias-2026.jpg` (the $6 quesabirria taco).
+- Not used: the flavored frozen margarita lineup in `incoming-media/hh-margarita-1.jpg`.
+  Frozen margaritas are not on the happy hour list, which is the mistake being fixed here.
+- No copy changed. Not built locally; checked as a static mock at 1440 and 390.

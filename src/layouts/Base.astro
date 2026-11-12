@@ -1199,7 +1199,7 @@ const jsonLd = {
 
         /* ---- 16. the catering intro video -----------------------------------------------------
            Moves the intro heading down onto the body copy and gives the freed left column a video.
-           Same behaviour as the strips: sound on, plays when asked, nothing fetched before that. */
+           Unlike the strips it plays by itself, muted, once it is on screen. See introVideo(). */
         var INTRO_VIDEOS = {
           '/catering': { file: 'catering-buffet', label: 'A catering buffet being laid out to serve' }
         };
@@ -1221,8 +1221,45 @@ const jsonLd = {
 
           var fig = document.createElement('figure');
           fig.className = 'st-introvideo';
-          fig.appendChild(buildVideo(clip));
+          // Muted, looping, and started when it scrolls into view (Sam, 12 November: it sat
+          // paused and read as broken). Muted and playsinline go on before the source, which is
+          // the order iOS needs to allow inline autoplay, see the hero video above. The controls
+          // stay, so a visitor can still turn the sound on or pause it. Nothing is fetched until
+          // the clip is on screen, and it pauses again when it leaves.
+          var v = document.createElement('video');
+          v.muted = true;
+          v.defaultMuted = true;
+          v.setAttribute('muted', '');
+          v.setAttribute('playsinline', '');
+          v.setAttribute('webkit-playsinline', '');
+          v.setAttribute('loop', '');
+          v.setAttribute('controls', '');
+          v.setAttribute('preload', 'none');
+          v.setAttribute('poster', '/videos/' + clip.file + '.jpg');
+          v.setAttribute('aria-label', clip.label);
+          v.setAttribute('src', '/videos/' + clip.file + '.mp4');
+          fig.appendChild(v);
           grid.insertBefore(fig, grid.firstChild);
+
+          var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          var saving = c && (c.saveData === true || c.effectiveType === '2g' || c.effectiveType === 'slow-2g');
+          if (saving || !('IntersectionObserver' in window)) return;
+          var stopped = false;   // the visitor paused it themselves, so leave it alone
+          var auto = false;
+          v.addEventListener('pause', function () { if (auto) { auto = false; return; } stopped = true; });
+          v.addEventListener('play', function () { stopped = false; });
+          new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+              if (en.isIntersecting) {
+                if (stopped || !v.paused) return;
+                var pr = v.play();
+                if (pr && pr.catch) pr.catch(function () {});
+              } else if (!v.paused) {
+                auto = true;
+                v.pause();
+              }
+            });
+          }, { threshold: 0.4 }).observe(v);
         }
 
         /* ---- 17b. the inquiry forms -----------------------------------------------------------
