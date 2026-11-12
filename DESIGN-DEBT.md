@@ -4818,3 +4818,25 @@ Roberto's answer in entry 97), so 2003 to 2026 was never 24 years.
 - Not built locally (the build's native binding does not run in the Cowork VM). Check the
   three cards at 390 and 1440 on the preview before calling it done.
 
+## 158. /takeout-delivery: plain H1, the Jeep photo, How It Works, 11 November
+
+Jeremy, 6 November: new heading and new picture for the hero, the three steps read "a little
+long", and "you don't click" anything in them. The meeting did not pick the replacements. Sam
+picked them 11 November.
+
+- H1 is "Mexican Takeout & Delivery" (was "Don't Do the Dishes"). It says what the page is and
+  matches the title tag. Type size came down a step (5vw, 4.75rem cap) so the longer line fits
+  the column. Mario to confirm the H1 for SEO. The H1 table in CLAUDE.md is updated.
+- The hero picture is the Jeep and the pink "From Mexico With Love" bag
+  (`223a406ae07f5bb3.jpg`), named directly on the `<img>`. It had been sitting inside the
+  caption pill, on top of the quesabirria plate; that nested span is gone and so is the plate.
+  The photo is portrait, so the panel's minimum height went from 46vh to 60vh and the crop is
+  held at 58% so the face and the bag both stay in.
+- "Three Ways" is "How It Works". The three steps were never three ways.
+- Step 01 has two buttons: Order Online (Toast) and Call 301-569-4574. Same links as the hero.
+- DoorDash and Grubhub carry their real links in the markup now, so the script in Base.astro
+  (section 12) has nothing to do on this page. **Uber Eats is off the page** until Mario's Uber
+  listing issue is settled; the URL is still in Base.astro and LINK-MAP.json for when it is.
+  /birria-ramen still names Uber Eats in a sentence (text only, no link). Left alone.
+- Not built locally. Check the hero at 390 and 1440 on production: H1 wraps cleanly, face and
+  bag both in frame.

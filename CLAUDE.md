@@ -36,7 +36,7 @@ project and the code in `src/` is the source of truth, not the board.
 | From Mexico, With Love | `/` |
 | The Menu | `/menu` |
 | We're Not a Chain. We're a Family. | `/our-story` |
-| Don't Do the Dishes | `/takeout-delivery` |
+| Mexican Takeout & Delivery | `/takeout-delivery` |
 | Birria Tacos | `/birria-tacos` |
 | Street Tacos | `/street-tacos` |
 | Fajitas & Molcajetes | `/fajitas-molcajetes` |
