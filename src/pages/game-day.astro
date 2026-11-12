@@ -43,7 +43,7 @@ const fights = upcomingFights(fightData.fights);
         <h1 style="color: rgb(246, 239, 228); font-family: 'Archivo Black', sans-serif; font-size: clamp(30px, 5.6vw, 56px); line-height: 1.02; margin: 10px 0px 0px; text-transform: uppercase; text-wrap: balance;">Every Game, Every Night</h1>
         <p style="font-size: 16px; line-height: 1.7; color: rgba(234, 226, 214, 0.85); margin: 16px 0px 0px; max-width: 52ch; text-wrap: pretty;">The World Cup, the Champions League, Liga MX, and every NFL game from the Commanders to the Eagles, in a room built for it.</p>
         <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px;">
-          <a href="#schedule" style="display: inline-flex; align-items: center; justify-content: center; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; box-shadow: rgba(56, 176, 73, 0.35) 0px 0px 30px;">See Tonight</a>
+          <a href="#schedule" style="display: inline-flex; align-items: center; justify-content: center; background: rgb(56, 176, 73); color: rgb(12, 18, 13); font-weight: 800; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; box-shadow: rgba(56, 176, 73, 0.35) 0px 0px 30px;">See What's On</a>
           <a href="/happy-hour" style="display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid rgba(185, 156, 102, 0.75); color: rgb(234, 226, 214); font-weight: 700; font-size: 15px; padding: 16px 24px; border-radius: 12px; min-height: 52px; box-sizing: border-box; background: rgba(18, 18, 16, 0.4);">Happy Hour</a>
         </div>
         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px;">
@@ -57,7 +57,16 @@ const fights = upcomingFights(fightData.fights);
     </div>
   </section>
 
-  <section id="schedule" data-screen-label="Live schedule" style="background: rgb(20, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(40px, 6.4vw, 84px) 0px; scroll-margin-top: 70px;">
+  <section data-screen-label="Jersey strip" aria-label="Game day at Señor Tequila's" style="background: rgb(20, 18, 16); border-top: 1px solid rgba(185, 156, 102, 0.2); padding: clamp(20px, 3vw, 36px) 0px 0px;">
+    <div class="st-jerseys" style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.6vw, 48px);">
+      <img src="/images/site/game-day-jerseys-1.webp" alt="Three friends at the bar in Ravens and Commanders jerseys, one holding a football" loading="lazy" decoding="async" width="720" height="900" style="display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; border: 1px solid rgb(42, 40, 32); background: rgb(28, 27, 24);">
+      <img src="/images/site/game-day-jerseys-2.webp" alt="A guest in a Washington shirt cheering with her hands up as the bar celebrates a play" loading="lazy" decoding="async" width="720" height="900" style="display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; border: 1px solid rgb(42, 40, 32); background: rgb(28, 27, 24);">
+      <img src="/images/site/game-day-jerseys-3.webp" alt="Two fans in Ravens and Commanders jerseys at a full table under the big screen" loading="lazy" decoding="async" width="720" height="900" style="display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; border: 1px solid rgb(42, 40, 32); background: rgb(28, 27, 24);">
+      <img src="/images/site/game-day-jerseys-4.webp" alt="A table of fans raising their drinks over wings, nachos and a football" loading="lazy" decoding="async" width="720" height="900" style="display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 16px; border: 1px solid rgb(42, 40, 32); background: rgb(28, 27, 24);">
+    </div>
+  </section>
+
+  <section id="schedule" data-screen-label="Live schedule" style="background: rgb(20, 18, 16); padding: clamp(40px, 6.4vw, 84px) 0px; scroll-margin-top: 70px;">
     <div style="max-width: 1180px; margin: 0px auto; padding: 0px clamp(18px, 4.5vw, 48px);">
       <!-- data-own-motion: the page script replaces this block, so the scroll reveals leave it alone -->
       <div data-gd-body data-own-motion aria-live="polite" set:html={scheduleHtml} />

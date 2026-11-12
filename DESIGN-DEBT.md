@@ -4915,3 +4915,31 @@ live page at 375 wide, 12 November. Sam approved the three changes the same day.
 - **Not measured.** No Lighthouse run was possible from the Cowork session. Run PageSpeed
   Insights on /happy-hour after deploy and write the numbers here. If CLS is still over 0.1,
   there is a second cause not yet found.
+
+## 162. /game-day: more soccer, a jersey strip, and "what's on", 12 November
+
+Three things from the 6 November meeting and Jeremy's 9 November email. Sam approved all of
+it 12 November.
+
+- **Soccer was missing from the schedule** (Jeremy: any broadcast match can go on a TV).
+  Two causes, both in `src/lib/games.js`:
+  - The feed list had no La Liga, Serie A, Bundesliga, Ligue 1 or CONCACAF. Added `esp.1`,
+    `ita.1`, `ger.1`, `fra.1`, `concacaf.champions` and `concacaf.nations.league` (Mexico's
+    and the United States' matches only; a window has dozens of small-nation fixtures). Each
+    feed was checked on ESPN 12 November and returns fixtures.
+  - The week was capped at 40 games and soccer lost to football and basketball. The cap is
+    80, and `SOCCER_MIN` holds 24 of those places for soccer, shared across the days.
+  - Still true: only games that overlap open hours show. Most European kickoffs are morning
+    Eastern, so on a weekday few of them will appear. That is the open-hours rule, not a bug.
+  - Checked with a faked feed (a heavy Saturday of college football, NBA all week): 80 games,
+    soccer keeps its places, Nations League shows the United States and not Sint Maarten.
+- **The jersey strip.** Four stills between the hero and the schedule,
+  `site/game-day-jerseys-1..4.webp`, cut from the client's football clip
+  (`incoming-media/ads-november/FootballVideo.mov`) and cropped above its burned-in captions,
+  so no caption and no TV count is in any of them. Four across, two by two on a phone
+  (tweaks.css section 155). Sam: new photographs from the client can replace these later.
+- **"TV guide" wording, H1 untouched.** The hero button reads "See What's On" (was "See
+  Tonight") and the eyebrow over the week reads "On our TVs this week" (was "The next seven
+  days"). The H1 is Mario's call, on the seo board.
+- Not built locally. Check the strip at 390 and 1440, and that /api/games answers with soccer
+  in it once deployed.

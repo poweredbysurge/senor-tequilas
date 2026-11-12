@@ -1805,3 +1805,16 @@ body[data-route="/"] a[data-dc-tpl="228"] {
     background-image: none !important;
   }
 }
+
+/* ---- 155. /game-day: the jersey strip ------------------------------------------------------
+   12 November, DESIGN-DEBT.md entry 162. Four stills between the hero and the schedule. Four
+   across, two by two on a phone. A fixed count, not auto-fit, so a tablet never leaves one
+   photograph alone on a second row. */
+.st-jerseys {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 767px) {
+  .st-jerseys { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+}

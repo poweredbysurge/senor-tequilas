@@ -14,7 +14,9 @@ export const TZ = 'America/New_York';
 const BASE = 'https://site.api.espn.com/apis/site/v2/sports';
 const TIMEOUT_MS = 6000;
 const HOUR = 3600000;
-const UPCOMING_CAP = 40;
+const UPCOMING_CAP = 80;
+// of those, places soccer cannot be crowded out of in a heavy football and basketball week
+const SOCCER_MIN = 24;
 const DAYS_AHEAD = 7; // today plus six: seven day groups, so no weekday name repeats
 
 // sport-specific length of a game, used to decide whether any of it falls in open hours
@@ -28,6 +30,15 @@ export const LEAGUES = [
   { key: 'uefa.champions', path: 'soccer/uefa.champions', sport: 'soccer', hours: 2, featured: true },
   { key: 'uefa.europa', path: 'soccer/uefa.europa', sport: 'soccer', hours: 2 },
   { key: 'mex.1', path: 'soccer/mex.1', sport: 'soccer', hours: 2 },
+  // Added 12 November: Jeremy, 9 November, any broadcast match can go on a TV. Most European
+  // kickoffs are morning Eastern, so only the afternoon ones overlap open hours and show.
+  { key: 'esp.1', path: 'soccer/esp.1', sport: 'soccer', hours: 2 },
+  { key: 'ita.1', path: 'soccer/ita.1', sport: 'soccer', hours: 2 },
+  { key: 'ger.1', path: 'soccer/ger.1', sport: 'soccer', hours: 2 },
+  { key: 'fra.1', path: 'soccer/fra.1', sport: 'soccer', hours: 2 },
+  { key: 'concacaf.champions', path: 'soccer/concacaf.champions', sport: 'soccer', hours: 2 },
+  // dozens of small-nation fixtures a window; Mexico's and the United States' only
+  { key: 'concacaf.nations.league', path: 'soccer/concacaf.nations.league', sport: 'soccer', hours: 2, only: ['Mexico', 'United States'] },
   // MLS ends with MLS Cup; the feed is simply empty after it
   { key: 'usa.1', path: 'soccer/usa.1', sport: 'soccer', hours: 2 },
   { key: 'fifa.world', path: 'soccer/fifa.world', sport: 'soccer', hours: 2 },
@@ -36,7 +47,7 @@ export const LEAGUES = [
   { key: 'ufc', path: 'mma/ufc', sport: 'mma', hours: 4 },
 ];
 
-const LABELS = { 'English Premier League': 'Premier League', 'Mexican Liga BBVA MX': 'Liga MX', 'Ultimate Fighting Championship': 'UFC' };
+const LABELS = { 'English Premier League': 'Premier League', 'LALIGA': 'La Liga', 'Spanish LALIGA': 'La Liga', 'Mexican Liga BBVA MX': 'Liga MX', 'Ultimate Fighting Championship': 'UFC' };
 
 const FEATURED_TEAMS = new Set([
   'Washington Commanders', 'Baltimore Ravens', 'Philadelphia Eagles', 'Pittsburgh Steelers',
@@ -45,7 +56,7 @@ const FEATURED_TEAMS = new Set([
 ]);
 
 // which games keep their place when the week has more than UPCOMING_CAP of them
-const BIG_LEAGUES = new Set(['nfl', 'college-football', 'uefa.champions', 'eng.1', 'mex.1', 'fifa.world', 'fifa.friendly', 'ufc']);
+const BIG_LEAGUES = new Set(['nfl', 'college-football', 'uefa.champions', 'eng.1', 'mex.1', 'esp.1', 'concacaf.champions', 'concacaf.nations.league', 'fifa.world', 'fifa.friendly', 'ufc']);
 const rank = (g) => (g.featured ? 0 : g.league === 'nfl' ? 1 : BIG_LEAGUES.has(g.league) ? 2 : g.network ? 3 : 4);
 
 // ---------------------------------------------------------------- New York clock
@@ -214,31 +225,41 @@ async function fetchLeague(league, dayKeys, fetchImpl) {
     .map((ev) => normalize(ev, league, name))
     .filter((g) => g && !seen.has(g.id) && seen.add(g.id))
     .filter((g) => !league.mexicoOnly || g.home.name === 'Mexico' || g.away.name === 'Mexico')
+    .filter((g) => !league.only || league.only.includes(g.home.name) || league.only.includes(g.away.name))
     .filter((g) => !league.weekdays || league.weekdays.includes(weekdayIndex(etDateKey(Date.parse(g.start)))));
 }
 
 const byStart = (a, b) => Date.parse(a.start) - Date.parse(b.start) || b.featured - a.featured || rank(a) - rank(b);
 
-// Over the cap, featured games and every NFL game go in first. What room is left is shared
-// out a day at a time, most important game first, so a Saturday of college football cannot
-// crowd out the rest of the week.
-function capByDay(games, cap) {
-  if (games.length <= cap) return games.slice().sort(byStart);
-  const sure = games.filter((g) => rank(g) <= 1).sort(byStart).slice(0, cap);
+// Over the cap, featured games and every NFL game go in first. Then soccer gets its share,
+// SOCCER_MIN places, because a Saturday of college football used to push Liga MX off the
+// list. What room is left is shared out a day at a time, most important game first, so no
+// one day can crowd out the rest of the week.
+function byDayRoundRobin(games, room) {
   const days = new Map();
   for (const g of games) {
-    if (rank(g) <= 1) continue;
     const k = etDateKey(Date.parse(g.start));
     if (!days.has(k)) days.set(k, []);
     days.get(k).push(g);
   }
   const queues = [...days.values()].map((list) => list.slice().sort((a, b) => rank(a) - rank(b) || byStart(a, b)));
-  const out = sure;
-  for (let i = 0; out.length < cap; i++) {
+  const out = [];
+  for (let i = 0; out.length < room; i++) {
     let took = false;
-    for (const q of queues) if (q[i] && out.length < cap) { out.push(q[i]); took = true; }
+    for (const q of queues) if (q[i] && out.length < room) { out.push(q[i]); took = true; }
     if (!took) break;
   }
+  return out;
+}
+
+export function capByDay(games, cap, soccerMin = SOCCER_MIN) {
+  if (games.length <= cap) return games.slice().sort(byStart);
+  const out = games.filter((g) => rank(g) <= 1).sort(byStart).slice(0, cap);
+  const taken = new Set(out.map((g) => g.id));
+  const left = () => games.filter((g) => !taken.has(g.id));
+  const have = out.filter((g) => g.sport === 'soccer').length;
+  for (const g of byDayRoundRobin(left().filter((g) => g.sport === 'soccer'), Math.min(Math.max(0, soccerMin - have), cap - out.length))) { out.push(g); taken.add(g.id); }
+  for (const g of byDayRoundRobin(left(), cap - out.length)) out.push(g);
   return out.sort(byStart);
 }
 
@@ -354,7 +375,7 @@ export function renderSchedule(data, { business, now = Date.now(), expanded = fa
     + '</div>';
   const first = groups.slice(0, 2).map(dayList).join('');
   const rest = groups.slice(2).map(dayList).join('');
-  const blockB = `<div data-gd-week>${eyebrow('The next seven days')}`
+  const blockB = `<div data-gd-week>${eyebrow('On our TVs this week')}`
     + `<h2 style="${H2}">${open ? 'This Week\'s Games' : 'Coming Up When We Open'}</h2>`
     + `<p style="${MUTED} margin: 10px 0px 0px;">All times Eastern.</p>`
     + `<div style="max-width: 760px;">`
