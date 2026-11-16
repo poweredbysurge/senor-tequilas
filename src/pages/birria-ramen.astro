@@ -48,7 +48,6 @@ const REVIEW = { name: 'Matt P.', text: "Easiest decision, we're coming back! Th
 const ROBERTO_QUOTE = 'He would drive by my house every two days with a fresh batch of birria and handmade tortillas and leave it on top of my trunk. After about fifteen recipes, this one was chosen, then perfected.';
 const DELIVERY = [
   ['DoorDash', 'https://www.doordash.com/store/tequilas-germantown-1382099/87487565/'],
-  ['Uber Eats', 'https://www.ubereats.com/store/senor-tequilas-20021-century-blvd/VmgKaUsFRFWHMUQfd1a8NA'],
   ['Grubhub', 'https://www.grubhub.com/restaurant/seor-tequilas-20021-century-blvd-germantown/2455303'],
 ];
 const MAP_ADDRESS = `${business.streetAddress}, ${business.addressLocality}, ${business.addressRegion} ${business.postalCode}`;
@@ -78,7 +77,7 @@ const FAQ = [
   { q: 'Does the birria ramen have allergens?',
     a: 'The ramen noodles are wheat. Tell your server about any other allergy and the kitchen will walk you through the bowl.' },
   { q: 'Can I get birria ramen for takeout or delivery?',
-    a: 'Yes. It travels well because the consommé is packed separately. Order pickup through Toast up to 15 minutes before close, or delivery through DoorDash, Uber Eats or Grubhub.' },
+    a: 'Yes. It travels well because the consommé is packed separately. Order pickup through Toast up to 15 minutes before close, or delivery through DoorDash or Grubhub.' },
   { q: 'What is the difference between birria ramen and birria tacos?',
     a: 'Same eight-hour beef braise, same consommé. The tacos put the meat in a handmade tortilla with the consommé on the side for dipping. The ramen puts the meat and consommé over noodles so the broth is in every bite. Many guests order one of each for the table.' },
   { q: 'What should I drink with birria ramen?',
@@ -230,7 +229,7 @@ const dishLd = [
           <div style={EYEBROW}><span style={RULE}></span>It travels</div>
           <h2 style={H2}>Order It In</h2>
           <p style={P}>Birria ramen is one of the few noodle dishes that travels well, because the consommé goes in its own container and the noodles do not sit in it until you say so. Roberto's words: "Travels great. Available in every way."</p>
-          <p style={P}>Pickup through <a href="/takeout-delivery" style={LINK}>Toast</a> up to 15 minutes before close. Delivery through DoorDash, Uber Eats and Grubhub. And if you want the braise without the noodles, birria goes home by itself too, along with tamales, pozole and handmade tortillas.</p>
+          <p style={P}>Pickup through <a href="/takeout-delivery" style={LINK}>Toast</a> up to 15 minutes before close. Delivery through DoorDash and Grubhub. And if you want the braise without the noodles, birria goes home by itself too, along with tamales, pozole and handmade tortillas.</p>
           <div class="br-ctas" style="margin-top: 22px;"><a href={business.orderUrl} target="_blank" rel="noopener" style={BTN_PRIMARY}>Order Takeout</a></div>
           <div class="br-delivery">{DELIVERY.map(([n, u]) => <a href={u} target="_blank" rel="noopener">{n}</a>)}</div>
         </SignFrame>
@@ -384,7 +383,7 @@ const dishLd = [
   .br-delivery { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .br-delivery a { display: inline-flex; align-items: center; border: 1px solid rgba(214, 188, 133, 0.55); color: rgb(234, 226, 214); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 14px; border-radius: 999px; text-decoration: none; min-height: 36px; }
   .br-delivery a:hover, .br-delivery a:focus-visible { border-color: rgb(214, 188, 133); color: rgb(246, 239, 228); }
-  /* phones: DoorDash, Uber Eats and Grubhub take Order Takeout's size, radius and type, one per row */
+  /* phones: DoorDash and Grubhub take Order Takeout's size, radius and type, one per row */
   @media (max-width: 767px) {
     .br-delivery { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 12px; }
     .br-delivery a { justify-content: center; width: 100%; box-sizing: border-box; min-height: 52px; padding: 16px 24px; border-radius: 12px !important; border: 1.5px solid rgba(185, 156, 102, 0.75); font-family: inherit; font-weight: 700; font-size: 15px !important; letter-spacing: 0 !important; }

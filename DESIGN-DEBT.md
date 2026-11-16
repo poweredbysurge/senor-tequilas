@@ -5006,3 +5006,34 @@ asked for the rest the same day.
   it, as before. Weddings ("RECEPTIONS", 506px at its largest) and catering were measured the
   same way and fit, so they are unchanged apart from `overflow-wrap: break-word` on the two
   event H1s as a last resort.
+
+## 165. Cleanup pass, the first five fixes, 13 November
+
+From the full-site sweep agreed on 6 November (Sam and Mario clear the easy things before the
+five-person walkthrough). About 300 image placements on 24 pages were laid out beside their
+section heading and alt text and checked by eye, and the markup was searched for dead links,
+missing files, placeholders, old wording and dates. Sam approved these five 13 November.
+
+- **/birria-ramen no longer names or links Uber Eats**: the DELIVERY list, the FAQ answer
+  (which is also the FAQ schema) and the takeout paragraph. Same reason as entry 158. The
+  Uber Eats URL is still in Base.astro and LINK-MAP.json for when the listing is settled.
+- **/birria-tacos, "Birria wants a Cantarito"**: the photograph was the handcrafted
+  margaritas (`df43e9ee488c58d3.jpg`). It is `dishes/cantarito.jpg` now, the clay cups the
+  paragraph describes.
+- **Quinceañeras hero alt** was the page's H1. It describes the photograph now.
+- **Homepage: the "[Pending]" card is gone from the markup.** The three `<img>` that named
+  `5e8f15f4ebe2842c.jpg` name `Brothers-e1650353623141.jpg` directly, which is what
+  IMAGE_SWAPS in Base.astro was putting there after load, and the "Placeholder: swap for the
+  new chef at the pass" span is deleted, which is what dropChefPlaceholder() was removing.
+  Both scripts now find nothing on the homepage. MobileMenu still uses the old file as a
+  background, swapped by tweaks.css section 14; left alone.
+- **Left as they are, Sam's decision:** the drink and bottle pictures on /menu and the three
+  on /birria-ramen that are not photographs from the bar. They are accurate to what they
+  show and the restaurant had no pictures of those items.
+- **For the restaurant, not fixed here:** the four entertainment pictures on
+  /private-parties (`addon-sound-light`, `addon-live-music`, `addon-dance-floor`,
+  `addon-transformers`; the first is also on /holiday-parties) do not look like photographs
+  of this restaurant; the Big Mami picture on /game-day (R19); and whether Pork Belly Tacos
+  is still "coming soon" on /street-tacos.
+- **Not checked by this pass:** whether each /menu photograph is the dish it is named for.
+  That goes to the restaurant as a name-and-photo sheet in the walkthrough.
