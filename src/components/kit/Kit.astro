@@ -50,7 +50,11 @@
   }
 
   /* ---- hero: shared ---- */
-  .kt-hero { position: relative; background: rgb(18, 18, 16); overflow: hidden; }
+  /* The hero field carries the site's folklore collage (texture-black.jpg, the lucha libre masks,
+     calaveras and posters the footer and the menu panel use), held faint under a near-opaque
+     scrim, so it reads as texture, never as a picture. Mario, 19 November. */
+  .kt-hero { position: relative; overflow: hidden;
+    background: linear-gradient(180deg, rgba(18, 18, 16, 0.74), rgba(18, 18, 16, 0.9)), url(/images/site/texture-black.jpg) center / cover no-repeat rgb(18, 18, 16); }
   .kt-hero-in { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: clamp(20px, 2.6vw, 32px) clamp(18px, 4.5vw, 48px) clamp(48px, 6vw, 84px); }
   .kt-crumbs ol { list-style: none; margin: 0 0 clamp(22px, 3vw, 40px); padding: 0; display: flex; flex-wrap: wrap; gap: 4px 8px; font-size: 15px; line-height: 1.5; color: rgba(234, 226, 214, 0.7); }
   .kt-crumbs li { display: inline; }
@@ -64,11 +68,15 @@
   .kt-office a { color: rgb(214, 188, 133); }
 
   /* ---- hero: split (copy left, one framed photo right, a chip on the photo) ---- */
-  .kt-hero[data-hero="split"] .kt-hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
-  .kt-hero-photo { position: relative; margin: 0; }
-  .kt-hero-photo .kt-frame { border-color: rgba(185, 156, 102, 0.4); }
-  .kt-hero[data-hero="split"] .kt-hero-photo .kt-frame { aspect-ratio: 4 / 3 !important; }
-  .kt-chip { position: absolute; left: 14px; bottom: 14px; display: inline-flex; align-items: center; background: rgba(18, 18, 16, 0.9); border: 1px solid rgba(214, 188, 133, 0.6); border-radius: 999px; padding: 8px 14px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(246, 239, 228); }
+  /* HeroSplit is balanced: two equal columns, and the photo is exactly as tall as the copy
+     beside it (it stretches and crops), so a tall column of copy never sits next to a small
+     picture. PAGE-TEMPLATES rule 15, v1.9. */
+  .kt-hero[data-hero="split"] .kt-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: stretch; }
+  .kt-hero-photo { position: relative; margin: 0; display: flex; }
+  .kt-hero-photo .kt-frame { flex: 1; border-color: rgba(185, 156, 102, 0.4); box-shadow: rgba(0, 0, 0, 0.45) 0 24px 60px -24px; }
+  @media (min-width: 768px) { .kt-hero[data-hero="split"] .kt-hero-photo .kt-frame { aspect-ratio: auto !important; min-height: 440px; } }
+  @media (max-width: 767px) { .kt-hero[data-hero="split"] .kt-hero-photo .kt-frame { aspect-ratio: 4 / 3 !important; } }
+
   @media (max-width: 767px) {
     .kt-hero[data-hero="split"] .kt-hero-grid { grid-template-columns: minmax(0, 1fr); }
   }
@@ -76,7 +84,10 @@
   /* ---- hero: stats (photo behind a centred headline, a cream bar of three facts) ---- */
   .kt-hero-bg { position: absolute; inset: 0; margin: 0; }
   .kt-hero-bg img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .kt-hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18, 18, 16, 0.86) 0%, rgba(18, 18, 16, 0.78) 55%, rgba(18, 18, 16, 0.94) 100%); }
+  /* the scrim is darkest behind the copy, so the body text reads over any photograph */
+  .kt-hero-bg::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 62% 70% at 50% 42%, rgba(10, 10, 9, 0.9) 0%, rgba(10, 10, 9, 0.78) 60%, rgba(10, 10, 9, 0.7) 100%), linear-gradient(180deg, rgba(10, 10, 9, 0.55), rgba(10, 10, 9, 0.85)); }
+  .kt-hero[data-hero="stats"] .kt-h1, .kt-hero[data-hero="stats"] .kt-sub, .kt-hero[data-hero="stats"] .kt-p { text-shadow: rgba(0, 0, 0, 0.6) 0 1px 12px; }
+  .kt-hero[data-hero="stats"] .kt-p { color: rgb(246, 239, 228); }
   .kt-hero[data-hero="stats"] .kt-hero-copy { max-width: 900px; margin: 0 auto; text-align: center; }
   .kt-hero[data-hero="stats"] .kt-eyebrow { justify-content: center; }
   .kt-hero[data-hero="stats"] .kt-eyebrow::after { content: ""; flex: 0 0 auto; width: 26px; height: 1px; background: currentColor; opacity: 0.7; }
@@ -116,6 +127,12 @@
 
   /* ---- Split: copy one side, a visual the other ---- */
   .kt-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4.5vw, 72px); align-items: center; }
+  @media (min-width: 768px) {
+    .kt-split:has(> .kt-photo) { align-items: stretch; }
+    .kt-split > .kt-photo { display: flex; flex-direction: column; }
+    .kt-split > .kt-photo .kt-frame { flex: 1; aspect-ratio: auto !important; min-height: 340px; }
+    .kt-split > div { align-self: center; }
+  }
   .kt-split.is-top { align-items: start; }
   @media (min-width: 768px) { .kt-split.is-flip > :first-child { order: 2; } }
   @media (max-width: 767px) { .kt-split { grid-template-columns: minmax(0, 1fr); } }
@@ -147,6 +164,8 @@
   .kt-facts { margin: clamp(26px, 3vw, 40px) 0 0; border-top: 1px solid var(--line); }
   .kt-fact { display: grid; grid-template-columns: minmax(150px, 0.3fr) minmax(0, 1fr); gap: 6px 32px; padding: 20px 0; border-bottom: 1px solid var(--line); text-align: left; }
   .kt-fact dt { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 18px; line-height: 1.2; text-transform: uppercase; color: var(--ink); }
+  .kt-fact dt:has(.kt-fact-ic) { display: flex; align-items: center; gap: 14px; }
+  .kt-fact-ic { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--gold); border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); background: var(--card); }
   .kt-fact dd { margin: 0; font-size: 18px; line-height: 1.6; color: var(--body); }
   @media (max-width: 767px) { .kt-fact { grid-template-columns: minmax(0, 1fr); } }
 
@@ -203,6 +222,9 @@
   /* ---- cross-links: one card per page ---- */
   .kt-routes { list-style: none; padding: 0; margin: clamp(22px, 2.6vw, 32px) 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 12px; }
   .kt-route { display: flex; flex-direction: column; gap: 6px; height: 100%; box-sizing: border-box; padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(185, 156, 102, 0.35); background: var(--card); color: var(--body); text-align: left; transition: border-color 200ms ease; }
+  .kt-route.has-img { padding: 0; overflow: hidden; }
+  .kt-route.has-img .kt-route-in { display: flex; flex-direction: column; gap: 6px; flex: 1; padding: 16px 20px 18px; }
+  .kt-route-img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-bottom: 1px solid var(--line); }
   .kt-route:hover { border-color: rgb(214, 188, 133); }
   .kt-route-k { font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
   .kt-route-t { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 18px; line-height: 1.2; text-transform: uppercase; color: var(--ink); }
@@ -210,6 +232,6 @@
 
   /* The site centres section copy on a phone (tweaks.css). Cards, fact rows, tables, reviews and
      link cards stay ranged left there, as the template asks. */
-  .kt .kt-card, .kt .kt-card *, .kt .kt-fact, .kt .kt-fact *, .kt .kt-review, .kt .kt-review *, .kt .kt-table th, .kt .kt-table td, .kt .kt-route, .kt .kt-route *, .kt .kt-stats li, .kt .kt-stats li * { text-align: left !important; }
+  .kt .kt-card, .kt .kt-card *, .kt .kt-fact, .kt .kt-fact *, .kt .kt-review, .kt .kt-review *, .kt .kt-table th, .kt .kt-table td, .kt .kt-route, .kt .kt-route *, .kt .kt-car-card, .kt .kt-car-card *, .kt .kt-stats li, .kt .kt-stats li * { text-align: left !important; }
   @media (max-width: 767px) { .kt-split { row-gap: 40px; } }
 </style>

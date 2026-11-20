@@ -7,6 +7,7 @@ import Kit from '../components/kit/Kit.astro';
 import Crumbs from '../components/kit/Crumbs.astro';
 import Photo from '../components/kit/Photo.astro';
 import ReviewCard from '../components/kit/ReviewCard.astro';
+import Carousel from '../components/kit/Carousel.astro';
 import business from '../data/business.json';
 import { PHONE_HREF, assertFacts, faqLd } from '../lib/authored.js';
 import { PHOTOS, photoSrcset, HERO_SIZES, moreThan, RATING, MAPS_URL, GOOGLE_REVIEWS_URL, ADDRESS_LINE, PHONE_PAREN, HOURS_NOV16, reviewExcerpt, crumbLd, serviceLd } from '../lib/kit.js';
@@ -36,12 +37,38 @@ const WEEK = [
   ['Sunday', 'Live mariachi, 6:30 to 9:30. NFL on'],
 ];
 
+// The cocktail carousel (Mario, 19 November): every card has its own photograph. Cantarito and
+// Red sangria carry the approved copy's sentences; the others are drinks from /menu, with the
+// menu's own descriptions, chosen for range (mezcal, frozen, tequila, a mojito, a martini). The
+// Oaxaca Old Fashioned, the Paloma and the michelada have no photograph of their own, so their
+// approved sentences stay in the paragraph above the carousel. Requested: an Oaxaca Old
+// Fashioned in its smoking box, a Paloma and a michelada, to give each its card.
+const S = (n) => ({ src: `/images/site/${n}-640.webp`, w: 640, h: 640 });
 const COCKTAILS = [
-  { t: 'Cantarito', p: 'The Cantarito comes in a handmade clay cup that goes home with you.' },
-  { t: 'Oaxaca Old Fashioned', p: "The Oaxaca Old Fashioned mixes Montelobos mezcal with Maker's Mark and arrives in a smoking box." },
-  { t: 'Paloma', p: 'The Paloma is 1800 Reposado and Squirt.' },
-  { t: 'Michelada', p: 'The michelada is built to match the cerveza you pick, with a banderilla de tamarindo on top.' },
-  { t: 'Red sangria', p: 'The red sangria is made in-house and finished with brandy-soaked fruit.' },
+  { title: 'Cantarito', kicker: 'Clay cup to keep', text: 'The Cantarito comes in a handmade clay cup that goes home with you.',
+    img: { src: '/images/dishes/cantarito.jpg', srcset: '/images/dishes/cantarito-800.webp 800w, /images/dishes/cantarito.jpg 1024w', w: 1024, h: 1536, alt: 'A bartender garnishing three Cantaritos in painted clay cups with chili-salt rims and citrus' } },
+  { title: 'Mezcalita', kicker: 'Mezcal', text: 'Ilegal Joven mezcal, triple sec, dry curaçao, margarita mix and a touch of OJ. Tajín and Miguelito rim.',
+    img: { ...S('drink-mezcalita'), alt: 'A Mezcalita on the rocks in a sugar-rimmed glass with a dried orange wheel on top' } },
+  { title: 'Mangonada', kicker: 'Frozen', text: 'Mango frozen margarita, chamoy, Tajín, Miguelito rim and a mango lollipop.',
+    img: { ...S('drink-mangonada'), alt: 'A frozen mango Mangonada streaked with chamoy, a tamarind straw and a mango lollipop across the rim' } },
+  { title: 'Red sangria', kicker: 'Made in-house', text: 'The red sangria is made in-house and finished with brandy-soaked fruit.',
+    img: { ...S('drink-sangria'), alt: 'Red sangria in a stemmed wine glass with orange slices, diced fruit and a cinnamon stick' } },
+  { title: 'Tamarindo Margarita', kicker: 'House nectar', text: 'Espolón Blanco, triple sec, our signature house mix and rich, house-made tamarindo nectar.',
+    img: { src: '/images/site/margarita-tamarindo.webp', w: 800, h: 600, alt: 'A tamarindo margarita with a thick chili-salt rim and cucumber ribbons on top' } },
+  { title: 'Top-Shelf Reposado Margarita', kicker: 'Reposado', text: 'Don Julio Reposado, Grand Marnier, dry curaçao, house mix and OJ.',
+    img: { ...S('drink-top-shelf-reposado'), alt: 'The top-shelf reposado margarita in three sizes with chili rims and dried citrus wheels' } },
+  { title: 'Mexican Mojito', kicker: 'Tequila', text: '1800 Blanco, mint, limes, agave nectar and soda.',
+    img: { ...S('drink-mexican-mojito'), alt: 'A tall Mexican Mojito packed with mint and lime, a sugarcane stick and a lime wheel on top' } },
+  { title: 'Jamaica Margarita', kicker: 'House nectar', text: 'Espolón Reposado, triple sec, homemade Jamaica nectar, house mix and lime juice.',
+    img: { src: '/images/site/margarita-jamaica.webp', w: 755, h: 566, alt: 'Three jamaica margaritas in deep red with chili rims, topped with dried hibiscus' } },
+  { title: 'Blue Diamond Margarita', kicker: 'Blanco', text: 'Espolón Blanco, blue curaçao, house mix, triple sec and lime juice.',
+    img: { ...S('drink-blue-diamond'), alt: 'Bright blue margaritas in three sizes with chili rims and fresh berry garnish' } },
+  { title: 'Bulldog', kicker: 'With a Coronita', text: 'A margarita with an upside-down Coronita diving right in. Lime, mango or strawberry, rocks or frozen.',
+    img: { ...S('drink-bulldog'), alt: 'Three frozen margaritas, each with a small beer bottle tipped upside down into the glass' } },
+  { title: 'Jalapeño Margarita', kicker: 'House nectar', text: '1800 Blanco, triple sec, lime juice, house mix and house-made jalapeño nectar.',
+    img: { src: '/images/site/margarita-jalapeno.webp', w: 663, h: 497, alt: 'Jalapeño margaritas in three sizes with chili-salt rims and fresh jalapeño slices' } },
+  { title: 'Espresso Martini', kicker: 'After dinner', text: "Tito's, espresso and Kahlúa.",
+    img: { ...S('drink-espresso-martini'), alt: 'An espresso martini in a coupe with a creamy foam top and three coffee beans' } },
 ];
 
 const REVIEWS = [
@@ -81,7 +108,7 @@ const ld = [
       <Crumbs items={CRUMBS} />
       <div class="kt-hero-grid">
         <div>
-          <div class="kt-eyebrow">The bar area · Germantown, MD</div>
+          <div class="kt-eyebrow">Open seven days a week</div>
           <h1 class="kt-h1">The Bar: Germantown's Mexican Cantina</h1>
           <p class="kt-sub">108 seats, 13-plus TVs, margarita nectars cooked in our own kitchen, and no cover.</p>
           <p class="kt-p">The bar area at Señor Tequila's opens at 3 on weekdays and 11 on weekends, next to Topgolf on Century Boulevard in Germantown. It seats 108 across sixteen four-top tables, two 12-seat long tables and a 20-seat counter, with free parking at the door and on all sides of the building.</p>
@@ -95,7 +122,6 @@ const ld = [
           <div class="kt-frame" style={`aspect-ratio: ${HERO.w} / ${HERO.h};`}>
             <img src={HERO.src} srcset={photoSrcset(HERO)} sizes={HERO_SIZES.split} alt={HERO.alt} width={HERO.w} height={HERO.h} loading="eager" fetchpriority="high" decoding="async" />
           </div>
-          <span class="kt-chip">No cover</span>
         </figure>
       </div>
     </div>
@@ -115,17 +141,12 @@ const ld = [
     </div>
   </section>
 
-  <!-- 3. the cocktail list: cards, on the cream band -->
+  <!-- 3. the cocktail list: a carousel, every card with its photograph, on the cream band -->
   <section data-screen-label="Cocktail list" data-band="cream" class="kt-sec">
     <div class="kt-wrap">
       <div class="kt-eyebrow">The cocktail list</div>
-      <p class="kt-p" style="margin-top: 12px;">Past the <a href="/margaritas">margaritas</a> there is a real cocktail list.</p>
-      <ul class="kt-cards kt-mosaic" style="margin-top: 22px;">
-        <li><Photo id="cantarito" sizes="(max-width: 767px) 92vw, 32vw" /></li>
-        {COCKTAILS.map((c) => (
-          <li class="kt-card"><h3 class="kt-card-t" style="margin-top: 0;">{c.t}</h3><p>{c.p}</p></li>
-        ))}
-      </ul>
+      <p class="kt-p" style="margin-top: 12px; max-width: 74ch;">Past the <a href="/margaritas">margaritas</a> there is a real cocktail list. The Oaxaca Old Fashioned mixes Montelobos mezcal with Maker's Mark and arrives in a smoking box. The Paloma is 1800 Reposado and Squirt. The michelada is built to match the cerveza you pick, with a banderilla de tamarindo on top.</p>
+      <Carousel items={COCKTAILS} label="Cocktails at the bar" />
     </div>
   </section>
 

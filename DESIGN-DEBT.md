@@ -5138,3 +5138,58 @@ machine, which is also why `npm run check-build` could not run). No sideways scr
 width, one H1 each, no tap target under 44px, no image without alt, no dash. On `/catering/cost`
 the price ends at 442px on a 390px phone. Published date on both guides is 19 November: set it
 to the merge date when they go live.
+
+## 167. Mario's review of the 16 November batch, 19 November
+
+Same branch, `preview/nov16-batch`. Still not merged.
+
+**The hero never repeats itself** (PAGE-TEMPLATES v1.9, rule 17). The eyebrows repeated the H1:
+"The bar area · Germantown, MD" over "The Bar: Germantown's Mexican Cantina", and "Sunday,
+February 14, 2027" over an H1 that ends with the same date. New eyebrows: `/bar` "Open seven days
+a week", `/valentines-day` "Reservations open now", Clarksburg "Germantown · Century Boulevard",
+`/catering/cost` "Prices checked November 2026". Also:
+- Clarksburg: the approved subheading is out. It repeated "Clarksburg" from the H1, and its facts
+  (tortillas, birria, tequila bar, Clarksburg Village, Cabin Branch) are all in the paragraphs
+  below. The words are kept in a comment in the page. The stat "About 10 minutes" restated the
+  H1; it is "Kids welcome · Every dining room, every night".
+- Valentine's: the stat label "Live mariachi" restated the subheading; it reads "The band plays".
+- `/catering/cost`: the answer box no longer prints "$22 a person" at display size under a
+  subheading that already says "From $22 a person". The box is labelled "The short answer".
+- The chips on the hero photographs ("No cover", "No minimum headcount") are gone: both said
+  what the copy beside them already said.
+`scripts/check-nov16.mjs` now fails a page whose eyebrow shares a word with the H1 or the
+subheading, or whose subheading shares one with the H1.
+
+**HeroSplit balances.** Two equal columns, and from 768px the photo stretches to the copy
+column's height and crops (measured: 100 percent at 768 and 1440 on `/bar` and
+`/catering/cost`). Body splits with a photo do the same, with the copy centred against it. On a
+phone the photo is 4:3 under the copy, as before. The check fails a split hero off by more than
+4 percent.
+
+**The folklore art behind the heroes.** `texture-black.jpg`, the lucha libre and calavera
+collage the footer and the menu panel already use, sits behind every kit hero under a 74 to 90
+percent scrim.
+
+**Valentine's hero legibility.** The photo heroes (Valentine's, Clarksburg) get a radial scrim
+at 0.9 behind the copy and a soft text shadow; the hero paragraph is full cream now. The "More
+for the night" cards carry photographs: the bar area, a molcajete, the cheesecake chimichanga
+and the jersey strip still. `mexican-molcajete-800.webp` is new.
+
+**The `/bar` cocktail list is a carousel.** `src/components/kit/Carousel.astro`: twelve photo
+cards, three in view on a desktop (two from 768, one and a peek on a phone), one card every
+1.5 seconds, wrapping after the last, arrows that step one. It pauses on hover, on focus, off
+screen, on a hidden tab and for reduced motion. Measured: two cards in 3.3 seconds, one per
+arrow press. Cantarito and Red sangria carry the approved sentences; ten more drinks from
+`/menu` with the menu's own descriptions and its photographs (the drink photography Sam kept
+on 13 November, entry 165; 640px WebP copies are new). The Oaxaca Old Fashioned, Paloma and
+michelada have no photograph, so their approved sentences moved into the paragraph above the
+carousel. Requested: a photo of each, so they can have cards. The Mezcal Mule is not used
+(Roberto took it off, 19 November).
+
+**`/catering/cost`: an icon on each price driver**, eight line icons in a gold ring.
+
+**The footer, sitewide.** The two flat rows of links (25 links) are four columns by page type:
+Eat and drink, Nights, Parties and catering, Visit, eight links at most each, four across on a
+desktop and two by two on a phone, ranged left. Margaritas and the Tequila Bar are in the footer
+for the first time. "Tacos" (which went to `/taco-tuesday`) is labelled "Taco Tuesday". Privacy
+moved to the copyright line. PAGE-TEMPLATES rule 19.

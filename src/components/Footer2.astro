@@ -18,10 +18,27 @@
       </div>
     </div>
 
-    <nav aria-label="Footer" style="position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px clamp(18px, 3vw, 40px); margin-top: clamp(30px, 4vw, 48px);"><a href="/our-story" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Our Story</a><a href="/menu" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Menu</a><a href="/takeout-delivery" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Takeout</a><a href="/taco-tuesday" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Tacos</a><a href="/catering" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Catering</a><a href="/private-parties" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Private Events</a><a href="/holiday-parties" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Holiday Parties</a><a href="/new-years-eve" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">New Year's Eve</a><a href="/happy-hour" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Happy Hour</a><a href="/game-day" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Game Day</a><a href="/#gift" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Gift Cards</a><a href="/guides" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Guides</a><a href="/contact" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Contact</a><a href="/privacy" style="color: rgba(234, 226, 214, 0.88); font-size: 15px;">Privacy</a></nav>
-
-    <!-- Second row: the dish, night and party pages, so every page links to them and Google finds them. DESIGN-DEBT.md entry 152. -->
-    <nav aria-label="More from the menu and events" style="position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px clamp(16px, 2.6vw, 32px); margin-top: 14px;"><a href="/birria-tacos" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Birria Tacos</a><a href="/birria-ramen" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Birria Ramen</a><a href="/street-tacos" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Street Tacos</a><a href="/fajitas-molcajetes" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Fajitas &amp; Molcajetes</a><a href="/la-dulceria" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Desserts</a><a href="/late-night" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Late Night</a><a href="/karaoke" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Karaoke Thursdays</a><a href="/private-parties/quinceaneras-celebrations" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Quinceañeras</a><a href="/private-parties/weddings-receptions" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Weddings &amp; Showers</a><a href="/mexican-restaurant-gaithersburg-md" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Near Gaithersburg</a><a href="/mexican-restaurant-clarksburg-md" style="color: rgba(234, 226, 214, 0.7); font-size: 14px;">Near Clarksburg</a></nav>
+    <!-- Every page, grouped by what it is (Mario, 19 November: one flat row had grown messy).
+         Four columns on a desktop, two by two on a phone; no column runs past eight links.
+         Privacy moved to the bottom line. DESIGN-DEBT.md entry 167. -->
+    <nav aria-label="Footer" class="ft-nav">
+      <div class="ft-col">
+        <h3 class="ft-h">Eat and drink</h3>
+        <ul><li><a href="/birria-tacos">Birria Tacos</a></li><li><a href="/birria-ramen">Birria Ramen</a></li><li><a href="/street-tacos">Street Tacos</a></li><li><a href="/fajitas-molcajetes">Fajitas &amp; Molcajetes</a></li><li><a href="/la-dulceria">Desserts</a></li><li><a href="/margaritas">Margaritas</a></li><li><a href="/tequila-bar">Tequila Bar</a></li><li><a href="/bar">The Bar</a></li></ul>
+      </div>
+      <div class="ft-col">
+        <h3 class="ft-h">Nights</h3>
+        <ul><li><a href="/happy-hour">Happy Hour</a></li><li><a href="/taco-tuesday">Taco Tuesday</a></li><li><a href="/karaoke">Karaoke Thursdays</a></li><li><a href="/game-day">Game Day</a></li><li><a href="/late-night">Late Night</a></li><li><a href="/valentines-day">Valentine's Day</a></li><li><a href="/new-years-eve">New Year's Eve</a></li></ul>
+      </div>
+      <div class="ft-col">
+        <h3 class="ft-h">Parties and catering</h3>
+        <ul><li><a href="/private-parties">Private Events</a></li><li><a href="/private-parties/quinceaneras-celebrations">Quinceañeras</a></li><li><a href="/private-parties/weddings-receptions">Weddings &amp; Showers</a></li><li><a href="/holiday-parties">Holiday Parties</a></li><li><a href="/catering">Catering</a></li><li><a href="/catering/cost">Catering Cost</a></li></ul>
+      </div>
+      <div class="ft-col">
+        <h3 class="ft-h">Visit</h3>
+        <ul><li><a href="/menu">Menu</a></li><li><a href="/takeout-delivery">Takeout</a></li><li><a href="/our-story">Our Story</a></li><li><a href="/contact">Contact</a></li><li><a href="/#gift">Gift Cards</a></li><li><a href="/guides">Guides</a></li><li><a href="/mexican-restaurant-gaithersburg-md">Near Gaithersburg</a></li><li><a href="/mexican-restaurant-clarksburg-md">Near Clarksburg</a></li></ul>
+      </div>
+    </nav>
 
     <div data-footer-info style="border-top: 1px solid rgba(185, 156, 102, 0.28); margin-top: clamp(22px, 3vw, 34px); padding-top: clamp(22px, 3vw, 34px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 26px; align-items: start;">
 
@@ -44,12 +61,25 @@
 
     <div style="border-top: 1px solid rgba(185, 156, 102, 0.28); margin-top: clamp(20px, 3vw, 30px); padding-top: 18px; display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(234, 226, 214, 0.6);">
       <span>© 2026 Señor Tequila&#39;s · Family-owned in Germantown since 2015</span>
+      <a href="/privacy" style="color: rgba(234, 226, 214, 0.7);">Privacy</a>
     </div>
 
   </div>
 </footer>
 
 <style>
+  .ft-nav { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px clamp(20px, 3vw, 40px); margin-top: clamp(34px, 4.4vw, 56px); padding-top: clamp(26px, 3.4vw, 40px); border-top: 1px solid rgba(185, 156, 102, 0.28); text-align: left; }
+  .ft-h { margin: 0 0 10px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .ft-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .ft-nav a { display: inline-flex; align-items: center; min-height: 36px; font-size: 15px; color: rgba(234, 226, 214, 0.88); }
+  @media (max-width: 899px) { .ft-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) {
+    .ft-nav a { min-height: 44px; }
+    /* tweaks.css centres everything in the footer on a phone; the link columns range left */
+    footer .ft-nav, footer .ft-nav * { text-align: left !important; }
+    footer .ft-nav .ft-col, footer .ft-nav ul { justify-items: start !important; align-items: start !important; justify-content: start !important; }
+    footer .ft-nav a { justify-content: flex-start !important; }
+  }
   /* The port is inline-styled throughout; this block exists only for the things an inline
      style cannot express: media queries. Astro scopes it to this component. */
 

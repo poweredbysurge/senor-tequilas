@@ -1,0 +1,82 @@
+---
+/* A card carousel (Mario, 19 November): big photo cards, three in view on a desktop, two on a
+   tablet, one and a peek of the next on a phone. It moves one card every 1.5 seconds and wraps
+   to the start after the last; the arrows step one card. It pauses while the pointer or focus is
+   on it, while the tab is hidden, and for anyone who asks for reduced motion, who get the arrows
+   and a swipe only. Without JavaScript it is a row that scrolls sideways.
+
+   items: [{ title, kicker, text, img: { src, srcset?, w, h, alt } }] */
+const { items, label, interval = 1500 } = Astro.props;
+---
+<div class="kt-car" data-kt-car data-interval={interval} role="region" aria-roledescription="carousel" aria-label={label}>
+  <ul class="kt-car-track" data-kt-car-track>
+    {items.map((it, i) => (
+      <li class="kt-car-card" aria-roledescription="slide" aria-label={`${i + 1} of ${items.length}: ${it.title}`}>
+        <div class="kt-car-img"><img src={it.img.src} srcset={it.img.srcset} sizes={it.img.srcset ? '(max-width: 767px) 84vw, (max-width: 1023px) 46vw, 31vw' : undefined} alt={it.img.alt} width={it.img.w} height={it.img.h} loading="lazy" decoding="async" /></div>
+        <div class="kt-car-body">
+          {it.kicker && <div class="kt-card-k">{it.kicker}</div>}
+          <h3 class="kt-card-t">{it.title}</h3>
+          <p>{it.text}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <div class="kt-car-nav">
+    <button type="button" class="kt-car-btn" data-kt-car-prev aria-label="Previous drink"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button type="button" class="kt-car-btn" data-kt-car-next aria-label="Next drink"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+</div>
+
+<style is:global>
+  .kt-car { position: relative; margin-top: clamp(28px, 3.4vw, 44px); }
+  .kt-car-track { list-style: none; margin: 0; padding: 0 0 6px; display: grid; grid-auto-flow: column; gap: clamp(14px, 1.6vw, 24px);
+    grid-auto-columns: calc((100% - 2 * clamp(14px, 1.6vw, 24px)) / 3);
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .kt-car-track::-webkit-scrollbar { display: none; }
+  @media (max-width: 1023px) { .kt-car-track { grid-auto-columns: calc((100% - clamp(14px, 1.6vw, 24px)) / 2); } }
+  @media (max-width: 767px) { .kt-car-track { grid-auto-columns: 84%; } }
+  .kt-car-card { scroll-snap-align: start; display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .kt-car-img { aspect-ratio: 1 / 1; background: rgb(8, 8, 7); }
+  .kt-car-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .kt-car-body { padding: clamp(18px, 2vw, 24px); text-align: left; }
+  .kt-car-body .kt-card-t { margin-top: 4px; font-size: clamp(20px, 1.8vw, 24px); }
+  .kt-car-body p { font-size: 18px; line-height: 1.55; color: var(--body); margin: 10px 0 0; }
+  .kt-car-nav { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+  .kt-car-btn { width: 52px; height: 52px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; background: transparent; color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--ink) 45%, transparent); transition: background 200ms ease, border-color 200ms ease; }
+  .kt-car-btn:hover { background: color-mix(in srgb, var(--ink) 10%, transparent); border-color: var(--ink); }
+  .kt-car-btn:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 3px; }
+  @media (max-width: 767px) { .kt-car-nav { justify-content: center; } }
+</style>
+
+<script>
+  document.querySelectorAll('[data-kt-car]').forEach((car) => {
+    const track = car.querySelector('[data-kt-car-track]');
+    const cards = [...track.children];
+    const every = Number(car.dataset.interval) || 1500;
+    const step = () => cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : track.clientWidth;
+    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    const go = (dir) => {
+      if (dir > 0 && atEnd()) track.scrollTo({ left: 0, behavior: 'smooth' });
+      else if (dir < 0 && track.scrollLeft <= 4) track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+      else track.scrollBy({ left: dir * step(), behavior: 'smooth' });
+    };
+    car.querySelector('[data-kt-car-prev]').addEventListener('click', () => { go(-1); restart(); });
+    car.querySelector('[data-kt-car-next]').addEventListener('click', () => { go(1); restart(); });
+
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let timer = null, hover = false, focus = false, seen = false;
+    const run = () => !still.matches && !hover && !focus && seen && !document.hidden;
+    const stop = () => { clearInterval(timer); timer = null; };
+    const start = () => { stop(); if (run()) timer = setInterval(() => go(1), every); };
+    const restart = () => start();
+    car.addEventListener('pointerenter', () => { hover = true; stop(); });
+    car.addEventListener('pointerleave', () => { hover = false; start(); });
+    car.addEventListener('focusin', () => { focus = true; stop(); });
+    car.addEventListener('focusout', () => { focus = false; start(); });
+    track.addEventListener('touchstart', () => { stop(); }, { passive: true });
+    document.addEventListener('visibilitychange', start);
+    still.addEventListener?.('change', start);
+    // only moves while it is on screen
+    new IntersectionObserver(([e]) => { seen = e.isIntersecting; start(); }, { threshold: 0.35 }).observe(car);
+  });
+</script>
