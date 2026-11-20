@@ -1,0 +1,14 @@
+---
+/* One photograph from src/lib/kit.js's PHOTOS, in the site's frame, with its alt, size and srcset.
+   `hero` loads it eagerly as the page's LCP image; `caption` adds a figcaption. */
+import { PHOTOS, photoSrcset } from '../../lib/kit.js';
+const { id, sizes = '(max-width: 767px) 92vw, 46vw', ratio, hero = false, caption, class: cls = '' } = Astro.props;
+const p = PHOTOS[id];
+if (!p) throw new Error(`Photo: no photo "${id}" in src/lib/kit.js`);
+---
+<figure class={`kt-photo ${cls}`}>
+  <div class="kt-frame" style={`aspect-ratio: ${ratio || `${p.w} / ${p.h}`};`}>
+    <img src={p.src} srcset={photoSrcset(p)} sizes={p.s ? sizes : undefined} alt={p.alt} width={p.w} height={p.h} loading={hero ? 'eager' : 'lazy'} fetchpriority={hero ? 'high' : undefined} decoding="async" />
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

@@ -1,0 +1,16 @@
+---
+/* A Google review as a review card (PAGE-TEMPLATES rule 16): the reviewer's initials (Google's
+   profile photos are not stored, see reviews.json), the name, the stars they gave, the Google mark
+   and the month, with their words exactly as posted. No review schema. */
+import { initials, stars, reviewMonth } from '../../lib/reviews.js';
+const { review } = Astro.props;
+---
+<figure class="kt-review">
+  <figcaption>
+    <span class="kt-review-av" aria-hidden="true">{initials(review.author)}</span>
+    <span class="kt-review-who"><strong>{review.author}</strong><span>Google review · {reviewMonth(review.date)}</span></span>
+    <span class="kt-review-g" aria-hidden="true">G</span>
+  </figcaption>
+  <div class="kt-review-stars" role="img" aria-label={`${review.rating} out of 5 stars`}>{stars(review.rating)}</div>
+  <blockquote data-review-text>"{review.words}"</blockquote>
+</figure>

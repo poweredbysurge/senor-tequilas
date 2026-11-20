@@ -1,0 +1,11 @@
+---
+/* The breadcrumb line that opens a hero. The same list feeds crumbLd() on the page. */
+const { items } = Astro.props;
+---
+<nav aria-label="Breadcrumb" class="kt-crumbs">
+  <ol>
+    {items.map((c, i) => i === items.length - 1
+      ? <li aria-current="page">{c.name}</li>
+      : <li><a href={c.href}>{c.name}</a></li>)}
+  </ol>
+</nav>
