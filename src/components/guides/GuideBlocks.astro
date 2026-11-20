@@ -8,6 +8,7 @@ const ratio = (im) => im.ratio || `${im.w} / ${im.h}`;
 {blocks.map((b, i) => (
   b.type === 'p' ? <p class={lead && i === 0 ? 'gd-p gd-lead' : 'gd-p'} set:html={b.html} />
   : b.type === 'list' ? <ul class="gd-list">{b.items.map((it) => <li set:html={it} />)}</ul>
+  : b.type === 'olist' ? <ol class="gd-list gd-ol">{b.items.map((it) => <li set:html={it} />)}</ol>
   : b.type === 'table' ? (
     <div class="gd-table" role="region" aria-label="Table" tabindex="0">
       <table>
@@ -23,12 +24,13 @@ const ratio = (im) => im.ratio || `${im.w} / ${im.h}`;
     </figure>
   )
   : b.type === 'figure' ? (
-    <figure class={`gd-fig${b.imgs.length > 1 ? ' gd-fig-row' : ''}`}>
+    <figure class={`gd-fig${b.imgs.length > 1 ? ' gd-fig-row' : ''}${b.imgs.length === 2 ? ' gd-fig-two' : ''}`}>
       {b.imgs.map((im) => (
         <div class="gd-frame" style={`aspect-ratio: ${ratio(im)};`}>
-          <img src={im.src} alt={im.alt} width={im.w} height={im.h} loading="lazy" decoding="async" />
+          <img src={im.src} srcset={im.srcset} sizes={im.srcset ? (b.imgs.length > 1 ? '(max-width: 767px) 46vw, 250px' : '(max-width: 767px) 92vw, 760px') : undefined} alt={im.alt} title={im.caption} width={im.w} height={im.h} loading="lazy" decoding="async" />
         </div>
       ))}
+      {b.imgs.some((im) => im.caption) && <figcaption class="gd-cap">{b.imgs.map((im) => im.caption).filter(Boolean).join(' ')}</figcaption>}
     </figure>
   )
   : null
@@ -62,6 +64,13 @@ const ratio = (im) => im.ratio || `${im.w} / ${im.h}`;
 
   .gd-fig { margin: 28px 0 0; }
   .gd-fig-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .gd-fig-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gd-cap { grid-column: 1 / -1; margin-top: 2px; font-size: 14px; line-height: 1.5; color: rgba(234, 226, 214, 0.68); }
+  .gd-fig:not(.gd-fig-row) .gd-cap { margin-top: 10px; }
+  /* a numbered list: the number in gold where the bullet's dot sits */
+  .gd-ol { counter-reset: gd; }
+  .gd-ol li { counter-increment: gd; padding-left: 34px; }
+  .gd-ol li::before { content: counter(gd); left: 0; top: 0.2em; width: 24px; height: 24px; background: none; border: 1px solid rgba(214, 188, 133, 0.6); color: rgb(214, 188, 133); font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; line-height: 22px; text-align: center; box-sizing: border-box; }
   .gd-frame { border-radius: 16px; overflow: hidden; border: 1px solid rgb(42, 40, 32); background: rgb(28, 27, 24); }
   .gd-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
 </style>

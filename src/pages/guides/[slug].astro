@@ -25,6 +25,8 @@ const g = parseGuide(entry, published);
 const hero = g.cfg.hero;
 const PAGE_URL = business.siteUrl + d.url;
 const HERO_URL = business.siteUrl + hero.src;
+// every body photograph, for the article schema's image list (PAGE-TEMPLATES 4.4)
+const BODY_IMAGES = g.cfg.blueprint ? Object.values(g.cfg.sections || {}).flat().map((im) => business.siteUrl + im.src) : [];
 const guideFor = (href) => published.find((p) => p.data.url === href);
 
 const ROBERTO = { '@type': 'Person', '@id': business.siteUrl + '/our-story#roberto-rivas', name: 'Roberto H. Rivas', jobTitle: 'Co-owner', worksFor: { '@id': RESTAURANT_ID } };
@@ -39,7 +41,7 @@ const ld = [
     publisher: { '@id': RESTAURANT_ID },
     datePublished: isoDate(d.date_published),
     dateModified: isoDate(d.date_modified),
-    image: [HERO_URL],
+    image: [HERO_URL, ...BODY_IMAGES],
     mainEntityOfPage: PAGE_URL,
     articleSection: d.article_section,
     inLanguage: 'en-US',
@@ -68,6 +70,14 @@ const ld = [
 if (g.faq.length) ld.push(faqLd(g.faq));
 
 const MENU = d.article_section === 'Menu';
+const EVENTS = d.article_section === 'Private Events';
+// A guide built to the PAGE-TEMPLATES blueprint (cfg.blueprint, DESIGN-DEBT.md entry 166) names its
+// own two closing buttons, and gets the contents list and the mid-article card. The two guides
+// published before it are unchanged.
+const CTA = g.cfg.cta;
+const BLUEPRINT = !!g.cfg.blueprint;
+const toc = g.sections.map((x) => ({ id: x.id, title: x.title }));
+const midAt = BLUEPRINT ? Math.floor(g.sections.length / 2) : -1;
 ---
 <Base title={d.title_tag} description={d.meta_description} canonical={PAGE_URL} ogImage={hero.src} shareImage={{ src: hero.src, w: hero.w, h: hero.h }} route={d.url}>
 <div class="gd" style="color: rgb(234, 226, 214); font-family: Barlow, 'Barlow Fallback', system-ui, -apple-system, sans-serif; background: rgb(18, 18, 16);">
@@ -100,8 +110,23 @@ const MENU = d.article_section === 'Menu';
   <section data-screen-label="Guide" class="gd-sec">
     <article class="gd-col gd-body">
       <GuideBlocks blocks={g.lead} lead />
-      {g.sections.map((s) => (
+      {BLUEPRINT && (
+        <details class="gd-toc">
+          <summary>In this article</summary>
+          <ol>{toc.map((t) => <li><a href={`#${t.id}`}>{t.title}</a></li>)}</ol>
+        </details>
+      )}
+      {g.sections.map((s, i) => (
         <>
+          {i === midAt && CTA && (
+            <aside class="gd-mid" aria-label="Señor Tequila's">
+              <span class="gd-mid-k">{business.name} · {business.streetAddress}, {business.addressLocality}</span>
+              <div class="gd-mid-row">
+                <a href={CTA[0].href} target={CTA[0].external ? '_blank' : undefined} rel={CTA[0].external ? 'noopener' : undefined} style={BTN_PRIMARY}>{CTA[0].label}</a>
+                <a href={PHONE_HREF} style={BTN_GHOST}>Call {PHONE_DISPLAY}</a>
+              </div>
+            </aside>
+          )}
           <h2 id={s.id} class="gd-h2">{s.title}</h2>
           {s.faq ? <div class="gd-faq"><Faq items={g.faq} variant="rule" /></div> : <GuideBlocks blocks={s.blocks} />}
         </>
@@ -132,7 +157,9 @@ const MENU = d.article_section === 'Menu';
   <!-- the CTA band, by section -->
   <section data-screen-label="Call to action" class="gd-sec gd-cta">
     <div class="gd-col gd-cta-row">
-      {MENU ? (
+      {CTA ? (
+        CTA.map((c, i) => <a href={c.href} target={c.external ? '_blank' : undefined} rel={c.external ? 'noopener' : undefined} style={i === 0 ? BTN_PRIMARY : BTN_GHOST}>{c.label}</a>)
+      ) : MENU ? (
         <>
           <a href="/takeout-delivery" style={BTN_PRIMARY}>Order Takeout</a>
           <a href="/menu" style={BTN_GHOST}>See the Menu</a>
@@ -149,7 +176,7 @@ const MENU = d.article_section === 'Menu';
   {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
 
   <Footer2 />
-  {!MENU && (
+  {EVENTS && (
     <div class="gd-float" role="region" aria-label="Plan a party">
       <span class="gd-float-k">Planning a party?</span>
       <a href="/holiday-parties#inquire" style={BTN_PRIMARY}>Talk to Us</a>
@@ -179,6 +206,22 @@ const MENU = d.article_section === 'Menu';
   /* the accordion's answers at the body's size, not the 14px the component uses on event pages */
   .gd-faq :global(.fq-a) { font-size: 16px; line-height: 1.7; }
   .gd-faq :global(.fq-item button) { font-size: 16px; }
+
+  /* the blueprint guides: the contents list, closed until tapped, and the mid-article card */
+  .gd-toc { margin: 26px 0 0; border: 1px solid rgba(185, 156, 102, 0.35); border-radius: 16px; background: rgb(28, 27, 24); max-width: 68ch; }
+  .gd-toc summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 0 18px; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .gd-toc summary::-webkit-details-marker { display: none; }
+  .gd-toc summary::after { content: "+"; font-size: 20px; line-height: 1; }
+  .gd-toc[open] summary::after { content: "\2212"; }
+  .gd-toc summary:focus-visible { outline: 2px solid rgb(214, 188, 133); outline-offset: 3px; border-radius: 14px; }
+  .gd-toc ol { list-style: none; margin: 0; padding: 0 18px 10px; }
+  .gd-toc li { border-top: 1px solid rgb(42, 40, 32); }
+  .gd-toc a { display: flex; align-items: center; min-height: 44px; padding: 6px 0; font-size: 16px; line-height: 1.4; color: rgb(234, 226, 214); }
+  .gd-toc a:hover { color: rgb(214, 188, 133); }
+  .gd-mid { margin: 44px 0 0; padding: 20px; border: 1px solid rgba(185, 156, 102, 0.35); border-radius: 16px; background: rgb(28, 27, 24); max-width: 68ch; box-sizing: border-box; }
+  .gd-mid-k { display: block; font-family: 'Barlow Condensed', 'Barlow Condensed Fallback', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(214, 188, 133); }
+  .gd-mid-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
+  @media (max-width: 767px) { .gd-mid-row { display: grid; grid-template-columns: minmax(0, 1fr); } }
 
   .gd-related { border-top: 1px solid rgba(185, 156, 102, 0.2); }
   .gd-rel { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }

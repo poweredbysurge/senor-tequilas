@@ -17,7 +17,7 @@ const guides = defineCollection({
     byline: z.string(),
     date_published: z.coerce.date(),
     date_modified: z.coerce.date(),
-    article_section: z.enum(['Menu', 'Private Events']),
+    article_section: z.enum(['Menu', 'Private Events', 'Game Day']),
     primary_keyword: z.string().optional(),
     draft: z.boolean(),
   }),

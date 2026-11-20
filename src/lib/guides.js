@@ -8,6 +8,7 @@
 import { getCollection } from 'astro:content';
 import { GUIDES } from '../data/guides.js';
 import { assertFacts } from './authored.js';
+import business from '../data/business.json';
 
 // Drafts never build. A local preview sets GUIDES_DRAFTS=1 (npm run build:drafts, into
 // dist-drafts/), and that is refused on Vercel so a draft cannot reach a deploy by accident.
@@ -26,6 +27,8 @@ export const longDate = (d) => new Intl.DateTimeFormat('en-US', { timeZone: 'UTC
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const LINK_RE = /\[([^\]]+)\]\(([^)\s]+)\)/g;
 const plain = (md) => md.replace(LINK_RE, '$1').replace(/\*\*(.+?)\*\*/g, '$1');
+// the section that becomes the accordion and the FAQPage schema: "... FAQ" or "... questions"
+const IS_FAQ = /(FAQ|questions)$/i;
 const slugify = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 // A link to a guide that is not published (a draft) is dropped: its words stay, the link does not.
@@ -41,12 +44,19 @@ export function parseGuide(entry, published) {
   const cfg = GUIDES[entry.data.slug];
   if (!cfg) throw new Error(`guide ${entry.data.slug}: no photos in src/data/guides.js`);
   if (cfg.facts) assertFacts(entry.data.url, cfg.facts);
+  // copy that states the Google rating: "4.6 stars from more than 5,700" stays true as the count
+  // climbs, and the build stops if the rating moves or the count falls under the stated floor
+  if (cfg.facts?.reviews) {
+    const { rating, moreThan } = cfg.facts.reviews;
+    if (business.reviews.rating !== rating || business.reviews.total <= moreThan) throw new Error(`guide ${entry.data.slug}: the copy says ${rating} stars from more than ${moreThan} reviews, business.json says ${business.reviews.rating} from ${business.reviews.total}. Update the copy.`);
+  }
   for (const v of Object.values(entry.data)) {
     if (typeof v === 'string' && /[–—]/.test(v)) throw new Error(`guide ${entry.data.slug}: an en or em dash in the frontmatter`);
   }
-  if (/[–—]/.test(entry.body)) throw new Error(`guide ${entry.data.slug}: an en or em dash in the copy`);
+  if (/[–—]/.test(entry.body.replace(/<!--[\s\S]*?-->/g, ''))) throw new Error(`guide ${entry.data.slug}: an en or em dash in the copy`);
 
-  const raw = entry.body.replace(/\r\n?/g, '\n').trim().split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
+  // an HTML comment is a note to the next editor (the TODO markers), never copy
+  const raw = entry.body.replace(/<!--[\s\S]*?-->/g, '').replace(/\r\n?/g, '\n').trim().split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
   let h1 = null;
   const lead = [];
   const sections = [];
@@ -67,7 +77,7 @@ export function parseGuide(entry, published) {
       continue;
     }
 
-    if (cur && /FAQ$/i.test(cur.title)) {
+    if (cur && IS_FAQ.test(cur.title)) {
       const q = b.match(/^\*\*(.+\?)\*\*$/);
       if (q) {
         const a = raw[++i];
@@ -83,6 +93,11 @@ export function parseGuide(entry, published) {
       const prev = blocksOf().at(-1);
       if (prev && prev.type === 'list') prev.items.push(...items);   // "- a\n\n- b" is one list
       else blocksOf().push({ type: 'list', items });
+      continue;
+    }
+    // a numbered list: "1. ...", one item a line
+    if (b.split('\n').every((l) => /^\d+\. /.test(l))) {
+      blocksOf().push({ type: 'olist', items: b.split('\n').map((l) => inline(l.replace(/^\d+\. /, ''), live)) });
       continue;
     }
     if (b.split('\n').every((l) => /^\|.*\|$/.test(l))) {
@@ -109,8 +124,15 @@ export function parseGuide(entry, published) {
     const at = s.blocks.findIndex((x) => x.type === 'p');
     s.blocks.splice(at < 0 ? 0 : at + 1, 0, { type: 'figure', imgs });
   }
+  // PAGE-TEMPLATES 4.4: a guide built to the blueprint carries at least three body photographs,
+  // under different headings, each with a caption
+  if (cfg.blueprint) {
+    const withPhotos = Object.entries(cfg.sections || {});
+    if (withPhotos.length < 3) throw new Error(`guide ${entry.data.slug}: fewer than 3 sections carry a photo`);
+    for (const [title, imgs] of withPhotos) if (imgs.some((im) => !im.alt) || !imgs.some((im) => im.caption)) throw new Error(`guide ${entry.data.slug}: the photos in "${title}" need an alt each and one caption`);
+  }
   // the FAQ section renders as the accordion only
-  for (const s of sections) if (/FAQ$/i.test(s.title)) s.faq = true;
+  for (const s of sections) if (IS_FAQ.test(s.title)) s.faq = true;
 
   const words = plain(entry.body).split(/\s+/).filter((w) => /\w/.test(w)).length;
   return { h1, lead, sections, faq, related, words, minutes: Math.max(1, Math.round(words / 230)), cfg };
