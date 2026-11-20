@@ -1,0 +1,184 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+import Faq from '../components/seasonal/Faq.astro';
+import Kit from '../components/kit/Kit.astro';
+import Crumbs from '../components/kit/Crumbs.astro';
+import Photo from '../components/kit/Photo.astro';
+import ReviewCard from '../components/kit/ReviewCard.astro';
+import business from '../data/business.json';
+import { PHONE_HREF, assertFacts, faqLd } from '../lib/authored.js';
+import { PHOTOS, photoSrcset, HERO_SIZES, moreThan, RATING, MAPS_URL, GOOGLE_REVIEWS_URL, ADDRESS_LINE, PHONE_PAREN, HOURS_NOV16, reviewExcerpt, crumbLd, serviceLd } from '../lib/kit.js';
+
+/*
+  /mexican-restaurant-clarksburg-md, a city page on PAGE-TEMPLATES.md blueprint 4.2 (DESIGN-DEBT.md
+  entry 166), the sibling of /mexican-restaurant-gaithersburg-md. Copy is verbatim from the
+  16 November batch, round 2 (Roberto's corrections of 19 November).
+
+  NO PHOTOGRAPH ON THIS PAGE WAS TAKEN IN CLARKSBURG, and none is captioned or described as if it
+  were: every one is the restaurant in Germantown or its food. Keep it that way.
+  There is no map: the template rules out a Maps embed and this repo has no static map builder.
+  The storefront photograph opens the page instead.
+*/
+const PAGE = '/mexican-restaurant-clarksburg-md';
+assertFacts(PAGE, { street: '20021 Century Blvd', phone: '301-569-4574', hours: HOURS_NOV16 });
+
+const CRUMBS = [{ name: 'Home', href: '/' }, { name: 'Near Clarksburg', href: PAGE }];
+const HERO = PHOTOS.exterior;
+const REVIEW = reviewExcerpt('George Ju', 'they set up a dedicated space for us on the outdoor patio that worked perfectly for our group... our server, Emil, was able to split checks by family');
+
+const NIGHTS = [
+  ['Monday', 'Monday is 2-for-1 margaritas on the rocks.'],
+  ['Tuesday and Wednesday', 'Tuesday is bingo and Wednesday is lotería, both free, 8 to 10.'],
+  ['Thursday', 'Thursday is karaoke with DJ Willy from 7:30.'],
+  ['Friday and Saturday', 'Friday and Saturday a DJ takes <a href="/bar">the bar area</a> from 9.'],
+  ['Sunday', 'Sunday is live mariachi from 6:30 to 9:30, and every NFL game is on in season.'],
+  ['Happy hour', '<a href="/happy-hour">Happy hour</a> runs Monday to Friday, 3 to 6, which lines up with a weekday trip to the outlets.'],
+];
+
+const FAQ = [
+  { q: "How far is Señor Tequila's from Clarksburg Premium Outlets?",
+    a: 'About ten minutes. Take I-270 south from exit 18 to Germantown, then Century Boulevard by Topgolf. Free lot parking.' },
+  { q: 'Do you deliver to Clarksburg?',
+    a: 'Catering, yes: Clarksburg is inside our 20-mile delivery range, with 48 hours\' notice and a $30 delivery fee. For a single dinner, order pickup through our site or call for pickup up to 15 minutes before close, or use DoorDash or Grubhub on their terms.',
+    link: { text: 'order pickup', href: '/takeout-delivery' } },
+  { q: 'Is it kid-friendly?',
+    a: "Yes. The dining rooms are all ages every night, there is a Pa' los Niños kids' menu, and the mariachi plays happy birthday. The bar area goes 21 and over after 9 PM on Friday and Saturday." },
+  { q: 'Can we reserve for a group after a Clarksburg game or practice?',
+    a: `Yes. Reserve online for up to twelve. For more than twelve, call us at ${PHONE_PAREN} and we will help you reserve. Private rooms are available.` },
+];
+
+const ld = [
+  serviceLd({ url: PAGE, name: "Mexican restaurant near Clarksburg, MD: Señor Tequila's", serviceType: 'Mexican restaurant', description: 'A Mexican restaurant and tequila bar in Germantown, about ten minutes south of Clarksburg Premium Outlets on I-270, with handmade tortillas, eight-hour birria, free parking and catering delivered to Clarksburg.', areaServed: ['Clarksburg, MD', 'Germantown, MD'] }),
+  crumbLd(CRUMBS),
+  faqLd(FAQ),
+];
+---
+<Base title="Mexican Restaurant near Clarksburg, MD | Señor Tequila's" description="About ten minutes down 270 from Clarksburg Premium Outlets: handmade tortillas, 8-hour birria, a real tequila bar, free parking. Señor Tequila's, Germantown." canonical="https://senortequilas.com/mexican-restaurant-clarksburg-md" ogImage={HERO.src} shareImage={{ src: HERO.src, w: HERO.w, h: HERO.h }} route={PAGE}>
+<div class="kt">
+  <Kit />
+  <Header5 />
+
+  <!-- 1. hero: HeroStats -->
+  <section data-screen-label="Clarksburg hero" data-hero="stats" class="kt-hero">
+    <figure class="kt-hero-bg">
+      <img src={HERO.src} srcset={photoSrcset(HERO)} sizes={HERO_SIZES.stats} alt={HERO.alt} width={HERO.w} height={HERO.h} loading="eager" fetchpriority="high" decoding="async" />
+    </figure>
+    <div class="kt-hero-in">
+      <Crumbs items={CRUMBS} />
+      <div class="kt-hero-copy">
+        <div class="kt-eyebrow">In Germantown, next to Topgolf</div>
+        <h1 class="kt-h1">Mexican Food near Clarksburg, MD: About Ten Minutes Down 270</h1>
+        <p class="kt-sub">Handmade tortillas, eight-hour birria and a full tequila bar, one short drive from Clarksburg Village and Cabin Branch.</p>
+        <p class="kt-p">Señor Tequila's is not in Clarksburg. It is in Germantown, on Century Boulevard next to Topgolf, about ten minutes south of Clarksburg Premium Outlets on I-270. The outlets sit at exit 18. We are a few exits down, with free parking at the door.</p>
+        <p class="kt-p">Clarksburg doubled between the 2010 and 2020 censuses, from 13,766 people to 29,051, and the restaurants did not keep up with the houses. If you live in Clarksburg Village or Cabin Branch, both good places to raise a family, and the question is "where do we actually go for dinner," we are ten minutes down the road.</p>
+        <div class="kt-ctas">
+          <a href={MAPS_URL} target="_blank" rel="noopener" class="kt-btn">Get Directions</a>
+          <a href={business.reserveUrl} target="_blank" rel="noopener" class="kt-btn is-ghost">Reserve a Table</a>
+        </div>
+      </div>
+      <ul class="kt-hero-stats">
+        <li><b>About 10 minutes</b><span>From the outlets, down I-270</span></li>
+        <li><b>Free parking</b><span>At the door</span></li>
+        <li><b>Open to 1 AM</b><span>Friday and Saturday</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. after the outlets: Split, the quesabirria -->
+  <section data-screen-label="After the outlets" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split">
+        <div>
+          <div class="kt-eyebrow">Dinner after shopping</div>
+          <h2 class="kt-h2">After the outlets</h2>
+          <p class="kt-p">The outlets close early most nights. We are open until 10 Sunday through Wednesday, midnight Thursday and 1 AM Friday and Saturday, so a late dinner after shopping works any day. Saturday and Sunday we open at 11.</p>
+          <p class="kt-p">Order the thing people drive for: <a href="/birria-tacos">Quesabirria Tacos</a>, three double-stacked corn tortillas filled with birria beef braised eight hours, served with the consommé for dipping. The <a href="/birria-ramen">Birria Ramen</a> is that birria over noodles. Tortillas are pressed in-house, and the Garden Fajita and Enchiladas de Espinaca cover <a href="/guides/vegetarian-mexican-food-germantown">the vegetarian in the car</a>.</p>
+        </div>
+        <Photo id="quesabirria" ratio="4 / 3" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. the Clarksburg crowd: a review card and the patio, on the cream band -->
+  <section data-screen-label="For the Clarksburg crowd" data-band="cream" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split is-flip">
+        <div>
+          <div class="kt-eyebrow">Teams, birthdays, big tables</div>
+          <h2 class="kt-h2">For the Clarksburg crowd</h2>
+          <p class="kt-p">Kids' sports teams and birthday tables are a weekly thing here. One group of more than twenty from a kids' team got the outdoor patio in September:</p>
+          <div style="margin-top: 22px;"><ReviewCard review={REVIEW} /></div>
+          <p class="kt-p">Groups from 12 can book one of four <a href="/private-parties">private rooms</a>. Catering delivers to Clarksburg, inside our 20-mile range from Germantown, with 48 hours' notice and a $30 delivery fee. See <a href="/catering/cost">how catering prices out</a>.</p>
+        </div>
+        <Photo id="patio" ratio="4 / 3" caption="The outdoor patio at the restaurant in Germantown." />
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. the nights: a fact list -->
+  <section data-screen-label="The nights worth the drive" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">Seven nights</div>
+      <h2 class="kt-h2">The nights worth the drive</h2>
+      <dl class="kt-facts">
+        {NIGHTS.map(([k, v]) => <div class="kt-fact"><dt>{k}</dt><dd set:html={v} /></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <!-- 5. who we are: Split, the dining room -->
+  <section data-screen-label="Who we are" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split">
+        <Photo id="mexicanRoom" caption="The Mexican Room, the main dining room." />
+        <div>
+          <div class="kt-eyebrow">One location only</div>
+          <h2 class="kt-h2">Who we are</h2>
+          <p class="kt-p">Owned by brothers Roberto and Alex Rivas, family-owned since 2002 and on Century Boulevard since 2015. Google: {RATING} stars from {moreThan(business.reviews.total)} reviews. One location only, in Germantown.</p>
+          <a class="kt-more" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener">Read the reviews on Google</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section id="faq" data-screen-label="Clarksburg FAQ" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-faq-grid">
+        <div class="kt-faq-head"><h2 class="kt-h2">Clarksburg questions</h2></div>
+        <Faq items={FAQ} variant="rule" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. the closing band (the copy gives this block no heading) -->
+  <section data-screen-label="Find us" class="kt-cta">
+    <div class="kt-wrap">
+      <p class="kt-p" style="margin-top: 0;">{business.name}, {ADDRESS_LINE}. <a href={PHONE_HREF} style="display: inline-flex; align-items: center; min-height: 44px;">{PHONE_PAREN}</a>. Coming from the other direction? See <a href="/mexican-restaurant-gaithersburg-md">Mexican food near Gaithersburg</a>.</p>
+      <div class="kt-ctas">
+        <a href={MAPS_URL} target="_blank" rel="noopener" class="kt-btn">Get Directions</a>
+        <a href={business.orderUrl} target="_blank" rel="noopener" class="kt-btn is-ghost">Order Ahead</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. cross-links -->
+  <section data-screen-label="More from the restaurant" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">More from the restaurant</div>
+      <ul class="kt-routes">
+        <li><a class="kt-route" href="/mexican-restaurant-gaithersburg-md"><span class="kt-route-k">From the other direction</span><span class="kt-route-t">Near Gaithersburg</span><span class="kt-route-go">See the page</span></a></li>
+        <li><a class="kt-route" href="/birria-tacos"><span class="kt-route-k">Braised eight hours</span><span class="kt-route-t">Birria Tacos</span><span class="kt-route-go">See the birria</span></a></li>
+        <li><a class="kt-route" href="/private-parties"><span class="kt-route-k">Groups from 12</span><span class="kt-route-t">Private Rooms</span><span class="kt-route-go">See the rooms</span></a></li>
+        <li><a class="kt-route" href="/catering/cost"><span class="kt-route-k">Delivered to Clarksburg</span><span class="kt-route-t">Catering Cost</span><span class="kt-route-go">See the prices</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+
+  <Footer2 />
+</div>
+</Base>
