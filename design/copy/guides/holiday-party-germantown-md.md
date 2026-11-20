@@ -39,7 +39,7 @@ December Fridays and Saturdays go first. Work backward from that.
 
 Start with a per-person figure and multiply, because the headcount will move and the math has to move with it. Five lines:
 
-- **Food.** Quotes at Señor Tequila's start from $22 a person. The fajita buffet, the most popular holiday order, starts from $26.
+- **Food.** Quotes at Señor Tequila's start from $22 a person. The fajita buffet, the most popular holiday order, starts from $26. See [how catering prices out](/catering/cost).
 
 - **Drinks.** The biggest swing in the budget. Two tickets per guest keeps it predictable. An open bar does not.
 

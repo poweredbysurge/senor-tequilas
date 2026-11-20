@@ -128,6 +128,22 @@ const EVENTS = [
     offers: { price: '15', priceCurrency: 'USD' },
     gallery: null,
   },
+  // 16 November batch (DESIGN-DEBT.md entry 166). No startDate, so no Event schema: the page
+  // carries none by the brief.
+  {
+    id: 'valentines-day',
+    dates: 'Sun, Feb 14 · Mariachi 7 to 9 PM',
+    title: "Valentine's Day",
+    page: '/valentines-day',
+    details: [
+      "Valentine's Day dinner: live mariachi in the dining rooms from 7 to 9 PM",
+      "A limited menu: our top 30 dishes plus Valentine's Day specials",
+      'The Super Bowl in the bar area',
+    ],
+    photo: { src: '/images/site/addon-mariachi-ensemble-800.webp', w: 800, h: 450, ratio: '16 / 9', alt: 'A seven-piece mariachi in burgundy charro suits with guitars, a violin and a trumpet, in front of a wall of flowers' },
+    hideAfter: '2027-02-15',
+    gallery: null,
+  },
 ];
 
 // today's date in New York, as YYYY-MM-DD, so the comparison is a plain string compare

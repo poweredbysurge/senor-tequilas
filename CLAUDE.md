@@ -29,6 +29,15 @@ project and the code in `src/` is the source of truth, not the board.
 - **Record every substantive change in `DESIGN-DEBT.md`**, which is the running project log
   and the reason most questions have an answer already. Check it before re-deriving anything.
 
+## Pages built from the page templates
+
+`/bar`, `/valentines-day`, `/mexican-restaurant-clarksburg-md` and `/catering/cost` are laid out
+with the section kit: `src/components/kit/` for the look (classes prefixed `kt-`, 18px body
+copy, the cream band as the one contrast band) and `src/lib/kit.js` for the photographs, each
+with its one alt text, the breadcrumb and `Service` schema and the checked review excerpts. A
+new templated page starts from one of those four. `node scripts/check-nov16.mjs` measures them
+at 360, 390, 768 and 1440 after a build. See DESIGN-DEBT.md entry 166.
+
 ## Pages
 
 | H1 | Path |
@@ -54,13 +63,18 @@ project and the code in `src/` is the source of truth, not the board.
 | Every Game, Every Night | `/game-day` |
 | Come See Us | `/contact` |
 | Mexican Food Near Gaithersburg | `/mexican-restaurant-gaithersburg-md` |
+| Mexican Food near Clarksburg, MD: About Ten Minutes Down 270 | `/mexican-restaurant-clarksburg-md` |
+| The Bar: Germantown's Mexican Cantina | `/bar` |
+| Valentine's Day Dinner in Germantown, MD: Sunday, February 14, 2027 | `/valentines-day` |
+| How Much Does Taco Catering Cost in Germantown, MD? | `/catering/cost` |
 
 Plus two generated routes: `src/pages/sitemap.xml.js` and `src/pages/robots.txt.js`.
 
 "Germantown" may appear inside an H1 only on `/happy-hour`, `/mexican-restaurant-gaithersburg-md`,
-the seasonal and dish landing pages (`/new-years-eve`, `/birria-ramen` and `/friendsgiving`), and
+the seasonal and dish landing pages (`/new-years-eve`, `/birria-ramen`, `/friendsgiving` and
+`/valentines-day`), `/bar` and `/catering/cost` (client-approved H1s, entry 166), and
 `/guides` and every guide under it (`/guides/<slug>`). Any other page keeps it out of the H1. See
-DESIGN-DEBT.md entries 137 and 146.
+DESIGN-DEBT.md entries 137, 146 and 166.
 
 ## SEO
 

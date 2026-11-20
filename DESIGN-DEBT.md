@@ -5037,3 +5037,101 @@ missing files, placeholders, old wording and dates. Sam approved these five 13 N
   is still "coming soon" on /street-tacos.
 - **Not checked by this pass:** whether each /menu photograph is the dish it is named for.
   That goes to the restaurant as a name-and-photo sheet in the walkthrough.
+
+## 166. The 16 November batch: six new pages and a fact sync, 19 November
+
+Built on `preview/nov16-batch` for the client to preview. Not merged, not on the live site.
+Copy is round 2, with Roberto's corrections of 19 November, used verbatim.
+
+**New pages**
+
+| URL | Template blueprint | Hero style |
+|---|---|---|
+| `/bar` | Service (4.1) | split |
+| `/valentines-day` | Service, seasonal (4.1) | stats |
+| `/mexican-restaurant-clarksburg-md` | City (4.2) | stats |
+| `/catering/cost` | Answer (4.3) | split, with the price in an answer box |
+| `/guides/super-bowl-germantown-md` | Guide (4.4) | the guide header |
+| `/guides/vegetarian-mexican-food-germantown` | Guide (4.4) | the guide header |
+
+**How the four pages are built.** A section kit, new with this batch: `src/components/kit/`
+(`Kit.astro` is one global stylesheet, every class prefixed `kt-`; `Photo`, `ReviewCard`,
+`Crumbs`) and `src/lib/kit.js` (the photographs with one alt each, `crumbLd`, `serviceLd`,
+`reviewExcerpt`). Decisions worth knowing before touching them:
+
+- **Bands are inverted.** The template cycles light, tint, light, dark with one dark band in
+  the first half. This site is dark, so the cycle is base, raise, base with one cream band in
+  the first half, and the closing band on the darkest field.
+- **Body copy is 18px on these four pages**, the template's rule, against 15 to 16px on the
+  older pages. The guides keep the guide template's 17px: changing it would restyle the two
+  guides that are already live.
+- **Paragraphs became cards, a table and fact lists** where the blueprint calls for one (the
+  cocktail list, the week, the four rooms, the price drivers, the worked examples, the nights).
+  No sentence was dropped or reworded. Two review sentences lost their connecting words
+  ("One from September 2026:") when the quotes became review cards.
+- **Review quotes are checked.** `reviewExcerpt()` stops the build if a quoted line is not in
+  `src/data/reviews.json` word for word. The cards show initials, not a profile photo:
+  `reviews.json` stores none.
+- **The rating is said once, in the copy's own sentence** ("4.6 stars from more than 5,700"),
+  read from `business.json`. The hero has no rating chip, so it is not said twice.
+- **Facts the prose repeats** (address, phone, hours, last call) are covered by `assertFacts()`
+  with the hours of 19 November, so a change in `business.json` stops the build.
+- **No lead card in a hero and no sticky bar.** The site has no two-step lead form; the hero
+  buttons are Reserve, Directions and the catering quote link, the site's existing targets.
+- **No map on the Clarksburg page.** The template rules out a Maps embed and this repo has no
+  static map builder. The storefront photograph opens the page. No photograph on that page is
+  described as Clarksburg.
+- **`Germantown` in an H1** on `/bar` and `/catering/cost`: the client approved those H1s, so
+  both are added to the list in CLAUDE.md.
+- **Hero height at 1440 by 900:** `/bar` fits (800px). `/valentines-day` 874, Clarksburg 936
+  and `/catering/cost` 951 run past the first screen, because the copy's two opening
+  paragraphs are both in the hero.
+
+**The guides.** Same build path as the first two. The parser gained numbered lists, "...
+questions" as an FAQ heading, and HTML comments as editor notes (the TODO markers never reach
+the page). A guide marked `blueprint: true` in `src/data/guides.js` gets the collapsed "In this
+article" list, a mid-article card, captions on its photos, its own two closing buttons, and
+every body photo in the article schema; the build fails if fewer than three of its sections
+carry a photo. The two guides published in October are not marked, so they are unchanged
+apart from one added link. `article_section` gained `Game Day`. The party bar that follows a
+reader is now tied to `Private Events`, which is what it meant before. Schema stays
+`BlogPosting` (an `Article`) with the Organization as author and Roberto on `reviewedBy`.
+
+**Fact sync on live pages** (Roberto, 19 November)
+
+- `/happy-hour`: Margarita Flight is $13, was $12.
+- `/late-night`: Sunday through Thursday the full menu runs until close; Friday and Saturday
+  it runs until midnight, then a late night menu to 1 AM. The box and the hours line.
+- `/catering`: 48 hours' notice everywhere; no minimum headcount (hero chip and step 02);
+  drop-off is "Trays with sternos, serving utensils and napkins."; `TODO(setup)` left on
+  "We drop it, set it up, and go".
+- `/takeout-delivery`: Uber Eats was already off the line (entry 165); `TODO(uber)` added.
+  DoorDash and Grubhub there are real links, not `#`. The Uber Eats URL is still in
+  `Base.astro`'s DELIVERY map and its click tracking, unused.
+- **Not changed, and now out of step with the new copy on `/catering`:** "open bar, cash bar
+  or drink tickets" (new copy: open bar only), "labelled on every tray by default" (new copy:
+  labelled when you ask), and "deposits are set contract by contract" / "No deposit until you
+  say yes" (new copy: catering orders are paid in advance). Not in the brief; for Mario.
+
+**Links in.** `/bar`: a new homepage card beside happy hour, `/tequila-bar`, `/happy-hour`,
+`/game-day`. `/valentines-day`: a slide in the homepage events carousel (no Event schema),
+`/game-day`. Clarksburg: the footer row and `/mexican-restaurant-gaithersburg-md`.
+`/catering/cost`: `/catering` and the holiday party guide's budget line. Guides: the hub, and
+`/menu`'s Vegetarian heading for the vegetarian guide.
+
+**Open, waiting on Roberto.** `TODO(staffing)` and `TODO(setup)` in `catering/cost.astro`,
+`TODO(setup)` in `catering.astro`, `TODO(feb14-menu)` and `TODO(kickoff)` in the Super Bowl
+guide, `TODO(uber)` in `takeout-delivery.astro`. Each is a one-line change.
+
+**Photographs.** Real ones already in `public/images`, with 800px WebP copies encoded beside
+them. `site/catering-hero.jpg` (the AI taco spread, entry 159) was not used. Requested, slot
+left out: the Oaxaca Old Fashioned in its smoking box, a Big Mami on its own, the Valentine's
+Molcajete, The Baby Maker, catering trays or a taco bar set up, a quesabirria tray, and any
+photograph taken in Clarksburg.
+
+**Checks.** `node scripts/check-nov16.mjs` serves `dist/` and measures the six pages at 360,
+390, 768 and 1440 with the installed Chrome (the Playwright browser is not downloaded on this
+machine, which is also why `npm run check-build` could not run). No sideways scroll at any
+width, one H1 each, no tap target under 44px, no image without alt, no dash. On `/catering/cost`
+the price ends at 442px on a 390px phone. Published date on both guides is 19 November: set it
+to the merge date when they go live.
