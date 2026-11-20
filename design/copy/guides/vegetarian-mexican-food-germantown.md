@@ -4,8 +4,8 @@ url: /guides/vegetarian-mexican-food-germantown
 title_tag: "Vegetarian Mexican Food in Germantown, MD | Señor Tequila's"
 meta_description: "Every vegetarian and meatless dish on the Señor Tequila's menu in Germantown, MD, plus the seafood for Lent Fridays, what is and isn't vegan, and what to ask."
 byline: "By the Señor Tequila's team, reviewed by Roberto H. Rivas, co-owner"
-date_published: 2026-11-19
-date_modified: 2026-11-19
+date_published: 2026-11-20
+date_modified: 2026-11-20
 article_section: Menu
 primary_keyword: vegetarian mexican food germantown md
 draft: false

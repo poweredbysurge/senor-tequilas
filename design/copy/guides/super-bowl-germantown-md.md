@@ -4,8 +4,8 @@ url: /guides/super-bowl-germantown-md
 title_tag: "Where to Watch the Super Bowl in Germantown, MD (2027 Guide)"
 meta_description: "Super Bowl LXI is Sunday, Feb 14, 2027. Where to watch it in Germantown, MD: what to check at any bar, what it costs, and the one room that has sound up."
 byline: "By the Señor Tequila's team, reviewed by Roberto H. Rivas, co-owner"
-date_published: 2026-11-19
-date_modified: 2026-11-19
+date_published: 2026-11-20
+date_modified: 2026-11-20
 article_section: Game Day
 primary_keyword: where to watch the super bowl germantown md
 draft: false
