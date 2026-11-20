@@ -1,0 +1,233 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+import Faq from '../components/seasonal/Faq.astro';
+import Kit from '../components/kit/Kit.astro';
+import Crumbs from '../components/kit/Crumbs.astro';
+import Photo from '../components/kit/Photo.astro';
+import ReviewCard from '../components/kit/ReviewCard.astro';
+import business from '../data/business.json';
+import { PHONE_HREF, assertFacts, faqLd } from '../lib/authored.js';
+import { PHOTOS, photoSrcset, HERO_SIZES, moreThan, RATING, MAPS_URL, GOOGLE_REVIEWS_URL, ADDRESS_LINE, PHONE_PAREN, HOURS_NOV16, reviewExcerpt, crumbLd, serviceLd } from '../lib/kit.js';
+
+/*
+  /bar, a service page on PAGE-TEMPLATES.md blueprint 4.1 (DESIGN-DEBT.md entry 166). It does not
+  replace /tequila-bar. Copy is verbatim from the 16 November batch, round 2 (Roberto's corrections
+  of 19 November): paragraphs are split into cards, a table and a fact list where the blueprint
+  calls for one, and no sentence is dropped or reworded.
+
+  PRICES ARE ALLOWED ON THIS PAGE: the happy hour prices are Roberto's, 19 November.
+*/
+const PAGE = '/bar';
+// the copy repeats the address, the phone, the opening hours and last call in prose
+assertFacts(PAGE, { street: '20021 Century Blvd', phone: '301-569-4574', hours: HOURS_NOV16 });
+
+const CRUMBS = [{ name: 'Home', href: '/' }, { name: 'The Bar', href: PAGE }];
+const HERO = PHOTOS.barRoom;
+
+const WEEK = [
+  ['Monday', '2-for-1 margaritas on the rocks, lime, strawberry or mango, any size including the Big Mami'],
+  ['Tuesday', 'Free bingo with prizes, 8 to 10'],
+  ['Wednesday', 'Free lotería with prizes, 8 to 10'],
+  ['Thursday', '<a href="/karaoke">Karaoke</a> with DJ Willy, 7:30 to midnight. Thursday night football on'],
+  ['Friday', 'Live DJ, 9 PM to 1 AM. 21 and over in the bar area after 9'],
+  ['Saturday', 'Live DJ, 9 PM to 1 AM. College football on. 21 and over in the bar area after 9'],
+  ['Sunday', 'Live mariachi, 6:30 to 9:30. NFL on'],
+];
+
+const COCKTAILS = [
+  { t: 'Cantarito', p: 'The Cantarito comes in a handmade clay cup that goes home with you.' },
+  { t: 'Oaxaca Old Fashioned', p: "The Oaxaca Old Fashioned mixes Montelobos mezcal with Maker's Mark and arrives in a smoking box." },
+  { t: 'Paloma', p: 'The Paloma is 1800 Reposado and Squirt.' },
+  { t: 'Michelada', p: 'The michelada is built to match the cerveza you pick, with a banderilla de tamarindo on top.' },
+  { t: 'Red sangria', p: 'The red sangria is made in-house and finished with brandy-soaked fruit.' },
+];
+
+const REVIEWS = [
+  reviewExcerpt('Madison Wright', 'Their drinks are amazing as well & I highly recommend the virgin mango daiquiri!!'),
+  reviewExcerpt('Juan Majano', 'Our favorite waiter, Alejandro, always had the best attitude and gave the best recommendations for the menu and bar.'),
+];
+
+const FAQ = [
+  { q: 'Is there a cover charge?',
+    a: "No. There is no cover on a regular night, including karaoke Thursday and the DJ nights on Friday and Saturday. Special events like Thanksgiving Eve or New Year's Eve are ticketed or carry a cover, and those are posted on their own pages ahead of time." },
+  { q: 'Can I reserve a table in the bar area?',
+    a: 'No. Bar area tables are never held: it is first come, first served. Reservations are for the dining rooms, and if there is open space in the bar area when your party is seated, we will happily seat you there. The bar fills fastest on Lotería Wednesday, Karaoke Thursday, DJ weekends, Mariachi Sundays, Mexico matches and NFL Sundays. For a group of more than 20, reserve ahead, or book a private room with your own bartender, TVs, sound and microphone.',
+    link: { text: 'book a private room', href: '/private-parties' } },
+  { q: 'Can my kids sit in the bar area?',
+    a: 'Yes, except after 9 PM on Friday and Saturday, when the bar area goes 21 and over and anyone under 21 moves to a dining room by 10. The rest of the week the bar area is all ages, and the dining rooms are all ages every night.' },
+  { q: 'What time is last call?',
+    a: 'Fifteen minutes before closing: 9:45 PM Monday, Tuesday, Wednesday and Sunday, 11:45 PM Thursday, 12:45 AM Friday and Saturday. The kitchen serves the full menu to anyone seated before close, except Friday and Saturday after midnight, when the late night menu runs until 1 AM.',
+    link: { text: 'late night menu', href: '/late-night' } },
+  { q: 'Do you have beer on draft?',
+    a: 'Yes. Modelo, Miller Lite, a hazy IPA, Dos Equis Amber, Pacifico and a seasonal tap, in 22 oz pours, $6 during happy hour.' },
+];
+
+const ld = [
+  serviceLd({ url: PAGE, name: "The Bar at Señor Tequila's", serviceType: 'Bar and cantina', description: 'A 108-seat bar area with house-made margarita nectars, tequila and mezcal flights, draft beer, every NFL game in season, DJs on Friday and Saturday, and no cover.' }),
+  crumbLd(CRUMBS),
+  faqLd(FAQ),
+];
+---
+<Base title="Bar in Germantown, MD | The Cantina at Señor Tequila's" description="The bar at Señor Tequila's in Germantown: 108 seats, house-made margarita nectars, tequila flights, every NFL game, DJs Friday and Saturday, and no cover." canonical="https://senortequilas.com/bar" ogImage={HERO.src} shareImage={{ src: HERO.src, w: HERO.w, h: HERO.h }} extraTypes={['BarOrPub']} route={PAGE}>
+<div class="kt">
+  <Kit />
+  <Header5 />
+
+  <!-- 1. hero: HeroSplit -->
+  <section data-screen-label="Bar hero" data-hero="split" class="kt-hero">
+    <div class="kt-hero-in">
+      <Crumbs items={CRUMBS} />
+      <div class="kt-hero-grid">
+        <div>
+          <div class="kt-eyebrow">The bar area · Germantown, MD</div>
+          <h1 class="kt-h1">The Bar: Germantown's Mexican Cantina</h1>
+          <p class="kt-sub">108 seats, 13-plus TVs, margarita nectars cooked in our own kitchen, and no cover.</p>
+          <p class="kt-p">The bar area at Señor Tequila's opens at 3 on weekdays and 11 on weekends, next to Topgolf on Century Boulevard in Germantown. It seats 108 across sixteen four-top tables, two 12-seat long tables and a 20-seat counter, with free parking at the door and on all sides of the building.</p>
+          <p class="kt-p">Last call is 15 minutes before we close: 9:45 Monday to Wednesday and Sunday, 11:45 Thursday, 12:45 Friday and Saturday. The kitchen serves the full menu until close Sunday through Thursday. On Friday and Saturday the full menu runs until midnight, then the <a href="/late-night">late night menu</a> until 1 AM.</p>
+          <div class="kt-ctas">
+            <a href={business.reserveUrl} target="_blank" rel="noopener" class="kt-btn">Reserve a Table</a>
+            <a href="#week" class="kt-btn is-ghost">See Tonight</a>
+          </div>
+        </div>
+        <figure class="kt-hero-photo">
+          <div class="kt-frame" style={`aspect-ratio: ${HERO.w} / ${HERO.h};`}>
+            <img src={HERO.src} srcset={photoSrcset(HERO)} sizes={HERO_SIZES.split} alt={HERO.alt} width={HERO.w} height={HERO.h} loading="eager" fetchpriority="high" decoding="async" />
+          </div>
+          <span class="kt-chip">No cover</span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. what's behind the bar: Split, the margaritas -->
+  <section id="behind-the-bar" data-screen-label="Behind the bar" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split">
+        <div>
+          <div class="kt-eyebrow">Made in this kitchen</div>
+          <h2 class="kt-h2">What's behind the bar</h2>
+          <p class="kt-p">The margaritas run on nectars made in this kitchen: tamarindo, jamaica and jalapeño are cooked and strained here, not poured from a jug. Even the chamoy is made in our kitchen. The house margarita comes in 14 oz, 18 oz and the 54 oz Big Mami, on the rocks or frozen, in lime, mango, strawberry, guava, blackberry or passion fruit. Rims are salt, sugar, or house-made chamoy and Tajín.</p>
+        </div>
+        <Photo id="margaritas" ratio="4 / 3" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. the cocktail list: cards, on the cream band -->
+  <section data-screen-label="Cocktail list" data-band="cream" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">The cocktail list</div>
+      <p class="kt-p" style="margin-top: 12px;">Past the <a href="/margaritas">margaritas</a> there is a real cocktail list.</p>
+      <ul class="kt-cards kt-mosaic" style="margin-top: 22px;">
+        <li><Photo id="cantarito" sizes="(max-width: 767px) 92vw, 32vw" /></li>
+        {COCKTAILS.map((c) => (
+          <li class="kt-card"><h3 class="kt-card-t" style="margin-top: 0;">{c.t}</h3><p>{c.p}</p></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. draft, tequila and mezcal: Split, the flight -->
+  <section data-screen-label="Draft and tequila" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split">
+        <Photo id="tequilaFlight" ratio="4 / 3" />
+        <div>
+          <div class="kt-eyebrow">Draft, tequila and mezcal</div>
+          <p class="kt-p" style="margin-top: 12px;">On draft: Modelo, Miller Lite, a hazy IPA, Dos Equis Amber, Pacifico and a seasonal tap, in 22 oz pours.</p>
+          <p class="kt-p">Tequila and mezcal are organized by age, blanco to extra añejo, with flights of three 1 oz pours for anyone who wants to taste the difference before picking a favorite. The full list, with what each category tastes like, is on the <a href="/tequila-bar">tequila bar page</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. the week: a table that stacks to cards on a phone -->
+  <section id="week" data-screen-label="The week" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">Seven nights</div>
+      <h2 class="kt-h2">How a week in the bar area goes</h2>
+      <div class="kt-table">
+        <table>
+          <thead><tr><th scope="col">Night</th><th scope="col">In the bar area</th></tr></thead>
+          <tbody>
+            {WEEK.map(([day, what]) => <tr><th scope="row">{day}</th><td set:html={what} /></tr>)}
+          </tbody>
+        </table>
+      </div>
+      <div class="kt-split is-top" style="margin-top: clamp(8px, 1.4vw, 20px);">
+        <p class="kt-p"><a href="/happy-hour">Happy hour</a> is Monday to Friday, 3 to 6, in the bar area only: the $6 house margarita, $13 handcrafted margaritas, a Margarita Flight of three 5 oz pours for $13, 22 oz drafts for $6, and a short food list from $6. No happy hour on weekends.</p>
+        <p class="kt-p">Every NFL game is on every day we are open during the season, with the sound up on the big ones. Liga MX and Premier League matches run on weekends, Champions League during the week. Mexico and other international soccer matches fill the room before kickoff, so get here early for those. The <a href="/game-day">game day page</a> lists what is on.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. the room: Split, a long table -->
+  <section data-screen-label="The room" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split is-flip">
+        <div>
+          <div class="kt-eyebrow">First come, first served</div>
+          <h2 class="kt-h2">The room</h2>
+          <p class="kt-p">Painted chairs, a 20-seat counter, and 13-plus TVs you can see from every seat. The two long tables are the ones to aim for with a group of eight to twelve. The bar area is first come, first served. If you want a private room with your own bartender, send a note through the <a href="/private-parties">private events page</a> and we reply within 24 hours.</p>
+          <p class="kt-p">Friday and Saturday after 9 PM the bar area is 21 and over, and anyone under 21 is asked to move to a dining room by 10. Sunday through Thursday, and before 9 on weekends, families sit wherever they like: bingo, lotería, karaoke and mariachi nights are open to everyone. The dining rooms are all ages every night.</p>
+        </div>
+        <Photo id="longTable" ratio="4 / 5" sizes="(max-width: 767px) 92vw, 40vw" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. who runs it: the owners, two review cards -->
+  <section data-screen-label="Who runs it" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">Family-owned since 2002</div>
+      <h2 class="kt-h2">Who runs it</h2>
+      <p class="kt-p">Señor Tequila's is owned by brothers Roberto and Alex Rivas, family-owned since 2002 and on Century Boulevard since 2015. Google has it at {RATING} stars from {moreThan(business.reviews.total)} reviews.</p>
+      <div class="kt-reviews">
+        {REVIEWS.map((r) => <ReviewCard review={r} />)}
+      </div>
+      <a class="kt-more" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener">Read the reviews on Google</a>
+    </div>
+  </section>
+
+  <!-- 8. FAQ -->
+  <section id="faq" data-screen-label="Bar FAQ" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-faq-grid">
+        <div class="kt-faq-head"><h2 class="kt-h2">Bar questions, answered</h2></div>
+        <Faq items={FAQ} variant="rule" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. the closing band -->
+  <section data-screen-label="Come in" class="kt-cta">
+    <div class="kt-wrap">
+      <h2 class="kt-h2">Come in</h2>
+      <p class="kt-p">{business.name}, {ADDRESS_LINE}, next to Topgolf off 270. <a href={PHONE_HREF} style="display: inline-flex; align-items: center; min-height: 44px;">{PHONE_PAREN}</a>. Free parking at the door and on all sides of the building.</p>
+      <div class="kt-ctas">
+        <a href={business.reserveUrl} target="_blank" rel="noopener" class="kt-btn">Reserve a Table</a>
+        <a href={MAPS_URL} target="_blank" rel="noopener" class="kt-btn is-ghost">Get Directions</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. cross-links -->
+  <section data-screen-label="More from the bar" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">More from the bar</div>
+      <ul class="kt-routes">
+        <li><a class="kt-route" href="/tequila-bar"><span class="kt-route-k">Tequila and mezcal</span><span class="kt-route-t">The Tequila Bar</span><span class="kt-route-go">See the list</span></a></li>
+        <li><a class="kt-route" href="/margaritas"><span class="kt-route-k">House-made nectars</span><span class="kt-route-t">Margaritas</span><span class="kt-route-go">See the margaritas</span></a></li>
+        <li><a class="kt-route" href="/happy-hour"><span class="kt-route-k">Monday to Friday, 3 to 6</span><span class="kt-route-t">Happy Hour</span><span class="kt-route-go">See happy hour</span></a></li>
+        <li><a class="kt-route" href="/game-day"><span class="kt-route-k">What is on</span><span class="kt-route-t">Game Day</span><span class="kt-route-go">See the schedule</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+
+  <Footer2 />
+</div>
+</Base>
