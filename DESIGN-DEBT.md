@@ -5112,6 +5112,9 @@ reader is now tied to `Private Events`, which is what it meant before. Schema st
   or drink tickets" (new copy: open bar only), "labelled on every tray by default" (new copy:
   labelled when you ask), and "deposits are set contract by contract" / "No deposit until you
   say yes" (new copy: catering orders are paid in advance). Not in the brief; for Mario.
+  **Fixed the same day, on Mario's yes:** the bar card reads "Open bar only, and only alongside
+  food catering."; Dietary reads "labelled when you ask"; the packages intro reads "Catering
+  orders are paid in advance."; the form note reads "Nothing is charged until you say yes."
 
 **Links in.** `/bar`: a new homepage card beside happy hour, `/tequila-bar`, `/happy-hour`,
 `/game-day`. `/valentines-day`: a slide in the homepage events carousel (no Event schema),
