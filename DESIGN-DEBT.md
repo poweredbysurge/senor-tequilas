@@ -5193,3 +5193,14 @@ Eat and drink, Nights, Parties and catering, Visit, eight links at most each, fo
 desktop and two by two on a phone, ranged left. Margaritas and the Tequila Bar are in the footer
 for the first time. "Tacos" (which went to `/taco-tuesday`) is labelled "Taco Tuesday". Privacy
 moved to the copyright line. PAGE-TEMPLATES rule 19.
+
+## 168. /tequila-bar category tabs work, 20 November
+
+The shelf section had five tab buttons and only the Blanco list. The other four did nothing, and their bottles were not in the HTML.
+
+- **One source.** The tequila and mezcal shelf now lives in `src/data/tequila.js`: name, description, barrel age and bottle list for each category. `/menu` renders its five "Tequila & Mezcal" cards from it, with the same text as before (checked against the built page). `/tequila-bar` renders its tabs from it. A bottle is now added or removed in one place.
+- **Each tab shows its own** name, description, bottle count (computed from the list: 14, 13, 5, 2, 6) and barrel age (0 to 60 days, 2 to 12 months, 1 to 3 years, 3+ years). Mezcal has no barrel box, because mezcal is not graded by barrel time. The descriptions are the /menu sentences, so the Blanco tab's description and age changed from the old "Unaged or rested under two months..." and "0 to 2 mo".
+- **All five panels ship in the HTML.** The four inactive panels are `hidden`, so every list can be crawled and is in view-source. The script only toggles which panel shows.
+- **Accessibility.** The tabs use `role="tablist"`, `role="tab"` and `role="tabpanel"`, with `aria-selected`, `aria-controls` and `aria-labelledby`. They use a roving tabindex. Left and Right arrows move between tabs (wrapping), and Home and End jump to the first and last. Focus shows a 2px gold outline. The selected tab keeps the gold fill. The panel titles are now `h3`, because they sit under the section's `h2`.
+- **Tabs wrap.** The tabs used to sit in a hidden-scrollbar rail, so Extra Añejo and Mezcal were off screen on a phone. They now wrap onto 2 rows at 390px with no sideways scroll, and fit on 1 row at 1440px.
+- **Copy.** Two changes. The eyebrow "Four categories" is now "Tequila and mezcal", to match five tabs. In "Beyond margaritas", "Full menu until the kitchen closes" is replaced with the /late-night sentence, "Sunday through Thursday the full menu runs until close. Friday and Saturday it runs until midnight, then the late night menu until 1 AM." The page's meta description still says "until the kitchen closes". That was outside this change's brief, so it is left for a decision.
