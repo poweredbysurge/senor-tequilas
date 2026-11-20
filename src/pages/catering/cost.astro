@@ -1,0 +1,211 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header5 from '../../components/Header5.astro';
+import Footer2 from '../../components/Footer2.astro';
+import Faq from '../../components/seasonal/Faq.astro';
+import Kit from '../../components/kit/Kit.astro';
+import Crumbs from '../../components/kit/Crumbs.astro';
+import Photo from '../../components/kit/Photo.astro';
+import business from '../../data/business.json';
+import { PHONE_HREF, assertFacts, faqLd } from '../../lib/authored.js';
+import { PHOTOS, photoSrcset, HERO_SIZES, moreThan, RATING, PHONE_PAREN, crumbLd, serviceLd } from '../../lib/kit.js';
+
+/*
+  /catering/cost, an answer page on PAGE-TEMPLATES.md blueprint 4.3 (DESIGN-DEBT.md entry 166),
+  the child of /catering. Copy is verbatim from the 16 November batch, round 2 (Roberto's
+  corrections of 19 November). The price is in the answer box, on the first phone screen.
+
+  PRICES ARE ALLOWED ON THIS PAGE: $22 and $26 a person, the $30 delivery fee and $40 an hour per
+  server are Roberto's, confirmed 19 November. Do not strip them in a sweep. No Offer or price
+  markup in the schema.
+
+  OPEN, WAITING ON ROBERTO (each is a one-line change here):
+    TODO(staffing)  the server staffing rule: the Staff driver and the worked examples
+    TODO(setup)     whether delivery includes setup: "Standard service is drop-off"
+*/
+const PAGE = '/catering/cost';
+assertFacts(PAGE, { phone: '301-569-4574' });
+
+const CRUMBS = [{ name: 'Home', href: '/' }, { name: 'Catering', href: '/catering' }, { name: 'Cost', href: PAGE }];
+const HERO = PHOTOS.platters;
+const QUOTE = '/catering#inquire';
+const SOURCE_WEDDING = 'https://affordableweddingvenuesandmenus.com/blog/how-much-does-a-wedding-taco-bar-cost-a-realistic-2026-guide';
+const SOURCE_TACO_MAN = 'https://www.catercow.com/blog/taco-man-catering-guide';
+const MD_SALES_TAX = 'https://www.marylandcomptroller.gov/legal-library/btt-8-jan-31-2022.html';
+
+const DRIVERS = [
+  ['The package', 'Taco Bar from $22. Fajita Buffet from $26. Build Your Own, anything on <a href="/menu">the menu</a>, quoted per event.'],
+  ['Headcount', 'Pricing is per person, so at 20, 60 or 100 guests you can estimate the total before you call. No minimum.'],
+  ['Delivery', '$30 flat, up to 20 miles from Germantown. That covers Gaithersburg, Clarksburg, Boyds, Urbana and most of Frederick. Outside 20 miles, ask. Pickup from the restaurant is free.'],
+  // TODO(staffing): add the per-guest rule once Roberto confirms
+  ['Staff', 'Servers are $40 an hour each, including setup and breakdown. Skip them for an office lunch. If you want service, we recommend at least two servers.'],
+  ['Full service', 'A taco cart with a cook carving al pastor off the trompo on site, buffet stations or passed items, quoted per event.'],
+  ['Bar', 'Open bar only, run at your location by our bartender, and only alongside food catering. Quoted separately.'],
+  ['Upgrades', 'Skirt steak and salmon are premium proteins and add to the per-person rate.'],
+  ['Tax', `<a href="${MD_SALES_TAX}" target="_blank" rel="noopener">Maryland sales tax</a> is 6 percent on food and 9 percent on alcoholic beverages, on top of the figures above.`],
+];
+
+// TODO(staffing): add one staffed example once Roberto confirms the rule
+const EXAMPLES = [
+  { t: 'Office lunch for 25, drop-off taco bar.', math: '25 × $22 = $550, plus $30 delivery.', n: 'About $580 before tax', tail: ', or $23.20 a head.' },
+  { t: 'Family party for 50, drop-off fajita buffet.', math: '50 × $26 = $1,300, plus $30 delivery.', n: 'About $1,330 before tax', tail: ', or $26.60 a head.' },
+  { t: 'Team banquet for 120, taco bar, picked up at the restaurant.', math: '120 × $22 = $2,640, no delivery fee.', n: 'About $2,640 before tax', tail: ', or $22 a head.' },
+];
+
+const FAQ = [
+  { q: 'Is there a minimum order for taco catering?',
+    a: 'No minimum headcount. We do need 48 hours\' notice, and for full-service events with a cart or a bar, more lead time helps.' },
+  { q: 'How much is delivery?',
+    a: '$30 flat within 20 miles of Germantown, from our door to your door. Pickup from the restaurant is free.' },
+  { q: 'Do you charge for servers?',
+    a: 'Only if you want them: $40 an hour per server, which covers setup and breakdown. Drop-off orders have no staff charge.' },
+  { q: 'Can you bring the bar?',
+    a: 'Yes. We are licensed for off-site bar service with our own bartender. It is open bar only, quoted separately from the food, and it comes with food catering, not on its own.' },
+  { q: 'Is there a deposit?',
+    a: 'Catering orders are paid in advance. For a party held at the restaurant, the deposit is typically 20 percent.' },
+  { q: 'Can I get individual boxes instead of trays?',
+    a: 'Yes. Tacos, fajitas, enchiladas or anything from the menu can be packed individually, which offices often prefer.' },
+];
+
+const ld = [
+  serviceLd({ url: PAGE, name: "Taco catering from Señor Tequila's", serviceType: 'Taco catering', description: 'Drop-off taco bar and fajita buffet catering, delivered within 20 miles of Germantown, Maryland, with full service, staff and an open bar available.', areaServed: ['Germantown, MD', 'Gaithersburg, MD', 'Clarksburg, MD', 'Boyds, MD', 'Urbana, MD', 'Frederick, MD'] }),
+  crumbLd(CRUMBS),
+  faqLd(FAQ),
+];
+---
+<Base title="Taco Catering Cost in Germantown, MD | Señor Tequila's" description="Taco catering from Señor Tequila's starts from $22 a person, delivered within 20 miles of Germantown for $30. What moves the price, with examples. Get a quote." canonical="https://senortequilas.com/catering/cost" ogImage={HERO.src} shareImage={{ src: HERO.src, w: HERO.w, h: HERO.h }} route={PAGE}>
+<div class="kt">
+  <Kit />
+  <Header5 />
+
+  <!-- 1. the answer hero: HeroSplit, the price in the answer box -->
+  <section data-screen-label="Catering cost hero" data-hero="split" class="kt-hero">
+    <div class="kt-hero-in">
+      <Crumbs items={CRUMBS} />
+      <div class="kt-hero-grid">
+        <div>
+          <div class="kt-eyebrow">Catering · 2026 starting prices</div>
+          <h1 class="kt-h1">How Much Does Taco Catering Cost in Germantown, MD?</h1>
+          <p class="kt-sub">From $22 a person, with the math shown before you call.</p>
+          <div class="kt-answer">
+            <div class="kt-answer-k">Drop-off taco bar, from</div>
+            <div class="kt-answer-n">$22 <small>a person</small></div>
+            <p>Taco catering from Señor Tequila's starts from <strong>$22 a person</strong> for a drop-off taco bar, delivered within 20 miles of Germantown for a flat $30. The fajita buffet starts from $26 a person. There is no minimum headcount, and we need 48 hours' notice.</p>
+          </div>
+          <p class="kt-p">Those are 2026 starting prices before tax, not a quote. Every order is priced for the date, the headcount and the menu, and you get a detailed quote before you commit.</p>
+          <div class="kt-ctas">
+            <a href={QUOTE} class="kt-btn">Get a Catering Quote</a>
+          </div>
+        </div>
+        <figure class="kt-hero-photo">
+          <div class="kt-frame" style={`aspect-ratio: ${HERO.w} / ${HERO.h};`}>
+            <img src={HERO.src} srcset={photoSrcset(HERO)} sizes={HERO_SIZES.split} alt={HERO.alt} width={HERO.w} height={HERO.h} loading="eager" fetchpriority="high" decoding="async" />
+          </div>
+          <span class="kt-chip">No minimum headcount</span>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. what the price includes: Split, tacos -->
+  <section data-screen-label="What the price includes" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split">
+        <Photo id="cincoTacos" ratio="4 / 3" />
+        <div>
+          <div class="kt-eyebrow">In the trays</div>
+          <h2 class="kt-h2">What the per-person price includes</h2>
+          <p class="kt-p">A taco bar drop-off comes with the tacos, rice, beans, salsas and tortillas, in trays with sternos, plus serving utensils and napkins. Food can come as buffet trays or packed as individual boxes. Vegetarian, vegan and gluten-free items are labelled when you ask.</p>
+          {/* TODO(setup): confirm with Roberto whether delivery includes setup */}
+          <p class="kt-p">Standard service is drop-off, from our door to yours. You do not pay for staff you did not ask for.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. what moves the price: a fact list on the cream band -->
+  <section id="drivers" data-screen-label="What moves the price" data-band="cream" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">Eight things</div>
+      <h2 class="kt-h2">What moves the price</h2>
+      <dl class="kt-facts">
+        {DRIVERS.map(([k, v]) => <div class="kt-fact"><dt>{k}.</dt><dd set:html={v} /></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <!-- 4. three worked examples: cards -->
+  <section id="examples" data-screen-label="Worked examples" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">The math</div>
+      <h2 class="kt-h2">Three worked examples</h2>
+      <p class="kt-p">Illustrative, using the starting rates. Your quote will differ.</p>
+      <ul class="kt-cards is-three">
+        {EXAMPLES.map((e) => (
+          <li class="kt-card">
+            <h3 class="kt-card-t" style="margin-top: 0;">{e.t}</h3>
+            <p>{e.math} <strong>{e.n}</strong>{e.tail}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="kt-p">Adding servers is $40 an hour each on top. Ask for the quote with staff and it will show as its own line.</p>
+    </div>
+  </section>
+
+  <!-- 5. how that compares, and who's cooking: the birria above two columns -->
+  <section data-screen-label="How that compares" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <Photo id="quesabirria" ratio="21 / 9" sizes="(max-width: 767px) 92vw, 1084px" />
+      <div class="kt-split is-top" style="margin-top: clamp(32px, 4vw, 56px);">
+        <div>
+          <div class="kt-eyebrow">Against the national ranges</div>
+          <h2 class="kt-h2">How that compares</h2>
+          <p class="kt-p"><a href={SOURCE_WEDDING} target="_blank" rel="noopener">A 2026 catering guide</a> puts restaurant drop-off taco bars at about $12 to $22 a guest nationally, caterer-run buffets at $22 to $38, and staffed taco stations at $28 to $50 or more, with rentals and service fees commonly adding $500 to $2,500 on top. <a href={SOURCE_TACO_MAN} target="_blank" rel="noopener">A separate April 2026 guide</a> prices live "taco man" service at $12 to $28 a person with a 25-person minimum. Our drop-off sits at the top of the drop-off range because the tortillas are pressed here and the birria is an eight-hour braise, and there is no minimum order and no rental line.</p>
+        </div>
+        <div>
+          <div class="kt-eyebrow">The same kitchen</div>
+          <h2 class="kt-h2">Who's cooking</h2>
+          <p class="kt-p">The same kitchen that runs the restaurant. Señor Tequila's is owned by brothers Roberto and Alex Rivas, family-owned since 2002, on Century Boulevard in Germantown since 2015, with {RATING} stars from {moreThan(business.reviews.total)} Google reviews. Our catering has served events for the Washington Spirit, the professional women's soccer team, and the Mexican Embassy in DC.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section id="faq" data-screen-label="Catering cost FAQ" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-faq-grid">
+        <div class="kt-faq-head"><h2 class="kt-h2">Catering cost questions</h2></div>
+        <Faq items={FAQ} variant="rule" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. the closing band -->
+  <section data-screen-label="Get a number" class="kt-cta">
+    <div class="kt-wrap">
+      <h2 class="kt-h2">Get a number</h2>
+      <p class="kt-p">Tell us the date, a rough headcount and the address, and you get a detailed quote. Call <a href={PHONE_HREF} style="display: inline-flex; align-items: center; min-height: 44px;">{PHONE_PAREN}</a> or send the form. Planning a party at the restaurant instead? See <a href="/private-parties">private events</a> or the <a href="/catering">catering page</a>.</p>
+      <div class="kt-ctas">
+        <a href={QUOTE} class="kt-btn">Get a Catering Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. cross-links -->
+  <section data-screen-label="More on catering" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">More on catering and parties</div>
+      <ul class="kt-routes">
+        <li><a class="kt-route" href="/catering"><span class="kt-route-k">The service</span><span class="kt-route-t">Taco Catering</span><span class="kt-route-go">See catering</span></a></li>
+        <li><a class="kt-route" href="/private-parties"><span class="kt-route-k">At the restaurant</span><span class="kt-route-t">Private Rooms</span><span class="kt-route-go">See the rooms</span></a></li>
+        <li><a class="kt-route" href="/guides/holiday-party-germantown-md"><span class="kt-route-k">Guide</span><span class="kt-route-t">Planning a Holiday Party</span><span class="kt-route-go">Read the guide</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+
+  <Footer2 />
+</div>
+</Base>
