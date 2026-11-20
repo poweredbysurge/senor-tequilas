@@ -5105,7 +5105,7 @@ reader is now tied to `Private Events`, which is what it meant before. Schema st
 - `/catering`: 48 hours' notice everywhere; no minimum headcount (hero chip and step 02);
   drop-off is "Trays with sternos, serving utensils and napkins."; `TODO(setup)` left on
   "We drop it, set it up, and go".
-- `/takeout-delivery`: Uber Eats was already off the line (entry 165); `TODO(uber)` added.
+- `/takeout-delivery`: Uber Eats was already off the line (entry 158); `TODO(uber)` added.
   DoorDash and Grubhub there are real links, not `#`. The Uber Eats URL is still in
   `Base.astro`'s DELIVERY map and its click tracking, unused.
 - **Not changed, and now out of step with the new copy on `/catering`:** "open bar, cash bar
