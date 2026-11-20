@@ -5204,3 +5204,14 @@ The shelf section had five tab buttons and only the Blanco list. The other four 
 - **Accessibility.** The tabs use `role="tablist"`, `role="tab"` and `role="tabpanel"`, with `aria-selected`, `aria-controls` and `aria-labelledby`. They use a roving tabindex. Left and Right arrows move between tabs (wrapping), and Home and End jump to the first and last. Focus shows a 2px gold outline. The selected tab keeps the gold fill. The panel titles are now `h3`, because they sit under the section's `h2`.
 - **Tabs wrap.** The tabs used to sit in a hidden-scrollbar rail, so Extra Añejo and Mezcal were off screen on a phone. They now wrap onto 2 rows at 390px with no sideways scroll, and fit on 1 row at 1440px.
 - **Copy.** Two changes. The eyebrow "Four categories" is now "Tequila and mezcal", to match five tabs. In "Beyond margaritas", "Full menu until the kitchen closes" is replaced with the /late-night sentence, "Sunday through Thursday the full menu runs until close. Friday and Saturday it runs until midnight, then the late night menu until 1 AM." The page's meta description still says "until the kitchen closes". That was outside this change's brief, so it is left for a decision.
+
+## 169. Footer clean-up and the /tequila-bar meta description, 20 November
+
+- **Removed from the footer:** Near Gaithersburg, Near Clarksburg, Catering Cost. The mobile menu never had them. All three pages stay live and in the sitemap.
+- **Renamed, same URLs:** "The Bar" is now "Bar & Cantina" (`/bar`), and "Tequila Bar" is now "Tequila & Mezcal" (`/tequila-bar`). The new labels are in the footer, on the `/game-day` button, on the `/valentines-day` related-link card, and on the `/bar` related-link card. Links that are part of a sentence ("the bar area", "The tequila bar") are copy and stay as they are.
+- **In-links from page copy** (counted in the built site, footer excluded):
+  - `/mexican-restaurant-gaithersburg-md`: 3, from /catering/cost, /happy-hour and /mexican-restaurant-clarksburg-md.
+  - `/mexican-restaurant-clarksburg-md`: 3, from /catering/cost, the vegetarian guide and /mexican-restaurant-gaithersburg-md.
+  - `/catering/cost`: 4, from /catering (pricing intro), the holiday party guide (budget section), the Super Bowl guide and /mexican-restaurant-clarksburg-md.
+- **New links:** on /catering/cost, "Gaithersburg" and "Clarksburg" in the Delivery line now link to their city pages. /catering's delivery block does not name those towns, so it got no new links.
+- **Meta description on /tequila-bar:** "the full menu until the kitchen closes" is now "the full menu until close, or until midnight Friday and Saturday" (151 characters), to match /late-night.
