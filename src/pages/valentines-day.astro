@@ -1,0 +1,207 @@
+---
+import Base from '../layouts/Base.astro';
+import Header5 from '../components/Header5.astro';
+import Footer2 from '../components/Footer2.astro';
+import Faq from '../components/seasonal/Faq.astro';
+import Kit from '../components/kit/Kit.astro';
+import Crumbs from '../components/kit/Crumbs.astro';
+import Photo from '../components/kit/Photo.astro';
+import ReviewCard from '../components/kit/ReviewCard.astro';
+import business from '../data/business.json';
+import { PHONE_HREF, assertFacts, faqLd } from '../lib/authored.js';
+import { PHOTOS, photoSrcset, HERO_SIZES, moreThan, RATING, GOOGLE_REVIEWS_URL, ADDRESS_LINE, PHONE_PAREN, HOURS_NOV16, reviewExcerpt, crumbLd, serviceLd } from '../lib/kit.js';
+
+/*
+  /valentines-day, a seasonal service page on PAGE-TEMPLATES.md blueprint 4.1 (DESIGN-DEBT.md
+  entry 166), in the family of /friendsgiving and /new-years-eve. Copy is verbatim from the
+  16 November batch, round 2 (Roberto's corrections of 19 November).
+
+  No Event schema, by the brief: Service + FAQPage + BreadcrumbList only.
+  February 14, 2027 is a Sunday and Super Bowl LXI. The 10 PM restaurant close is the normal
+  Sunday close in business.json; the bar staying open until the game ends is said in the copy
+  only, with no specialHours entry until the restaurant gives a closing time.
+*/
+const PAGE = '/valentines-day';
+assertFacts(PAGE, { street: '20021 Century Blvd', phone: '301-569-4574', hours: HOURS_NOV16 });
+
+const CRUMBS = [{ name: 'Home', href: '/' }, { name: "Valentine's Day", href: PAGE }];
+const HERO = PHOTOS.mexicanRoom;
+const REVIEW = reviewExcerpt('Dee Williams', 'Knowing it was my special day, he took care of us with prompt service and grace.');
+
+const ROOMS = [
+  { k: '112 seats · mariachi · no TVs', t: 'The Mexican Room', p: 'The Mexican Room is the main dining room, 112 seats, with the mariachi playing from 7 PM and no TVs. That is the room for dinner with the band.' },
+  { k: '48 seats · the quiet one', t: 'The Indoor Patio', pick: true, p: 'The Indoor Patio, 48 seats, is roofed, enclosed and winterized, and sits between the dining room and the bar in noise. This is the room for a date: talk, hold hands under the table and make after-dinner plans.' },
+  { k: '96 seats · screens', t: 'The International Room', p: 'The International Room, 96 seats, has screens. The game will be on there, most likely with the sound off.' },
+  { k: '108 seats · the Super Bowl', t: 'The bar area', p: 'The <a href="/bar">bar area</a> is where the Super Bowl lives that night: 108 seats, 13-plus TVs, full surround sound, first come, first served. If one of you wants the game and the other does not, that is the compromise: dinner in the Mexican Room, then the fourth quarter at the bar.' },
+];
+
+const FAQ = [
+  { q: "Do I need a reservation on Valentine's Day?",
+    a: `Yes, for the dining rooms. Feb 14 is a Sunday dinner and a game night at once, so book early. Reserve online or call ${PHONE_PAREN}. The bar area stays first come, first served for the game.` },
+  { q: "Is there a special Valentine's menu?",
+    a: "Yes. Valentine's Day is a limited menu: our top 30 dishes plus Valentine's Day specials, including the Valentine's Molcajete and The Baby Maker." },
+  { q: "What time do you close on Valentine's Day?",
+    a: 'The restaurant closes at 10 PM. The bar stays open until the Super Bowl ends.' },
+  { q: 'Will the Super Bowl be on where we are sitting?',
+    a: 'Only if you want it to be. The bar area has it with full surround sound. The International Room and the patio have screens, most likely with the sound off. The Mexican Room has none. Tell us which you want when you book.' },
+  { q: "Is happy hour running on Valentine's Day?",
+    a: 'No. Happy hour is Monday to Friday, 3 to 6, and Feb 14 is a Sunday.' },
+  { q: "Can I book a private room for Valentine's Day?",
+    a: "No. Private rooms are not booked on Valentine's Day so the dining rooms stay open for everyone. For a group dinner, reserve a regular table and tell us the headcount." },
+];
+
+const ld = [
+  serviceLd({ url: PAGE, name: "Valentine's Day dinner at Señor Tequila's", serviceType: "Valentine's Day dinner", description: "Valentine's Day dinner on Sunday, February 14, 2027: live mariachi in the dining rooms from 7 to 9 PM, a limited menu with Valentine's Day specials, and the Super Bowl in the bar area." }),
+  crumbLd(CRUMBS),
+  faqLd(FAQ),
+];
+---
+<Base title="Valentine's Day Dinner in Germantown, MD | Señor Tequila's" description="Valentine's Day 2027 is a Sunday. Live mariachi from 7 to 9 PM, the dining rooms for dinner for two, and the Super Bowl in the bar. Reserve at Señor Tequila's." canonical="https://senortequilas.com/valentines-day" ogImage={HERO.src} shareImage={{ src: HERO.src, w: HERO.w, h: HERO.h }} route={PAGE}>
+<div class="kt">
+  <Kit />
+  <Header5 />
+
+  <!-- 1. hero: HeroStats -->
+  <section data-screen-label="Valentine's Day hero" data-hero="stats" class="kt-hero">
+    <figure class="kt-hero-bg">
+      <img src={HERO.src} srcset={photoSrcset(HERO)} sizes={HERO_SIZES.stats} alt={HERO.alt} width={HERO.w} height={HERO.h} loading="eager" fetchpriority="high" decoding="async" />
+    </figure>
+    <div class="kt-hero-in">
+      <Crumbs items={CRUMBS} />
+      <div class="kt-hero-copy">
+        <div class="kt-eyebrow">Sunday, February 14, 2027</div>
+        <h1 class="kt-h1">Valentine's Day Dinner in Germantown, MD: Sunday, February 14, 2027</h1>
+        <p class="kt-sub">Mariachi in the dining room, the Super Bowl in the bar, and a quieter room if you came to talk.</p>
+        <p class="kt-p">Valentine's Day 2027 lands on a Sunday, the same night as Super Bowl LXI. At Señor Tequila's that works out well: live mariachi plays the dining rooms from 7 to 9 PM, and the game goes on in the bar area, so dinner for two and the kickoff are in different rooms of the same building.</p>
+        <p class="kt-p">We open at 11 AM. The restaurant closes at 10 PM, and the bar stays open until the Super Bowl ends. Reserve a table now: Valentine's Day is one of the busiest nights of the year for any restaurant, and this one is also a game night.</p>
+        <div class="kt-ctas">
+          <a href={business.reserveUrl} target="_blank" rel="noopener" class="kt-btn">Reserve for Valentine's Day</a>
+        </div>
+      </div>
+      <ul class="kt-hero-stats">
+        <li><b>11 AM</b><span>We open</span></li>
+        <li><b>7 to 9 PM</b><span>Live mariachi</span></li>
+        <li><b>10 PM</b><span>The restaurant closes</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. which room: four option cards beside a room photograph -->
+  <section id="rooms" data-screen-label="Which room" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split">
+        <div>
+          <div class="kt-eyebrow">Four rooms, four volumes</div>
+          <h2 class="kt-h2">Which room to ask for</h2>
+        </div>
+        <Photo id="intlRoom" />
+      </div>
+      <ul class="kt-cards is-two">
+        {ROOMS.map((r) => (
+          <li class={`kt-card${r.pick ? ' is-pick' : ''}`}>
+            <div class="kt-card-k">{r.k}</div>
+            <h3 class="kt-card-t">{r.t}</h3>
+            <p set:html={r.p} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 3. what to order: three photo cards on the cream band -->
+  <section id="menu" data-screen-label="What to order" data-band="cream" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">A limited menu</div>
+      <h2 class="kt-h2">What to order for two</h2>
+      <p class="kt-p">Valentine's Day runs on a limited menu: our top 30 dishes plus Valentine's Day specials.</p>
+      <ul class="kt-cards is-three">
+        <li class="kt-card">
+          <Photo id="fajitaMazatlan" ratio="4 / 3" sizes="(max-width: 767px) 92vw, 30vw" />
+          <div class="kt-card-k">To share</div>
+          <p>The special to share is the Valentine's Molcajete: hand-cut skirt steak, bacon-wrapped shrimp, chorizo and grilled pineapple in a stone bowl. The Mazatlán Fajita brings tender steak, chicken and shrimp on one skillet. For something quieter, Frida's Salmon is an 8-ounce grilled fillet over zucchini, squash and carrots with flor de calabaza sauce, and the Enchiladas de Mole come drenched in mole poblano, with a free taste of the mole first if you ask.</p>
+        </li>
+        <li class="kt-card">
+          <Photo id="cantarito" ratio="4 / 3" sizes="(max-width: 767px) 92vw, 30vw" />
+          <div class="kt-card-k">To drink</div>
+          <p>To drink: The Baby Maker, our signature Valentine's drink, one of our handmade <a href="/margaritas">margaritas</a>, or Mi Amor, Don Julio Reposado with guava, served up with a Tajín rim. The Cantarito comes in a handmade clay cup you take home, which makes it the souvenir. Or split a Margarita Flight, three 5 oz pours, if you cannot agree.</p>
+        </li>
+        <li class="kt-card">
+          <Photo id="volcan" ratio="4 / 3" sizes="(max-width: 767px) 92vw, 30vw" />
+          <div class="kt-card-k">Dessert</div>
+          <p>Dessert is where <a href="/la-dulceria">La Dulcería</a> earns its name: the Volcán de Xocolate is a warm chocolate cake with a melted center under vanilla ice cream, and the Cheesecake Chimichanga is fried, dusted in cinnamon sugar, split down the middle over ice cream and topped with wild berry sauce.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4. the family: Split, the mariachi -->
+  <section data-screen-label="Bringing the family" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split is-flip">
+        <div>
+          <div class="kt-eyebrow">All ages, every night</div>
+          <h2 class="kt-h2">Bringing the family</h2>
+          <p class="kt-p">Valentine's Day on a Sunday means a lot of family dinners, and the dining rooms are all ages every night. There is a kids' menu, Pa' los Niños, with a cheeseburger, chicken nuggets, a chicken quesadilla and mac and cheese, each with rice and beans or fries. The mariachi plays happy birthday when a table asks.</p>
+        </div>
+        <Photo id="mariachi" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. who's cooking: the owners beside one review card -->
+  <section data-screen-label="Who's cooking" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-split">
+        <div>
+          <div class="kt-eyebrow">Family-owned since 2002</div>
+          <h2 class="kt-h2">Who's cooking</h2>
+          <p class="kt-p">Señor Tequila's is owned by brothers Roberto and Alex Rivas, family-owned since 2002 and on Century Boulevard since 2015. Tortillas are pressed in-house and the margarita nectars are cooked in the kitchen. Google has the restaurant at {RATING} stars from {moreThan(business.reviews.total)} reviews, and birthdays and anniversaries show up in a lot of them:</p>
+        </div>
+        <div>
+          <ReviewCard review={REVIEW} />
+          <a class="kt-more" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener">Read the reviews on Google</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section id="faq" data-screen-label="Valentine's Day FAQ" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-faq-grid">
+        <div class="kt-faq-head"><h2 class="kt-h2">Valentine's Day questions</h2></div>
+        <Faq items={FAQ} variant="rule" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. the closing band -->
+  <section id="reserve" data-screen-label="Reserve" class="kt-cta">
+    <div class="kt-wrap">
+      <h2 class="kt-h2">Reserve</h2>
+      <p class="kt-p">{business.name}, {ADDRESS_LINE}. <a href={PHONE_HREF} style="display: inline-flex; align-items: center; min-height: 44px;">{PHONE_PAREN}</a>. Free parking at the door. Open Sunday from 11 AM. Watching the game instead? See <a href="/guides/super-bowl-germantown-md">where to watch the Super Bowl in Germantown</a>.</p>
+      <div class="kt-ctas">
+        <a href={business.reserveUrl} target="_blank" rel="noopener" class="kt-btn">Reserve for Valentine's Day</a>
+        <a href="/menu" class="kt-btn is-ghost">See the Menu</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. cross-links -->
+  <section data-screen-label="More for the night" data-band="raise" class="kt-sec">
+    <div class="kt-wrap">
+      <div class="kt-eyebrow">More for the night</div>
+      <ul class="kt-routes">
+        <li><a class="kt-route" href="/bar"><span class="kt-route-k">108 seats, 13-plus TVs</span><span class="kt-route-t">The Bar</span><span class="kt-route-go">See the bar</span></a></li>
+        <li><a class="kt-route" href="/fajitas-molcajetes"><span class="kt-route-k">On the skillet, in the stone</span><span class="kt-route-t">Fajitas and Molcajetes</span><span class="kt-route-go">See the dishes</span></a></li>
+        <li><a class="kt-route" href="/la-dulceria"><span class="kt-route-k">Dessert</span><span class="kt-route-t">La Dulcería</span><span class="kt-route-go">See the desserts</span></a></li>
+        <li><a class="kt-route" href="/game-day"><span class="kt-route-k">What is on</span><span class="kt-route-t">Game Day</span><span class="kt-route-go">See the schedule</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  {ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+
+  <Footer2 />
+</div>
+</Base>
